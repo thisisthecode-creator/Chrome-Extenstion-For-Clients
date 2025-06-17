@@ -1,5 +1,8 @@
 // Function to inject buttons into flight elements
 function injectButtons() {
+  // Add Tripbase button styles
+  addTripbaseButtonStyles()
+
   // Find all elements with role="jhRv2c"
   const flightElements = document.querySelectorAll("div.jhRv2c")
 
@@ -30,14 +33,14 @@ function injectButtons() {
     flightRowContainer1.className = "custom-flight-buttons"
 
     const flightRowContainer2 = document.createElement("div")
-    flightRowContainer2.className = "custom-flight-buttons"
+    flightRowContainer2.className = "custom-flight-buttons second-row"
 
     // Create hotel row containers
     const hotelRowContainer1 = document.createElement("div")
-    hotelRowContainer1.className = "custom-flight-buttons second-row"
+    hotelRowContainer1.className = "custom-flight-buttons"
 
     const hotelRowContainer2 = document.createElement("div")
-    hotelRowContainer2.className = "custom-flight-buttons"
+    hotelRowContainer2.className = "custom-flight-buttons second-row"
 
     // Generate all URLs
     const urls = generateAllUrls(urlParams)
@@ -61,41 +64,57 @@ function injectButtons() {
       createIcon("armchair"),
     )
     const awardToolBtn = createLinkButton("AwardTool", "award-tool-btn", urls.awardtool, createIcon("award"))
-    const seatsAeroBtn = createLinkButton("Seats.aero", "seats-aero-btn", urls.seatsaero, createIcon("sofa"))
-    const airCanadaBtn = createLinkButton("Air Canada", "air-canada-btn", urls.airCanada, createIcon("flag"))
-
-    // Create flight buttons - second row
-    const pointMeBtn = createLinkButton("Point.me", "point-me-btn", urls.pointme, createIcon("compass"))
+    const seatsAeroBtn = createLinkButton("SeatsAero", "seats-aero-btn", urls.seatsaero, createIcon("sofa"))
+    const airCanadaBtn = createLinkButton("AirCanada", "air-canada-btn", urls.airCanada, createIcon("flag"))
+    const pointMeBtn = createLinkButton("PointMe", "point-me-btn", urls.pointme, createIcon("compass"))
     const kayakBtn = createLinkButton("Kayak", "kayak-btn", urls.kayak, createIcon("sailboat"))
     const skyscannerBtn = createLinkButton("Skyscanner", "skyscanner-btn", urls.skyscanner, createIcon("search"))
 
-    // Add restore button if URL has changed
+    // Create new flight buttons for second row
+    const rovemilesBtn = createLinkButton("Rovemiles", "point-me-btn", urls.rovemiles, createIcon("plane"))
+    const faresViewerBtn = createLinkButton("FaresViewer", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
+    const saSeatmapBtn = createButton(
+      "Seatmap",
+      "seats-aero-seatmap-btn",
+      () => {
+        promptAndOpenSeatsAeroSeatmap(urlParams)
+      },
+      createIcon("layout"),
+    )
+    const awardToolAllBtn = createLinkButton(
+      "All+14",
+      "award-tool-btn",
+      urls.awardtoolAllPlus14,
+      createIcon("calendar"),
+    )
+
+    // Add additional flight-specific buttons if we have the required parameters
+    let fareClassBtn = null
+    let flightConnectionsBtn = null
+    let turbliBtn = null
     let restoreUrlBtn = null
+
+    if (hasRequiredParams) {
+      fareClassBtn = createLinkButton("FareClass", "fare-class-btn", urls.fareClass, createIcon("ticket"))
+      flightConnectionsBtn = createLinkButton(
+        "FlightConnections",
+        "flight-connections-btn",
+        urls.flightconnections,
+        createIcon("network"),
+      )
+      turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
+    }
+
+    // Add restore button if URL has changed
     if (window.location.href !== window.originalGoogleFlightsUrl) {
       restoreUrlBtn = createButton(
-        "Restore URL",
+        "RestoreURL",
         "restore-url-btn",
         () => {
           window.location.href = window.originalGoogleFlightsUrl
         },
         createIcon("refresh-cw"),
       )
-    }
-
-    // Add additional flight-specific buttons if we have the required parameters
-    let fareClassBtn = null
-    let flightConnectionsBtn = null
-    let turbliBtn = null
-
-    if (hasRequiredParams) {
-      fareClassBtn = createLinkButton("FareClass", "fare-class-btn", urls.fareClass, createIcon("ticket"))
-      flightConnectionsBtn = createLinkButton(
-        "Connections",
-        "flight-connections-btn",
-        urls.flightconnections,
-        createIcon("network"),
-      )
-      turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
     }
 
     // Add flight buttons to first row
@@ -105,19 +124,25 @@ function injectButtons() {
     flightRowContainer1.appendChild(awardToolBtn)
     flightRowContainer1.appendChild(seatsAeroBtn)
     flightRowContainer1.appendChild(airCanadaBtn)
-
     flightRowContainer1.appendChild(pointMeBtn)
     flightRowContainer1.appendChild(kayakBtn)
     flightRowContainer1.appendChild(skyscannerBtn)
 
-    if (restoreUrlBtn) {
-      flightRowContainer1.appendChild(restoreUrlBtn)
+    // Add new flight buttons to second row
+    flightRowContainer2.appendChild(rovemilesBtn)
+    flightRowContainer2.appendChild(faresViewerBtn)
+    flightRowContainer2.appendChild(saSeatmapBtn)
+    flightRowContainer2.appendChild(awardToolAllBtn)
+
+    // Add additional flight-specific buttons to second row if we have the required parameters
+    if (hasRequiredParams) {
+      flightRowContainer2.appendChild(fareClassBtn)
+      flightRowContainer2.appendChild(flightConnectionsBtn)
+      flightRowContainer2.appendChild(turbliBtn)
     }
 
-    if (hasRequiredParams) {
-      flightRowContainer1.appendChild(fareClassBtn)
-      flightRowContainer1.appendChild(flightConnectionsBtn)
-      flightRowContainer1.appendChild(turbliBtn)
+    if (restoreUrlBtn) {
+      flightRowContainer2.appendChild(restoreUrlBtn)
     }
 
     // Create hotel buttons - first row
@@ -170,7 +195,6 @@ function injectButtons() {
       createIcon("star"),
     )
 
-    // Create hotel buttons - second row
     const wyndhamBtn = createButton(
       "Wyndham",
       "wyndham-btn",
@@ -194,6 +218,8 @@ function injectButtons() {
         promptAndOpenMelia(urlParams)
       },
       createIcon("sun"),
+
+      // Create hotel buttons - second row
     )
     const bestWesternBtn = createButton(
       "BestWestern",
@@ -222,19 +248,91 @@ function injectButtons() {
 
     // Add hotel buttons to first row
     hotelRowContainer1.appendChild(googleHotelsBtn)
-    hotelRowContainer1.appendChild(hiltonBtn)
     hotelRowContainer1.appendChild(hyattBtn)
+    hotelRowContainer1.appendChild(hiltonBtn)
+    hotelRowContainer1.appendChild(choiceBtn)
+    hotelRowContainer1.appendChild(wyndhamBtn)
     hotelRowContainer1.appendChild(marriottBtn)
     hotelRowContainer1.appendChild(ihgBtn)
     hotelRowContainer1.appendChild(accorBtn)
-
-    // Add hotel buttons to second row
-    hotelRowContainer1.appendChild(wyndhamBtn)
-    hotelRowContainer1.appendChild(choiceBtn)
     hotelRowContainer1.appendChild(meliaBtn)
-    hotelRowContainer1.appendChild(bestWesternBtn)
-    hotelRowContainer1.appendChild(radissonBtn)
-    hotelRowContainer1.appendChild(ghaBtn)
+    // Add hotel buttons to second row
+    hotelRowContainer2.appendChild(bestWesternBtn)
+    hotelRowContainer2.appendChild(radissonBtn)
+    hotelRowContainer2.appendChild(ghaBtn)
+
+    // Create tripbase row containers
+    const tripbaseRowContainer1 = document.createElement("div")
+    tripbaseRowContainer1.className = "custom-flight-buttons"
+
+    const tripbaseRowContainer2 = document.createElement("div")
+    tripbaseRowContainer2.className = "custom-flight-buttons second-row"
+
+    const tripbaseRowContainer3 = document.createElement("div")
+    tripbaseRowContainer3.className = "custom-flight-buttons second-row"
+
+    const tripbaseRowContainer4 = document.createElement("div")
+    tripbaseRowContainer4.className = "custom-flight-buttons second-row"
+
+    // Create tripbase section header
+    const tripbaseSectionHeader = document.createElement("div")
+    tripbaseSectionHeader.className = "section-header"
+    tripbaseSectionHeader.textContent = "Tripbase Tools"
+
+    // Create Tripbase buttons
+    const tripbaseTools = {
+      "/calculator": { name: "Calc", icon: "calculator", className: "tripbase-calculator-btn" },
+      "/flights": { name: "FlightSearch", icon: "plane", className: "tripbase-flight-btn" },
+      "/hotels": { name: "HotelSearch", icon: "hotel", className: "tripbase-hotel-btn" },
+      "/purchase": { name: "BuyHistory", icon: "history", className: "tripbase-history-btn" },
+      "/cards": { name: "Cards", icon: "credit-card", className: "tripbase-cards-btn" },
+      "/transfers": { name: "Transfer", icon: "refresh-cw", className: "tripbase-transfers-btn" },
+      "/transfersbonus": { name: "Bonus", icon: "percent", className: "tripbase-bonus-btn" },
+      "/awarddates": { name: "AwardDates", icon: "calendar", className: "tripbase-award-btn" },
+      "/charge": { name: "Charge", icon: "battery-charging", className: "tripbase-charge-btn" },
+      "/cardtravel": { name: "CardPortal", icon: "luggage", className: "tripbase-cardtravel-btn" },
+      "/cardrules": { name: "CardRules", icon: "file-text", className: "tripbase-cardrules-btn" },
+      "/currency": { name: "Ecxchange", icon: "currency-dollar", className: "tripbase-currency-btn" },
+      "/casm": { name: "CASMCalc", icon: "calculator", className: "tripbase-casm-btn" },
+      "/rovemile": { name: "Rovemile", icon: "dollar-sign", className: "tripbase-rovemile-btn" },
+      "/hyatt": { name: "HyattCalc", icon: "building", className: "tripbase-hyatt-btn" },
+      "/hilton": { name: "HiltonCalc", icon: "hotel", className: "tripbase-hilton-btn" },
+      "/hotelprice": { name: "HotelPrice", icon: "tag", className: "tripbase-hotelprice-btn" },
+      "/hotelrewards": { name: "HotelRewards", icon: "award", className: "tripbase-rewards-btn" },
+      "/lounges": { name: "Lounges", icon: "coffee", className: "tripbase-lounges-btn" },
+      "/fasttrack": { name: "FastTrack", icon: "zap", className: "tripbase-fasttrack-btn" },
+      "/premium": { name: "PremiumCabin", icon: "armchair", className: "tripbase-premium-btn" },
+      "/seatmaps": { name: "SeatMaps", icon: "layout", className: "tripbase-seatmaps-btn" },
+      "/pnr": { name: "PNR", icon: "eye", className: "tripbase-pnr-btn" },
+      "/buypoints": { name: "BuyPoints", icon: "shopping-cart", className: "tripbase-buypoints-btn" },
+      "/pointvalue": { name: "PointMileValue", icon: "trending-up", className: "tripbase-pointvalue-btn" },
+      "/transfertimes": { name: "TransferTimes", icon: "clock", className: "tripbase-transfertimes-btn" },
+      "/purchasetimes": { name: "BuyTimes", icon: "clock", className: "tripbase-purchasetimes-btn" },
+      "/valuecalc": { name: "ValueCalc", icon: "calculator", className: "tripbase-valuecalc-btn" },
+      "/statuscards": { name: "Status", icon: "award", className: "tripbase-statuscards-btn" },
+      "/merchant": { name: "Merchant", icon: "search", className: "tripbase-merchant-btn" },
+      "/search": { name: "Search", icon: "search", className: "tripbase-search-btn" },
+    }
+
+    // Create and add buttons to row containers
+    let buttonCount = 0
+    const maxButtonsPerRow = 9
+
+    for (const [path, details] of Object.entries(tripbaseTools)) {
+      const url = `https://tools.tripbase.us${path}`
+      const button = createLinkButton(details.name, details.className, url, createIcon(details.icon))
+
+      if (buttonCount < maxButtonsPerRow) {
+        tripbaseRowContainer1.appendChild(button)
+      } else if (buttonCount < maxButtonsPerRow * 2) {
+        tripbaseRowContainer2.appendChild(button)
+      } else if (buttonCount < maxButtonsPerRow * 3) {
+        tripbaseRowContainer3.appendChild(button)
+      } else if (buttonCount < maxButtonsPerRow * 4) {
+        tripbaseRowContainer4.appendChild(button)
+      }
+      buttonCount++
+    }
 
     // Add section headers
     const flightSectionHeader = document.createElement("div")
@@ -245,13 +343,31 @@ function injectButtons() {
     hotelSectionHeader.className = "section-header"
     hotelSectionHeader.textContent = "Hotel Search"
 
-    // Add rows to container
-    buttonContainer.appendChild(flightSectionHeader)
-    buttonContainer.appendChild(flightRowContainer1)
-    buttonContainer.appendChild(flightRowContainer2)
-    buttonContainer.appendChild(hotelSectionHeader)
-    buttonContainer.appendChild(hotelRowContainer1)
-    buttonContainer.appendChild(hotelRowContainer2)
+    // Create section containers
+    const flightSectionContainer = document.createElement("div")
+    flightSectionContainer.className = "flight-section-container"
+    flightSectionContainer.appendChild(flightSectionHeader)
+    flightSectionContainer.appendChild(flightRowContainer1)
+    flightSectionContainer.appendChild(flightRowContainer2)
+
+    const hotelSectionContainer = document.createElement("div")
+    hotelSectionContainer.className = "hotel-section-container"
+    hotelSectionContainer.appendChild(hotelSectionHeader)
+    hotelSectionContainer.appendChild(hotelRowContainer1)
+    hotelSectionContainer.appendChild(hotelRowContainer2)
+
+    const tripbaseSectionContainer = document.createElement("div")
+    tripbaseSectionContainer.className = "tripbase-section-container"
+    tripbaseSectionContainer.appendChild(tripbaseSectionHeader)
+    tripbaseSectionContainer.appendChild(tripbaseRowContainer1)
+    tripbaseSectionContainer.appendChild(tripbaseRowContainer2)
+    tripbaseSectionContainer.appendChild(tripbaseRowContainer3)
+    tripbaseSectionContainer.appendChild(tripbaseRowContainer4)
+
+    // Add containers to main container
+    buttonContainer.appendChild(flightSectionContainer)
+    buttonContainer.appendChild(hotelSectionContainer)
+    buttonContainer.appendChild(tripbaseSectionContainer)
 
     // Add container to flight element
     element.appendChild(buttonContainer)
@@ -280,14 +396,14 @@ function injectButtons() {
       flightRowContainer1.className = "custom-flight-buttons"
 
       const flightRowContainer2 = document.createElement("div")
-      flightRowContainer2.className = "custom-flight-buttons"
+      flightRowContainer2.className = "custom-flight-buttons second-row"
 
       // Create hotel row containers
       const hotelRowContainer1 = document.createElement("div")
-      hotelRowContainer1.className = "custom-flight-buttons second-row"
+      hotelRowContainer1.className = "custom-flight-buttons"
 
       const hotelRowContainer2 = document.createElement("div")
-      hotelRowContainer2.className = "custom-flight-buttons"
+      hotelRowContainer2.className = "custom-flight-buttons second-row"
 
       // Generate URLs and create buttons
       const urlParams = parseFlightInfoFromUrl(window.location.href)
@@ -302,9 +418,9 @@ function injectButtons() {
         },
         createIcon("plane"),
       )
-      const pointsYeahBtn = createLinkButton("PointsYeah", "points-yeah-btn", urls.pointsYeah, createIcon("star"))
+      const pointsYeahBtn = createLinkButton("PY", "points-yeah-btn", urls.pointsYeah, createIcon("star"))
       const pointsYeahSeatmapBtn = createButton(
-        "Seatmap",
+        "PY Seatmap",
         "points-yeah-seatmap-btn",
         () => {
           promptAndOpenPointsYeahSeatmap(urlParams)
@@ -312,16 +428,48 @@ function injectButtons() {
         createIcon("armchair"),
       )
       const awardToolBtn = createLinkButton("AwardTool", "award-tool-btn", urls.awardtool, createIcon("award"))
-      const seatsAeroBtn = createLinkButton("Seats.aero", "seats-aero-btn", urls.seatsaero, createIcon("sofa"))
-      const airCanadaBtn = createLinkButton("Air Canada", "air-canada-btn", urls.airCanada, createIcon("flag"))
-
-      // Create flight buttons - second row
-      const pointMeBtn = createLinkButton("Point.me", "point-me-btn", urls.pointme, createIcon("compass"))
+      const seatsAeroBtn = createLinkButton("SeatsAero", "seats-aero-btn", urls.seatsaero, createIcon("sofa"))
+      const airCanadaBtn = createLinkButton("AirCanada", "air-canada-btn", urls.airCanada, createIcon("flag"))
+      const pointMeBtn = createLinkButton("PointMe", "point-me-btn", urls.pointme, createIcon("compass"))
       const kayakBtn = createLinkButton("Kayak", "kayak-btn", urls.kayak, createIcon("sailboat"))
       const skyscannerBtn = createLinkButton("Skyscanner", "skyscanner-btn", urls.skyscanner, createIcon("search"))
 
-      // Add restore button if URL has changed
+      // Create new flight buttons for second row on results page
+      const rovemilesBtn = createLinkButton("Rovemiles", "point-me-btn", urls.rovemiles, createIcon("plane"))
+      const faresViewerBtn = createLinkButton("FaresViewer", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
+      const saSeatmapBtn = createButton(
+        "Seatmap",
+        "seats-aero-seatmap-btn",
+        () => {
+          promptAndOpenSeatsAeroSeatmap(urlParams)
+        },
+        createIcon("layout"),
+      )
+      const awardToolAllBtn = createLinkButton(
+        "AwardTool All",
+        "award-tool-btn",
+        urls.awardtoolAllPlus14,
+        createIcon("calendar"),
+      )
+
+      // Add additional flight-specific buttons if we have the required parameters
+      let fareClassBtn = null
+      let flightConnectionsBtn = null
+      let turbliBtn = null
       let restoreUrlBtn = null
+
+      if (hasRequiredParams) {
+        fareClassBtn = createLinkButton("FareClass", "fare-class-btn", urls.fareClass, createIcon("ticket"))
+        flightConnectionsBtn = createLinkButton(
+          "FlightConnections",
+          "flight-connections-btn",
+          urls.flightconnections,
+          createIcon("network"),
+        )
+        turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
+      }
+
+      // Add restore button if URL has changed
       if (window.location.href !== window.originalGoogleFlightsUrl) {
         restoreUrlBtn = createButton(
           "Restore URL",
@@ -333,22 +481,6 @@ function injectButtons() {
         )
       }
 
-      // Add additional flight-specific buttons if we have the required parameters
-      let fareClassBtn = null
-      let flightConnectionsBtn = null
-      let turbliBtn = null
-
-      if (hasRequiredParams) {
-        fareClassBtn = createLinkButton("FareClass", "fare-class-btn", urls.fareClass, createIcon("ticket"))
-        flightConnectionsBtn = createLinkButton(
-          "Connections",
-          "flight-connections-btn",
-          urls.flightconnections,
-          createIcon("network"),
-        )
-        turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
-      }
-
       // Add flight buttons to first row
       flightRowContainer1.appendChild(googleFlightsBtn)
       flightRowContainer1.appendChild(pointsYeahBtn)
@@ -356,20 +488,25 @@ function injectButtons() {
       flightRowContainer1.appendChild(awardToolBtn)
       flightRowContainer1.appendChild(seatsAeroBtn)
       flightRowContainer1.appendChild(airCanadaBtn)
-
-      // Add flight buttons to second row
       flightRowContainer1.appendChild(pointMeBtn)
       flightRowContainer1.appendChild(kayakBtn)
       flightRowContainer1.appendChild(skyscannerBtn)
 
-      if (restoreUrlBtn) {
-        flightRowContainer1.appendChild(restoreUrlBtn)
+      // Add new flight buttons to second row
+      flightRowContainer2.appendChild(rovemilesBtn)
+      flightRowContainer2.appendChild(faresViewerBtn)
+      flightRowContainer2.appendChild(saSeatmapBtn)
+      flightRowContainer2.appendChild(awardToolAllBtn)
+
+      // Add additional flight-specific buttons to second row if we have the required parameters
+      if (hasRequiredParams) {
+        flightRowContainer2.appendChild(fareClassBtn)
+        flightRowContainer2.appendChild(flightConnectionsBtn)
+        flightRowContainer2.appendChild(turbliBtn)
       }
 
-      if (hasRequiredParams) {
-        flightRowContainer1.appendChild(fareClassBtn)
-        flightRowContainer1.appendChild(flightConnectionsBtn)
-        flightRowContainer1.appendChild(turbliBtn)
+      if (restoreUrlBtn) {
+        flightRowContainer2.appendChild(restoreUrlBtn)
       }
 
       // Create hotel buttons - first row
@@ -474,19 +611,91 @@ function injectButtons() {
 
       // Add hotel buttons to first row
       hotelRowContainer1.appendChild(googleHotelsBtn)
-      hotelRowContainer1.appendChild(hiltonBtn)
       hotelRowContainer1.appendChild(hyattBtn)
+      hotelRowContainer1.appendChild(hiltonBtn)
+      hotelRowContainer1.appendChild(choiceBtn)
+      hotelRowContainer1.appendChild(wyndhamBtn)
       hotelRowContainer1.appendChild(marriottBtn)
       hotelRowContainer1.appendChild(ihgBtn)
       hotelRowContainer1.appendChild(accorBtn)
-
-      // Add hotel buttons to second row
-      hotelRowContainer1.appendChild(wyndhamBtn)
-      hotelRowContainer1.appendChild(choiceBtn)
       hotelRowContainer1.appendChild(meliaBtn)
-      hotelRowContainer1.appendChild(bestWesternBtn)
-      hotelRowContainer1.appendChild(radissonBtn)
-      hotelRowContainer1.appendChild(ghaBtn)
+      // Add hotel buttons to second row
+      hotelRowContainer2.appendChild(bestWesternBtn)
+      hotelRowContainer2.appendChild(radissonBtn)
+      hotelRowContainer2.appendChild(ghaBtn)
+
+      // Create tripbase row containers
+      const tripbaseRowContainer1 = document.createElement("div")
+      tripbaseRowContainer1.className = "custom-flight-buttons"
+
+      const tripbaseRowContainer2 = document.createElement("div")
+      tripbaseRowContainer2.className = "custom-flight-buttons second-row"
+
+      const tripbaseRowContainer3 = document.createElement("div")
+      tripbaseRowContainer3.className = "custom-flight-buttons second-row"
+
+      const tripbaseRowContainer4 = document.createElement("div")
+      tripbaseRowContainer4.className = "custom-flight-buttons second-row"
+
+      // Create tripbase section header
+      const tripbaseSectionHeader = document.createElement("div")
+      tripbaseSectionHeader.className = "section-header"
+      tripbaseSectionHeader.textContent = "Tripbase Tools"
+
+      // Create Tripbase buttons
+      const tripbaseTools = {
+        "/calculator": { name: "Calc", icon: "calculator", className: "tripbase-calculator-btn" },
+        "/flights": { name: "FlightSearch", icon: "plane", className: "tripbase-flight-btn" },
+        "/hotels": { name: "HotelSearch", icon: "hotel", className: "tripbase-hotel-btn" },
+        "/purchase": { name: "BuyHistory", icon: "history", className: "tripbase-history-btn" },
+        "/cards": { name: "Cards", icon: "credit-card", className: "tripbase-cards-btn" },
+        "/transfers": { name: "Transfer", icon: "refresh-cw", className: "tripbase-transfers-btn" },
+        "/transfersbonus": { name: "Bonus", icon: "percent", className: "tripbase-bonus-btn" },
+        "/awarddates": { name: "AwardDates", icon: "calendar", className: "tripbase-award-btn" },
+        "/charge": { name: "Charge", icon: "battery-charging", className: "tripbase-charge-btn" },
+        "/cardtravel": { name: "CardPortal", icon: "luggage", className: "tripbase-cardtravel-btn" },
+        "/cardrules": { name: "CardRules", icon: "file-text", className: "tripbase-cardrules-btn" },
+        "/currency": { name: "Ecxchange", icon: "currency-dollar", className: "tripbase-currency-btn" },
+        "/casm": { name: "CASMCalc", icon: "calculator", className: "tripbase-casm-btn" },
+        "/rovemile": { name: "Rovemile", icon: "dollar-sign", className: "tripbase-rovemile-btn" },
+        "/hyatt": { name: "HyattCalc", icon: "building", className: "tripbase-hyatt-btn" },
+        "/hilton": { name: "HiltonCalc", icon: "hotel", className: "tripbase-hilton-btn" },
+        "/hotelprice": { name: "HotelPrice", icon: "tag", className: "tripbase-hotelprice-btn" },
+        "/hotelrewards": { name: "HotelRewards", icon: "award", className: "tripbase-rewards-btn" },
+        "/lounges": { name: "Lounges", icon: "coffee", className: "tripbase-lounges-btn" },
+        "/fasttrack": { name: "FastTrack", icon: "zap", className: "tripbase-fasttrack-btn" },
+        "/premium": { name: "PremiumCabin", icon: "armchair", className: "tripbase-premium-btn" },
+        "/seatmaps": { name: "SeatMaps", icon: "layout", className: "tripbase-seatmaps-btn" },
+        "/pnr": { name: "PNR", icon: "eye", className: "tripbase-pnr-btn" },
+        "/buypoints": { name: "BuyPoints", icon: "shopping-cart", className: "tripbase-buypoints-btn" },
+        "/pointvalue": { name: "PointMileValue", icon: "trending-up", className: "tripbase-pointvalue-btn" },
+        "/transfertimes": { name: "TransferTimes", icon: "clock", className: "tripbase-transfertimes-btn" },
+        "/purchasetimes": { name: "BuyTimes", icon: "clock", className: "tripbase-purchasetimes-btn" },
+        "/valuecalc": { name: "ValueCalc", icon: "calculator", className: "tripbase-valuecalc-btn" },
+        "/statuscards": { name: "Status", icon: "award", className: "tripbase-statuscards-btn" },
+        "/merchant": { name: "Merchant", icon: "search", className: "tripbase-merchant-btn" },
+        "/search": { name: "Search", icon: "search", className: "tripbase-search-btn" },
+      }
+
+      // Create and add buttons to row containers
+      let buttonCount = 0
+      const maxButtonsPerRow = 9
+
+      for (const [path, details] of Object.entries(tripbaseTools)) {
+        const url = `https://tools.tripbase.us${path}`
+        const button = createLinkButton(details.name, details.className, url, createIcon(details.icon))
+
+        if (buttonCount < maxButtonsPerRow) {
+          tripbaseRowContainer1.appendChild(button)
+        } else if (buttonCount < maxButtonsPerRow * 2) {
+          tripbaseRowContainer2.appendChild(button)
+        } else if (buttonCount < maxButtonsPerRow * 3) {
+          tripbaseRowContainer3.appendChild(button)
+        } else if (buttonCount < maxButtonsPerRow * 4) {
+          tripbaseRowContainer4.appendChild(button)
+        }
+        buttonCount++
+      }
 
       // Add section headers
       const flightSectionHeader = document.createElement("div")
@@ -497,18 +706,112 @@ function injectButtons() {
       hotelSectionHeader.className = "section-header"
       hotelSectionHeader.textContent = "Hotel Search"
 
-      // Add rows to container
-      buttonsContainer.appendChild(flightSectionHeader)
-      buttonsContainer.appendChild(flightRowContainer1)
-      buttonsContainer.appendChild(flightRowContainer2)
-      buttonsContainer.appendChild(hotelSectionHeader)
-      buttonsContainer.appendChild(hotelRowContainer1)
-      buttonsContainer.appendChild(hotelRowContainer2)
+      // Create section containers
+      const flightSectionContainer = document.createElement("div")
+      flightSectionContainer.className = "flight-section-container"
+      flightSectionContainer.appendChild(flightSectionHeader)
+      flightSectionContainer.appendChild(flightRowContainer1)
+      flightSectionContainer.appendChild(flightRowContainer2)
+
+      const hotelSectionContainer = document.createElement("div")
+      hotelSectionContainer.className = "hotel-section-container"
+      hotelSectionContainer.appendChild(hotelSectionHeader)
+      hotelSectionContainer.appendChild(hotelRowContainer1)
+      hotelSectionContainer.appendChild(hotelRowContainer2)
+
+      const tripbaseSectionContainer = document.createElement("div")
+      tripbaseSectionContainer.className = "tripbase-section-container"
+      tripbaseSectionContainer.appendChild(tripbaseSectionHeader)
+      tripbaseSectionContainer.appendChild(tripbaseRowContainer1)
+      tripbaseSectionContainer.appendChild(tripbaseRowContainer2)
+      tripbaseSectionContainer.appendChild(tripbaseRowContainer3)
+      tripbaseSectionContainer.appendChild(tripbaseRowContainer4)
+
+      // Add containers to main container
+      buttonsContainer.appendChild(flightSectionContainer)
+      buttonsContainer.appendChild(hotelSectionContainer)
+      buttonsContainer.appendChild(tripbaseSectionContainer)
 
       // Add the fixed container to the results container
       resultsContainer.prepend(buttonsContainer)
     }
   }
+}
+
+// Update the addTripbaseButtonStyles function to add a separator line between rows
+
+function addTripbaseButtonStyles() {
+  if (document.getElementById("custom-button-styles")) {
+    return // Styles already added
+  }
+
+  const style = document.createElement("style")
+  style.id = "custom-button-styles"
+  style.textContent = `
+    /* Basic button styling - no custom colors */
+    .custom-flight-buttons a, .custom-flight-buttons button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 8px;
+      margin: 2px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #f8f9fa;
+      color: #333;
+      text-decoration: none;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .custom-flight-buttons a:hover, .custom-flight-buttons button:hover {
+      background: #e9ecef;
+      border-color: #adb5bd;
+    }
+    
+    .custom-flight-buttons a:active, .custom-flight-buttons button:active {
+      background: #dee2e6;
+    }
+    
+    .button-icon {
+      margin-right: 4px;
+      display: flex;
+      align-items: center;
+    }
+    
+    /* Section header styling - basic */
+    .section-header {
+      font-weight: bold;
+      padding: 8px 12px;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      border-radius: 4px;
+      background: #e9ecef;
+      color: #495057;
+      border: 1px solid #dee2e6;
+    }
+    
+    /* Row separator styling */
+    .custom-flight-buttons.second-row {
+      border-top: 1px solid #dee2e6;
+      padding-top: 6px;
+      margin-top: 6px;
+    }
+  `
+
+  document.head.appendChild(style)
+}
+
+// Add these helper functions for the AwardTool All +14 button
+function getCurrentDateUnix() {
+  return Math.floor(new Date().getTime() / 1000)
+}
+
+function getFutureDateUnix(daysInFuture) {
+  const futureDate = new Date()
+  futureDate.setDate(futureDate.getDate() + daysInFuture)
+  return Math.floor(futureDate.getTime() / 1000)
 }
 
 // Helper function to create an icon
@@ -541,7 +844,7 @@ function getIconSVG(iconName) {
     "refresh-cw":
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>',
     ticket:
-      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>',
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>',
     network:
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"></circle><polyline points="9 15 9 21"></polyline><polyline points="15 15 15 21"></polyline><line x1="9" y1="18" x2="15" y2="18"></line></svg>',
     "cloud-lightning":
@@ -549,10 +852,10 @@ function getIconSVG(iconName) {
     hotel:
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"></path><path d="m9 16 .348-.24c1.465-1.013 3.84-1.013 5.304 0L15 16"></path><path d="M8 7h.01"></path><path d="M16 7h.01"></path><path d="M12 7h.01"></path><path d="M12 11h.01"></path><path d="M16 11h.01"></path><path d="M8 11h.01"></path><path d="M10 22v-6.5m4 0V22"></path></svg>',
     building:
-      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg>',
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></svg>',
     home: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
     "check-square":
-      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>',
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>',
     sun: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>',
     crown:
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"></path></svg>',
@@ -564,6 +867,40 @@ function getIconSVG(iconName) {
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"></line><line x1="6" x2="6" y1="18" y2="11"></line><line x1="10" x2="10" y1="18" y2="11"></line><line x1="14" x2="14" y1="18" y2="11"></line><line x1="18" x2="18" y1="18" y2="11"></line><polygon points="12 2 20 7 4 7"></polygon></svg>',
     globe:
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" x2="22" y1="12" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
+    // Additional icons for Tripbase tools
+    calculator:
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"></rect><line x1="8" x2="16" y1="6" y2="6"></line><line x1="16" x2="16" y1="14" y2="18"></line><path d="m16 10 4 4-4 4"></path><path d="M8 18v-4"></path><path d="M12 18v-4"></path></svg>',
+    history:
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l4 2"></path></svg>',
+    "credit-card":
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>',
+    percent:
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>',
+    calendar:
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>',
+    "battery-charging":
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1"></path><path d="M9.5 10.5 12 8"></path><path d="m12 8 2.5 2.5"></path><path d="M12 8v8"></path><path d="M22 12h-2.5"></path></svg>',
+    luggage:
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2"></path><path d="M8 18V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v14"></path><path d="M10 20h4"></path><circle cx="16" cy="20" r="2"></circle><circle cx="8" cy="20" r="2"></circle></svg>',
+    "file-text":
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>',
+    "currency-dollar":
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>',
+    "dollar-sign":
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>',
+    tag: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>',
+    coffee:
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2"></path><path d="M14 2v2"></path><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"></path><path d="M6 2v2"></path></svg>',
+    zap: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>',
+    layout:
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="7" x="3" y="3" rx="1"></rect><rect width="9" height="7" x="3" y="14" rx="1"></rect><rect width="5" height="7" x="16" y="14" rx="1"></rect></svg>',
+    eye: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>',
+    "shopping-cart":
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>',
+    "trending-up":
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>',
+    clock:
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
   }
 
   return icons[iconName] || ""
@@ -687,6 +1024,24 @@ function promptAndOpenPointsYeahSeatmap(defaultParams) {
 
   // Generate and open the URL
   const url = `https://www.pointsyeah.com/seatmap/detail?airline=${airlineCode.toUpperCase()}&departure=${defaultParams.departure}&arrival=${defaultParams.arrival}&date=${formattedDate}&flightNumber=${flightNumber}&cabins=${cabinsString}`
+  window.open(url, "_blank")
+}
+
+// Function to prompt for airline and flight number and open Seats.aero Seatmap
+function promptAndOpenSeatsAeroSeatmap(defaultParams) {
+  // Prompt for airline code
+  const airlineCode = prompt("Enter airline code (e.g., AA, UA, DL):", defaultParams.airline || "")
+  if (!airlineCode) return // User cancelled
+
+  // Prompt for flight number
+  const flightNumber = prompt("Enter flight number:", defaultParams.flightNumber || "")
+  if (!flightNumber) return // User cancelled
+
+  // Format date
+  const formattedDate = defaultParams.date
+
+  // Generate and open the URL
+  const url = `https://seats.aero/seatmap?airline=${airlineCode.toUpperCase()}&from=${defaultParams.departure}&to=${defaultParams.arrival}&date=${formattedDate}&flight=${flightNumber}`
   window.open(url, "_blank")
 }
 
@@ -1169,6 +1524,7 @@ function parseFlightInfoFromUrl(url) {
   return result
 }
 
+// Add these helper functions for the AwardTool All +14 button
 // Function to generate all URLs
 function generateAllUrls(params) {
   // If we don't have the required parameters, return empty URLs for the second row
@@ -1243,6 +1599,26 @@ function generateAllUrls(params) {
     pointsYeahUrl = `https://www.pointsyeah.com/search?cabins=${pointsYeahCabin}&tripType=1&adults=${params.adults}&children=${params.children || 0}&departure=${params.departure}&arrival=${params.arrival}&departDate=${formattedDate}&departDateSec=${formattedDate}&multiday=false&bankpromotion=false&pointpromotion=false`
   }
 
+  // Format cabin for Rovemiles
+  const rovemilesCabin =
+    params.cabin === "Economy"
+      ? "economy"
+      : params.cabin === "Premium Economy"
+        ? "premium_economy"
+        : params.cabin === "Business"
+          ? "business"
+          : "first"
+
+  // Format cabin for seats.aero fares
+  const seatsAeroFaresCabin =
+    params.cabin === "Economy"
+      ? "economy"
+      : params.cabin === "Premium Economy"
+        ? "premium"
+        : params.cabin === "Business"
+          ? "business"
+          : "first"
+
   return {
     pointsYeah: pointsYeahUrl,
 
@@ -1255,7 +1631,7 @@ function generateAllUrls(params) {
 
     seatsaero: `https://seats.aero/search?min_seats=${params.adults}&applicable_cabin=${seatsAeroCabin}&additional_days=true&additional_days_num=7&max_fees=40000&date=${formattedDate}&origins=${params.departure}&destinations=${params.arrival}`,
 
-    pointme: `https://amex.point.me/results?departureCity=${params.departure}&departureIata=${params.departure}&arrivalCity=${params.arrival}&arrivalIata=${params.arrival}&legType=${params.tripType.toLowerCase()}&classOfService=${params.cabin.toLowerCase()}&passengers=${params.adults}&pid=&departureDate=${formattedDate}&arrivalDate=${params.tripType.toLowerCase() === "roundtrip" ? formattedReturnDate : ""}&mode=&searchInit=${searchTimestamp}&fsrRequestId=${Math.floor(Math.random() * 100000000)}&searchKey=${crypto.randomUUID()}&userSearchRequestId=${crypto.randomUUID()}&directionality=outbound`,
+    pointme: `https://point.me/results?departureCity=${params.departure}&departureIata=${params.departure}&arrivalCity=${params.arrival}&arrivalIata=${params.arrival}&legType=${params.tripType.toLowerCase()}&classOfService=${params.cabin.toLowerCase()}&passengers=${params.adults}&pid=&departureDate=${formattedDate}&arrivalDate=${params.tripType.toLowerCase() === "roundtrip" ? formattedReturnDate : ""}&mode=&searchInit=${searchTimestamp}&fsrRequestId=${Math.floor(Math.random() * 100000000)}&searchKey=${crypto.randomUUID()}&userSearchRequestId=${crypto.randomUUID()}&directionality=outbound`,
 
     airCanada: `https://www.aircanada.com/aeroplan/redeem/availability/outbound?org0=${params.departure}&dest0=${params.arrival}&departureDate0=${formattedDate}&ADT=${params.adults}&YTH=0&CHD=0&INF=0&INS=0&lang=en-CA&tripType=${params.tripType.toLowerCase() === "roundtrip" ? "R" : "O"}&marketCode=INT`,
 
@@ -1269,6 +1645,17 @@ function generateAllUrls(params) {
     turbli: `https://turbli.com/${params.departure}/${params.arrival}/${formattedDate}/`,
 
     skyscanner: `https://www.skyscanner.com/transport/flights/${params.departure.toLowerCase()}/${params.arrival.toLowerCase()}/${skyscannerDate}/${params.tripType.toLowerCase() === "roundtrip" ? formattedReturnDate.replace(/-/g, "") : ""}?adults=${params.adults}&cabinclass=${skyscannerCabin}&currency=USD&locale=en-US&market=US&preferdirects=false&previousCultureSource=GEO_LOCATION&redirectedFrom=www.skyscanner.com&rtn=${params.tripType.toLowerCase() === "roundtrip" ? "1" : "0"}`,
+
+    rovemiles: `https://www.rovemiles.com/search/flights?origin=${params.departure}&destination=${params.arrival}&cabin=${rovemilesCabin}&adults=${params.adults}&children=${params.children || 0}&infants=0&payment=miles&start_date=${formattedDate}`,
+
+    seatsAeroFares: `https://seats.aero/fares?from=${params.departure}&to=${params.arrival}&date=${formattedDate}&carriers=${airlineCode || ""}&currency=USD&cabin=${seatsAeroFaresCabin}`,
+
+    seatsAeroSeatmap:
+      params.airline && params.flightNumber
+        ? `https://seats.aero/seatmap?airline=${airlineCode}&from=${params.departure}&to=${params.arrival}&date=${formattedDate}&flight=${params.flightNumber}`
+        : "#",
+
+    awardtoolAllPlus14: `https://www.awardtool.com/deals/flight?from=ANW_1&to=ANW_1&startDate=${getCurrentDateUnix()}&endDate=${getFutureDateUnix(14)}`,
   }
 }
 
