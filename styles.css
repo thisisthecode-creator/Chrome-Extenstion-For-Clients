@@ -1,0 +1,353 @@
+.custom-flight-buttons-container {
+  margin: 6px;
+  background-color: rgba(255, 255, 255, 0.98);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+.custom-flight-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.custom-flight-buttons.second-row {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+.custom-flight-buttons a,
+.custom-flight-buttons button {
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease-out;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  text-transform: none;
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 36px;
+  gap: 4px;
+  position: relative;
+  white-space: nowrap;
+  pointer-events: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  flex-shrink: 0;
+  flex-grow: 0;
+  box-sizing: border-box;
+  min-width: 100px;
+}
+
+.custom-flight-buttons a:hover,
+.custom-flight-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.custom-flight-buttons a:active,
+.custom-flight-buttons button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.button-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+  flex-shrink: 0;
+}
+
+.custom-flight-buttons a span,
+.custom-flight-buttons button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 75px;
+  font-weight: 500;
+}
+
+/* Colorful, clean button styles */
+.google-flights-btn {
+  background: linear-gradient(135deg, #4285f4, #3367d6);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.google-flights-btn:hover {
+  background: linear-gradient(135deg, #5294ff, #4285f4);
+}
+
+.points-yeah-btn {
+  background: linear-gradient(135deg, #1e88e5, #1565c0);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.points-yeah-btn:hover {
+  background: linear-gradient(135deg, #42a5f5, #2196f3);
+}
+
+.points-yeah-seatmap-btn {
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.points-yeah-seatmap-btn:hover {
+  background: linear-gradient(135deg, #1e88e5, #1976d2);
+}
+
+.award-tool-btn {
+  background: linear-gradient(135deg, #4caf50, #43a047);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.award-tool-btn:hover {
+  background: linear-gradient(135deg, #66bb6a, #4caf50);
+}
+
+.seats-aero-btn {
+  background: linear-gradient(135deg, #ffc107, #ffb300);
+  color: #333;
+  transition: background 0.3s ease;
+}
+
+.seats-aero-btn:hover {
+  background: linear-gradient(135deg, #ffd54f, #ffc107);
+}
+
+.point-me-btn {
+  background: linear-gradient(135deg, #ff9800, #fb8c00);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.point-me-btn:hover {
+  background: linear-gradient(135deg, #ffb74d, #ff9800);
+}
+
+.air-canada-btn {
+  background: linear-gradient(135deg, #f44336, #e53935);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.air-canada-btn:hover {
+  background: linear-gradient(135deg, #ef5350, #f44336);
+}
+
+.kayak-btn {
+  background: linear-gradient(135deg, #9c27b0, #8e24aa);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.kayak-btn:hover {
+  background: linear-gradient(135deg, #ab47bc, #9c27b0);
+}
+
+.skyscanner-btn {
+  background: linear-gradient(135deg, #0097a7, #00838f);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.skyscanner-btn:hover {
+  background: linear-gradient(135deg, #00acc1, #0097a7);
+}
+
+.restore-url-btn {
+  background: linear-gradient(135deg, #78909c, #607d8b);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.restore-url-btn:hover {
+  background: linear-gradient(135deg, #90a4ae, #78909c);
+}
+
+/* Second row button styles */
+.fare-class-btn {
+  background: linear-gradient(135deg, #3f51b5, #303f9f);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.fare-class-btn:hover {
+  background: linear-gradient(135deg, #5c6bc0, #3f51b5);
+}
+
+.flight-connections-btn {
+  background: linear-gradient(135deg, #009688, #00796b);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.flight-connections-btn:hover {
+  background: linear-gradient(135deg, #26a69a, #009688);
+}
+
+.turbli-btn {
+  background: linear-gradient(135deg, #607d8b, #455a64);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.turbli-btn:hover {
+  background: linear-gradient(135deg, #78909c, #607d8b);
+}
+
+/* Hotel button styles */
+.hilton-btn {
+  background: linear-gradient(135deg, #00274c, #001a33);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.hilton-btn:hover {
+  background: linear-gradient(135deg, #003366, #00274c);
+}
+
+.hyatt-btn {
+  background: linear-gradient(135deg, #0077b5, #005582);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.hyatt-btn:hover {
+  background: linear-gradient(135deg, #0088cc, #0077b5);
+}
+
+.google-hotels-btn {
+  background: linear-gradient(135deg, #ea4335, #d32f2f);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.google-hotels-btn:hover {
+  background: linear-gradient(135deg, #f44336, #ea4335);
+}
+
+.wyndham-btn {
+  background: linear-gradient(135deg, #002b49, #001e33);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.wyndham-btn:hover {
+  background: linear-gradient(135deg, #003b66, #002b49);
+}
+
+.choice-btn {
+  background: linear-gradient(135deg, #f57c00, #ef6c00);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.choice-btn:hover {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+.melia-btn {
+  background: linear-gradient(135deg, #e91e63, #d81b60);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.melia-btn:hover {
+  background: linear-gradient(135deg, #ec407a, #e91e63);
+}
+
+.best-western-btn {
+  background: linear-gradient(135deg, #0d47a1, #0a3880);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.best-western-btn:hover {
+  background: linear-gradient(135deg, #1565c0, #0d47a1);
+}
+
+.radisson-btn {
+  background: linear-gradient(135deg, #673ab7, #5e35b1);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.radisson-btn:hover {
+  background: linear-gradient(135deg, #7e57c2, #673ab7);
+}
+
+.ihg-btn {
+  background: linear-gradient(135deg, #c62828, #b71c1c);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.ihg-btn:hover {
+  background: linear-gradient(135deg, #d32f2f, #c62828);
+}
+
+.marriott-btn {
+  background: linear-gradient(135deg, #283593, #1a237e);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.marriott-btn:hover {
+  background: linear-gradient(135deg, #3949ab, #283593);
+}
+
+.gha-btn {
+  background: linear-gradient(135deg, #00695c, #004d40);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.gha-btn:hover {
+  background: linear-gradient(135deg, #00897b, #00695c);
+}
+
+.accor-btn {
+  background: linear-gradient(135deg, #ff5722, #f4511e);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.accor-btn:hover {
+  background: linear-gradient(135deg, #ff7043, #ff5722);
+}
+
+/* Section headers */
+.section-header {
+  font-size: 11px;
+  font-weight: bold;
+  padding: 6px 8px;
+  background: linear-gradient(to right, #f5f5f5, #e0e0e0);
+  border-bottom: 1px solid rgba(0,0,
+\

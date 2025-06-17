@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Google Flights Button Injector",
+  "version": "1.0",
+  "description": "Injects custom buttons into Google Flights search results",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.google.com/travel/flights*"],
+      "js": ["content.js", "flight-details-injector.js"],
+      "css": ["styles.css", "flight-details-styles.css"]
+    }
+  ],
+  "permissions": ["activeTab"]
+}

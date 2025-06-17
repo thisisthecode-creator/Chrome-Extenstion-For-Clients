@@ -1,0 +1,179 @@
+/* Flight Details Injector Styles */
+
+.injected-flight-details {
+  margin: 0;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-radius: 0 0 8px 8px;
+  font-size: 13px;
+  color: #5f6368;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.flight-details-separator {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 0 -12px 8px -12px;
+}
+
+.flight-info-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.aircraft-info,
+.legroom-info,
+.amenities-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: #5f6368;
+  flex-shrink: 0;
+}
+
+.info-text {
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Color coding for legroom ratings */
+.below-average {
+  color: #ea4335;
+}
+
+.average {
+  color: #fbbc04;
+}
+
+.above-average {
+  color: #34a853;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .flight-info-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .info-text {
+    max-width: 200px;
+  }
+}
+
+/* Tooltip for additional information */
+.info-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.info-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+}
+
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+/* Animation for new content */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.injected-flight-details {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Ensure the injected content doesn't break the layout */
+.MX5RWe.sSHqwe.y52p7d,
+.L5Okte.y52p7d {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* Make sure our content is always visible */
+.injected-flight-details {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure the amenities text doesn't overflow on smaller screens */
+.amenities-info .info-text {
+  max-width: 250px;
+}
+
+/* Add a subtle hover effect */
+.injected-flight-details:hover {
+  background-color: #f0f2f5;
+}
+
+/* Fix for Google Flights containers that might clip our content */
+.sSHqwe,
+.L5Okte,
+.MX5RWe {
+  overflow: visible !important;
+}
+
+/* Ensure parent containers don't clip our content */
+.XsVAwe,
+.pIgMWd,
+.Rk10dc,
+.sSHqwe,
+.y52p7d {
+  overflow: visible !important;
+}
+
+/* Ensure our content stays at the bottom of the flight listing */
+.injected-flight-details {
+  margin-top: auto;
+}
