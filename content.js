@@ -157,7 +157,7 @@ addBenefitsystemsButtonStyles()
         "Connections",
         "flight-connections-btn",
         urls.flightconnections,
-        createIcon("network"),
+        createIcon("network")
       )
       turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
     }
@@ -524,7 +524,7 @@ addBenefitsystemsButtonStyles()
           "Connections",
           "flight-connections-btn",
           urls.flightconnections,
-          createIcon("network"),
+          createIcon("network")
         )
         turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
       }
