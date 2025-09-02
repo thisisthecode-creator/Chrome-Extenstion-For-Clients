@@ -343,183 +343,246 @@
   background: linear-gradient(135deg, #ff7043, #ff5722);
 }
 
-/* Tripbase button styles */
-.tripbase-calculator-btn {
+/* Benefitsystems button styles */
+.benefitsystems-calculator-btn {
   background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-calculator-btn:hover {
+.benefitsystems-calculator-btn:hover {
   background: linear-gradient(135deg, #4aa3df, #3498db);
 }
 
-.tripbase-flight-btn {
+.benefitsystems-flight-btn {
   background: linear-gradient(135deg, #2ecc71, #27ae60);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-flight-btn:hover {
+.benefitsystems-flight-btn:hover {
   background: linear-gradient(135deg, #40d47e, #2ecc71);
 }
 
-.tripbase-hotel-btn {
+.benefitsystems-hotel-btn {
   background: linear-gradient(135deg, #9b59b6, #8e44ad);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-hotel-btn:hover {
+.benefitsystems-hotel-btn:hover {
   background: linear-gradient(135deg, #a66bbe, #9b59b6);
 }
 
-.tripbase-history-btn {
+.benefitsystems-history-btn {
   background: linear-gradient(135deg, #e74c3c, #c0392b);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-history-btn:hover {
+.benefitsystems-history-btn:hover {
   background: linear-gradient(135deg, #e95e50, #e74c3c);
 }
 
-.tripbase-cards-btn {
+.benefitsystems-cards-btn {
   background: linear-gradient(135deg, #f39c12, #d35400);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-cards-btn:hover {
+.benefitsystems-cards-btn:hover {
   background: linear-gradient(135deg, #f4a62a, #f39c12);
 }
 
-.tripbase-transfers-btn,
-.tripbase-transfer-btn {
+.benefitsystems-transfers-btn,
+.benefitsystems-transfer-btn {
   background: linear-gradient(135deg, #1abc9c, #16a085);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-transfers-btn:hover,
-.tripbase-transfer-btn:hover {
+.benefitsystems-transfers-btn:hover,
+.benefitsystems-transfer-btn:hover {
   background: linear-gradient(135deg, #2ccfae, #1abc9c);
 }
 
-.tripbase-bonus-btn {
+.benefitsystems-bonus-btn {
   background: linear-gradient(135deg, #f1c40f, #f39c12);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-bonus-btn:hover {
+.benefitsystems-bonus-btn:hover {
   background: linear-gradient(135deg, #f2ca27, #f1c40f);
 }
 
-.tripbase-award-btn {
+.benefitsystems-award-btn {
   background: linear-gradient(135deg, #34495e, #2c3e50);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-award-btn:hover {
+.benefitsystems-award-btn:hover {
   background: linear-gradient(135deg, #3d566e, #34495e);
 }
 
-/* Add styles for the rest of the Tripbase buttons with different gradient colors */
-.tripbase-charge-btn {
+/* Add styles for the rest of the Benefitsystems buttons with different gradient colors */
+.benefitsystems-charge-btn {
   background: linear-gradient(135deg, #e67e22, #d35400);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-charge-btn:hover {
+.benefitsystems-charge-btn:hover {
   background: linear-gradient(135deg, #e88e3c, #e67e22);
 }
 
-.tripbase-cardtravel-btn {
+.benefitsystems-cardtravel-btn {
   background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-cardtravel-btn:hover {
+.benefitsystems-cardtravel-btn:hover {
   background: linear-gradient(135deg, #4aa3df, #3498db);
 }
 
-.tripbase-cardrules-btn {
+.benefitsystems-cardrules-btn {
   background: linear-gradient(135deg, #9b59b6, #8e44ad);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-cardrules-btn:hover {
+.benefitsystems-cardrules-btn:hover {
   background: linear-gradient(135deg, #a66bbe, #9b59b6);
 }
 
-.tripbase-currency-btn {
+.benefitsystems-currency-btn {
   background: linear-gradient(135deg, #2ecc71, #27ae60);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-currency-btn:hover {
+.benefitsystems-currency-btn:hover {
   background: linear-gradient(135deg, #40d47e, #2ecc71);
 }
 
-.tripbase-casm-btn {
+.benefitsystems-casm-btn {
   background: linear-gradient(135deg, #e74c3c, #c0392b);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-casm-btn:hover {
+.benefitsystems-casm-btn:hover {
   background: linear-gradient(135deg, #e95e50, #e74c3c);
 }
 
-/* Add more button styles for the remaining Tripbase buttons */
-.tripbase-rovemile-btn,
-.tripbase-hyatt-btn,
-.tripbase-hilton-btn,
-.tripbase-hotelprice-btn,
-.tripbase-rewards-btn,
-.tripbase-lounges-btn,
-.tripbase-fasttrack-btn,
-.tripbase-premium-btn,
-.tripbase-seatmaps-btn,
-.tripbase-pnr-btn,
-.tripbase-buypoints-btn,
-.tripbase-pointvalue-btn,
-.tripbase-transfertimes-btn,
-.tripbase-purchasetimes-btn,
-.tripbase-valuecalc-btn,
-.tripbase-statuscards-btn,
-.tripbase-merchant-btn,
-.tripbase-search-btn {
+/* Add more button styles for the remaining Benefitsystems buttons */
+.benefitsystems-rovemile-btn,
+.benefitsystems-hyatt-btn,
+.benefitsystems-hilton-btn,
+.benefitsystems-hotelprice-btn,
+.benefitsystems-rewards-btn,
+.benefitsystems-lounges-btn,
+.benefitsystems-fasttrack-btn,
+.benefitsystems-premium-btn,
+.benefitsystems-seatmaps-btn,
+.benefitsystems-pnr-btn,
+.benefitsystems-buypoints-btn,
+.benefitsystems-pointvalue-btn,
+.benefitsystems-transfertimes-btn,
+.benefitsystems-purchasetimes-btn,
+.benefitsystems-valuecalc-btn,
+.benefitsystems-statuscards-btn,
+.benefitsystems-merchant-btn,
+.benefitsystems-search-btn {
   background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   transition: background 0.3s ease;
 }
 
-.tripbase-rovemile-btn:hover,
-.tripbase-hyatt-btn:hover,
-.tripbase-hilton-btn:hover,
-.tripbase-hotelprice-btn:hover,
-.tripbase-rewards-btn:hover,
-.tripbase-lounges-btn:hover,
-.tripbase-fasttrack-btn:hover,
-.tripbase-premium-btn:hover,
-.tripbase-seatmaps-btn:hover,
-.tripbase-pnr-btn:hover,
-.tripbase-buypoints-btn:hover,
-.tripbase-pointvalue-btn:hover,
-.tripbase-transfertimes-btn:hover,
-.tripbase-purchasetimes-btn:hover,
-.tripbase-valuecalc-btn:hover,
-.tripbase-statuscards-btn:hover,
-.tripbase-merchant-btn:hover,
-.tripbase-search-btn:hover {
+.benefitsystems-rovemile-btn:hover,
+.benefitsystems-hyatt-btn:hover,
+.benefitsystems-hilton-btn:hover,
+.benefitsystems-hotelprice-btn:hover,
+.benefitsystems-rewards-btn:hover,
+.benefitsystems-lounges-btn:hover,
+.benefitsystems-fasttrack-btn:hover,
+.benefitsystems-premium-btn:hover,
+.benefitsystems-seatmaps-btn:hover,
+.benefitsystems-pnr-btn:hover,
+.benefitsystems-buypoints-btn:hover,
+.benefitsystems-pointvalue-btn:hover,
+.benefitsystems-transfertimes-btn:hover,
+.benefitsystems-purchasetimes-btn:hover,
+.benefitsystems-valuecalc-btn:hover,
+.benefitsystems-statuscards-btn:hover,
+.benefitsystems-merchant-btn:hover,
+.benefitsystems-search-btn:hover {
   background: linear-gradient(135deg, #4aa3df, #3498db);
+}
+
+.benefitsystems-amextransfer-btn {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.benefitsystems-amextransfer-btn:hover {
+  background: linear-gradient(135deg, #e95e50, #e74c3c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+.benefitsystems-awardcancellation-btn {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.benefitsystems-awardcancellation-btn:hover {
+  background: linear-gradient(135deg, #a66bbe, #9b59b6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(155, 89, 182, 0.3);
+}
+
+.benefitsystems-hotelstatus-btn {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.benefitsystems-hotelstatus-btn:hover {
+  background: linear-gradient(135deg, #40d47e, #2ecc71);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
 }
 
 /* Section headers */

@@ -1,7 +1,64 @@
 // Function to inject buttons into flight elements
 function injectButtons() {
-  // Add Tripbase button styles
-  addTripbaseButtonStyles()
+  // Cache management for login data
+const CACHE_KEY = 'benefitsystems_login_cache'
+const CACHE_EXPIRY = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+
+// Cache management functions
+function getCachedLoginData() {
+  try {
+    const cached = localStorage.getItem(CACHE_KEY)
+    if (!cached) return null
+    
+    const data = JSON.parse(cached)
+    if (Date.now() - data.timestamp > CACHE_EXPIRY) {
+      localStorage.removeItem(CACHE_KEY)
+      return null
+    }
+    
+    return data.data
+  } catch (error) {
+    console.error('Error reading cached login data:', error)
+    return null
+  }
+}
+
+function setCachedLoginData(loginData) {
+  try {
+    const cacheData = {
+      data: loginData,
+      timestamp: Date.now()
+    }
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData))
+  } catch (error) {
+    console.error('Error caching login data:', error)
+  }
+}
+
+function clearCachedLoginData() {
+  try {
+    localStorage.removeItem(CACHE_KEY)
+  } catch (error) {
+    console.error('Error clearing cached login data:', error)
+  }
+}
+
+// Function to handle AmexTransfer button click with caching
+function handleAmexTransferClick() {
+  const cachedData = getCachedLoginData()
+  
+  if (cachedData) {
+    // Use cached data to pre-fill forms or auto-login
+    console.log('Using cached login data for AmexTransfer')
+    // You can implement auto-fill logic here based on the cached data
+  }
+  
+  // Open the AmexTransfer tool
+  window.open('@https://tools.benefitsystems.io/amextransfer', '_blank')
+}
+
+// Add Benefitsystems button styles
+addBenefitsystemsButtonStyles()
 
   // Find all elements with role="jhRv2c"
   const flightElements = document.querySelectorAll("div.jhRv2c")
@@ -261,75 +318,78 @@ function injectButtons() {
     hotelRowContainer2.appendChild(radissonBtn)
     hotelRowContainer2.appendChild(ghaBtn)
 
-    // Create tripbase row containers
-    const tripbaseRowContainer1 = document.createElement("div")
-    tripbaseRowContainer1.className = "custom-flight-buttons"
+    // Create benefitsystems row containers
+    const benefitsystemsRowContainer1 = document.createElement("div")
+    benefitsystemsRowContainer1.className = "custom-flight-buttons"
 
-    const tripbaseRowContainer2 = document.createElement("div")
-    tripbaseRowContainer2.className = "custom-flight-buttons second-row"
+    const benefitsystemsRowContainer2 = document.createElement("div")
+    benefitsystemsRowContainer2.className = "custom-flight-buttons second-row"
 
-    const tripbaseRowContainer3 = document.createElement("div")
-    tripbaseRowContainer3.className = "custom-flight-buttons second-row"
+    const benefitsystemsRowContainer3 = document.createElement("div")
+    benefitsystemsRowContainer3.className = "custom-flight-buttons second-row"
 
-    const tripbaseRowContainer4 = document.createElement("div")
-    tripbaseRowContainer4.className = "custom-flight-buttons second-row"
+    const benefitsystemsRowContainer4 = document.createElement("div")
+    benefitsystemsRowContainer4.className = "custom-flight-buttons second-row"
 
-    // Create tripbase section header
-    const tripbaseSectionHeader = document.createElement("div")
-    tripbaseSectionHeader.className = "section-header"
-    tripbaseSectionHeader.textContent = "Tripbase Tools"
+    // Create benefitsystems section header
+    const benefitsystemsSectionHeader = document.createElement("div")
+    benefitsystemsSectionHeader.className = "section-header"
+    benefitsystemsSectionHeader.textContent = "Benefitsystems Tools"
 
-    // Create Tripbase buttons
-    const tripbaseTools = {
-      "/calculator": { name: "Calc", icon: "calculator", className: "tripbase-calculator-btn" },
-      "/flights": { name: "FlightSearch", icon: "plane", className: "tripbase-flight-btn" },
-      "/hotels": { name: "HotelSearch", icon: "hotel", className: "tripbase-hotel-btn" },
-      "/purchase": { name: "BuyHistory", icon: "history", className: "tripbase-history-btn" },
-      "/cards": { name: "Cards", icon: "credit-card", className: "tripbase-cards-btn" },
-      "/transfers": { name: "Transfer", icon: "refresh-cw", className: "tripbase-transfers-btn" },
-      "/transfersbonus": { name: "Bonus", icon: "percent", className: "tripbase-bonus-btn" },
-      "/awarddates": { name: "AwardDates", icon: "calendar", className: "tripbase-award-btn" },
-      "/charge": { name: "Charge", icon: "battery-charging", className: "tripbase-charge-btn" },
-      "/cardtravel": { name: "CardPortal", icon: "luggage", className: "tripbase-cardtravel-btn" },
-      "/cardrules": { name: "CardRules", icon: "file-text", className: "tripbase-cardrules-btn" },
-      "/currency": { name: "Ecxchange", icon: "currency-dollar", className: "tripbase-currency-btn" },
-      "/casm": { name: "CASMCalc", icon: "calculator", className: "tripbase-casm-btn" },
-      "/rovemile": { name: "Rovemile", icon: "dollar-sign", className: "tripbase-rovemile-btn" },
-      "/hyatt": { name: "HyattCalc", icon: "building", className: "tripbase-hyatt-btn" },
-      "/hilton": { name: "HiltonCalc", icon: "hotel", className: "tripbase-hilton-btn" },
-      "/hotelprice": { name: "HotelPrice", icon: "tag", className: "tripbase-hotelprice-btn" },
-      "/hotelrewards": { name: "HotelRewards", icon: "award", className: "tripbase-rewards-btn" },
-      "/lounges": { name: "Lounges", icon: "coffee", className: "tripbase-lounges-btn" },
-      "/fasttrack": { name: "FastTrack", icon: "zap", className: "tripbase-fasttrack-btn" },
-      "/premium": { name: "PremiumCabin", icon: "armchair", className: "tripbase-premium-btn" },
-      "/seatmaps": { name: "SeatMaps", icon: "layout", className: "tripbase-seatmaps-btn" },
-      "/pnr": { name: "PNR", icon: "eye", className: "tripbase-pnr-btn" },
-      "/buypoints": { name: "BuyPoints", icon: "shopping-cart", className: "tripbase-buypoints-btn" },
-      "/pointvalue": { name: "PointMileValue", icon: "trending-up", className: "tripbase-pointvalue-btn" },
-      "/transfertimes": { name: "TransferTimes", icon: "clock", className: "tripbase-transfertimes-btn" },
-      "/purchasetimes": { name: "BuyTimes", icon: "clock", className: "tripbase-purchasetimes-btn" },
-      "/valuecalc": { name: "ValueCalc", icon: "calculator", className: "tripbase-valuecalc-btn" },
-      "/statuscards": { name: "Status", icon: "award", className: "tripbase-statuscards-btn" },
-      "/merchant": { name: "Merchant", icon: "search", className: "tripbase-merchant-btn" },
-      "/search": { name: "Search", icon: "search", className: "tripbase-search-btn" },
+    // Create Benefitsystems buttons
+    const benefitsystemsTools = {
+      "/calculator": { name: "Calc", icon: "calculator", className: "benefitsystems-calculator-btn" },
+      "/flights": { name: "FlightSearch", icon: "plane", className: "benefitsystems-flight-btn" },
+      "/hotels": { name: "HotelSearch", icon: "hotel", className: "benefitsystems-hotel-btn" },
+      "/purchase": { name: "BuyHistory", icon: "history", className: "benefitsystems-history-btn" },
+      "/cards": { name: "Cards", icon: "credit-card", className: "benefitsystems-cards-btn" },
+      "/transfers": { name: "Transfer", icon: "refresh-cw", className: "benefitsystems-transfers-btn" },
+      "/transfersbonus": { name: "Bonus", icon: "percent", className: "benefitsystems-bonus-btn" },
+      "/awarddates": { name: "AwardDates", icon: "calendar", className: "benefitsystems-award-btn" },
+      "/charge": { name: "Charge", icon: "battery-charging", className: "benefitsystems-charge-btn" },
+      "/cardtravel": { name: "CardPortal", icon: "luggage", className: "benefitsystems-cardtravel-btn" },
+      "/cardrules": { name: "CardRules", icon: "file-text", className: "benefitsystems-cardrules-btn" },
+      "/currency": { name: "Ecxchange", icon: "currency-dollar", className: "benefitsystems-currency-btn" },
+      "/casm": { name: "CASMCalc", icon: "calculator", className: "benefitsystems-casm-btn" },
+      "/rovemile": { name: "Rovemile", icon: "dollar-sign", className: "benefitsystems-rovemile-btn" },
+      "/hyatt": { name: "HyattCalc", icon: "building", className: "benefitsystems-hyatt-btn" },
+      "/hilton": { name: "HiltonCalc", icon: "hotel", className: "benefitsystems-hilton-btn" },
+      "/hotelprice": { name: "HotelPrice", icon: "tag", className: "benefitsystems-hotelprice-btn" },
+      "/hotelrewards": { name: "HotelRewards", icon: "award", className: "benefitsystems-rewards-btn" },
+      "/lounges": { name: "Lounges", icon: "coffee", className: "benefitsystems-lounges-btn" },
+      "/fasttrack": { name: "FastTrack", icon: "zap", className: "benefitsystems-fasttrack-btn" },
+      "/premium": { name: "PremiumCabin", icon: "armchair", className: "benefitsystems-premium-btn" },
+      "/seatmaps": { name: "SeatMaps", icon: "layout", className: "benefitsystems-seatmaps-btn" },
+      "/pnr": { name: "PNR", icon: "eye", className: "benefitsystems-pnr-btn" },
+      "/buypoints": { name: "BuyPoints", icon: "shopping-cart", className: "benefitsystems-buypoints-btn" },
+      "/pointvalue": { name: "PointMileValue", icon: "trending-up", className: "benefitsystems-pointvalue-btn" },
+      "/transfertimes": { name: "TransferTimes", icon: "clock", className: "benefitsystems-transfertimes-btn" },
+      "/purchasetimes": { name: "BuyTimes", icon: "clock", className: "benefitsystems-purchasetimes-btn" },
+      "/valuecalc": { name: "ValueCalc", icon: "calculator", className: "benefitsystems-valuecalc-btn" },
+      "/statuscards": { name: "Status", icon: "award", className: "benefitsystems-statuscards-btn" },
+      "/merchant": { name: "Merchant", icon: "search", className: "benefitsystems-merchant-btn" },
+      "/search": { name: "Search", icon: "search", className: "benefitsystems-search-btn" },
+      "/amextransfer": { name: "AmexTransfer", icon: "refresh-cw", className: "benefitsystems-amextransfer-btn" },
+      "/awardcancellation": { name: "AwardCancel", icon: "x-circle", className: "benefitsystems-awardcancellation-btn" },
+      "/hotelstatus": { name: "HotelBenefits", icon: "award", className: "benefitsystems-hotelstatus-btn" },
     }
 
     // Create and add buttons to row containers
     let buttonCount = 0
     const maxButtonsPerRow = 9
 
-    for (const [path, details] of Object.entries(tripbaseTools)) {
-      const url = `https://tools.tripbase.us${path}`
+    for (const [path, details] of Object.entries(benefitsystemsTools)) {
+      const url = `@https://tools.benefitsystems.io/${path}`
       const button = createLinkButton(details.name, details.className, url, createIcon(details.icon))
 
       if (buttonCount < maxButtonsPerRow) {
-        tripbaseRowContainer1.appendChild(button)
+        benefitsystemsRowContainer1.appendChild(button)
       } else if (buttonCount < maxButtonsPerRow * 2) {
-        tripbaseRowContainer2.appendChild(button)
+        benefitsystemsRowContainer2.appendChild(button)
       } else if (buttonCount < maxButtonsPerRow * 3) {
-        tripbaseRowContainer3.appendChild(button)
+        benefitsystemsRowContainer3.appendChild(button)
       } else if (buttonCount < maxButtonsPerRow * 4) {
-        tripbaseRowContainer4.appendChild(button)
+        benefitsystemsRowContainer4.appendChild(button)
       }
       buttonCount++
     }
@@ -356,18 +416,18 @@ function injectButtons() {
     hotelSectionContainer.appendChild(hotelRowContainer1)
     hotelSectionContainer.appendChild(hotelRowContainer2)
 
-    const tripbaseSectionContainer = document.createElement("div")
-    tripbaseSectionContainer.className = "tripbase-section-container"
-    tripbaseSectionContainer.appendChild(tripbaseSectionHeader)
-    tripbaseSectionContainer.appendChild(tripbaseRowContainer1)
-    tripbaseSectionContainer.appendChild(tripbaseRowContainer2)
-    tripbaseSectionContainer.appendChild(tripbaseRowContainer3)
-    tripbaseSectionContainer.appendChild(tripbaseRowContainer4)
+    const benefitsystemsSectionContainer = document.createElement("div")
+    benefitsystemsSectionContainer.className = "benefitsystems-section-container"
+    benefitsystemsSectionContainer.appendChild(benefitsystemsSectionHeader)
+    benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer1)
+    benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer2)
+    benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer3)
+    benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer4)
 
     // Add containers to main container
     buttonContainer.appendChild(flightSectionContainer)
     buttonContainer.appendChild(hotelSectionContainer)
-    buttonContainer.appendChild(tripbaseSectionContainer)
+    buttonContainer.appendChild(benefitsystemsSectionContainer)
 
     // Add container to flight element
     element.appendChild(buttonContainer)
@@ -624,75 +684,78 @@ function injectButtons() {
       hotelRowContainer2.appendChild(radissonBtn)
       hotelRowContainer2.appendChild(ghaBtn)
 
-      // Create tripbase row containers
-      const tripbaseRowContainer1 = document.createElement("div")
-      tripbaseRowContainer1.className = "custom-flight-buttons"
+      // Create benefitsystems row containers
+      const benefitsystemsRowContainer1 = document.createElement("div")
+      benefitsystemsRowContainer1.className = "custom-flight-buttons"
 
-      const tripbaseRowContainer2 = document.createElement("div")
-      tripbaseRowContainer2.className = "custom-flight-buttons second-row"
+      const benefitsystemsRowContainer2 = document.createElement("div")
+      benefitsystemsRowContainer2.className = "custom-flight-buttons second-row"
 
-      const tripbaseRowContainer3 = document.createElement("div")
-      tripbaseRowContainer3.className = "custom-flight-buttons second-row"
+      const benefitsystemsRowContainer3 = document.createElement("div")
+      benefitsystemsRowContainer3.className = "custom-flight-buttons second-row"
 
-      const tripbaseRowContainer4 = document.createElement("div")
-      tripbaseRowContainer4.className = "custom-flight-buttons second-row"
+      const benefitsystemsRowContainer4 = document.createElement("div")
+      benefitsystemsRowContainer4.className = "custom-flight-buttons second-row"
 
-      // Create tripbase section header
-      const tripbaseSectionHeader = document.createElement("div")
-      tripbaseSectionHeader.className = "section-header"
-      tripbaseSectionHeader.textContent = "Tripbase Tools"
+      // Create benefitsystems section header
+      const benefitsystemsSectionHeader = document.createElement("div")
+      benefitsystemsSectionHeader.className = "section-header"
+      benefitsystemsSectionHeader.textContent = "Benefitsystems Tools"
 
-      // Create Tripbase buttons
-      const tripbaseTools = {
-        "/calculator": { name: "Calc", icon: "calculator", className: "tripbase-calculator-btn" },
-        "/flights": { name: "FlightSearch", icon: "plane", className: "tripbase-flight-btn" },
-        "/hotels": { name: "HotelSearch", icon: "hotel", className: "tripbase-hotel-btn" },
-        "/purchase": { name: "BuyHistory", icon: "history", className: "tripbase-history-btn" },
-        "/cards": { name: "Cards", icon: "credit-card", className: "tripbase-cards-btn" },
-        "/transfers": { name: "Transfer", icon: "refresh-cw", className: "tripbase-transfers-btn" },
-        "/transfersbonus": { name: "Bonus", icon: "percent", className: "tripbase-bonus-btn" },
-        "/awarddates": { name: "AwardDates", icon: "calendar", className: "tripbase-award-btn" },
-        "/charge": { name: "Charge", icon: "battery-charging", className: "tripbase-charge-btn" },
-        "/cardtravel": { name: "CardPortal", icon: "luggage", className: "tripbase-cardtravel-btn" },
-        "/cardrules": { name: "CardRules", icon: "file-text", className: "tripbase-cardrules-btn" },
-        "/currency": { name: "Ecxchange", icon: "currency-dollar", className: "tripbase-currency-btn" },
-        "/casm": { name: "CASMCalc", icon: "calculator", className: "tripbase-casm-btn" },
-        "/rovemile": { name: "Rovemile", icon: "dollar-sign", className: "tripbase-rovemile-btn" },
-        "/hyatt": { name: "HyattCalc", icon: "building", className: "tripbase-hyatt-btn" },
-        "/hilton": { name: "HiltonCalc", icon: "hotel", className: "tripbase-hilton-btn" },
-        "/hotelprice": { name: "HotelPrice", icon: "tag", className: "tripbase-hotelprice-btn" },
-        "/hotelrewards": { name: "HotelRewards", icon: "award", className: "tripbase-rewards-btn" },
-        "/lounges": { name: "Lounges", icon: "coffee", className: "tripbase-lounges-btn" },
-        "/fasttrack": { name: "FastTrack", icon: "zap", className: "tripbase-fasttrack-btn" },
-        "/premium": { name: "PremiumCabin", icon: "armchair", className: "tripbase-premium-btn" },
-        "/seatmaps": { name: "SeatMaps", icon: "layout", className: "tripbase-seatmaps-btn" },
-        "/pnr": { name: "PNR", icon: "eye", className: "tripbase-pnr-btn" },
-        "/buypoints": { name: "BuyPoints", icon: "shopping-cart", className: "tripbase-buypoints-btn" },
-        "/pointvalue": { name: "PointMileValue", icon: "trending-up", className: "tripbase-pointvalue-btn" },
-        "/transfertimes": { name: "TransferTimes", icon: "clock", className: "tripbase-transfertimes-btn" },
-        "/purchasetimes": { name: "BuyTimes", icon: "clock", className: "tripbase-purchasetimes-btn" },
-        "/valuecalc": { name: "ValueCalc", icon: "calculator", className: "tripbase-valuecalc-btn" },
-        "/statuscards": { name: "Status", icon: "award", className: "tripbase-statuscards-btn" },
-        "/merchant": { name: "Merchant", icon: "search", className: "tripbase-merchant-btn" },
-        "/search": { name: "Search", icon: "search", className: "tripbase-search-btn" },
+      // Create Benefitsystems buttons
+      const benefitsystemsTools = {
+        "/calculator": { name: "Calc", icon: "calculator", className: "benefitsystems-calculator-btn" },
+        "/flights": { name: "Flights", icon: "plane", className: "benefitsystems-flight-btn" },
+        "/hotels": { name: "Hotels", icon: "hotel", className: "benefitsystems-hotel-btn" },
+        "/purchase": { name: "BuyHistory", icon: "history", className: "benefitsystems-history-btn" },
+        "/cards": { name: "Cards", icon: "credit-card", className: "benefitsystems-cards-btn" },
+        "/transfers": { name: "TransferPartner", icon: "refresh-cw", className: "benefitsystems-transfers-btn" },
+        "/transfersbonus": { name: "Bonus", icon: "percent", className: "benefitsystems-bonus-btn" },
+        "/awarddates": { name: "AwardDates", icon: "calendar", className: "benefitsystems-award-btn" },
+        "/charge": { name: "Charge", icon: "battery-charging", className: "benefitsystems-charge-btn" },
+        "/cardtravel": { name: "CardPortal", icon: "luggage", className: "benefitsystems-cardtravel-btn" },
+        "/cardrules": { name: "CardRules", icon: "file-text", className: "benefitsystems-cardrules-btn" },
+        "/currency": { name: "Ecxchange", icon: "currency-dollar", className: "benefitsystems-currency-btn" },
+        "/casm": { name: "CASM", icon: "calculator", className: "benefitsystems-casm-btn" },
+        "/rovemile": { name: "Rovemile", icon: "dollar-sign", className: "benefitsystems-rovemile-btn" },
+        "/hyatt": { name: "Hyatt", icon: "building", className: "benefitsystems-hyatt-btn" },
+        "/hilton": { name: "Hilton", icon: "hotel", className: "benefitsystems-hotel-btn" },
+        "/hotelprice": { name: "HotelPrice", icon: "tag", className: "benefitsystems-hotelprice-btn" },
+        "/hotelrewards": { name: "HotelRewards", icon: "award", className: "benefitsystems-rewards-btn" },
+        "/lounges": { name: "Lounges", icon: "coffee", className: "benefitsystems-lounges-btn" },
+        "/fasttrack": { name: "FastTrack", icon: "zap", className: "benefitsystems-fasttrack-btn" },
+        "/premium": { name: "PremiumCabin", icon: "armchair", className: "benefitsystems-premium-btn" },
+        "/seatmaps": { name: "SeatMaps", icon: "layout", className: "benefitsystems-seatmaps-btn" },
+        "/pnr": { name: "PNR", icon: "eye", className: "benefitsystems-pnr-btn" },
+        "/buypoints": { name: "BuyPoints", icon: "shopping-cart", className: "benefitsystems-buypoints-btn" },
+        "/pointvalue": { name: "PointValue", icon: "trending-up", className: "benefitsystems-pointvalue-btn" },
+        "/transfertimes": { name: "TransferTimes", icon: "clock", className: "benefitsystems-transfertimes-btn" },
+        "/purchasetimes": { name: "BuyTimes", icon: "clock", className: "benefitsystems-purchasetimes-btn" },
+        "/valuecalc": { name: "ValueCalc", icon: "calculator", className: "benefitsystems-valuecalc-btn" },
+        "/statuscards": { name: "Status", icon: "award", className: "benefitsystems-statuscards-btn" },
+        "/merchant": { name: "Merchant", icon: "search", className: "benefitsystems-merchant-btn" },
+        "/search": { name: "Search", icon: "search", className: "benefitsystems-search-btn" },
+        "/amextransfer": { name: "AmexTransfer", icon: "refresh-cw", className: "benefitsystems-amextransfer-btn" },
+        "/awardcancellation": { name: "AwardCancel", icon: "x-circle", className: "benefitsystems-awardcancellation-btn" },
+        "/hotelstatus": { name: "HotelBenefits", icon: "award", className: "benefitsystems-hotelstatus-btn" },
       }
 
       // Create and add buttons to row containers
       let buttonCount = 0
       const maxButtonsPerRow = 9
 
-      for (const [path, details] of Object.entries(tripbaseTools)) {
-        const url = `https://tools.tripbase.us${path}`
+      for (const [path, details] of Object.entries(benefitsystemsTools)) {
+        const url = `@https://tools.benefitsystems.io/${path}`
         const button = createLinkButton(details.name, details.className, url, createIcon(details.icon))
 
         if (buttonCount < maxButtonsPerRow) {
-          tripbaseRowContainer1.appendChild(button)
+          benefitsystemsRowContainer1.appendChild(button)
         } else if (buttonCount < maxButtonsPerRow * 2) {
-          tripbaseRowContainer2.appendChild(button)
+          benefitsystemsRowContainer2.appendChild(button)
         } else if (buttonCount < maxButtonsPerRow * 3) {
-          tripbaseRowContainer3.appendChild(button)
+          benefitsystemsRowContainer3.appendChild(button)
         } else if (buttonCount < maxButtonsPerRow * 4) {
-          tripbaseRowContainer4.appendChild(button)
+          benefitsystemsRowContainer4.appendChild(button)
         }
         buttonCount++
       }
@@ -719,18 +782,18 @@ function injectButtons() {
       hotelSectionContainer.appendChild(hotelRowContainer1)
       hotelSectionContainer.appendChild(hotelRowContainer2)
 
-      const tripbaseSectionContainer = document.createElement("div")
-      tripbaseSectionContainer.className = "tripbase-section-container"
-      tripbaseSectionContainer.appendChild(tripbaseSectionHeader)
-      tripbaseSectionContainer.appendChild(tripbaseRowContainer1)
-      tripbaseSectionContainer.appendChild(tripbaseRowContainer2)
-      tripbaseSectionContainer.appendChild(tripbaseRowContainer3)
-      tripbaseSectionContainer.appendChild(tripbaseRowContainer4)
+      const benefitsystemsSectionContainer = document.createElement("div")
+      benefitsystemsSectionContainer.className = "benefitsystems-section-container"
+      benefitsystemsSectionContainer.appendChild(benefitsystemsSectionHeader)
+      benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer1)
+      benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer2)
+      benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer3)
+      benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer4)
 
       // Add containers to main container
       buttonsContainer.appendChild(flightSectionContainer)
       buttonsContainer.appendChild(hotelSectionContainer)
-      buttonsContainer.appendChild(tripbaseSectionContainer)
+      buttonsContainer.appendChild(benefitsystemsSectionContainer)
 
       // Add the fixed container to the results container
       resultsContainer.prepend(buttonsContainer)
@@ -738,9 +801,9 @@ function injectButtons() {
   }
 }
 
-// Update the addTripbaseButtonStyles function to add a separator line between rows
+// Update the addBenefitsystemsButtonStyles function to add a separator line between rows
 
-function addTripbaseButtonStyles() {
+function addBenefitsystemsButtonStyles() {
   if (document.getElementById("custom-button-styles")) {
     return // Styles already added
   }
@@ -867,7 +930,7 @@ function getIconSVG(iconName) {
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"></line><line x1="6" x2="6" y1="18" y2="11"></line><line x1="10" x2="10" y1="18" y2="11"></line><line x1="14" x2="14" y1="18" y2="11"></line><line x1="18" x2="18" y1="18" y2="11"></line><polygon points="12 2 20 7 4 7"></polygon></svg>',
     globe:
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" x2="22" y1="12" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
-    // Additional icons for Tripbase tools
+    // Additional icons for Benefitsystems tools
     calculator:
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"></rect><line x1="8" x2="16" y1="6" y2="6"></line><line x1="16" x2="16" y1="14" y2="18"></line><path d="m16 10 4 4-4 4"></path><path d="M8 18v-4"></path><path d="M12 18v-4"></path></svg>',
     history:
@@ -901,6 +964,8 @@ function getIconSVG(iconName) {
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>',
     clock:
       '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
+    "x-circle":
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>',
   }
 
   return icons[iconName] || ""
