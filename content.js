@@ -125,11 +125,11 @@ addBenefitsystemsButtonStyles()
     const airCanadaBtn = createLinkButton("AirCanada", "air-canada-btn", urls.airCanada, createIcon("flag"))
     const pointMeBtn = createLinkButton("PointMe", "point-me-btn", urls.pointme, createIcon("compass"))
     const kayakBtn = createLinkButton("Kayak", "kayak-btn", urls.kayak, createIcon("sailboat"))
-    const skyscannerBtn = createLinkButton("Skyscanner", "skyscanner-btn", urls.skyscanner, createIcon("search"))
+    const skyscannerBtn = createLinkButton("Skys", "skyscanner-btn", urls.skyscanner, createIcon("search"))
 
     // Create new flight buttons for second row
     const rovemilesBtn = createLinkButton("Rovemiles", "point-me-btn", urls.rovemiles, createIcon("plane"))
-    const faresViewerBtn = createLinkButton("FaresViewer", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
+    const faresViewerBtn = createLinkButton("Fares", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
     const saSeatmapBtn = createButton(
       "Seatmap",
       "seats-aero-seatmap-btn",
@@ -154,7 +154,7 @@ addBenefitsystemsButtonStyles()
     if (hasRequiredParams) {
       fareClassBtn = createLinkButton("FareClass", "fare-class-btn", urls.fareClass, createIcon("ticket"))
       flightConnectionsBtn = createLinkButton(
-        "FlightConnections",
+        "Connections",
         "flight-connections-btn",
         urls.flightconnections,
         createIcon("network"),
@@ -279,7 +279,7 @@ addBenefitsystemsButtonStyles()
       // Create hotel buttons - second row
     )
     const bestWesternBtn = createButton(
-      "BestWestern",
+      "BestWest",
       "best-western-btn",
       () => {
         promptAndOpenBestWestern(urlParams)
@@ -362,7 +362,7 @@ addBenefitsystemsButtonStyles()
       "/seatmaps": { name: "Seats", icon: "layout", className: "benefitsystems-seatmaps-btn" },
       "/pnr": { name: "PNR", icon: "eye", className: "benefitsystems-pnr-btn" },
       "/buypoints": { name: "Buy", icon: "shopping-cart", className: "benefitsystems-buypoints-btn" },
-      "/pointvalue": { name: "PointMileValue", icon: "trending-up", className: "benefitsystems-pointvalue-btn" },
+      "/pointvalue": { name: "AwardValue", icon: "trending-up", className: "benefitsystems-pointvalue-btn" },
       "/transfertimes": { name: "Times", icon: "clock", className: "benefitsystems-transfertimes-btn" },
       "/purchasetimes": { name: "BuyTimes", icon: "clock", className: "benefitsystems-purchasetimes-btn" },
       "/valuecalc": { name: "Calc", icon: "calculator", className: "benefitsystems-valuecalc-btn" },
@@ -492,11 +492,11 @@ addBenefitsystemsButtonStyles()
       const airCanadaBtn = createLinkButton("AirCanada", "air-canada-btn", urls.airCanada, createIcon("flag"))
       const pointMeBtn = createLinkButton("PointMe", "point-me-btn", urls.pointme, createIcon("compass"))
       const kayakBtn = createLinkButton("Kayak", "kayak-btn", urls.kayak, createIcon("sailboat"))
-      const skyscannerBtn = createLinkButton("Skyscanner", "skyscanner-btn", urls.skyscanner, createIcon("search"))
+      const skyscannerBtn = createLinkButton("Skys", "skyscanner-btn", urls.skyscanner, createIcon("search"))
 
       // Create new flight buttons for second row on results page
       const rovemilesBtn = createLinkButton("Rovemiles", "point-me-btn", urls.rovemiles, createIcon("plane"))
-      const faresViewerBtn = createLinkButton("FaresViewer", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
+      const faresViewerBtn = createLinkButton("Fares", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
       const saSeatmapBtn = createButton(
         "Seatmap",
         "seats-aero-seatmap-btn",
@@ -521,7 +521,7 @@ addBenefitsystemsButtonStyles()
       if (hasRequiredParams) {
         fareClassBtn = createLinkButton("FareClass", "fare-class-btn", urls.fareClass, createIcon("ticket"))
         flightConnectionsBtn = createLinkButton(
-          "FlightConnections",
+          "Connections",
           "flight-connections-btn",
           urls.flightconnections,
           createIcon("network"),
@@ -645,7 +645,7 @@ addBenefitsystemsButtonStyles()
         createIcon("sun"),
       )
       const bestWesternBtn = createButton(
-        "BestWestern",
+        "BestWest",
         "best-western-btn",
         () => {
           promptAndOpenBestWestern(urlParams)
