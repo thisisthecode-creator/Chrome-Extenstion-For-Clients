@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Google Flights Button Injector",
+  "name": "Benefitsystems Tools",
   "version": "1.0",
-  "description": "Injects custom buttons into Google Flights search results",
+  "description": "Access to all Benefitsystems tools and calculators",
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
   },
   "content_scripts": [
     {
