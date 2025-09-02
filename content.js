@@ -54,7 +54,7 @@ function handleAmexTransferClick() {
   }
   
   // Open the AmexTransfer tool
-  window.open('@https://tools.benefitsystems.io/amextransfer', '_blank')
+  window.open('https://tools.benefitsystems.io/amextransfer', '_blank')
 }
 
 // Add Benefitsystems button styles
@@ -379,7 +379,7 @@ addBenefitsystemsButtonStyles()
     const maxButtonsPerRow = 9
 
     for (const [path, details] of Object.entries(benefitsystemsTools)) {
-      const url = `@https://tools.benefitsystems.io/${path}`
+      const url = `https://tools.benefitsystems.io${path}`
       const button = createLinkButton(details.name, details.className, url, createIcon(details.icon))
 
       if (buttonCount < maxButtonsPerRow) {
@@ -745,7 +745,7 @@ addBenefitsystemsButtonStyles()
       const maxButtonsPerRow = 9
 
       for (const [path, details] of Object.entries(benefitsystemsTools)) {
-        const url = `@https://tools.benefitsystems.io/${path}`
+        const url = `https://tools.benefitsystems.io${path}`
         const button = createLinkButton(details.name, details.className, url, createIcon(details.icon))
 
         if (buttonCount < maxButtonsPerRow) {
