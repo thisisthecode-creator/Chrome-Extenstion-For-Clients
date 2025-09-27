@@ -476,6 +476,7 @@ addBenefitsystemsButtonStyles()
     addSectionBtn.className = 'add-section-btn'
     addSectionBtn.textContent = '+ Add New Section'
     addSectionBtn.onclick = addNewSection
+    addSectionBtn.style.display = 'none' // Hidden by default, shown in edit mode
     mainContainer.appendChild(addSectionBtn)
 
     // Add container to flight element
@@ -899,6 +900,7 @@ addBenefitsystemsButtonStyles()
       addSectionBtn.className = 'add-section-btn'
       addSectionBtn.textContent = '+ Add New Section'
       addSectionBtn.onclick = addNewSection
+      addSectionBtn.style.display = 'none' // Hidden by default, shown in edit mode
       mainContainer.appendChild(addSectionBtn)
       
       // Add the fixed container to the results container
@@ -1217,6 +1219,7 @@ function createEditModeToggle() {
   toggle.textContent = '✏️ Edit Layout'
   toggle.onclick = toggleEditMode
   document.body.appendChild(toggle)
+  console.log('Edit mode toggle button created and added to page')
 }
 
 // Section Management Functions
@@ -1314,11 +1317,33 @@ function addNewSection() {
   const title = prompt('Enter section title:', `Custom Section ${++sectionCounter}`)
   if (title && title.trim()) {
     const newSection = createSectionContainer(title.trim())
-    const mainContainer = document.querySelector('.custom-flight-buttons-container')
+    
+    // Try to find the main container - look for the one that contains sections
+    const containers = document.querySelectorAll('.custom-flight-buttons-container')
+    let mainContainer = null
+    
+    for (const container of containers) {
+      if (container.querySelector('.section-container')) {
+        mainContainer = container
+        break
+      }
+    }
+    
+    console.log('Found main container:', mainContainer)
     
     if (mainContainer) {
-      mainContainer.appendChild(newSection)
+      // Insert before the "Add New Section" button
+      const addButton = mainContainer.querySelector('.add-section-btn')
+      if (addButton) {
+        mainContainer.insertBefore(newSection, addButton)
+      } else {
+        mainContainer.appendChild(newSection)
+      }
       saveSectionLayout()
+      console.log('New section added successfully')
+    } else {
+      console.error('Could not find main container to add section')
+      alert('Error: Could not find the main container. Please try refreshing the page.')
     }
   }
 }
@@ -1383,6 +1408,8 @@ function toggleEditMode() {
 function enableSectionManagement() {
   // Add section drag and drop listeners
   const sections = document.querySelectorAll('.section-container')
+  console.log('Enabling section management for', sections.length, 'sections')
+  
   sections.forEach(section => {
     section.addEventListener('dragover', handleSectionDragOver)
     section.addEventListener('drop', handleSectionDrop)
@@ -1392,6 +1419,9 @@ function enableSectionManagement() {
   const addSectionBtn = document.querySelector('.add-section-btn')
   if (addSectionBtn) {
     addSectionBtn.style.display = 'block'
+    console.log('Add section button is now visible')
+  } else {
+    console.error('Add section button not found')
   }
 }
 
