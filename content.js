@@ -480,6 +480,14 @@ addBenefitsystemsButtonStyles()
 
     // Add container to flight element
     element.appendChild(mainContainer)
+    
+    // Ensure drag and drop is enabled after layout is created
+    setTimeout(() => {
+      if (isEditMode) {
+        enableDragAndDrop()
+        enableSectionManagement()
+      }
+    }, 100)
   })
 
   // If no flight elements were found or buttons weren't injected, check if we're on a search results page
@@ -905,6 +913,14 @@ addBenefitsystemsButtonStyles()
       setTimeout(() => {
         loadButtonOrder()
       }, 100)
+      
+      // Ensure drag and drop is enabled after layout is loaded
+      setTimeout(() => {
+        if (isEditMode) {
+          enableDragAndDrop()
+          enableSectionManagement()
+        }
+      }, 200)
     }
   }
 }
@@ -1347,6 +1363,8 @@ function toggleEditMode() {
   isEditMode = !isEditMode
   const toggle = document.querySelector('.edit-mode-toggle')
   
+  console.log('Toggle edit mode:', isEditMode)
+  
   if (isEditMode) {
     document.body.classList.add('edit-mode')
     toggle.textContent = '🔒 Lock Layout'
@@ -1393,7 +1411,11 @@ function disableSectionManagement() {
 }
 
 function enableDragAndDrop() {
+  // Remove existing listeners first to avoid duplicates
+  disableDragAndDrop()
+  
   const buttons = document.querySelectorAll('.custom-flight-buttons a, .custom-flight-buttons button')
+  console.log('Enabling drag and drop for', buttons.length, 'buttons')
   
   buttons.forEach(button => {
     button.draggable = true
@@ -1407,6 +1429,8 @@ function enableDragAndDrop() {
   
   // Add drag and drop for section titles
   const sectionTitles = document.querySelectorAll('.section-title')
+  console.log('Enabling drag and drop for', sectionTitles.length, 'section titles')
+  
   sectionTitles.forEach(title => {
     title.addEventListener('dragover', handleDragOver)
     title.addEventListener('drop', handleDrop)
