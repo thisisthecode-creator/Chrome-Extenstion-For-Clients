@@ -303,8 +303,27 @@ addBenefitsystemsButtonStyles()
       createIcon("globe"),
     )
 
+    const biltBtn = createButton(
+      "Bilt",
+      "bilt-btn",
+      () => {
+        promptAndOpenBilt(urlParams)
+      },
+      createIcon("credit-card"),
+    )
+
+    const roomsBtn = createButton(
+      "Rooms",
+      "rooms-btn",
+      () => {
+        promptAndOpenRooms(urlParams)
+      },
+      createIcon("search"),
+    )
+
     // Add hotel buttons to first row
     hotelRowContainer1.appendChild(googleHotelsBtn)
+    hotelRowContainer1.appendChild(roomsBtn)
     hotelRowContainer1.appendChild(hyattBtn)
     hotelRowContainer1.appendChild(hiltonBtn)
     hotelRowContainer1.appendChild(choiceBtn)
@@ -312,11 +331,12 @@ addBenefitsystemsButtonStyles()
     hotelRowContainer1.appendChild(marriottBtn)
     hotelRowContainer1.appendChild(ihgBtn)
     hotelRowContainer1.appendChild(accorBtn)
-    hotelRowContainer1.appendChild(meliaBtn)
     // Add hotel buttons to second row
+    hotelRowContainer2.appendChild(meliaBtn)
     hotelRowContainer2.appendChild(bestWesternBtn)
     hotelRowContainer2.appendChild(radissonBtn)
     hotelRowContainer2.appendChild(ghaBtn)
+    hotelRowContainer2.appendChild(biltBtn)
 
     // Create benefitsystems row containers
     const benefitsystemsRowContainer1 = document.createElement("div")
@@ -372,6 +392,10 @@ addBenefitsystemsButtonStyles()
       "/amextransfer": { name: "Amex", icon: "refresh-cw", className: "benefitsystems-amextransfer-btn" },
       "/awardcancellation": { name: "Cancel", icon: "x-circle", className: "benefitsystems-awardcancellation-btn" },
       "/hotelstatus": { name: "Benefits", icon: "award", className: "benefitsystems-hotelstatus-btn" },
+      "/rss": { name: "RSS News", icon: "rss", className: "benefitsystems-rss-btn" },
+      "/myflights": { name: "My Flights", icon: "plane", className: "benefitsystems-myflights-btn" },
+      "/myhotels": { name: "My Hotels", icon: "hotel", className: "benefitsystems-myhotels-btn" },
+      "/benefits": { name: "Benefits", icon: "gift", className: "benefitsystems-benefits-btn" },
     }
 
     // Create and add buttons to row containers
@@ -424,13 +448,38 @@ addBenefitsystemsButtonStyles()
     benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer3)
     benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer4)
 
-    // Add containers to main container
-    buttonContainer.appendChild(flightSectionContainer)
-    buttonContainer.appendChild(hotelSectionContainer)
-    buttonContainer.appendChild(benefitsystemsSectionContainer)
+    // Create main container for sections
+    const mainContainer = document.createElement('div')
+    mainContainer.className = 'custom-flight-buttons-container'
+    
+    // Convert existing sections to new format
+    const flightSection = createSectionContainer('Flight Search')
+    const hotelSection = createSectionContainer('Hotel Search')
+    const benefitsystemsSection = createSectionContainer('Benefitsystems Tools')
+    
+    // Move buttons to new sections
+    const flightButtons = flightSectionContainer.querySelectorAll('.custom-flight-buttons > *')
+    const hotelButtons = hotelSectionContainer.querySelectorAll('.custom-flight-buttons > *')
+    const benefitsystemsButtons = benefitsystemsSectionContainer.querySelectorAll('.custom-flight-buttons > *')
+    
+    flightButtons.forEach(btn => flightSection.querySelector('.custom-flight-buttons').appendChild(btn))
+    hotelButtons.forEach(btn => hotelSection.querySelector('.custom-flight-buttons').appendChild(btn))
+    benefitsystemsButtons.forEach(btn => benefitsystemsSection.querySelector('.custom-flight-buttons').appendChild(btn))
+    
+    // Add sections to main container
+    mainContainer.appendChild(flightSection)
+    mainContainer.appendChild(hotelSection)
+    mainContainer.appendChild(benefitsystemsSection)
+    
+    // Add add section button
+    const addSectionBtn = document.createElement('button')
+    addSectionBtn.className = 'add-section-btn'
+    addSectionBtn.textContent = '+ Add New Section'
+    addSectionBtn.onclick = addNewSection
+    mainContainer.appendChild(addSectionBtn)
 
     // Add container to flight element
-    element.appendChild(buttonContainer)
+    element.appendChild(mainContainer)
   })
 
   // If no flight elements were found or buttons weren't injected, check if we're on a search results page
@@ -669,8 +718,27 @@ addBenefitsystemsButtonStyles()
         createIcon("globe"),
       )
 
+      const biltBtn = createButton(
+        "Bilt",
+        "bilt-btn",
+        () => {
+          promptAndOpenBilt(urlParams)
+        },
+        createIcon("credit-card"),
+      )
+
+      const roomsBtn = createButton(
+        "Rooms",
+        "rooms-btn",
+        () => {
+          promptAndOpenRooms(urlParams)
+        },
+        createIcon("search"),
+      )
+
       // Add hotel buttons to first row
       hotelRowContainer1.appendChild(googleHotelsBtn)
+      hotelRowContainer1.appendChild(roomsBtn)
       hotelRowContainer1.appendChild(hyattBtn)
       hotelRowContainer1.appendChild(hiltonBtn)
       hotelRowContainer1.appendChild(choiceBtn)
@@ -678,11 +746,12 @@ addBenefitsystemsButtonStyles()
       hotelRowContainer1.appendChild(marriottBtn)
       hotelRowContainer1.appendChild(ihgBtn)
       hotelRowContainer1.appendChild(accorBtn)
-      hotelRowContainer1.appendChild(meliaBtn)
       // Add hotel buttons to second row
+      hotelRowContainer2.appendChild(meliaBtn)
       hotelRowContainer2.appendChild(bestWesternBtn)
       hotelRowContainer2.appendChild(radissonBtn)
       hotelRowContainer2.appendChild(ghaBtn)
+      hotelRowContainer2.appendChild(biltBtn)
 
       // Create benefitsystems row containers
       const benefitsystemsRowContainer1 = document.createElement("div")
@@ -738,6 +807,10 @@ addBenefitsystemsButtonStyles()
         "/amextransfer": { name: "Amex", icon: "refresh-cw", className: "benefitsystems-amextransfer-btn" },
         "/awardcancellation": { name: "Cancel", icon: "x-circle", className: "benefitsystems-awardcancellation-btn" },
         "/hotelstatus": { name: "Benefits", icon: "award", className: "benefitsystems-hotelstatus-btn" },
+        "/rss": { name: "RSS News", icon: "rss", className: "benefitsystems-rss-btn" },
+        "/myflights": { name: "My Flights", icon: "plane", className: "benefitsystems-myflights-btn" },
+        "/myhotels": { name: "My Hotels", icon: "hotel", className: "benefitsystems-myhotels-btn" },
+        "/benefits": { name: "Benefits", icon: "gift", className: "benefitsystems-benefits-btn" },
       }
 
       // Create and add buttons to row containers
@@ -790,13 +863,48 @@ addBenefitsystemsButtonStyles()
       benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer3)
       benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer4)
 
-      // Add containers to main container
-      buttonsContainer.appendChild(flightSectionContainer)
-      buttonsContainer.appendChild(hotelSectionContainer)
-      buttonsContainer.appendChild(benefitsystemsSectionContainer)
-
+      // Create main container for sections
+      const mainContainer = document.createElement('div')
+      mainContainer.className = 'custom-flight-buttons-container'
+      
+      // Convert existing sections to new format
+      const flightSection = createSectionContainer('Flight Search')
+      const hotelSection = createSectionContainer('Hotel Search')
+      const benefitsystemsSection = createSectionContainer('Benefitsystems Tools')
+      
+      // Move buttons to new sections
+      const flightButtons = flightSectionContainer.querySelectorAll('.custom-flight-buttons > *')
+      const hotelButtons = hotelSectionContainer.querySelectorAll('.custom-flight-buttons > *')
+      const benefitsystemsButtons = benefitsystemsSectionContainer.querySelectorAll('.custom-flight-buttons > *')
+      
+      flightButtons.forEach(btn => flightSection.querySelector('.custom-flight-buttons').appendChild(btn))
+      hotelButtons.forEach(btn => hotelSection.querySelector('.custom-flight-buttons').appendChild(btn))
+      benefitsystemsButtons.forEach(btn => benefitsystemsSection.querySelector('.custom-flight-buttons').appendChild(btn))
+      
+      // Add sections to main container
+      mainContainer.appendChild(flightSection)
+      mainContainer.appendChild(hotelSection)
+      mainContainer.appendChild(benefitsystemsSection)
+      
+      // Add add section button
+      const addSectionBtn = document.createElement('button')
+      addSectionBtn.className = 'add-section-btn'
+      addSectionBtn.textContent = '+ Add New Section'
+      addSectionBtn.onclick = addNewSection
+      mainContainer.appendChild(addSectionBtn)
+      
       // Add the fixed container to the results container
-      resultsContainer.prepend(buttonsContainer)
+      resultsContainer.prepend(mainContainer)
+      
+      // Create edit mode toggle if it doesn't exist
+      if (!document.querySelector('.edit-mode-toggle')) {
+        createEditModeToggle()
+      }
+      
+      // Try to load saved button order
+      setTimeout(() => {
+        loadButtonOrder()
+      }, 100)
     }
   }
 }
@@ -861,9 +969,664 @@ function addBenefitsystemsButtonStyles() {
       padding-top: 6px;
       margin-top: 6px;
     }
+    
+    /* Drag and Drop Styles */
+    .edit-mode .custom-flight-buttons a,
+    .edit-mode .custom-flight-buttons button {
+      cursor: move !important;
+      position: relative;
+    }
+    
+    .edit-mode .custom-flight-buttons a:hover,
+    .edit-mode .custom-flight-buttons button:hover {
+      background: #fff3cd !important;
+      border-color: #ffc107 !important;
+      transform: scale(1.05);
+    }
+    
+    .dragging {
+      opacity: 0.5;
+      transform: rotate(5deg);
+      z-index: 1000;
+    }
+    
+    .drag-over {
+      background: #d4edda !important;
+      border-color: #28a745 !important;
+      border-style: dashed;
+    }
+    
+    .edit-mode-toggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 10000;
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .edit-mode-toggle:hover {
+      background: #0056b3;
+    }
+    
+    .edit-mode-toggle.edit-active {
+      background: #28a745;
+    }
+    
+    .edit-mode-toggle.edit-active:hover {
+      background: #1e7e34;
+    }
+    
+    .save-button {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      margin-left: 5px;
+    }
+    
+    .save-button:hover {
+      background: #1e7e34;
+    }
+    
+    /* Section Management Styles */
+    .section-container {
+      position: relative;
+      margin-bottom: 15px;
+    }
+    
+    .section-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .section-title {
+      font-weight: bold;
+      padding: 8px 12px;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      color: #495057;
+      cursor: pointer;
+      user-select: none;
+    }
+    
+    .edit-mode .section-title {
+      cursor: move;
+      background: #fff3cd;
+      border-color: #ffc107;
+    }
+    
+    .edit-mode .section-title:hover {
+      background: #ffeaa7;
+      transform: scale(1.02);
+    }
+    
+    .section-controls {
+      display: none;
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .edit-mode .section-controls {
+      display: flex;
+      gap: 2px;
+    }
+    
+    .section-btn {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 2px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 10px;
+      line-height: 1;
+    }
+    
+    .section-btn:hover {
+      background: #5a6268;
+    }
+    
+    .section-btn.add {
+      background: #28a745;
+    }
+    
+    .section-btn.add:hover {
+      background: #1e7e34;
+    }
+    
+    .section-btn.edit {
+      background: #007bff;
+    }
+    
+    .section-btn.edit:hover {
+      background: #0056b3;
+    }
+    
+    .section-btn.delete {
+      background: #dc3545;
+    }
+    
+    .section-btn.delete:hover {
+      background: #c82333;
+    }
+    
+    .section-input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 2px solid #007bff;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: bold;
+      background: white;
+    }
+    
+    .section-input:focus {
+      outline: none;
+      border-color: #0056b3;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+    
+    .add-section-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      margin: 10px 0;
+      display: none;
+    }
+    
+    .edit-mode .add-section-btn {
+      display: block;
+    }
+    
+    .add-section-btn:hover {
+      background: #1e7e34;
+    }
+    
+    .section-dragging {
+      opacity: 0.5;
+      transform: rotate(2deg);
+    }
+    
+    .section-drop-zone {
+      border: 2px dashed #28a745;
+      background: rgba(40, 167, 69, 0.1);
+      min-height: 50px;
+      margin: 10px 0;
+      border-radius: 4px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: #28a745;
+      font-weight: bold;
+    }
+    
+    .section-drop-zone.active {
+      display: flex;
+    }
   `
 
   document.head.appendChild(style)
+}
+
+// Drag and Drop functionality
+let isEditMode = false
+let draggedElement = null
+let draggedSection = null
+let sectionCounter = 0
+
+function createEditModeToggle() {
+  const toggle = document.createElement('button')
+  toggle.className = 'edit-mode-toggle'
+  toggle.textContent = '✏️ Edit Layout'
+  toggle.onclick = toggleEditMode
+  document.body.appendChild(toggle)
+}
+
+// Section Management Functions
+function createSectionContainer(title, id = null) {
+  const container = document.createElement('div')
+  container.className = 'section-container'
+  if (id) container.dataset.sectionId = id
+  
+  const header = document.createElement('div')
+  header.className = 'section-header'
+  
+  const titleElement = document.createElement('div')
+  titleElement.className = 'section-title'
+  titleElement.textContent = title
+  titleElement.contentEditable = false
+  
+  const controls = document.createElement('div')
+  controls.className = 'section-controls'
+  
+  const editBtn = document.createElement('button')
+  editBtn.className = 'section-btn edit'
+  editBtn.textContent = '✏️'
+  editBtn.title = 'Edit Section'
+  editBtn.onclick = () => editSectionTitle(titleElement)
+  
+  const deleteBtn = document.createElement('button')
+  deleteBtn.className = 'section-btn delete'
+  deleteBtn.textContent = '🗑️'
+  deleteBtn.title = 'Delete Section'
+  deleteBtn.onclick = () => deleteSection(container)
+  
+  controls.appendChild(editBtn)
+  controls.appendChild(deleteBtn)
+  
+  header.appendChild(titleElement)
+  header.appendChild(controls)
+  
+  const buttonsContainer = document.createElement('div')
+  buttonsContainer.className = 'custom-flight-buttons'
+  
+  container.appendChild(header)
+  container.appendChild(buttonsContainer)
+  
+  // Add drag and drop for sections
+  titleElement.draggable = true
+  titleElement.addEventListener('dragstart', handleSectionDragStart)
+  titleElement.addEventListener('dragend', handleSectionDragEnd)
+  
+  return container
+}
+
+function editSectionTitle(titleElement) {
+  const currentTitle = titleElement.textContent
+  const input = document.createElement('input')
+  input.type = 'text'
+  input.className = 'section-input'
+  input.value = currentTitle
+  
+  input.addEventListener('blur', () => {
+    if (input.value.trim()) {
+      titleElement.textContent = input.value.trim()
+      saveSectionLayout()
+    }
+    titleElement.parentNode.replaceChild(titleElement, input)
+  })
+  
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      input.blur()
+    }
+  })
+  
+  titleElement.parentNode.replaceChild(input, titleElement)
+  input.focus()
+  input.select()
+}
+
+function deleteSection(container) {
+  if (confirm('Are you sure you want to delete this section? All buttons in this section will be moved to the first section.')) {
+    const buttons = container.querySelectorAll('.custom-flight-buttons > *')
+    const firstSection = document.querySelector('.section-container .custom-flight-buttons')
+    
+    if (firstSection) {
+      buttons.forEach(button => {
+        firstSection.appendChild(button)
+      })
+    }
+    
+    container.remove()
+    saveSectionLayout()
+  }
+}
+
+function addNewSection() {
+  const title = prompt('Enter section title:', `Custom Section ${++sectionCounter}`)
+  if (title && title.trim()) {
+    const newSection = createSectionContainer(title.trim())
+    const mainContainer = document.querySelector('.custom-flight-buttons-container')
+    
+    if (mainContainer) {
+      mainContainer.appendChild(newSection)
+      saveSectionLayout()
+    }
+  }
+}
+
+function handleSectionDragStart(e) {
+  if (!isEditMode) return
+  draggedSection = e.target.closest('.section-container')
+  e.target.classList.add('section-dragging')
+  e.dataTransfer.effectAllowed = 'move'
+  e.dataTransfer.setData('text/html', draggedSection.outerHTML)
+}
+
+function handleSectionDragEnd(e) {
+  if (!isEditMode) return
+  e.target.classList.remove('section-dragging')
+  draggedSection = null
+}
+
+function handleSectionDragOver(e) {
+  if (!isEditMode) return
+  e.preventDefault()
+  e.dataTransfer.dropEffect = 'move'
+}
+
+function handleSectionDrop(e) {
+  if (!isEditMode) return
+  e.preventDefault()
+  
+  if (draggedSection && e.target !== draggedSection) {
+    const targetSection = e.target.closest('.section-container')
+    if (targetSection && targetSection !== draggedSection) {
+      const mainContainer = document.querySelector('.custom-flight-buttons-container')
+      if (mainContainer) {
+        mainContainer.insertBefore(draggedSection, targetSection)
+        saveSectionLayout()
+      }
+    }
+  }
+}
+
+function toggleEditMode() {
+  isEditMode = !isEditMode
+  const toggle = document.querySelector('.edit-mode-toggle')
+  
+  if (isEditMode) {
+    document.body.classList.add('edit-mode')
+    toggle.textContent = '🔒 Lock Layout'
+    toggle.classList.add('edit-active')
+    enableDragAndDrop()
+    enableSectionManagement()
+  } else {
+    document.body.classList.remove('edit-mode')
+    toggle.textContent = '✏️ Edit Layout'
+    toggle.classList.remove('edit-active')
+    disableDragAndDrop()
+    disableSectionManagement()
+  }
+}
+
+function enableSectionManagement() {
+  // Add section drag and drop listeners
+  const sections = document.querySelectorAll('.section-container')
+  sections.forEach(section => {
+    section.addEventListener('dragover', handleSectionDragOver)
+    section.addEventListener('drop', handleSectionDrop)
+  })
+  
+  // Show add section button
+  const addSectionBtn = document.querySelector('.add-section-btn')
+  if (addSectionBtn) {
+    addSectionBtn.style.display = 'block'
+  }
+}
+
+function disableSectionManagement() {
+  // Remove section drag and drop listeners
+  const sections = document.querySelectorAll('.section-container')
+  sections.forEach(section => {
+    section.removeEventListener('dragover', handleSectionDragOver)
+    section.removeEventListener('drop', handleSectionDrop)
+  })
+  
+  // Hide add section button
+  const addSectionBtn = document.querySelector('.add-section-btn')
+  if (addSectionBtn) {
+    addSectionBtn.style.display = 'none'
+  }
+}
+
+function enableDragAndDrop() {
+  const buttons = document.querySelectorAll('.custom-flight-buttons a, .custom-flight-buttons button')
+  
+  buttons.forEach(button => {
+    button.draggable = true
+    button.addEventListener('dragstart', handleDragStart)
+    button.addEventListener('dragend', handleDragEnd)
+    button.addEventListener('dragover', handleDragOver)
+    button.addEventListener('drop', handleDrop)
+    button.addEventListener('dragenter', handleDragEnter)
+    button.addEventListener('dragleave', handleDragLeave)
+  })
+  
+  // Add drag and drop for section titles
+  const sectionTitles = document.querySelectorAll('.section-title')
+  sectionTitles.forEach(title => {
+    title.addEventListener('dragover', handleDragOver)
+    title.addEventListener('drop', handleDrop)
+    title.addEventListener('dragenter', handleDragEnter)
+    title.addEventListener('dragleave', handleDragLeave)
+  })
+}
+
+function disableDragAndDrop() {
+  const buttons = document.querySelectorAll('.custom-flight-buttons a, .custom-flight-buttons button')
+  
+  buttons.forEach(button => {
+    button.draggable = false
+    button.removeEventListener('dragstart', handleDragStart)
+    button.removeEventListener('dragend', handleDragEnd)
+    button.removeEventListener('dragover', handleDragOver)
+    button.removeEventListener('drop', handleDrop)
+    button.removeEventListener('dragenter', handleDragEnter)
+    button.removeEventListener('dragleave', handleDragLeave)
+    button.classList.remove('drag-over')
+  })
+  
+  // Remove drag and drop for section titles
+  const sectionTitles = document.querySelectorAll('.section-title')
+  sectionTitles.forEach(title => {
+    title.removeEventListener('dragover', handleDragOver)
+    title.removeEventListener('drop', handleDrop)
+    title.removeEventListener('dragenter', handleDragEnter)
+    title.removeEventListener('dragleave', handleDragLeave)
+    title.classList.remove('drag-over')
+  })
+}
+
+function handleDragStart(e) {
+  if (!isEditMode) return
+  draggedElement = e.target
+  e.target.classList.add('dragging')
+  e.dataTransfer.effectAllowed = 'move'
+  e.dataTransfer.setData('text/html', e.target.outerHTML)
+}
+
+function handleDragEnd(e) {
+  if (!isEditMode) return
+  e.target.classList.remove('dragging')
+  draggedElement = null
+}
+
+function handleDragOver(e) {
+  if (!isEditMode) return
+  e.preventDefault()
+  e.dataTransfer.dropEffect = 'move'
+}
+
+function handleDragEnter(e) {
+  if (!isEditMode) return
+  e.preventDefault()
+  e.target.classList.add('drag-over')
+}
+
+function handleDragLeave(e) {
+  if (!isEditMode) return
+  e.target.classList.remove('drag-over')
+}
+
+function handleDrop(e) {
+  if (!isEditMode) return
+  e.preventDefault()
+  e.target.classList.remove('drag-over')
+  
+  if (draggedElement && e.target !== draggedElement) {
+    // Check if we're dropping on a section title (move to that section)
+    if (e.target.classList.contains('section-title')) {
+      const targetSection = e.target.closest('.section-container')
+      const targetContainer = targetSection.querySelector('.custom-flight-buttons')
+      if (targetContainer) {
+        targetContainer.appendChild(draggedElement)
+        saveButtonOrder()
+        return
+      }
+    }
+    
+    // Check if we're dropping on a button
+    const container = e.target.closest('.custom-flight-buttons')
+    if (container) {
+      // Insert the dragged element before the target element
+      container.insertBefore(draggedElement, e.target)
+      
+      // Save the new order
+      saveButtonOrder()
+    }
+  }
+}
+
+function saveButtonOrder() {
+  saveSectionLayout()
+}
+
+function saveSectionLayout() {
+  const sections = document.querySelectorAll('.section-container')
+  const layout = {
+    sections: [],
+    buttonOrder: {}
+  }
+  
+  sections.forEach((section, sectionIndex) => {
+    const title = section.querySelector('.section-title').textContent
+    const container = section.querySelector('.custom-flight-buttons')
+    
+    const buttons = Array.from(container.children).map(button => {
+      // Create a unique identifier for each button type
+      let buttonId = button.textContent.trim()
+      
+      // Add specific identifiers for different button types
+      if (button.href) {
+        if (button.href.includes('google.com/travel')) buttonId = 'google-flights'
+        else if (button.href.includes('pointme.com')) buttonId = 'pointme'
+        else if (button.href.includes('kayak.com')) buttonId = 'kayak'
+        else if (button.href.includes('skyscanner.com')) buttonId = 'skyscanner'
+        else if (button.href.includes('benefitsystems.io')) buttonId = 'benefitsystems-' + button.href.split('/').pop()
+        else if (button.href.includes('hyatt.com')) buttonId = 'hyatt'
+        else if (button.href.includes('hilton.com')) buttonId = 'hilton'
+        else if (button.href.includes('marriott.com')) buttonId = 'marriott'
+        else if (button.href.includes('ihg.com')) buttonId = 'ihg'
+        else if (button.href.includes('accor.com')) buttonId = 'accor'
+        else if (button.href.includes('wyndhamhotels.com')) buttonId = 'wyndham'
+        else if (button.href.includes('choicehotels.com')) buttonId = 'choice'
+        else if (button.href.includes('melia.com')) buttonId = 'melia'
+        else if (button.href.includes('bestwestern.com')) buttonId = 'bestwestern'
+        else if (button.href.includes('radisson.com')) buttonId = 'radisson'
+        else if (button.href.includes('ghadiscovery.com')) buttonId = 'gha'
+        else if (button.href.includes('biltrewards.com')) buttonId = 'bilt'
+        else if (button.href.includes('rooms.aero')) buttonId = 'rooms'
+      }
+      
+      return {
+        id: buttonId,
+        text: button.textContent.trim(),
+        className: button.className,
+        href: button.href || '',
+        isButton: button.tagName === 'BUTTON'
+      }
+    })
+    
+    layout.sections.push({
+      title: title,
+      id: section.dataset.sectionId || `section_${sectionIndex}`,
+      buttons: buttons
+    })
+  })
+  
+  localStorage.setItem('googleFlightsExtension_layout', JSON.stringify(layout))
+  console.log('Section layout saved:', layout)
+}
+
+function loadButtonOrder() {
+  return loadSectionLayout()
+}
+
+function loadSectionLayout() {
+  const savedLayout = localStorage.getItem('googleFlightsExtension_layout')
+  if (!savedLayout) return false
+  
+  try {
+    const layout = JSON.parse(savedLayout)
+    const mainContainer = document.querySelector('.custom-flight-buttons-container')
+    
+    if (!mainContainer || !layout.sections) return false
+    
+    // Clear existing sections
+    mainContainer.innerHTML = ''
+    
+    // Recreate sections in saved order
+    layout.sections.forEach(sectionData => {
+      const section = createSectionContainer(sectionData.title, sectionData.id)
+      const buttonsContainer = section.querySelector('.custom-flight-buttons')
+      
+      // Create a map of all existing buttons by their ID
+      const allButtons = new Map()
+      document.querySelectorAll('.custom-flight-buttons a, .custom-flight-buttons button').forEach(button => {
+        let buttonId = button.textContent.trim()
+        if (button.href) {
+          if (button.href.includes('google.com/travel')) buttonId = 'google-flights'
+          else if (button.href.includes('pointme.com')) buttonId = 'pointme'
+          else if (button.href.includes('kayak.com')) buttonId = 'kayak'
+          else if (button.href.includes('skyscanner.com')) buttonId = 'skyscanner'
+          else if (button.href.includes('benefitsystems.io')) buttonId = 'benefitsystems-' + button.href.split('/').pop()
+          else if (button.href.includes('hyatt.com')) buttonId = 'hyatt'
+          else if (button.href.includes('hilton.com')) buttonId = 'hilton'
+          else if (button.href.includes('marriott.com')) buttonId = 'marriott'
+          else if (button.href.includes('ihg.com')) buttonId = 'ihg'
+          else if (button.href.includes('accor.com')) buttonId = 'accor'
+          else if (button.href.includes('wyndhamhotels.com')) buttonId = 'wyndham'
+          else if (button.href.includes('choicehotels.com')) buttonId = 'choice'
+          else if (button.href.includes('melia.com')) buttonId = 'melia'
+          else if (button.href.includes('bestwestern.com')) buttonId = 'bestwestern'
+          else if (button.href.includes('radisson.com')) buttonId = 'radisson'
+          else if (button.href.includes('ghadiscovery.com')) buttonId = 'gha'
+          else if (button.href.includes('biltrewards.com')) buttonId = 'bilt'
+          else if (button.href.includes('rooms.aero')) buttonId = 'rooms'
+        }
+        allButtons.set(buttonId, button)
+      })
+      
+      // Add buttons to this section in saved order
+      sectionData.buttons.forEach(buttonData => {
+        const existingButton = allButtons.get(buttonData.id)
+        if (existingButton) {
+          buttonsContainer.appendChild(existingButton)
+        }
+      })
+      
+      mainContainer.appendChild(section)
+    })
+    
+    console.log('Section layout loaded successfully')
+    return true
+  } catch (error) {
+    console.error('Error loading section layout:', error)
+    return false
+  }
 }
 
 // Add these helper functions for the AwardTool All +14 button
@@ -1225,7 +1988,7 @@ function promptAndOpenAccor(defaultParams) {
   }
 
   // Generate and open the URL
-  const url = `https://all.accor.com/booking/en/accor/hotels/${encodeURIComponent(city)}-${encodeURIComponent(city)}?compositions=2&stayplus=false&snu=false&hideWDR=false&productCode=null&accessibleRooms=false&hideHotelDetails=false&dateIn=${arrivalDate}&dateOut=${departureDate}`
+  const url = `https://all.accor.com/booking/en/accor/hotels/${encodeURIComponent(city)}?compositions=2&stayplus=true&snu=false&hideWDR=false&productCode=null&accessibleRooms=false&hideHotelDetails=true&sortBy=PRICE_LOW_TO_HIGH&filters=eyJhdmFpbGFiaWxpdHkiOlsiQVZBSUxBQkxFIl0sImxveWFsdHkiOlsiTUVNQkVSX1JBVEUiLCJQQVJUSUNJUEFUSU5HX0hPVEVMIl19`
   window.open(url, "_blank")
 }
 
@@ -1269,7 +2032,7 @@ function promptAndOpenWyndham(defaultParams) {
   const formattedDepartureDate = formatDateForWyndham(departureDate)
 
   // Generate and open the URL
-  const url = `https://www.wyndhamhotels.com/en-us/hotels/search-results?brand_id=&checkInDate=${formattedArrivalDate}&checkOutDate=${formattedDepartureDate}&city=${encodeURIComponent(city)}&country=&radius=25&adults=2&children=0&rooms=1`
+  const url = `https://www.wyndhamhotels.com/de-de/hotels/${encodeURIComponent(city)}?brand_id=ALL&checkInDate=${arrivalDate}&checkOutDate=${departureDate}&useWRPoints=true&children=0&adults=2&rooms=1`
   window.open(url, "_blank")
 }
 
@@ -1313,7 +2076,7 @@ function promptAndOpenChoice(defaultParams) {
   const formattedDepartureDate = formatDateForChoice(departureDate)
 
   // Generate and open the URL
-  const url = `https://www.choicehotels.com/en-us/search-results?city=${encodeURIComponent(city)}&checkInDate=${formattedArrivalDate}&checkOutDate=${formattedDepartureDate}&adults=2&children=0&rooms=1`
+  const url = `https://www.choicehotels.com/de-de/${encodeURIComponent(city)}/hotels?checkInDate=${arrivalDate}&checkOutDate=${departureDate}`
   window.open(url, "_blank")
 }
 
@@ -1461,8 +2224,14 @@ function promptAndOpenIHG(defaultParams) {
     departureDate = nextDay.toISOString().split("T")[0]
   }
 
+  // Format dates for IHG (custom format)
+  const checkInDay = arrivalDate.split("-")[2]
+  const checkOutDay = departureDate.split("-")[2]
+  const checkInMonthYear = arrivalDate.split("-")[1] + arrivalDate.split("-")[0]
+  const checkOutMonthYear = departureDate.split("-")[1] + departureDate.split("-")[0]
+
   // Generate and open the URL
-  const url = `https://www.ihg.com/hotels/us/en/find-hotels/hotel/list?qDest=${encodeURIComponent(city)}&qCiD=${arrivalDate.split("-")[2]}&qCiMy=${arrivalDate.split("-")[1]}${arrivalDate.split("-")[0]}&qCoD=${departureDate.split("-")[2]}&qCoMy=${departureDate.split("-")[1]}${departureDate.split("-")[0]}&qAdlt=2&qChld=0&qRms=1`
+  const url = `https://www.ihg.com/hotels/us/en/find-hotels/hotel-search?qDest=${encodeURIComponent(city)}&qPt=POINTS&qCiD=${checkInDay}&qCoD=${checkOutDay}&qCiMy=${checkInMonthYear}&qCoMy=${checkOutMonthYear}&qAdlt=2&qChld=0&qRms=1&qRtP=IVANI&qAkamaiCC=PL&srb_u=1&qExpndSrch=false&qSrt=sRT&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.sp.re.vx.nd.sx.we.lx.rn.sn.sn.sn.sn.sn.nu.ge&qWch=0&qSmP=0&qRad=30&qRdU=mi&setPMCookies=true&qpMbw=0&qErm=false&qpMn=1&qLoSe=false`
   window.open(url, "_blank")
 }
 
@@ -1496,17 +2265,22 @@ function promptAndOpenMarriott(defaultParams) {
     departureDate = nextDay.toISOString().split("T")[0]
   }
 
+  // Calculate nights
+  const arrivalDateObj = new Date(arrivalDate)
+  const departureDateObj = new Date(departureDate)
+  const calculatedNights = Math.ceil((departureDateObj - arrivalDateObj) / (1000 * 60 * 60 * 24))
+
   // Format dates for Marriott (MM/DD/YYYY)
   const formatDateForMarriott = (dateStr) => {
     const date = new Date(dateStr)
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
   }
 
-  const formattedArrivalDate = formatDateForMarriott(arrivalDate)
-  const formattedDepartureDate = formatDateForMarriott(departureDate)
+  const checkInFormatted = formatDateForMarriott(arrivalDate)
+  const checkOutFormatted = formatDateForMarriott(departureDate)
 
   // Generate and open the URL
-  const url = `https://www.marriott.com/search/default.mi?destination=${encodeURIComponent(city)}&checkin=${formattedArrivalDate}&checkout=${formattedDepartureDate}&rooms=1&adults=2&children=0`
+  const url = `https://www.marriott.com/de/search/findHotels.mi?fromToDate_submit=${departureDate}&fromDate=${checkInFormatted}&toDate=${checkOutFormatted}&toDateDefaultFormat=${departureDate}&fromDateDefaultFormat=${arrivalDate}&flexibleDateSearch=false&t-start=${arrivalDate}&t-end=${departureDate}&lengthOfStay=${calculatedNights}&childrenCountBox=0+Children+Per+Room&childrenCount=0&clusterCode=none&isAdvanceSearch=true&recordsPerPage=100&isInternalSearch=true&vsInitialRequest=false&searchType=InCity&singleSearchAutoSuggest=Unmatched&collapseAccordian=is-true&singleSearch=true&isTransient=true&initialRequest=true&flexibleDateSearchRateDisplay=true&isSearch=true&isRateCalendar=true&destinationAddress.destination=${encodeURIComponent(city)}&isHideFlexibleDateCalendar=true&roomCountBox=1+Room&roomCount=1&guestCountBox=2+Adult+Per+Room&numAdultsPerRoom=2&deviceType=desktop-web&view=list&fromToDate=${checkInFormatted}&isFlexibleDatesOptionSelected=false&numberOfRooms=1&useRewardsPoints=true`
   window.open(url, "_blank")
 }
 
@@ -1518,6 +2292,83 @@ function promptAndOpenGoogleHotels() {
 
   // Generate and open the URL
   const url = `https://www.google.com/travel/search?q=${encodeURIComponent(city)}`
+  window.open(url, "_blank")
+}
+
+// New promptAndOpenBilt function for Bilt Rewards hotel search
+function promptAndOpenBilt(defaultParams) {
+  // Prompt for city name with example
+  const city = prompt("Enter city name for hotel search (e.g., New York):", "")
+  if (!city) return // User cancelled
+
+  // Get dates from flight parameters
+  const arrivalDate = defaultParams.date || new Date().toISOString().split("T")[0]
+  let departureDate = ""
+
+  // If we have a roundtrip, use the return date as departure date
+  if (defaultParams.tripType && defaultParams.tripType.toLowerCase() === "roundtrip") {
+    // Try to extract return date from URL
+    const urlObj = new URL(window.location.href)
+    const searchParams = urlObj.searchParams
+    const query = searchParams.get("q") || ""
+
+    // Look for date range pattern in query
+    const dateRangeMatch = query.match(/(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/)
+    if (dateRangeMatch && dateRangeMatch[2]) {
+      departureDate = dateRangeMatch[2]
+    }
+  }
+
+  // If no departure date was found, set it to the day after arrival
+  if (!departureDate) {
+    const nextDay = new Date(arrivalDate)
+    nextDay.setDate(nextDay.getDate() + 1)
+    departureDate = nextDay.toISOString().split("T")[0]
+  }
+
+  // Generate and open the URL
+  const url = `https://www.biltrewards.com/rewards/travel/hotel-search?checkInDate=${arrivalDate}&checkOutDate=${departureDate}&numGuestAdults=2&childrenAges=&numRooms=1`
+  window.open(url, "_blank")
+}
+
+// New promptAndOpenRooms function for Rooms.aero hotel search
+function promptAndOpenRooms(defaultParams) {
+  // Prompt for city name with example
+  const city = prompt("Enter city name for hotel search (e.g., New York):", "")
+  if (!city) return // User cancelled
+
+  // Get dates from flight parameters
+  const arrivalDate = defaultParams.date || new Date().toISOString().split("T")[0]
+  let departureDate = ""
+
+  // If we have a roundtrip, use the return date as departure date
+  if (defaultParams.tripType && defaultParams.tripType.toLowerCase() === "roundtrip") {
+    // Try to extract return date from URL
+    const urlObj = new URL(window.location.href)
+    const searchParams = urlObj.searchParams
+    const query = searchParams.get("q") || ""
+
+    // Look for date range pattern in query
+    const dateRangeMatch = query.match(/(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/)
+    if (dateRangeMatch && dateRangeMatch[2]) {
+      departureDate = dateRangeMatch[2]
+    }
+  }
+
+  // If no departure date was found, set it to the day after arrival
+  if (!departureDate) {
+    const nextDay = new Date(arrivalDate)
+    nextDay.setDate(nextDay.getDate() + 1)
+    departureDate = nextDay.toISOString().split("T")[0]
+  }
+
+  // Calculate nights
+  const arrivalDateObj = new Date(arrivalDate)
+  const departureDateObj = new Date(departureDate)
+  const calculatedNights = Math.ceil((departureDateObj - arrivalDateObj) / (1000 * 60 * 60 * 24))
+
+  // Generate and open the URL
+  const url = `https://rooms.aero/search?city=${encodeURIComponent(city)}&start=${arrivalDate}&end=${departureDate}&nights=${calculatedNights}`
   window.open(url, "_blank")
 }
 
