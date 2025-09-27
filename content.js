@@ -1,3 +1,6 @@
+// Google Flight Extension V2 - Enhanced with drag and drop functionality
+console.log('Google Flight Extension V2 script loaded')
+
 // Function to inject buttons into flight elements
 function injectButtons() {
   // Cache management for login data
@@ -1218,6 +1221,21 @@ function createEditModeToggle() {
   toggle.className = 'edit-mode-toggle'
   toggle.textContent = '✏️ Edit Layout'
   toggle.onclick = toggleEditMode
+  toggle.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+  `
   document.body.appendChild(toggle)
   console.log('Edit mode toggle button created and added to page')
 }
