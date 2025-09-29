@@ -786,10 +786,10 @@ function addBenefitsystemsButtonStyles() {
     /* Container layout: 7 columns, 2 rows fixed */
     .custom-flight-buttons {
       display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      grid-auto-rows: 40px;
-      gap: 8px;
-      padding-bottom: 8px;
+      grid-template-columns: repeat(7, minmax(140px, 1fr));
+      grid-auto-rows: 48px;
+      gap: 10px;
+      padding-bottom: 10px;
       border-bottom: 1px solid #e2e8f0;
     }
 
@@ -798,23 +798,24 @@ function addBenefitsystemsButtonStyles() {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 8px 10px;
+      padding: 10px 14px;
       border: 1px solid #e5e7eb;
       border-radius: 8px;
       background: #ffffff;
       color: #111827;
       text-decoration: none;
-      font-size: 12px;
-      line-height: 1;
+      font-size: 14px;
+      line-height: 1.1;
       cursor: pointer;
       transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, border-color 120ms ease;
       box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      white-space: nowrap;
     }
 
     .custom-flight-buttons a:hover, .custom-flight-buttons button:hover {
       background: #f9fafb;
       border-color: #d1d5db;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
       transform: translateY(-1px);
     }
 
