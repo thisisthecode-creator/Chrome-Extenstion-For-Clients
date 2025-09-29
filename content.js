@@ -797,6 +797,8 @@ function addBenefitsystemsButtonStyles() {
       grid-template-columns: repeat(7, minmax(0, 1fr));
       grid-auto-rows: 40px;
       gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
     }
 
     /* Modern button styling */
@@ -835,16 +837,14 @@ function addBenefitsystemsButtonStyles() {
       align-items: center;
     }
 
-    /* Section header styling */
+    /* Section header styling - no background, just separator line below */
     .section-header {
       font-weight: 700;
-      padding: 10px 12px;
+      padding: 6px 0;
       margin-top: 12px;
       margin-bottom: 8px;
-      border-radius: 10px;
-      background: linear-gradient(180deg, #f8fafc, #f1f5f9);
       color: #0f172a;
-      border: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
     }
 
     /* Remove old second-row separator; grid handles spacing */
