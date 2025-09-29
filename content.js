@@ -978,6 +978,21 @@ function addBenefitsystemsButtonStyles() {
   }
   .edit-mode .add-section-btn { display: inline-flex; }
 
+  /* Centered modal for inputs */
+  .gf-modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 99999;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gf-modal {
+    background: var(--card-bg); color: var(--text); border: 1px solid var(--border);
+    border-radius: 12px; box-shadow: var(--shadow); padding: 16px; min-width: 320px; max-width: 90vw;
+  }
+  .gf-modal h3 { margin: 0 0 10px 0; font-size: 14px; color: var(--muted); }
+  .gf-modal .gf-input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 14px; }
+  .gf-modal .gf-actions { margin-top: 12px; display: flex; gap: 8px; justify-content: flex-end; }
+  .gf-modal .gf-btn { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer; }
+  .gf-modal .gf-btn.primary { background: var(--ring); color: #fff; border-color: var(--ring); }
+
   `
 
   document.head.appendChild(style)
@@ -991,9 +1006,10 @@ function enhanceButtonsUI(root = document) {
       const label = (el.textContent || '').trim()
       if (label) el.setAttribute('aria-label', label)
     }
-    el.style.whiteSpace = 'nowrap'
-    el.style.textOverflow = 'ellipsis'
-    el.style.overflow = 'hidden'
+    // Show full text within the cell; allow wrapping if needed
+    el.style.whiteSpace = 'normal'
+    el.style.textOverflow = 'clip'
+    el.style.overflow = 'visible'
   })
 }
 
@@ -1062,26 +1078,47 @@ function createSectionContainer(title, id = null) {
 
 function editSectionTitle(titleElement) {
   const currentTitle = titleElement.textContent
+  const overlay = document.createElement('div')
+  overlay.className = 'gf-modal-overlay'
+  const modal = document.createElement('div')
+  modal.className = 'gf-modal'
+  const heading = document.createElement('h3')
+  heading.textContent = 'Edit Section Title'
   const input = document.createElement('input')
   input.type = 'text'
-  input.className = 'section-input'
+  input.className = 'gf-input'
   input.value = currentTitle
-  
-  input.addEventListener('blur', () => {
-    if (input.value.trim()) {
-      titleElement.textContent = input.value.trim()
+  const actions = document.createElement('div')
+  actions.className = 'gf-actions'
+  const cancelBtn = document.createElement('button')
+  cancelBtn.className = 'gf-btn'
+  cancelBtn.textContent = 'Cancel'
+  const saveBtn = document.createElement('button')
+  saveBtn.className = 'gf-btn primary'
+  saveBtn.textContent = 'Save'
+
+  actions.appendChild(cancelBtn)
+  actions.appendChild(saveBtn)
+  modal.appendChild(heading)
+  modal.appendChild(input)
+  modal.appendChild(actions)
+  overlay.appendChild(modal)
+  document.body.appendChild(overlay)
+
+  const close = () => overlay.remove()
+  cancelBtn.onclick = close
+  overlay.onclick = (e) => { if (e.target === overlay) close() }
+
+  const commit = () => {
+    const newTitle = input.value.trim()
+    if (newTitle) {
+      titleElement.textContent = newTitle
       saveSectionLayout()
     }
-    titleElement.parentNode.replaceChild(titleElement, input)
-  })
-  
-  input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      input.blur()
-    }
-  })
-  
-  titleElement.parentNode.replaceChild(input, titleElement)
+    close()
+  }
+  saveBtn.onclick = commit
+  input.addEventListener('keypress', (e) => { if (e.key === 'Enter') commit() })
   input.focus()
   input.select()
 }
