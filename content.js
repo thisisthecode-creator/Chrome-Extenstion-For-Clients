@@ -180,13 +180,14 @@ addBenefitsystemsButtonStyles()
     flightRowContainer1.appendChild(pointsYeahSeatmapBtn)
     flightRowContainer1.appendChild(awardToolBtn)
     flightRowContainer1.appendChild(seatsAeroBtn)
-    flightRowContainer1.appendChild(airCanadaBtn)
     flightRowContainer1.appendChild(pointMeBtn)
-    flightRowContainer1.appendChild(kayakBtn)
-    flightRowContainer1.appendChild(skyscannerBtn)
+    flightRowContainer2.appendChild(rovemilesBtn)
+  
 
     // Add new flight buttons to second row
-    flightRowContainer2.appendChild(rovemilesBtn)
+    flightRowContainer1.appendChild(airCanadaBtn)
+    flightRowContainer1.appendChild(kayakBtn)
+    flightRowContainer1.appendChild(skyscannerBtn)
     flightRowContainer2.appendChild(faresViewerBtn)
     flightRowContainer2.appendChild(saSeatmapBtn)
     flightRowContainer2.appendChild(awardToolAllBtn)
@@ -325,9 +326,9 @@ addBenefitsystemsButtonStyles()
     hotelRowContainer1.appendChild(googleHotelsBtn)
     hotelRowContainer1.appendChild(roomsBtn)
     hotelRowContainer1.appendChild(hyattBtn)
-    hotelRowContainer1.appendChild(hiltonBtn)
     hotelRowContainer1.appendChild(choiceBtn)
     hotelRowContainer1.appendChild(wyndhamBtn)
+    hotelRowContainer1.appendChild(hiltonBtn)
     hotelRowContainer1.appendChild(marriottBtn)
     hotelRowContainer1.appendChild(ihgBtn)
     hotelRowContainer1.appendChild(accorBtn)
@@ -338,85 +339,23 @@ addBenefitsystemsButtonStyles()
     hotelRowContainer2.appendChild(ghaBtn)
     hotelRowContainer2.appendChild(biltBtn)
 
-    // Create benefitsystems row containers
+    // Create benefitsystems row container
     const benefitsystemsRowContainer1 = document.createElement("div")
     benefitsystemsRowContainer1.className = "custom-flight-buttons"
-
-    const benefitsystemsRowContainer2 = document.createElement("div")
-    benefitsystemsRowContainer2.className = "custom-flight-buttons second-row"
-
-    const benefitsystemsRowContainer3 = document.createElement("div")
-    benefitsystemsRowContainer3.className = "custom-flight-buttons second-row"
-
-    const benefitsystemsRowContainer4 = document.createElement("div")
-    benefitsystemsRowContainer4.className = "custom-flight-buttons second-row"
 
     // Create benefitsystems section header
     const benefitsystemsSectionHeader = document.createElement("div")
     benefitsystemsSectionHeader.className = "section-header"
     benefitsystemsSectionHeader.textContent = "Benefitsystems Tools"
 
-    // Create Benefitsystems buttons
-    const benefitsystemsTools = {
-      "/calculator": { name: "Calc", icon: "calculator", className: "benefitsystems-calculator-btn" },
-      "/flights": { name: "Flights", icon: "plane", className: "benefitsystems-flight-btn" },
-      "/hotels": { name: "Hotels", icon: "hotel", className: "benefitsystems-hotel-btn" },
-      "/purchase": { name: "History", icon: "history", className: "benefitsystems-history-btn" },
-      "/cards": { name: "Cards", icon: "credit-card", className: "benefitsystems-cards-btn" },
-      "/transfers": { name: "Transfer", icon: "refresh-cw", className: "benefitsystems-transfers-btn" },
-      "/transfersbonus": { name: "Bonus", icon: "percent", className: "benefitsystems-bonus-btn" },
-      "/awarddates": { name: "Awards", icon: "calendar", className: "benefitsystems-award-btn" },
-      "/charge": { name: "Charge", icon: "battery-charging", className: "benefitsystems-charge-btn" },
-      "/cardtravel": { name: "Portal", icon: "luggage", className: "benefitsystems-cardtravel-btn" },
-      "/cardrules": { name: "Rules", icon: "file-text", className: "benefitsystems-cardrules-btn" },
-      "/currency": { name: "Exchange", icon: "currency-dollar", className: "benefitsystems-currency-btn" },
-      "/casm": { name: "CASM", icon: "calculator", className: "benefitsystems-casm-btn" },
-      "/rovemile": { name: "Rovemile", icon: "dollar-sign", className: "benefitsystems-rovemile-btn" },
-      "/hyatt": { name: "Hyatt", icon: "building", className: "benefitsystems-hyatt-btn" },
-      "/hilton": { name: "Hilton", icon: "hotel", className: "benefitsystems-hilton-btn" },
-      "/hotelprice": { name: "Price", icon: "tag", className: "benefitsystems-hotelprice-btn" },
-      "/hotelrewards": { name: "Rewards", icon: "award", className: "benefitsystems-rewards-btn" },
-      "/lounges": { name: "Lounges", icon: "coffee", className: "benefitsystems-lounges-btn" },
-      "/fasttrack": { name: "FastTrack", icon: "zap", className: "benefitsystems-fasttrack-btn" },
-      "/premium": { name: "Premium", icon: "armchair", className: "benefitsystems-premium-btn" },
-      "/seatmaps": { name: "Seats", icon: "layout", className: "benefitsystems-seatmaps-btn" },
-      "/pnr": { name: "PNR", icon: "eye", className: "benefitsystems-pnr-btn" },
-      "/buypoints": { name: "Buy", icon: "shopping-cart", className: "benefitsystems-buypoints-btn" },
-      "/pointvalue": { name: "AwardValue", icon: "trending-up", className: "benefitsystems-pointvalue-btn" },
-      "/transfertimes": { name: "Times", icon: "clock", className: "benefitsystems-transfertimes-btn" },
-      "/purchasetimes": { name: "BuyTimes", icon: "clock", className: "benefitsystems-purchasetimes-btn" },
-      "/valuecalc": { name: "Calc", icon: "calculator", className: "benefitsystems-valuecalc-btn" },
-      "/statuscards": { name: "Status", icon: "award", className: "benefitsystems-statuscards-btn" },
-      "/merchant": { name: "Merchant", icon: "search", className: "benefitsystems-merchant-btn" },
-      "/search": { name: "Search", icon: "search", className: "benefitsystems-search-btn" },
-      "/amextransfer": { name: "Amex", icon: "refresh-cw", className: "benefitsystems-amextransfer-btn" },
-      "/awardcancellation": { name: "Cancel", icon: "x-circle", className: "benefitsystems-awardcancellation-btn" },
-      "/hotelstatus": { name: "Benefits", icon: "award", className: "benefitsystems-hotelstatus-btn" },
-      "/rss": { name: "RSS News", icon: "rss", className: "benefitsystems-rss-btn" },
-      "/myflights": { name: "My Flights", icon: "plane", className: "benefitsystems-myflights-btn" },
-      "/myhotels": { name: "My Hotels", icon: "hotel", className: "benefitsystems-myhotels-btn" },
-      "/benefits": { name: "Benefits", icon: "gift", className: "benefitsystems-benefits-btn" },
-    }
-
-    // Create and add buttons to row containers
-    let buttonCount = 0
-    const maxButtonsPerRow = 9
-
-    for (const [path, details] of Object.entries(benefitsystemsTools)) {
-      const url = `https://tools.benefitsystems.io${path}`
-      const button = createLinkButton(details.name, details.className, url, createIcon(details.icon))
-
-      if (buttonCount < maxButtonsPerRow) {
-        benefitsystemsRowContainer1.appendChild(button)
-      } else if (buttonCount < maxButtonsPerRow * 2) {
-        benefitsystemsRowContainer2.appendChild(button)
-      } else if (buttonCount < maxButtonsPerRow * 3) {
-        benefitsystemsRowContainer3.appendChild(button)
-      } else if (buttonCount < maxButtonsPerRow * 4) {
-        benefitsystemsRowContainer4.appendChild(button)
-      }
-      buttonCount++
-    }
+    // Create single Benefitsystems button
+    const benefitsystemsAllBtn = createLinkButton(
+      "Benefitsystems",
+      "benefitsystems-all-btn",
+      "https://tools.benefitsystems.io",
+      createIcon("globe")
+    )
+    benefitsystemsRowContainer1.appendChild(benefitsystemsAllBtn)
 
     // Add section headers
     const flightSectionHeader = document.createElement("div")
@@ -444,9 +383,6 @@ addBenefitsystemsButtonStyles()
     benefitsystemsSectionContainer.className = "benefitsystems-section-container"
     benefitsystemsSectionContainer.appendChild(benefitsystemsSectionHeader)
     benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer1)
-    benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer2)
-    benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer3)
-    benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer4)
 
     // Create main container for sections
     const mainContainer = document.createElement('div')
@@ -753,85 +689,23 @@ addBenefitsystemsButtonStyles()
       hotelRowContainer2.appendChild(ghaBtn)
       hotelRowContainer2.appendChild(biltBtn)
 
-      // Create benefitsystems row containers
+      // Create benefitsystems row container
       const benefitsystemsRowContainer1 = document.createElement("div")
       benefitsystemsRowContainer1.className = "custom-flight-buttons"
-
-      const benefitsystemsRowContainer2 = document.createElement("div")
-      benefitsystemsRowContainer2.className = "custom-flight-buttons second-row"
-
-      const benefitsystemsRowContainer3 = document.createElement("div")
-      benefitsystemsRowContainer3.className = "custom-flight-buttons second-row"
-
-      const benefitsystemsRowContainer4 = document.createElement("div")
-      benefitsystemsRowContainer4.className = "custom-flight-buttons second-row"
 
       // Create benefitsystems section header
       const benefitsystemsSectionHeader = document.createElement("div")
       benefitsystemsSectionHeader.className = "section-header"
       benefitsystemsSectionHeader.textContent = "Benefitsystems Tools"
 
-      // Create Benefitsystems buttons
-      const benefitsystemsTools = {
-        "/calculator": { name: "Calc", icon: "calculator", className: "benefitsystems-calculator-btn" },
-        "/flights": { name: "Flights", icon: "plane", className: "benefitsystems-flight-btn" },
-        "/hotels": { name: "Hotels", icon: "hotel", className: "benefitsystems-hotel-btn" },
-        "/purchase": { name: "History", icon: "history", className: "benefitsystems-history-btn" },
-        "/cards": { name: "Cards", icon: "credit-card", className: "benefitsystems-cards-btn" },
-        "/transfers": { name: "TransferPartner", icon: "refresh-cw", className: "benefitsystems-transfers-btn" },
-        "/transfersbonus": { name: "Bonus", icon: "percent", className: "benefitsystems-bonus-btn" },
-        "/awarddates": { name: "Awards", icon: "calendar", className: "benefitsystems-award-btn" },
-        "/charge": { name: "Charge", icon: "battery-charging", className: "benefitsystems-charge-btn" },
-        "/cardtravel": { name: "Portal", icon: "luggage", className: "benefitsystems-cardtravel-btn" },
-        "/cardrules": { name: "Rules", icon: "file-text", className: "benefitsystems-cardrules-btn" },
-        "/currency": { name: "Exchange", icon: "currency-dollar", className: "benefitsystems-currency-btn" },
-        "/casm": { name: "CASM", icon: "calculator", className: "benefitsystems-casm-btn" },
-        "/rovemile": { name: "Rovemile", icon: "dollar-sign", className: "benefitsystems-rovemile-btn" },
-        "/hyatt": { name: "Hyatt", icon: "building", className: "benefitsystems-hyatt-btn" },
-        "/hilton": { name: "Hilton", icon: "hotel", className: "benefitsystems-hotel-btn" },
-        "/hotelprice": { name: "Price", icon: "tag", className: "benefitsystems-hotelprice-btn" },
-        "/hotelrewards": { name: "Rewards", icon: "award", className: "benefitsystems-rewards-btn" },
-        "/lounges": { name: "Lounges", icon: "coffee", className: "benefitsystems-lounges-btn" },
-        "/fasttrack": { name: "FastTrack", icon: "zap", className: "benefitsystems-fasttrack-btn" },
-        "/premium": { name: "Premium", icon: "armchair", className: "benefitsystems-premium-btn" },
-        "/seatmaps": { name: "Seats", icon: "layout", className: "benefitsystems-seatmaps-btn" },
-        "/pnr": { name: "PNR", icon: "eye", className: "benefitsystems-pnr-btn" },
-        "/buypoints": { name: "Buy", icon: "shopping-cart", className: "benefitsystems-buypoints-btn" },
-        "/pointvalue": { name: "Value", icon: "trending-up", className: "benefitsystems-pointvalue-btn" },
-        "/transfertimes": { name: "Times", icon: "clock", className: "benefitsystems-transfertimes-btn" },
-        "/purchasetimes": { name: "BuyTimes", icon: "clock", className: "benefitsystems-purchasetimes-btn" },
-        "/valuecalc": { name: "Calc", icon: "calculator", className: "benefitsystems-valuecalc-btn" },
-        "/statuscards": { name: "Status", icon: "award", className: "benefitsystems-statuscards-btn" },
-        "/merchant": { name: "Merchant", icon: "search", className: "benefitsystems-merchant-btn" },
-        "/search": { name: "Search", icon: "search", className: "benefitsystems-search-btn" },
-        "/amextransfer": { name: "Amex", icon: "refresh-cw", className: "benefitsystems-amextransfer-btn" },
-        "/awardcancellation": { name: "Cancel", icon: "x-circle", className: "benefitsystems-awardcancellation-btn" },
-        "/hotelstatus": { name: "Benefits", icon: "award", className: "benefitsystems-hotelstatus-btn" },
-        "/rss": { name: "RSS News", icon: "rss", className: "benefitsystems-rss-btn" },
-        "/myflights": { name: "My Flights", icon: "plane", className: "benefitsystems-myflights-btn" },
-        "/myhotels": { name: "My Hotels", icon: "hotel", className: "benefitsystems-myhotels-btn" },
-        "/benefits": { name: "Benefits", icon: "gift", className: "benefitsystems-benefits-btn" },
-      }
-
-      // Create and add buttons to row containers
-      let buttonCount = 0
-      const maxButtonsPerRow = 9
-
-      for (const [path, details] of Object.entries(benefitsystemsTools)) {
-        const url = `https://tools.benefitsystems.io${path}`
-        const button = createLinkButton(details.name, details.className, url, createIcon(details.icon))
-
-        if (buttonCount < maxButtonsPerRow) {
-          benefitsystemsRowContainer1.appendChild(button)
-        } else if (buttonCount < maxButtonsPerRow * 2) {
-          benefitsystemsRowContainer2.appendChild(button)
-        } else if (buttonCount < maxButtonsPerRow * 3) {
-          benefitsystemsRowContainer3.appendChild(button)
-        } else if (buttonCount < maxButtonsPerRow * 4) {
-          benefitsystemsRowContainer4.appendChild(button)
-        }
-        buttonCount++
-      }
+      // Create single Benefitsystems button
+      const benefitsystemsAllBtn = createLinkButton(
+        "Benefitsystems",
+        "benefitsystems-all-btn",
+        "https://tools.benefitsystems.io",
+        createIcon("globe")
+      )
+      benefitsystemsRowContainer1.appendChild(benefitsystemsAllBtn)
 
       // Add section headers
       const flightSectionHeader = document.createElement("div")
@@ -859,9 +733,6 @@ addBenefitsystemsButtonStyles()
       benefitsystemsSectionContainer.className = "benefitsystems-section-container"
       benefitsystemsSectionContainer.appendChild(benefitsystemsSectionHeader)
       benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer1)
-      benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer2)
-      benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer3)
-      benefitsystemsSectionContainer.appendChild(benefitsystemsRowContainer4)
 
       // Create main container for sections
       const mainContainer = document.createElement('div')
