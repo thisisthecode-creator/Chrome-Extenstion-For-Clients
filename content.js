@@ -282,12 +282,14 @@ addBenefitsystemsButtonStyles()
     const hotelControls = document.createElement('div')
     hotelControls.className = 'hotel-controls'
     hotelControls.innerHTML = `
-      <div class="ctrl-group"><label class="ctrl-label">City</label><input type="text" class="hotel-city" /></div>
-      <div class="ctrl-group"><label class="ctrl-label">Check-In</label><input type="date" class="hotel-checkin" /></div>
-      <div class="ctrl-group"><label class="ctrl-label">Check-Out</label><input type="date" class="hotel-checkout" /></div>
-      <div class="ctrl-group"><label class="ctrl-label">Adults</label><input type="number" min="1" class="hotel-adults" value="2" /></div>
-      <div class="ctrl-group"><label class="ctrl-label">Rooms</label><input type="number" min="1" class="hotel-rooms" value="1" /></div>
-      <button class="hotel-generate">Generate Links</button>
+      <div class="ctrl-group" style="grid-column: span 1"><label class="ctrl-label">City</label><input type="text" class="hotel-city" /></div>
+      <div class="ctrl-group" style="grid-column: span 1"><label class="ctrl-label">Check-In</label><input type="date" class="hotel-checkin" /></div>
+      <div class="ctrl-group" style="grid-column: span 1"><label class="ctrl-label">Check-Out</label><input type="date" class="hotel-checkout" /></div>
+      <div class="ctrl-pair" style="grid-column: span 1">
+        <div class="ctrl-group"><label class="ctrl-label">Adults</label><input type="number" min="1" class="hotel-adults" value="2" /></div>
+        <div class="ctrl-group"><label class="ctrl-label">Rooms</label><input type="number" min="1" class="hotel-rooms" value="1" /></div>
+      </div>
+      <div class="ctrl-group" style="grid-column: span 1"><label class="ctrl-label">&nbsp;</label><button class="hotel-generate">Generate Links</button></div>
     `
     // We'll insert hotelControls into the final hotel section below
 
@@ -363,18 +365,20 @@ addBenefitsystemsButtonStyles()
     const flightControls = document.createElement('div')
     flightControls.className = 'flight-controls'
     flightControls.innerHTML = `
-      <input type="text" class="flight-from" placeholder="From (IATA)" />
-      <input type="text" class="flight-to" placeholder="To (IATA)" />
-      <input type="date" class="flight-depart" />
-      <input type="date" class="flight-return" />
-      <select class="flight-cabin">
-        <option value="economy">Economy</option>
-        <option value="premium_economy">Premium Economy</option>
-        <option value="business">Business</option>
-        <option value="first">First</option>
-      </select>
-      <input type="number" class="flight-adults" min="1" value="1" />
-      <button class="flight-generate">Generate Flight Links</button>
+      <div class="ctrl-group"><label class="ctrl-label">From (IATA)</label><input type="text" class="flight-from" /></div>
+      <div class="ctrl-group"><label class="ctrl-label">To (IATA)</label><input type="text" class="flight-to" /></div>
+      <div class="ctrl-group"><label class="ctrl-label">Depart</label><input type="date" class="flight-depart" /></div>
+      <div class="ctrl-group"><label class="ctrl-label">Return</label><input type="date" class="flight-return" /></div>
+      <div class="ctrl-group"><label class="ctrl-label">Cabin</label>
+        <select class="flight-cabin">
+          <option value="economy">Economy</option>
+          <option value="premium_economy">Premium Economy</option>
+          <option value="business">Business</option>
+          <option value="first">First</option>
+        </select>
+      </div>
+      <div class="ctrl-group"><label class="ctrl-label">Adults</label><input type="number" class="flight-adults" min="1" value="1" /></div>
+      <div class="ctrl-group"><label class="ctrl-label">&nbsp;</label><button class="flight-generate">Generate Links</button></div>
     `
     const flightButtonsContainer = flightSection.querySelector('.custom-flight-buttons')
     if (flightButtonsContainer) {
@@ -677,12 +681,14 @@ addBenefitsystemsButtonStyles()
       const hotelControls = document.createElement('div')
       hotelControls.className = 'hotel-controls'
       hotelControls.innerHTML = `
-        <div class=\"ctrl-group\"><label class=\"ctrl-label\">City</label><input type=\"text\" class=\"hotel-city\" /></div>
-        <div class=\"ctrl-group\"><label class=\"ctrl-label\">Check-In</label><input type=\"date\" class=\"hotel-checkin\" /></div>
-        <div class=\"ctrl-group\"><label class=\"ctrl-label\">Check-Out</label><input type=\"date\" class=\"hotel-checkout\" /></div>
-        <div class=\"ctrl-group\"><label class=\"ctrl-label\">Adults</label><input type=\"number\" min=\"1\" class=\"hotel-adults\" value=\"2\" /></div>
-        <div class=\"ctrl-group\"><label class=\"ctrl-label\">Rooms</label><input type=\"number\" min=\"1\" class=\"hotel-rooms\" value=\"1\" /></div>
-        <button class=\"hotel-generate\">Generate Links</button>
+        <div class=\"ctrl-group\" style=\"grid-column: span 1\"><label class=\"ctrl-label\">City</label><input type=\"text\" class=\"hotel-city\" /></div>
+        <div class=\"ctrl-group\" style=\"grid-column: span 1\"><label class=\"ctrl-label\">Check-In</label><input type=\"date\" class=\"hotel-checkin\" /></div>
+        <div class=\"ctrl-group\" style=\"grid-column: span 1\"><label class=\"ctrl-label\">Check-Out</label><input type=\"date\" class=\"hotel-checkout\" /></div>
+        <div class=\"ctrl-pair\" style=\"grid-column: span 1\">
+          <div class=\"ctrl-group\"><label class=\"ctrl-label\">Adults</label><input type=\"number\" min=\"1\" class=\"hotel-adults\" value=\"2\" /></div>
+          <div class=\"ctrl-group\"><label class=\"ctrl-label\">Rooms</label><input type=\"number\" min=\"1\" class=\"hotel-rooms\" value=\"1\" /></div>
+        </div>
+        <div class=\"ctrl-group\" style=\"grid-column: span 1\"><label class=\"ctrl-label\">&nbsp;</label><button class=\"hotel-generate\">Generate Links</button></div>
       `
       // We'll insert hotelControls into the final hotel section below
 
@@ -1065,15 +1071,16 @@ function addBenefitsystemsButtonStyles() {
   .gf-modal .gf-btn.primary { background: var(--ring); color: #fff; border-color: var(--ring); }
 
   /* Hotel controls */
-  .hotel-controls { display: grid; grid-template-columns: repeat(6, minmax(120px, 1fr)) auto; gap: 8px; align-items: end; margin-top: 6px; }
+  .hotel-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--gap); align-items: end; margin-top: 6px; }
   .hotel-controls .ctrl-group { display: flex; flex-direction: column; gap: 4px; }
   .hotel-controls .ctrl-label { font-size: 11px; color: var(--muted); font-weight: 600; }
   .hotel-controls input { height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
   .hotel-controls button { height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ring); background: var(--ring); color: #fff; font-weight: 600; cursor: pointer; }
   .hotel-controls button:hover { filter: brightness(1.05); }
+  .hotel-controls .ctrl-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
   /* Flight controls */
-  .flight-controls { display: grid; grid-template-columns: repeat(6, minmax(120px, 1fr)) auto; gap: 8px; align-items: end; margin-top: 6px; }
+  .flight-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--gap); align-items: end; margin-top: 6px; }
   .flight-controls .ctrl-group { display: flex; flex-direction: column; gap: 4px; }
   .flight-controls .ctrl-label { font-size: 11px; color: var(--muted); font-weight: 600; }
   .flight-controls input, .flight-controls select { height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
