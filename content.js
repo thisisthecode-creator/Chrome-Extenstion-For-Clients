@@ -346,7 +346,7 @@ addBenefitsystemsButtonStyles()
 
     // Create single Benefitsystems button
     const benefitsystemsAllBtn = createLinkButton(
-      "Benefitsystems",
+      "Tools",
       "benefitsystems-all-btn",
       "https://tools.benefitsystems.io",
       createIcon("globe")
@@ -377,12 +377,12 @@ addBenefitsystemsButtonStyles()
     const hotelControls = document.createElement('div')
     hotelControls.className = 'hotel-controls'
     hotelControls.innerHTML = `
-      <input type="text" class="hotel-city" placeholder="City" />
-      <input type="date" class="hotel-checkin" />
-      <input type="date" class="hotel-checkout" />
-      <input type="number" min="1" class="hotel-adults" placeholder="Adults" value="2" />
-      <input type="number" min="1" class="hotel-rooms" placeholder="Rooms" value="1" />
-      <button class="hotel-generate">Generate Hotel Links</button>
+      <div class="ctrl-group"><label class="ctrl-label">City</label><input type="text" class="hotel-city" /></div>
+      <div class="ctrl-group"><label class="ctrl-label">Check-In</label><input type="date" class="hotel-checkin" /></div>
+      <div class="ctrl-group"><label class="ctrl-label">Check-Out</label><input type="date" class="hotel-checkout" /></div>
+      <div class="ctrl-group"><label class="ctrl-label">Adults</label><input type="number" min="1" class="hotel-adults" value="2" /></div>
+      <div class="ctrl-group"><label class="ctrl-label">Rooms</label><input type="number" min="1" class="hotel-rooms" value="1" /></div>
+      <button class="hotel-generate">Generate Links</button>
     `
     // We'll insert hotelControls into the final hotel section below
 
@@ -489,14 +489,36 @@ addBenefitsystemsButtonStyles()
       const skyscannerDate = depart.replace(/-/g, '')
       const retDate = ret ? ret.replace(/-/g, '') : ''
 
-      const urls = [
-        `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+"+to+"+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=en-US&curr=USD&gl=US`,
-        `https://www.kayak.com/flights/${from}-${to}/${depart}${ret ? '/' + ret : ''}/${adults}adults?sort=bestflight_a`,
-        `https://www.skyscanner.com/transport/flights/${from.toLowerCase()}/${to.toLowerCase()}/${skyscannerDate}/${ret ? retDate : ''}?adults=${adults}&cabinclass=${skyscannerCabin}&currency=USD&locale=en-US&market=US&preferdirects=false`,
-        `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days=true&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`,
-        `https://point.me/results?departureCity=${from}&departureIata=${from}&arrivalCity=${to}&arrivalIata=${to}&legType=${ret ? 'roundtrip' : 'oneway'}&classOfService=${cabin}&passengers=${adults}&departureDate=${depart}&arrivalDate=${ret || ''}`
-      ]
-      urls.forEach(u => window.open(u, '_blank'))
+      // Update flight buttons under the Flight section
+      const flightSectionEl = flightControls.closest('.section-container')
+      const container = flightSectionEl ? flightSectionEl.querySelector('.custom-flight-buttons') : null
+      if (container) {
+        container.querySelectorAll('a,button').forEach(btn => {
+          const text = (btn.textContent || '').toLowerCase()
+          let url = null
+          if (text.includes('flights')) {
+            url = `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+"+to+"+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=en-US&curr=USD&gl=US`
+          } else if (text.includes('kayak')) {
+            url = `https://www.kayak.com/flights/${from}-${to}/${depart}${ret ? '/' + ret : ''}/${adults}adults?sort=bestflight_a`
+          } else if (text.includes('skyscanner') || text === 'skys') {
+            url = `https://www.skyscanner.com/transport/flights/${from.toLowerCase()}/${to.toLowerCase()}/${skyscannerDate}/${ret ? retDate : ''}?adults=${adults}&cabinclass=${skyscannerCabin}&currency=USD&locale=en-US&market=US&preferdirects=false`
+          } else if (text.includes('seatsaero') || text.includes('seats')) {
+            url = `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days=true&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`
+          } else if (text.includes('pointme') || text.includes('point me')) {
+            url = `https://point.me/results?departureCity=${from}&departureIata=${from}&arrivalCity=${to}&arrivalIata=${to}&legType=${ret ? 'roundtrip' : 'oneway'}&classOfService=${cabin}&passengers=${adults}&departureDate=${depart}&arrivalDate=${ret || ''}`
+          }
+          if (url) {
+            if (btn.tagName === 'A') {
+              btn.href = url
+              btn.target = '_blank'
+              btn.onclick = null
+            } else {
+              btn.onclick = () => window.open(url, '_blank')
+            }
+            btn.title = (btn.textContent || '').trim()
+          }
+        })
+      }
     }
     flightControls.querySelector('.flight-generate').addEventListener('click', genFlights)
 
@@ -843,12 +865,12 @@ addBenefitsystemsButtonStyles()
       const hotelControls = document.createElement('div')
       hotelControls.className = 'hotel-controls'
       hotelControls.innerHTML = `
-        <input type=\"text\" class=\"hotel-city\" placeholder=\"City\" />
-        <input type=\"date\" class=\"hotel-checkin\" />
-        <input type=\"date\" class=\"hotel-checkout\" />
-        <input type=\"number\" min=\"1\" class=\"hotel-adults\" placeholder=\"Adults\" value=\"2\" />
-        <input type=\"number\" min=\"1\" class=\"hotel-rooms\" placeholder=\"Rooms\" value=\"1\" />
-        <button class=\"hotel-generate\">Generate Hotel Links</button>
+        <div class=\"ctrl-group\"><label class=\"ctrl-label\">City</label><input type=\"text\" class=\"hotel-city\" /></div>
+        <div class=\"ctrl-group\"><label class=\"ctrl-label\">Check-In</label><input type=\"date\" class=\"hotel-checkin\" /></div>
+        <div class=\"ctrl-group\"><label class=\"ctrl-label\">Check-Out</label><input type=\"date\" class=\"hotel-checkout\" /></div>
+        <div class=\"ctrl-group\"><label class=\"ctrl-label\">Adults</label><input type=\"number\" min=\"1\" class=\"hotel-adults\" value=\"2\" /></div>
+        <div class=\"ctrl-group\"><label class=\"ctrl-label\">Rooms</label><input type=\"number\" min=\"1\" class=\"hotel-rooms\" value=\"1\" /></div>
+        <button class=\"hotel-generate\">Generate Links</button>
       `
       // We'll insert hotelControls into the final hotel section below
 
@@ -930,14 +952,36 @@ addBenefitsystemsButtonStyles()
         const skyscannerDate = depart.replace(/-/g, '')
         const retDate = ret ? ret.replace(/-/g, '') : ''
 
-        const urls = [
-          `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+"+to+"+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=en-US&curr=USD&gl=US`,
-          `https://www.kayak.com/flights/${from}-${to}/${depart}${ret ? '/' + ret : ''}/${adults}adults?sort=bestflight_a`,
-          `https://www.skyscanner.com/transport/flights/${from.toLowerCase()}/${to.toLowerCase()}/${skyscannerDate}/${ret ? retDate : ''}?adults=${adults}&cabinclass=${skyscannerCabin}&currency=USD&locale=en-US&market=US&preferdirects=false`,
-          `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days=true&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`,
-          `https://point.me/results?departureCity=${from}&departureIata=${from}&arrivalCity=${to}&arrivalIata=${to}&legType=${ret ? 'roundtrip' : 'oneway'}&classOfService=${cabin}&passengers=${adults}&departureDate=${depart}&arrivalDate=${ret || ''}`
-        ]
-        urls.forEach(u => window.open(u, '_blank'))
+        // Update flight buttons under the Flight section
+        const flightSectionEl = flightControls.closest('.section-container')
+        const container = flightSectionEl ? flightSectionEl.querySelector('.custom-flight-buttons') : null
+        if (container) {
+          container.querySelectorAll('a,button').forEach(btn => {
+            const text = (btn.textContent || '').toLowerCase()
+            let url = null
+            if (text.includes('flights')) {
+              url = `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+"+to+"+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=en-US&curr=USD&gl=US`
+            } else if (text.includes('kayak')) {
+              url = `https://www.kayak.com/flights/${from}-${to}/${depart}${ret ? '/' + ret : ''}/${adults}adults?sort=bestflight_a`
+            } else if (text.includes('skyscanner') || text === 'skys') {
+              url = `https://www.skyscanner.com/transport/flights/${from.toLowerCase()}/${to.toLowerCase()}/${skyscannerDate}/${ret ? retDate : ''}?adults=${adults}&cabinclass=${skyscannerCabin}&currency=USD&locale=en-US&market=US&preferdirects=false`
+            } else if (text.includes('seatsaero') || text.includes('seats')) {
+              url = `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days=true&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`
+            } else if (text.includes('pointme') || text.includes('point me')) {
+              url = `https://point.me/results?departureCity=${from}&departureIata=${from}&arrivalCity=${to}&arrivalIata=${to}&legType=${ret ? 'roundtrip' : 'oneway'}&classOfService=${cabin}&passengers=${adults}&departureDate=${depart}&arrivalDate=${ret || ''}`
+            }
+            if (url) {
+              if (btn.tagName === 'A') {
+                btn.href = url
+                btn.target = '_blank'
+                btn.onclick = null
+              } else {
+                btn.onclick = () => window.open(url, '_blank')
+              }
+              btn.title = (btn.textContent || '').trim()
+            }
+          })
+        }
       }
       flightControls.querySelector('.flight-generate').addEventListener('click', genFlights)
       
@@ -1208,15 +1252,19 @@ function addBenefitsystemsButtonStyles() {
   .gf-modal .gf-btn.primary { background: var(--ring); color: #fff; border-color: var(--ring); }
 
   /* Hotel controls */
-  .hotel-controls { display: grid; grid-template-columns: 2fr repeat(3, 1fr) 1fr auto; gap: 8px; align-items: center; margin-top: 6px; }
-  .hotel-controls input { height: 36px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
-  .hotel-controls button { height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ring); background: var(--ring); color: #fff; font-weight: 600; cursor: pointer; }
+  .hotel-controls { display: grid; grid-template-columns: repeat(6, minmax(120px, 1fr)) auto; gap: 8px; align-items: end; margin-top: 6px; }
+  .hotel-controls .ctrl-group { display: flex; flex-direction: column; gap: 4px; }
+  .hotel-controls .ctrl-label { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .hotel-controls input { height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
+  .hotel-controls button { height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ring); background: var(--ring); color: #fff; font-weight: 600; cursor: pointer; }
   .hotel-controls button:hover { filter: brightness(1.05); }
 
   /* Flight controls */
-  .flight-controls { display: grid; grid-template-columns: repeat(2, 1fr) repeat(2, 1fr) 1fr 1fr auto; gap: 8px; align-items: center; margin-top: 6px; }
-  .flight-controls input, .flight-controls select { height: 36px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
-  .flight-controls button { height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ring); background: var(--ring); color: #fff; font-weight: 600; cursor: pointer; }
+  .flight-controls { display: grid; grid-template-columns: repeat(6, minmax(120px, 1fr)) auto; gap: 8px; align-items: end; margin-top: 6px; }
+  .flight-controls .ctrl-group { display: flex; flex-direction: column; gap: 4px; }
+  .flight-controls .ctrl-label { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .flight-controls input, .flight-controls select { height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
+  .flight-controls button { height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ring); background: var(--ring); color: #fff; font-weight: 600; cursor: pointer; }
   .flight-controls button:hover { filter: brightness(1.05); }
 
   `
