@@ -847,10 +847,10 @@ function addBenefitsystemsButtonStyles() {
     font-size: 13px;
     letter-spacing: .2px;
     color: var(--muted);
-    padding: 6px 10px;
-    background: color-mix(in srgb, var(--surface) 88%, transparent);
-    border: 1px solid var(--border);
-    border-radius: 999px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
     user-select: none;
   }
 
