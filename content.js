@@ -145,22 +145,20 @@ addBenefitsystemsButtonStyles()
       createIcon("calendar"),
     )
 
-    // Add additional flight-specific buttons if we have the required parameters
+    // Create additional flight-specific buttons (always render; links may be disabled if params missing)
     let fareClassBtn = null
     let flightConnectionsBtn = null
     let turbliBtn = null
     let restoreUrlBtn = null
 
-    if (hasRequiredParams) {
-      fareClassBtn = createLinkButton("Fare Class", "fare-class-btn", urls.fareClass, createIcon("ticket"))
-      flightConnectionsBtn = createLinkButton(
-        "Connections",
-        "flight-connections-btn",
-        urls.flightconnections,
-        createIcon("network")
-      )
-      turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
-    }
+    fareClassBtn = createLinkButton("Fare Class", "fare-class-btn", urls.fareClass, createIcon("ticket"))
+    flightConnectionsBtn = createLinkButton(
+      "Connections",
+      "flight-connections-btn",
+      urls.flightconnections,
+      createIcon("network")
+    )
+    turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
 
     // Add restore button if URL has changed
     if (window.location.href !== window.originalGoogleFlightsUrl) {
@@ -192,12 +190,10 @@ addBenefitsystemsButtonStyles()
     flightRowContainer2.appendChild(saSeatmapBtn)
     flightRowContainer2.appendChild(awardToolAllBtn)
 
-    // Add additional flight-specific buttons to second row if we have the required parameters
-    if (hasRequiredParams) {
-      flightRowContainer2.appendChild(fareClassBtn)
-      flightRowContainer2.appendChild(flightConnectionsBtn)
-      flightRowContainer2.appendChild(turbliBtn)
-    }
+    // Add additional flight-specific buttons to second row
+    flightRowContainer2.appendChild(fareClassBtn)
+    flightRowContainer2.appendChild(flightConnectionsBtn)
+    flightRowContainer2.appendChild(turbliBtn)
 
     if (restoreUrlBtn) {
       flightRowContainer2.appendChild(restoreUrlBtn)
@@ -497,22 +493,20 @@ addBenefitsystemsButtonStyles()
         createIcon("calendar"),
       )
 
-      // Add additional flight-specific buttons if we have the required parameters
+      // Create additional flight-specific buttons (always render; links may be disabled if params missing)
       let fareClassBtn = null
       let flightConnectionsBtn = null
       let turbliBtn = null
       let restoreUrlBtn = null
 
-      if (hasRequiredParams) {
-        fareClassBtn = createLinkButton("Fare Class", "fare-class-btn", urls.fareClass, createIcon("ticket"))
-        flightConnectionsBtn = createLinkButton(
-          "Connections",
-          "flight-connections-btn",
-          urls.flightconnections,
-          createIcon("network")
-        )
-        turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
-      }
+      fareClassBtn = createLinkButton("Fare Class", "fare-class-btn", urls.fareClass, createIcon("ticket"))
+      flightConnectionsBtn = createLinkButton(
+        "Connections",
+        "flight-connections-btn",
+        urls.flightconnections,
+        createIcon("network")
+      )
+      turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
 
       // Add restore button if URL has changed
       if (window.location.href !== window.originalGoogleFlightsUrl) {
@@ -543,12 +537,10 @@ addBenefitsystemsButtonStyles()
       flightRowContainer2.appendChild(saSeatmapBtn)
       flightRowContainer2.appendChild(awardToolAllBtn)
 
-      // Add additional flight-specific buttons to second row if we have the required parameters
-      if (hasRequiredParams) {
-        flightRowContainer2.appendChild(fareClassBtn)
-        flightRowContainer2.appendChild(flightConnectionsBtn)
-        flightRowContainer2.appendChild(turbliBtn)
-      }
+      // Add additional flight-specific buttons to second row
+      flightRowContainer2.appendChild(fareClassBtn)
+      flightRowContainer2.appendChild(flightConnectionsBtn)
+      flightRowContainer2.appendChild(turbliBtn)
 
       if (restoreUrlBtn) {
         flightRowContainer2.appendChild(restoreUrlBtn)
