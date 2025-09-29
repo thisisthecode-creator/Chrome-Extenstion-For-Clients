@@ -400,15 +400,39 @@ addBenefitsystemsButtonStyles()
       const fromDateDotted = toDotted(checkin)
       const toDateDotted = toDotted(checkout)
 
+      // Helpers for IHG formatting
+      const toIHG = (iso) => { const d = new Date(iso); return { day: String(d.getDate()).padStart(2,'0'), monthYear: `${String(d.getMonth()+1).padStart(2,'0')}${d.getFullYear()}` } }
+      const checkInIHG = toIHG(checkin)
+      const checkOutIHG = toIHG(checkout)
+
       const marriottUrl = `https://www.marriott.com/de/search/findHotels.mi?fromToDate_submit=${checkout}&fromDate=${fromDateDotted}&toDate=${toDateDotted}&toDateDefaultFormat=${checkout}&fromDateDefaultFormat=${checkin}&flexibleDateSearch=false&t-start=${checkin}&t-end=${checkout}&lengthOfStay=${nights}&childrenCountBox=0+Children+Per+Room&childrenCount=0&clusterCode=none&isAdvanceSearch=true&recordsPerPage=100&isInternalSearch=true&vsInitialRequest=false&searchType=InCity&singleSearchAutoSuggest=Unmatched&collapseAccordian=is-true&singleSearch=true&isTransient=true&initialRequest=true&flexibleDateSearchRateDisplay=true&isSearch=true&isRateCalendar=true&destinationAddress.destination=${encodeURIComponent(city)}&isHideFlexibleDateCalendar=true&roomCountBox=${rooms}+Room&roomCount=${rooms}&guestCountBox=${adults}+Adult+Per+Room&numAdultsPerRoom=${adults}&deviceType=desktop-web&view=list&fromToDate=${fromDateDotted}&isFlexibleDatesOptionSelected=false&numberOfRooms=${rooms}&useRewardsPoints=true`
 
       // Open or update links for major hotels
       const urlsToOpen = [
+        // Skyscanner (entity id static per request)
+        `https://www.skyscanner.de/hotels/search?entity_id=27542903&checkin=${checkin}&checkout=${checkout}&adults=${adults}&rooms=${rooms}`,
+        // Google
         `https://www.google.com/travel/search?q=${encodeURIComponent(city)}`,
-        `https://www.hyatt.com/search/hotels/en-US/${encodeURIComponent(city)}?checkinDate=${checkin}&checkoutDate=${checkout}&rooms=${rooms}&adults=${adults}&kids=0&rate=Standard&rateFilter=woh`,
-        `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0`,
+        // Hilton
+        `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0&room1ChildAges=&room1AdultAges=`,
+        // Hyatt (de-DE per request)
+        `https://www.hyatt.com/search/hotels/de-DE/${encodeURIComponent(city)}?checkinDate=${checkin}&checkoutDate=${checkout}&rooms=${rooms}&adults=${adults}&kids=0&rate=Standard&rateFilter=woh`,
+        // GHA Discovery
+        `https://de.ghadiscovery.com/search/hotels?keyword=${encodeURIComponent(city)}&clearBookingParams=1&clearHotelSearchParams=1`,
+        // Accor
+        `https://all.accor.com/booking/en/accor/hotels/${city.toLowerCase()}?compositions=${adults}${rooms > 1 ? `,${rooms}` : ''}&stayplus=true&snu=false&hideWDR=false&productCode=null&accessibleRooms=false&hideHotelDetails=true&sortBy=PRICE_LOW_TO_HIGH&filters=eyJhdmFpbGFiaWxpdHkiOlsiQVZBSUxBQkxFIl0sImxveWFsdHkiOlsiTUVNQkVSX1JBVEUiLCJQQVJUSUNJUEFUSU5HX0hPVEVMIl19`,
+        // Bilt Rewards
+        `https://www.biltrewards.com/rewards/travel/hotel-search?checkInDate=${checkin}&checkOutDate=${checkout}&numGuestAdults=${adults}&childrenAges=&numRooms=${rooms}`,
+        // Wyndham
+        `https://www.wyndhamhotels.com/de-de/hotels/${encodeURIComponent(city.toLowerCase())}?brand_id=ALL&checkInDate=${checkin}&checkOutDate=${checkout}&useWRPoints=true&children=0&adults=${adults}&rooms=${rooms}`,
+        // Choice
+        `https://www.choicehotels.com/de-de/${encodeURIComponent(city.toLowerCase())}/hotels?checkInDate=${checkin}&checkOutDate=${checkout}`,
+        // Rooms.aero
+        `https://rooms.aero/search?city=${encodeURIComponent(city)}&start=${checkin}&end=${checkout}&nights=${nights}`,
+        // Marriott
         marriottUrl,
-        `https://www.ihg.com/hotels/us/en/find-hotels/hotel-list?destination=${encodeURIComponent(city)}&qCiD=${checkin}&qCoD=${checkout}&qAdlt=${adults}&qRms=${rooms}`
+        // IHG detailed
+        `https://www.ihg.com/hotels/us/en/find-hotels/hotel-search?qDest=${encodeURIComponent(city)}&qPt=POINTS&qCiD=${checkInIHG.day}&qCoD=${checkOutIHG.day}&qCiMy=${checkInIHG.monthYear}&qCoMy=${checkOutIHG.monthYear}&qAdlt=${adults}&qChld=0&qRms=${rooms}&qRtP=IVANI&qAkamaiCC=PL&srb_u=1&qExpndSrch=false&qSrt=sRT&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.sp.re.vx.nd.sx.we.lx.rn.sn.sn.sn.sn.sn.nu.ge&qWch=0&qSmP=0&qRad=30&qRdU=mi&setPMCookies=true&qpMbw=0&qErm=false&qpMn=1&qLoSe=false`
       ]
       urlsToOpen.forEach(u => window.open(u, '_blank'))
     }
@@ -430,6 +454,52 @@ addBenefitsystemsButtonStyles()
     const flightSection = createSectionContainer('Flight Search')
     const hotelSection = createSectionContainer('Hotel Search')
     const benefitsystemsSection = createSectionContainer('Benefit Systems')
+    // Add flight controls to flight section
+    const flightControls = document.createElement('div')
+    flightControls.className = 'flight-controls'
+    flightControls.innerHTML = `
+      <input type="text" class="flight-from" placeholder="From (IATA)" />
+      <input type="text" class="flight-to" placeholder="To (IATA)" />
+      <input type="date" class="flight-depart" />
+      <input type="date" class="flight-return" />
+      <select class="flight-cabin">
+        <option value="economy">Economy</option>
+        <option value="premium_economy">Premium Economy</option>
+        <option value="business">Business</option>
+        <option value="first">First</option>
+      </select>
+      <input type="number" class="flight-adults" min="1" value="1" />
+      <button class="flight-generate">Generate Flight Links</button>
+    `
+    const flightButtonsContainer = flightSection.querySelector('.custom-flight-buttons')
+    if (flightButtonsContainer) {
+      flightSection.insertBefore(flightControls, flightButtonsContainer)
+    }
+
+    const genFlights = () => {
+      const from = (flightControls.querySelector('.flight-from').value || '').trim().toUpperCase()
+      const to = (flightControls.querySelector('.flight-to').value || '').trim().toUpperCase()
+      const depart = flightControls.querySelector('.flight-depart').value
+      const ret = flightControls.querySelector('.flight-return').value
+      const cabin = flightControls.querySelector('.flight-cabin').value
+      const adults = parseInt(flightControls.querySelector('.flight-adults').value || '1', 10)
+      if (!from || !to || !depart) return
+
+      const skyscannerCabin = cabin.replace(/\s+/g, '')
+      const skyscannerDate = depart.replace(/-/g, '')
+      const retDate = ret ? ret.replace(/-/g, '') : ''
+
+      const urls = [
+        `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+"+to+"+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=en-US&curr=USD&gl=US`,
+        `https://www.kayak.com/flights/${from}-${to}/${depart}${ret ? '/' + ret : ''}/${adults}adults?sort=bestflight_a`,
+        `https://www.skyscanner.com/transport/flights/${from.toLowerCase()}/${to.toLowerCase()}/${skyscannerDate}/${ret ? retDate : ''}?adults=${adults}&cabinclass=${skyscannerCabin}&currency=USD&locale=en-US&market=US&preferdirects=false`,
+        `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days=true&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`,
+        `https://point.me/results?departureCity=${from}&departureIata=${from}&arrivalCity=${to}&arrivalIata=${to}&legType=${ret ? 'roundtrip' : 'oneway'}&classOfService=${cabin}&passengers=${adults}&departureDate=${depart}&arrivalDate=${ret || ''}`
+      ]
+      urls.forEach(u => window.open(u, '_blank'))
+    }
+    flightControls.querySelector('.flight-generate').addEventListener('click', genFlights)
+
     
     // Move buttons to new sections
     const flightButtons = flightSectionContainer.querySelectorAll('.custom-flight-buttons > *')
@@ -825,6 +895,51 @@ addBenefitsystemsButtonStyles()
       const flightSection = createSectionContainer('Flight Search')
       const hotelSection = createSectionContainer('Hotel Search')
     const benefitsystemsSection = createSectionContainer('Benefit Systems')
+      // Add flight controls to flight section (results flow)
+      const flightControls = document.createElement('div')
+      flightControls.className = 'flight-controls'
+      flightControls.innerHTML = `
+        <input type=\"text\" class=\"flight-from\" placeholder=\"From (IATA)\" />
+        <input type=\"text\" class=\"flight-to\" placeholder=\"To (IATA)\" />
+        <input type=\"date\" class=\"flight-depart\" />
+        <input type=\"date\" class=\"flight-return\" />
+        <select class=\"flight-cabin\">
+          <option value=\"economy\">Economy</option>
+          <option value=\"premium_economy\">Premium Economy</option>
+          <option value=\"business\">Business</option>
+          <option value=\"first\">First</option>
+        </select>
+        <input type=\"number\" class=\"flight-adults\" min=\"1\" value=\"1\" />
+        <button class=\"flight-generate\">Generate Flight Links</button>
+      `
+      const flightButtonsContainer = flightSection.querySelector('.custom-flight-buttons')
+      if (flightButtonsContainer) {
+        flightSection.insertBefore(flightControls, flightButtonsContainer)
+      }
+
+      const genFlights = () => {
+        const from = (flightControls.querySelector('.flight-from').value || '').trim().toUpperCase()
+        const to = (flightControls.querySelector('.flight-to').value || '').trim().toUpperCase()
+        const depart = flightControls.querySelector('.flight-depart').value
+        const ret = flightControls.querySelector('.flight-return').value
+        const cabin = flightControls.querySelector('.flight-cabin').value
+        const adults = parseInt(flightControls.querySelector('.flight-adults').value || '1', 10)
+        if (!from || !to || !depart) return
+
+        const skyscannerCabin = cabin.replace(/\s+/g, '')
+        const skyscannerDate = depart.replace(/-/g, '')
+        const retDate = ret ? ret.replace(/-/g, '') : ''
+
+        const urls = [
+          `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+"+to+"+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=en-US&curr=USD&gl=US`,
+          `https://www.kayak.com/flights/${from}-${to}/${depart}${ret ? '/' + ret : ''}/${adults}adults?sort=bestflight_a`,
+          `https://www.skyscanner.com/transport/flights/${from.toLowerCase()}/${to.toLowerCase()}/${skyscannerDate}/${ret ? retDate : ''}?adults=${adults}&cabinclass=${skyscannerCabin}&currency=USD&locale=en-US&market=US&preferdirects=false`,
+          `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days=true&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`,
+          `https://point.me/results?departureCity=${from}&departureIata=${from}&arrivalCity=${to}&arrivalIata=${to}&legType=${ret ? 'roundtrip' : 'oneway'}&classOfService=${cabin}&passengers=${adults}&departureDate=${depart}&arrivalDate=${ret || ''}`
+        ]
+        urls.forEach(u => window.open(u, '_blank'))
+      }
+      flightControls.querySelector('.flight-generate').addEventListener('click', genFlights)
       
       // Move buttons to new sections
       const flightButtons = flightSectionContainer.querySelectorAll('.custom-flight-buttons > *')
@@ -1097,6 +1212,12 @@ function addBenefitsystemsButtonStyles() {
   .hotel-controls input { height: 36px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
   .hotel-controls button { height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ring); background: var(--ring); color: #fff; font-weight: 600; cursor: pointer; }
   .hotel-controls button:hover { filter: brightness(1.05); }
+
+  /* Flight controls */
+  .flight-controls { display: grid; grid-template-columns: repeat(2, 1fr) repeat(2, 1fr) 1fr 1fr auto; gap: 8px; align-items: center; margin-top: 6px; }
+  .flight-controls input, .flight-controls select { height: 36px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
+  .flight-controls button { height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ring); background: var(--ring); color: #fff; font-weight: 600; cursor: pointer; }
+  .flight-controls button:hover { filter: brightness(1.05); }
 
   `
 
