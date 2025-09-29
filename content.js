@@ -200,114 +200,21 @@ addBenefitsystemsButtonStyles()
     }
 
     // Create hotel buttons - first row
-    const googleHotelsBtn = createButton(
-      "Hotels",
-      "google-hotels-btn",
-      () => {
-        promptAndOpenGoogleHotels()
-      },
-      createIcon("search"),
-    )
-    const hiltonBtn = createButton(
-      "Hilton",
-      "hilton-btn",
-      () => {
-        promptAndOpenHilton(urlParams)
-      },
-      createIcon("hotel"),
-    )
-    const hyattBtn = createButton(
-      "Hyatt",
-      "hyatt-btn",
-      () => {
-        promptAndOpenHyatt(urlParams)
-      },
-      createIcon("building"),
-    )
-    const marriottBtn = createButton(
-      "Marriott",
-      "marriott-btn",
-      () => {
-        promptAndOpenMarriott(urlParams)
-      },
-      createIcon("landmark"),
-    )
-    const ihgBtn = createButton(
-      "IHG",
-      "ihg-btn",
-      () => {
-        promptAndOpenIHG(urlParams)
-      },
-      createIcon("hexagon"),
-    )
-    const accorBtn = createButton(
-      "Accor",
-      "accor-btn",
-      () => {
-        promptAndOpenAccor(urlParams)
-      },
-      createIcon("star"),
-    )
+    const googleHotelsBtn = createButton("Hotels","google-hotels-btn", () => {}, createIcon("search"))
+    const hiltonBtn = createButton("Hilton","hilton-btn", () => {}, createIcon("hotel"))
+    const hyattBtn = createButton("Hyatt","hyatt-btn", () => {}, createIcon("building"))
+    const marriottBtn = createButton("Marriott","marriott-btn", () => {}, createIcon("landmark"))
+    const ihgBtn = createButton("IHG","ihg-btn", () => {}, createIcon("hexagon"))
+    const accorBtn = createButton("Accor","accor-btn", () => {}, createIcon("star"))
 
-    const wyndhamBtn = createButton(
-      "Wyndham",
-      "wyndham-btn",
-      () => {
-        promptAndOpenWyndham(urlParams)
-      },
-      createIcon("home"),
-    )
-    const choiceBtn = createButton(
-      "Choice",
-      "choice-btn",
-      () => {
-        promptAndOpenChoice(urlParams)
-      },
-      createIcon("check-square"),
-    )
-    const meliaBtn = createButton(
-      "Melia",
-      "melia-btn",
-      () => {
-        promptAndOpenMelia(urlParams)
-      },
-      createIcon("sun"),
+    const wyndhamBtn = createButton("Wyndham","wyndham-btn", () => {}, createIcon("home"))
+    const choiceBtn = createButton("Choice","choice-btn", () => {}, createIcon("check-square"))
+    const meliaBtn = createButton("Melia","melia-btn", () => {}, createIcon("sun"))
+    const bestWesternBtn = createButton("BestWest","best-western-btn", () => {}, createIcon("crown"))
+    const radissonBtn = createButton("Radisson","radisson-btn", () => {}, createIcon("circle"))
+    const ghaBtn = createButton("GHA","gha-btn", () => {}, createIcon("globe"))
 
-      // Create hotel buttons - second row
-    )
-    const bestWesternBtn = createButton(
-      "BestWest",
-      "best-western-btn",
-      () => {
-        promptAndOpenBestWestern(urlParams)
-      },
-      createIcon("crown"),
-    )
-    const radissonBtn = createButton(
-      "Radisson",
-      "radisson-btn",
-      () => {
-        promptAndOpenRadisson(urlParams)
-      },
-      createIcon("circle"),
-    )
-    const ghaBtn = createButton(
-      "GHA",
-      "gha-btn",
-      () => {
-        promptAndOpenGHA(urlParams)
-      },
-      createIcon("globe"),
-    )
-
-    const roomsBtn = createButton(
-      "Rooms",
-      "rooms-btn",
-      () => {
-        promptAndOpenRooms(urlParams)
-      },
-      createIcon("search"),
-    )
+    const roomsBtn = createButton("Rooms","rooms-btn", () => {}, createIcon("search"))
 
     // Add hotel buttons to first row
     // Attach click handlers to use generated/stored links
@@ -683,113 +590,22 @@ addBenefitsystemsButtonStyles()
       }
 
       // Create hotel buttons - first row
-      const googleHotelsBtn = createButton(
-        "Hotels",
-        "google-hotels-btn",
-        () => {
-          promptAndOpenGoogleHotels()
-        },
-        createIcon("search"),
-      )
-      const hiltonBtn = createButton(
-        "Hilton",
-        "hilton-btn",
-        () => {
-          promptAndOpenHilton(urlParams)
-        },
-        createIcon("hotel"),
-      )
-      const hyattBtn = createButton(
-        "Hyatt",
-        "hyatt-btn",
-        () => {
-          promptAndOpenHyatt(urlParams)
-        },
-        createIcon("building"),
-      )
-      const marriottBtn = createButton(
-        "Marriott",
-        "marriott-btn",
-        () => {
-          promptAndOpenMarriott(urlParams)
-        },
-        createIcon("landmark"),
-      )
-      const ihgBtn = createButton(
-        "IHG",
-        "ihg-btn",
-        () => {
-          promptAndOpenIHG(urlParams)
-        },
-        createIcon("hexagon"),
-      )
-      const accorBtn = createButton(
-        "Accor",
-        "accor-btn",
-        () => {
-          promptAndOpenAccor(urlParams)
-        },
-        createIcon("star"),
-      )
+      const googleHotelsBtn = createButton("Hotels","google-hotels-btn", () => {}, createIcon("search"))
+      const hiltonBtn = createButton("Hilton","hilton-btn", () => {}, createIcon("hotel"))
+      const hyattBtn = createButton("Hyatt","hyatt-btn", () => {}, createIcon("building"))
+      const marriottBtn = createButton("Marriott","marriott-btn", () => {}, createIcon("landmark"))
+      const ihgBtn = createButton("IHG","ihg-btn", () => {}, createIcon("hexagon"))
+      const accorBtn = createButton("Accor","accor-btn", () => {}, createIcon("star"))
 
       // Create hotel buttons - second row
-      const wyndhamBtn = createButton(
-        "Wyndham",
-        "wyndham-btn",
-        () => {
-          promptAndOpenWyndham(urlParams)
-        },
-        createIcon("home"),
-      )
-      const choiceBtn = createButton(
-        "Choice",
-        "choice-btn",
-        () => {
-          promptAndOpenChoice(urlParams)
-        },
-        createIcon("check-square"),
-      )
-      const meliaBtn = createButton(
-        "Melia",
-        "melia-btn",
-        () => {
-          promptAndOpenMelia(urlParams)
-        },
-        createIcon("sun"),
-      )
-      const bestWesternBtn = createButton(
-        "BestWest",
-        "best-western-btn",
-        () => {
-          promptAndOpenBestWestern(urlParams)
-        },
-        createIcon("crown"),
-      )
-      const radissonBtn = createButton(
-        "Radisson",
-        "radisson-btn",
-        () => {
-          promptAndOpenRadisson(urlParams)
-        },
-        createIcon("circle"),
-      )
-      const ghaBtn = createButton(
-        "GHA",
-        "gha-btn",
-        () => {
-          promptAndOpenGHA(urlParams)
-        },
-        createIcon("globe"),
-      )
-
-      const roomsBtn = createButton(
-        "Rooms",
-        "rooms-btn",
-        () => {
-          promptAndOpenRooms(urlParams)
-        },
-        createIcon("search"),
-      )
+      const wyndhamBtn = createButton("Wyndham","wyndham-btn", () => {}, createIcon("home"))
+      const choiceBtn = createButton("Choice","choice-btn", () => {}, createIcon("check-square"))
+      const meliaBtn = createButton("Melia","melia-btn", () => {}, createIcon("sun"))
+      const bestWesternBtn = createButton("BestWest","best-western-btn", () => {}, createIcon("crown"))
+      const radissonBtn = createButton("Radisson","radisson-btn", () => {}, createIcon("circle"))
+      const ghaBtn = createButton("GHA","gha-btn", () => {}, createIcon("globe"))
+      
+      const roomsBtn = createButton("Rooms","rooms-btn", () => {}, createIcon("search"))
 
       // Add hotel buttons to first row
       ;[googleHotelsBtn, roomsBtn, hyattBtn, hiltonBtn, choiceBtn, wyndhamBtn, marriottBtn].forEach(btn => {
@@ -1329,6 +1145,7 @@ function buildHotelUrlMap(values) {
 
 function handleHotelButtonClick(e) {
   e.preventDefault()
+  if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation()
   const btn = e.currentTarget
   const section = btn.closest('.section-container')
   const brand =
