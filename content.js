@@ -319,6 +319,10 @@ addBenefitsystemsButtonStyles()
     )
 
     // Add hotel buttons to first row
+    // Attach click handlers to use generated/stored links
+    ;[googleHotelsBtn, roomsBtn, hyattBtn, choiceBtn, wyndhamBtn, hiltonBtn, marriottBtn, ihgBtn, accorBtn].forEach(btn => {
+      btn.addEventListener('click', handleHotelButtonClick)
+    })
     hotelRowContainer1.appendChild(googleHotelsBtn)
     hotelRowContainer1.appendChild(roomsBtn)
     hotelRowContainer1.appendChild(hyattBtn)
@@ -806,6 +810,9 @@ addBenefitsystemsButtonStyles()
       )
 
       // Add hotel buttons to first row
+      ;[googleHotelsBtn, roomsBtn, hyattBtn, hiltonBtn, choiceBtn, wyndhamBtn, marriottBtn].forEach(btn => {
+        btn.addEventListener('click', handleHotelButtonClick)
+      })
       hotelRowContainer1.appendChild(googleHotelsBtn)
       hotelRowContainer1.appendChild(roomsBtn)
       hotelRowContainer1.appendChild(hyattBtn)
@@ -815,6 +822,7 @@ addBenefitsystemsButtonStyles()
       hotelRowContainer1.appendChild(marriottBtn)
     
       // Add hotel buttons to second row
+      ;[ihgBtn, accorBtn].forEach(btn => btn.addEventListener('click', handleHotelButtonClick))
       hotelRowContainer1.appendChild(ihgBtn)
       hotelRowContainer1.appendChild(accorBtn)
       hotelRowContainer2.appendChild(meliaBtn)
@@ -1270,6 +1278,99 @@ function addBenefitsystemsButtonStyles() {
   `
 
   document.head.appendChild(style)
+}
+
+// Hotel link storage helpers
+function setHotelLinkMap(linkMap) {
+  try {
+    window.__hotelLinkMap = linkMap
+    localStorage.setItem('hotel_link_map', JSON.stringify(linkMap))
+  } catch (_) {}
+}
+
+function getHotelLinkMap() {
+  try {
+    if (window.__hotelLinkMap) return window.__hotelLinkMap
+    const raw = localStorage.getItem('hotel_link_map')
+    return raw ? JSON.parse(raw) : {}
+  } catch (_) {
+    return {}
+  }
+}
+
+function gatherHotelInputsFromSection(sectionEl) {
+  const controls = sectionEl.querySelector('.hotel-controls')
+  if (!controls) return null
+  const city = (controls.querySelector('.hotel-city')?.value || '').trim()
+  const checkin = controls.querySelector('.hotel-checkin')?.value || ''
+  const checkout = controls.querySelector('.hotel-checkout')?.value || ''
+  const adults = parseInt(controls.querySelector('.hotel-adults')?.value || '2', 10)
+  const rooms = parseInt(controls.querySelector('.hotel-rooms')?.value || '1', 10)
+  if (!city || !checkin || !checkout) return null
+  return { city, checkin, checkout, adults, rooms }
+}
+
+function dottedDate(iso) {
+  const d = new Date(iso)
+  const dd = String(d.getDate()).padStart(2,'0')
+  const mm = String(d.getMonth()+1).padStart(2,'0')
+  const yyyy = d.getFullYear()
+  return `${dd}.${mm}.${yyyy}`
+}
+
+function ihgParts(iso) {
+  const d = new Date(iso)
+  return { day: String(d.getDate()).padStart(2,'0'), monthYear: `${String(d.getMonth()+1).padStart(2,'0')}${d.getFullYear()}` }
+}
+
+function buildHotelUrlMap(values) {
+  const { city, checkin, checkout, adults, rooms } = values
+  const nights = Math.max(1, Math.ceil((new Date(checkout) - new Date(checkin)) / (1000*60*60*24)))
+  const checkInIHG = ihgParts(checkin)
+  const checkOutIHG = ihgParts(checkout)
+  const marriottUrl = `https://www.marriott.com/de/search/findHotels.mi?fromToDate_submit=${checkout}&fromDate=${dottedDate(checkin)}&toDate=${dottedDate(checkout)}&toDateDefaultFormat=${checkout}&fromDateDefaultFormat=${checkin}&flexibleDateSearch=false&t-start=${checkin}&t-end=${checkout}&lengthOfStay=${nights}&childrenCountBox=0+Children+Per+Room&childrenCount=0&clusterCode=none&isAdvanceSearch=true&recordsPerPage=100&isInternalSearch=true&vsInitialRequest=false&searchType=InCity&singleSearchAutoSuggest=Unmatched&collapseAccordian=is-true&singleSearch=true&isTransient=true&initialRequest=true&flexibleDateSearchRateDisplay=true&isSearch=true&isRateCalendar=true&destinationAddress.destination=${encodeURIComponent(city)}&isHideFlexibleDateCalendar=true&roomCountBox=${rooms}+Room&roomCount=${rooms}&guestCountBox=${adults}+Adult+Per+Room&numAdultsPerRoom=${adults}&deviceType=desktop-web&view=list&fromToDate=${dottedDate(checkin)}&isFlexibleDatesOptionSelected=false&numberOfRooms=${rooms}&useRewardsPoints=true`
+  return {
+    skyscanner: `https://www.skyscanner.de/hotels/search?entity_id=27542903&checkin=${checkin}&checkout=${checkout}&adults=${adults}&rooms=${rooms}`,
+    google: `https://www.google.com/travel/search?q=${encodeURIComponent(city)}`,
+    hilton: `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0&room1ChildAges=&room1AdultAges=` ,
+    hyatt: `https://www.hyatt.com/search/hotels/de-DE/${encodeURIComponent(city)}?checkinDate=${checkin}&checkoutDate=${checkout}&rooms=${rooms}&adults=${adults}&kids=0&rate=Standard&rateFilter=woh`,
+    gha: `https://de.ghadiscovery.com/search/hotels?keyword=${encodeURIComponent(city)}&clearBookingParams=1&clearHotelSearchParams=1`,
+    accor: `https://all.accor.com/booking/en/accor/hotels/${city.toLowerCase()}?compositions=${adults}${rooms > 1 ? `,${rooms}` : ''}&stayplus=true&snu=false&hideWDR=false&productCode=null&accessibleRooms=false&hideHotelDetails=true&sortBy=PRICE_LOW_TO_HIGH&filters=eyJhdmFpbGFiaWxpdHkiOlsiQVZBSUxBQkxFIl0sImxveWFsdHkiOlsiTUVNQkVSX1JBVEUiLCJQQVJUSUNJUEFUSU5HX0hPVEVMIl19`,
+    bilt: `https://www.biltrewards.com/rewards/travel/hotel-search?checkInDate=${checkin}&checkOutDate=${checkout}&numGuestAdults=${adults}&childrenAges=&numRooms=${rooms}`,
+    wyndham: `https://www.wyndhamhotels.com/de-de/hotels/${encodeURIComponent(city.toLowerCase())}?brand_id=ALL&checkInDate=${checkin}&checkOutDate=${checkout}&useWRPoints=true&children=0&adults=${adults}&rooms=${rooms}`,
+    choice: `https://www.choicehotels.com/de-de/${encodeURIComponent(city.toLowerCase())}/hotels?checkInDate=${checkin}&checkOutDate=${checkout}`,
+    rooms: `https://rooms.aero/search?city=${encodeURIComponent(city)}&start=${checkin}&end=${checkout}&nights=${nights}`,
+    marriott: marriottUrl,
+    ihg: `https://www.ihg.com/hotels/us/en/find-hotels/hotel-search?qDest=${encodeURIComponent(city)}&qPt=POINTS&qCiD=${checkInIHG.day}&qCoD=${checkOutIHG.day}&qCiMy=${checkInIHG.monthYear}&qCoMy=${checkOutIHG.monthYear}&qAdlt=${adults}&qChld=0&qRms=${rooms}&qRtP=IVANI&qAkamaiCC=PL&srb_u=1&qExpndSrch=false&qSrt=sRT&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.sp.re.vx.nd.sx.we.lx.rn.sn.sn.sn.sn.sn.nu.ge&qWch=0&qSmP=0&qRad=30&qRdU=mi&setPMCookies=true&qpMbw=0&qErm=false&qpMn=1&qLoSe=false`
+  }
+}
+
+function handleHotelButtonClick(e) {
+  e.preventDefault()
+  const btn = e.currentTarget
+  const section = btn.closest('.section-container')
+  const brand =
+    btn.classList.contains('google-hotels-btn') ? 'google' :
+    btn.classList.contains('hyatt-btn') ? 'hyatt' :
+    btn.classList.contains('hilton-btn') ? 'hilton' :
+    btn.classList.contains('marriott-btn') ? 'marriott' :
+    btn.classList.contains('ihg-btn') ? 'ihg' :
+    btn.classList.contains('accor-btn') ? 'accor' :
+    btn.classList.contains('wyndham-btn') ? 'wyndham' :
+    btn.classList.contains('choice-btn') ? 'choice' :
+    btn.classList.contains('gha-btn') ? 'gha' :
+    btn.classList.contains('bilt-btn') ? 'bilt' :
+    btn.classList.contains('rooms-btn') ? 'rooms' : null
+  if (!brand || !section) return
+  let map = getHotelLinkMap()
+  if (!map[brand]) {
+    const values = gatherHotelInputsFromSection(section)
+    if (!values) return
+    map = buildHotelUrlMap(values)
+    setHotelLinkMap(map)
+  }
+  const url = map[brand]
+  if (url) window.open(url, '_blank')
 }
 
 function enhanceButtonsUI(root = document) {
