@@ -1048,10 +1048,10 @@ function addBenefitsystemsButtonStyles() {
   .hotel-controls .ctrl-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
   /* Flight controls */
-  .flight-controls { display: grid; grid-template-columns: 1.1fr 1.1fr 1fr 1fr 1fr 0.8fr 1.2fr; gap: var(--gap); align-items: end; margin-top: 6px; }
+  .flight-controls { display: grid; grid-template-columns: minmax(100px, .7fr) minmax(100px, .7fr) minmax(140px, 1fr) minmax(140px, 1fr) minmax(130px, 1fr) minmax(80px, .5fr) minmax(150px, .9fr); gap: 8px; align-items: end; margin-top: 6px; }
   .flight-controls .ctrl-group { display: flex; flex-direction: column; gap: 4px; }
   .flight-controls .ctrl-label { font-size: 11px; color: var(--muted); font-weight: 600; }
-  .flight-controls input, .flight-controls select { height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
+  .flight-controls input, .flight-controls select { height: 30px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
   .flight-controls button { height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ring); background: var(--ring); color: #fff; font-weight: 600; cursor: pointer; }
   .flight-controls button:hover { filter: brightness(1.05); }
 
