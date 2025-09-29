@@ -152,13 +152,13 @@ addBenefitsystemsButtonStyles()
     let restoreUrlBtn = null
 
     fareClassBtn = createLinkButton("Fare Class", "fare-class-btn", urls.fareClass, createIcon("ticket"))
-    flightConnectionsBtn = createLinkButton(
-      "Connections",
-      "flight-connections-btn",
-      urls.flightconnections,
-      createIcon("network")
-    )
-    turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
+      flightConnectionsBtn = createLinkButton(
+        "Connections",
+        "flight-connections-btn",
+        urls.flightconnections,
+        createIcon("network")
+      )
+      turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
 
     // Add restore button if URL has changed
     if (window.location.href !== window.originalGoogleFlightsUrl) {
@@ -194,9 +194,9 @@ addBenefitsystemsButtonStyles()
     flightRowContainer2.appendChild(awardToolAllBtn)
 
     // Add additional flight-specific buttons to second row
-    flightRowContainer2.appendChild(fareClassBtn)
-    flightRowContainer2.appendChild(flightConnectionsBtn)
-    flightRowContainer2.appendChild(turbliBtn)
+      flightRowContainer2.appendChild(fareClassBtn)
+      flightRowContainer2.appendChild(flightConnectionsBtn)
+      flightRowContainer2.appendChild(turbliBtn)
 
     if (restoreUrlBtn) {
       flightRowContainer2.appendChild(restoreUrlBtn)
@@ -394,40 +394,8 @@ addBenefitsystemsButtonStyles()
       const adults = parseInt(flightControls.querySelector('.flight-adults').value || '1', 10)
       if (!from || !to || !depart) return
 
-      const skyscannerCabin = cabin.replace(/\s+/g, '')
-      const skyscannerDate = depart.replace(/-/g, '')
-      const retDate = ret ? ret.replace(/-/g, '') : ''
-
-      // Update flight buttons under the Flight section
-      const flightSectionEl = flightControls.closest('.section-container')
-      const container = flightSectionEl ? flightSectionEl.querySelector('.custom-flight-buttons') : null
-      if (container) {
-        container.querySelectorAll('a,button').forEach(btn => {
-          const text = (btn.textContent || '').toLowerCase()
-          let url = null
-          if (text.includes('flights')) {
-            url = `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+"+to+"+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=en-US&curr=USD&gl=US`
-          } else if (text.includes('kayak')) {
-            url = `https://www.kayak.com/flights/${from}-${to}/${depart}${ret ? '/' + ret : ''}/${adults}adults?sort=bestflight_a`
-          } else if (text.includes('skyscanner') || text === 'skys') {
-            url = `https://www.skyscanner.com/transport/flights/${from.toLowerCase()}/${to.toLowerCase()}/${skyscannerDate}/${ret ? retDate : ''}?adults=${adults}&cabinclass=${skyscannerCabin}&currency=USD&locale=en-US&market=US&preferdirects=false`
-          } else if (text.includes('seatsaero') || text.includes('seats')) {
-            url = `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days=true&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`
-          } else if (text.includes('pointme') || text.includes('point me')) {
-            url = `https://point.me/results?departureCity=${from}&departureIata=${from}&arrivalCity=${to}&arrivalIata=${to}&legType=${ret ? 'roundtrip' : 'oneway'}&classOfService=${cabin}&passengers=${adults}&departureDate=${depart}&arrivalDate=${ret || ''}`
-          }
-          if (url) {
-            if (btn.tagName === 'A') {
-              btn.href = url
-              btn.target = '_blank'
-              btn.onclick = null
-            } else {
-              btn.onclick = () => window.open(url, '_blank')
-            }
-            btn.title = (btn.textContent || '').trim()
-          }
-        })
-      }
+      const map = buildFlightUrlMap({ from, to, depart, ret, cabin, adults })
+      setFlightLinkMap(map)
     }
     flightControls.querySelector('.flight-generate').addEventListener('click', genFlights)
 
@@ -442,7 +410,7 @@ addBenefitsystemsButtonStyles()
     if (hotelButtonsContainer && hotelControls) {
       hotelSection.insertBefore(hotelControls, hotelButtonsContainer)
     }
-
+    
     flightButtons.forEach(btn => flightSection.querySelector('.custom-flight-buttons').appendChild(btn))
     hotelButtons.forEach(btn => hotelSection.querySelector('.custom-flight-buttons').appendChild(btn))
     benefitsystemsButtons.forEach(btn => benefitsystemsSection.querySelector('.custom-flight-buttons').appendChild(btn))
@@ -526,7 +494,7 @@ addBenefitsystemsButtonStyles()
     const skyscannerBtn = createLinkButton("Skyscanner", "skyscanner-btn", urls.skyscanner, createIcon("search"))
 
       // Create new flight buttons for second row on results page
-    const rovemilesBtn = createLinkButton("Rovemiles", "point-me-btn", urls.rovemiles, createIcon("plane"))
+      const rovemilesBtn = createLinkButton("Rovemiles", "point-me-btn", urls.rovemiles, createIcon("plane"))
     const faresViewerBtn = createLinkButton("Seats.aero Fares", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
       const saSeatmapBtn = createButton(
         "Seatmap",
@@ -550,13 +518,13 @@ addBenefitsystemsButtonStyles()
       let restoreUrlBtn = null
 
       fareClassBtn = createLinkButton("Fare Class", "fare-class-btn", urls.fareClass, createIcon("ticket"))
-      flightConnectionsBtn = createLinkButton(
-        "Connections",
-        "flight-connections-btn",
-        urls.flightconnections,
-        createIcon("network")
-      )
-      turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
+        flightConnectionsBtn = createLinkButton(
+          "Connections",
+          "flight-connections-btn",
+          urls.flightconnections,
+          createIcon("network")
+        )
+        turbliBtn = createLinkButton("Turbli", "turbli-btn", urls.turbli, createIcon("cloud-lightning"))
 
       // Add restore button if URL has changed
       if (window.location.href !== window.originalGoogleFlightsUrl) {
@@ -591,9 +559,9 @@ addBenefitsystemsButtonStyles()
       flightRowContainer2.appendChild(awardToolAllBtn)
 
       // Add additional flight-specific buttons to second row
-      flightRowContainer2.appendChild(fareClassBtn)
-      flightRowContainer2.appendChild(flightConnectionsBtn)
-      flightRowContainer2.appendChild(turbliBtn)
+        flightRowContainer2.appendChild(fareClassBtn)
+        flightRowContainer2.appendChild(flightConnectionsBtn)
+        flightRowContainer2.appendChild(turbliBtn)
 
       if (restoreUrlBtn) {
         flightRowContainer2.appendChild(restoreUrlBtn)
@@ -818,7 +786,7 @@ addBenefitsystemsButtonStyles()
       if (hotelButtonsContainer && hotelControls) {
         hotelSection.insertBefore(hotelControls, hotelButtonsContainer)
       }
-
+      
       // Add sections to main container
       mainContainer.appendChild(flightSection)
       mainContainer.appendChild(hotelSection)
@@ -891,7 +859,7 @@ function addBenefitsystemsButtonStyles() {
     border-radius: var(--radius);
     padding: 14px;
     box-shadow: var(--shadow);
-    display: flex;
+      display: flex;
     flex-direction: column;
     gap: 10px;
   }
@@ -963,7 +931,7 @@ function addBenefitsystemsButtonStyles() {
     letter-spacing: .1px;
     text-decoration: none;
     text-align: center;
-    cursor: pointer;
+      cursor: pointer;
     box-shadow: 0 1px 0 rgba(0,0,0,.02);
     transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, background 140ms ease, opacity 120ms;
     outline: none;
@@ -1080,7 +1048,7 @@ function addBenefitsystemsButtonStyles() {
   .hotel-controls .ctrl-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
   /* Flight controls */
-  .flight-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--gap); align-items: end; margin-top: 6px; }
+  .flight-controls { display: grid; grid-template-columns: 1.1fr 1.1fr 1fr 1fr 1fr 0.8fr 1.2fr; gap: var(--gap); align-items: end; margin-top: 6px; }
   .flight-controls .ctrl-group { display: flex; flex-direction: column; gap: 4px; }
   .flight-controls .ctrl-label { font-size: 11px; color: var(--muted); font-weight: 600; }
   .flight-controls input, .flight-controls select { height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
@@ -1144,8 +1112,15 @@ function handleFlightButtonClick(e) {
   if (!section) return
   let map = getFlightLinkMap()
   if (!map || Object.keys(map).length === 0) {
-    const values = gatherFlightInputsFromSection(section)
-    if (!values) return
+    let values = gatherFlightInputsFromSection(section)
+    if (!values) {
+      // Prompt only the missing minimal fields
+      const from = prompt('From (IATA):')
+      const to = prompt('To (IATA):')
+      const depart = prompt('Depart (YYYY-MM-DD):')
+      if (!from || !to || !depart) return
+      values = { from: from.trim().toUpperCase(), to: to.trim().toUpperCase(), depart, ret: '', cabin: 'economy', adults: 1 }
+    }
     map = buildFlightUrlMap(values)
     setFlightLinkMap(map)
   }
@@ -1245,8 +1220,15 @@ function handleHotelButtonClick(e) {
   if (!brand || !section) return
   let map = getHotelLinkMap()
   if (!map[brand]) {
-    const values = gatherHotelInputsFromSection(section)
-    if (!values) return
+    let values = gatherHotelInputsFromSection(section)
+    if (!values) {
+      // Prompt only for missing fields
+      const city = prompt('City:')
+      const checkin = prompt('Check-In (YYYY-MM-DD):')
+      const checkout = prompt('Check-Out (YYYY-MM-DD):')
+      if (!city || !checkin || !checkout) return
+      values = { city: city.trim(), checkin, checkout, adults: 2, rooms: 1 }
+    }
     map = buildHotelUrlMap(values)
     setHotelLinkMap(map)
   }
