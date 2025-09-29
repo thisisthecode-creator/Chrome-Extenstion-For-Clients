@@ -300,15 +300,6 @@ addBenefitsystemsButtonStyles()
       createIcon("globe"),
     )
 
-    const biltBtn = createButton(
-      "Bilt",
-      "bilt-btn",
-      () => {
-        promptAndOpenBilt(urlParams)
-      },
-      createIcon("credit-card"),
-    )
-
     const roomsBtn = createButton(
       "Rooms",
       "rooms-btn",
@@ -337,7 +328,7 @@ addBenefitsystemsButtonStyles()
     hotelRowContainer2.appendChild(bestWesternBtn)
     hotelRowContainer2.appendChild(radissonBtn)
     hotelRowContainer2.appendChild(ghaBtn)
-    hotelRowContainer2.appendChild(biltBtn)
+    hotelRowContainer2.appendChild(roomsBtn)
 
     // Create benefitsystems row container
     const benefitsystemsRowContainer1 = document.createElement("div")
@@ -791,15 +782,6 @@ addBenefitsystemsButtonStyles()
         createIcon("globe"),
       )
 
-      const biltBtn = createButton(
-        "Bilt",
-        "bilt-btn",
-        () => {
-          promptAndOpenBilt(urlParams)
-        },
-        createIcon("credit-card"),
-      )
-
       const roomsBtn = createButton(
         "Rooms",
         "rooms-btn",
@@ -829,7 +811,7 @@ addBenefitsystemsButtonStyles()
       hotelRowContainer2.appendChild(bestWesternBtn)
       hotelRowContainer2.appendChild(radissonBtn)
       hotelRowContainer2.appendChild(ghaBtn)
-      hotelRowContainer2.appendChild(biltBtn)
+      hotelRowContainer2.appendChild(roomsBtn)
 
       // Create benefitsystems row container
       const benefitsystemsRowContainer1 = document.createElement("div")
