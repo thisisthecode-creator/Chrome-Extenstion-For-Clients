@@ -125,11 +125,11 @@ addBenefitsystemsButtonStyles()
     const airCanadaBtn = createLinkButton("AirCanada", "air-canada-btn", urls.airCanada, createIcon("flag"))
     const pointMeBtn = createLinkButton("PointMe", "point-me-btn", urls.pointme, createIcon("compass"))
     const kayakBtn = createLinkButton("Kayak", "kayak-btn", urls.kayak, createIcon("sailboat"))
-    const skyscannerBtn = createLinkButton("Skys", "skyscanner-btn", urls.skyscanner, createIcon("search"))
+    const skyscannerBtn = createLinkButton("Skyscanner", "skyscanner-btn", urls.skyscanner, createIcon("search"))
 
     // Create new flight buttons for second row
     const rovemilesBtn = createLinkButton("Rovemiles", "point-me-btn", urls.rovemiles, createIcon("plane"))
-    const faresViewerBtn = createLinkButton("Fares", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
+    const faresViewerBtn = createLinkButton("Seats.aero Fares", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
     const saSeatmapBtn = createButton(
       "Seatmap",
       "seats-aero-seatmap-btn",
@@ -152,7 +152,7 @@ addBenefitsystemsButtonStyles()
     let restoreUrlBtn = null
 
     if (hasRequiredParams) {
-      fareClassBtn = createLinkButton("FareClass", "fare-class-btn", urls.fareClass, createIcon("ticket"))
+      fareClassBtn = createLinkButton("Fare Class", "fare-class-btn", urls.fareClass, createIcon("ticket"))
       flightConnectionsBtn = createLinkButton(
         "Connections",
         "flight-connections-btn",
@@ -463,7 +463,7 @@ addBenefitsystemsButtonStyles()
         },
         createIcon("plane"),
       )
-      const pointsYeahBtn = createLinkButton("PY", "points-yeah-btn", urls.pointsYeah, createIcon("star"))
+    const pointsYeahBtn = createLinkButton("PointsYeah", "points-yeah-btn", urls.pointsYeah, createIcon("star"))
       const pointsYeahSeatmapBtn = createButton(
         "PY Seatmap",
         "points-yeah-seatmap-btn",
@@ -477,11 +477,11 @@ addBenefitsystemsButtonStyles()
       const airCanadaBtn = createLinkButton("AirCanada", "air-canada-btn", urls.airCanada, createIcon("flag"))
       const pointMeBtn = createLinkButton("PointMe", "point-me-btn", urls.pointme, createIcon("compass"))
       const kayakBtn = createLinkButton("Kayak", "kayak-btn", urls.kayak, createIcon("sailboat"))
-      const skyscannerBtn = createLinkButton("Skys", "skyscanner-btn", urls.skyscanner, createIcon("search"))
+    const skyscannerBtn = createLinkButton("Skyscanner", "skyscanner-btn", urls.skyscanner, createIcon("search"))
 
       // Create new flight buttons for second row on results page
-      const rovemilesBtn = createLinkButton("Rovemiles", "point-me-btn", urls.rovemiles, createIcon("plane"))
-      const faresViewerBtn = createLinkButton("Fares", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
+    const rovemilesBtn = createLinkButton("Rovemiles", "point-me-btn", urls.rovemiles, createIcon("plane"))
+    const faresViewerBtn = createLinkButton("Seats.aero Fares", "seats-aero-btn", urls.seatsAeroFares, createIcon("tag"))
       const saSeatmapBtn = createButton(
         "Seatmap",
         "seats-aero-seatmap-btn",
@@ -504,7 +504,7 @@ addBenefitsystemsButtonStyles()
       let restoreUrlBtn = null
 
       if (hasRequiredParams) {
-        fareClassBtn = createLinkButton("FareClass", "fare-class-btn", urls.fareClass, createIcon("ticket"))
+        fareClassBtn = createLinkButton("Fare Class", "fare-class-btn", urls.fareClass, createIcon("ticket"))
         flightConnectionsBtn = createLinkButton(
           "Connections",
           "flight-connections-btn",
@@ -680,9 +680,10 @@ addBenefitsystemsButtonStyles()
       hotelRowContainer1.appendChild(choiceBtn)
       hotelRowContainer1.appendChild(wyndhamBtn)
       hotelRowContainer1.appendChild(marriottBtn)
+    
+      // Add hotel buttons to second row
       hotelRowContainer1.appendChild(ihgBtn)
       hotelRowContainer1.appendChild(accorBtn)
-      // Add hotel buttons to second row
       hotelRowContainer2.appendChild(meliaBtn)
       hotelRowContainer2.appendChild(bestWesternBtn)
       hotelRowContainer2.appendChild(radissonBtn)
