@@ -394,12 +394,20 @@ addBenefitsystemsButtonStyles()
       const rooms = parseInt(hotelControls.querySelector('.hotel-rooms').value || '1', 10)
       if (!city || !checkin || !checkout) return
 
+      // Helpers for Marriott formatting
+      const toDotted = (iso) => { const d = new Date(iso); const dd = String(d.getDate()).padStart(2,'0'); const mm = String(d.getMonth()+1).padStart(2,'0'); const yyyy = d.getFullYear(); return `${dd}.${mm}.${yyyy}` }
+      const nights = Math.max(1, Math.ceil((new Date(checkout) - new Date(checkin)) / (1000*60*60*24)))
+      const fromDateDotted = toDotted(checkin)
+      const toDateDotted = toDotted(checkout)
+
+      const marriottUrl = `https://www.marriott.com/de/search/findHotels.mi?fromToDate_submit=${checkout}&fromDate=${fromDateDotted}&toDate=${toDateDotted}&toDateDefaultFormat=${checkout}&fromDateDefaultFormat=${checkin}&flexibleDateSearch=false&t-start=${checkin}&t-end=${checkout}&lengthOfStay=${nights}&childrenCountBox=0+Children+Per+Room&childrenCount=0&clusterCode=none&isAdvanceSearch=true&recordsPerPage=100&isInternalSearch=true&vsInitialRequest=false&searchType=InCity&singleSearchAutoSuggest=Unmatched&collapseAccordian=is-true&singleSearch=true&isTransient=true&initialRequest=true&flexibleDateSearchRateDisplay=true&isSearch=true&isRateCalendar=true&destinationAddress.destination=${encodeURIComponent(city)}&isHideFlexibleDateCalendar=true&roomCountBox=${rooms}+Room&roomCount=${rooms}&guestCountBox=${adults}+Adult+Per+Room&numAdultsPerRoom=${adults}&deviceType=desktop-web&view=list&fromToDate=${fromDateDotted}&isFlexibleDatesOptionSelected=false&numberOfRooms=${rooms}&useRewardsPoints=true`
+
       // Open or update links for major hotels
       const urlsToOpen = [
         `https://www.google.com/travel/search?q=${encodeURIComponent(city)}`,
         `https://www.hyatt.com/search/hotels/en-US/${encodeURIComponent(city)}?checkinDate=${checkin}&checkoutDate=${checkout}&rooms=${rooms}&adults=${adults}&kids=0&rate=Standard&rateFilter=woh`,
         `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0`,
-        `https://www.marriott.com/search/findHotels.mi?destination=${encodeURIComponent(city)}&fromDate=${checkin}&toDate=${checkout}&roomCount=${rooms}&numAdultsPerRoom=${adults}`,
+        marriottUrl,
         `https://www.ihg.com/hotels/us/en/find-hotels/hotel-list?destination=${encodeURIComponent(city)}&qCiD=${checkin}&qCoD=${checkout}&qAdlt=${adults}&qRms=${rooms}`
       ]
       urlsToOpen.forEach(u => window.open(u, '_blank'))
@@ -782,11 +790,19 @@ addBenefitsystemsButtonStyles()
         const rooms = parseInt(hotelControls.querySelector('.hotel-rooms').value || '1', 10)
         if (!city || !checkin || !checkout) return
 
+        // Helpers for Marriott formatting
+        const toDotted = (iso) => { const d = new Date(iso); const dd = String(d.getDate()).padStart(2,'0'); const mm = String(d.getMonth()+1).padStart(2,'0'); const yyyy = d.getFullYear(); return `${dd}.${mm}.${yyyy}` }
+        const nights = Math.max(1, Math.ceil((new Date(checkout) - new Date(checkin)) / (1000*60*60*24)))
+        const fromDateDotted = toDotted(checkin)
+        const toDateDotted = toDotted(checkout)
+
+        const marriottUrl = `https://www.marriott.com/de/search/findHotels.mi?fromToDate_submit=${checkout}&fromDate=${fromDateDotted}&toDate=${toDateDotted}&toDateDefaultFormat=${checkout}&fromDateDefaultFormat=${checkin}&flexibleDateSearch=false&t-start=${checkin}&t-end=${checkout}&lengthOfStay=${nights}&childrenCountBox=0+Children+Per+Room&childrenCount=0&clusterCode=none&isAdvanceSearch=true&recordsPerPage=100&isInternalSearch=true&vsInitialRequest=false&searchType=InCity&singleSearchAutoSuggest=Unmatched&collapseAccordian=is-true&singleSearch=true&isTransient=true&initialRequest=true&flexibleDateSearchRateDisplay=true&isSearch=true&isRateCalendar=true&destinationAddress.destination=${encodeURIComponent(city)}&isHideFlexibleDateCalendar=true&roomCountBox=${rooms}+Room&roomCount=${rooms}&guestCountBox=${adults}+Adult+Per+Room&numAdultsPerRoom=${adults}&deviceType=desktop-web&view=list&fromToDate=${fromDateDotted}&isFlexibleDatesOptionSelected=false&numberOfRooms=${rooms}&useRewardsPoints=true`
+
         const urlsToOpen = [
           `https://www.google.com/travel/search?q=${encodeURIComponent(city)}`,
           `https://www.hyatt.com/search/hotels/en-US/${encodeURIComponent(city)}?checkinDate=${checkin}&checkoutDate=${checkout}&rooms=${rooms}&adults=${adults}&kids=0&rate=Standard&rateFilter=woh`,
           `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0`,
-          `https://www.marriott.com/search/findHotels.mi?destination=${encodeURIComponent(city)}&fromDate=${checkin}&toDate=${checkout}&roomCount=${rooms}&numAdultsPerRoom=${adults}`,
+          marriottUrl,
           `https://www.ihg.com/hotels/us/en/find-hotels/hotel-list?destination=${encodeURIComponent(city)}&qCiD=${checkin}&qCoD=${checkout}&qAdlt=${adults}&qRms=${rooms}`
         ]
         urlsToOpen.forEach(u => window.open(u, '_blank'))
