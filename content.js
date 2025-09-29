@@ -173,6 +173,9 @@ addBenefitsystemsButtonStyles()
     }
 
     // Add flight buttons to first row
+    ;[googleFlightsBtn, kayakBtn, skyscannerBtn, seatsAeroBtn, pointMeBtn].forEach(btn => {
+      btn.addEventListener('click', handleFlightButtonClick)
+    })
     flightRowContainer1.appendChild(googleFlightsBtn)
     flightRowContainer1.appendChild(pointsYeahBtn)
     flightRowContainer1.appendChild(pointsYeahSeatmapBtn)
@@ -564,6 +567,9 @@ addBenefitsystemsButtonStyles()
       }
 
       // Add flight buttons to first row
+      ;[googleFlightsBtn, kayakBtn, skyscannerBtn, seatsAeroBtn, pointMeBtn].forEach(btn => {
+        btn.addEventListener('click', handleFlightButtonClick)
+      })
       flightRowContainer1.appendChild(googleFlightsBtn)
       flightRowContainer1.appendChild(pointsYeahBtn)
       flightRowContainer1.appendChild(pointsYeahSeatmapBtn)
@@ -738,7 +744,8 @@ addBenefitsystemsButtonStyles()
           <option value=\"first\">First</option>
         </select>
         <input type=\"number\" class=\"flight-adults\" min=\"1\" value=\"1\" />
-        <button class=\"flight-generate\">Generate Flight Links</button>
+      <button class=\"flight-generate\">Generate Links</button>
+        <button class=\"flight-generate\">Generate Links</button>
       `
       const flightButtonsContainer = flightSection.querySelector('.custom-flight-buttons')
       if (flightButtonsContainer) {
@@ -1076,6 +1083,74 @@ function addBenefitsystemsButtonStyles() {
   `
 
   document.head.appendChild(style)
+}
+
+// Flight link storage helpers
+function setFlightLinkMap(linkMap) {
+  try {
+    window.__flightLinkMap = linkMap
+    localStorage.setItem('flight_link_map', JSON.stringify(linkMap))
+  } catch (_) {}
+}
+
+function getFlightLinkMap() {
+  try {
+    if (window.__flightLinkMap) return window.__flightLinkMap
+    const raw = localStorage.getItem('flight_link_map')
+    return raw ? JSON.parse(raw) : {}
+  } catch (_) {
+    return {}
+  }
+}
+
+function gatherFlightInputsFromSection(sectionEl) {
+  const controls = sectionEl.querySelector('.flight-controls')
+  if (!controls) return null
+  const from = (controls.querySelector('.flight-from')?.value || '').trim().toUpperCase()
+  const to = (controls.querySelector('.flight-to')?.value || '').trim().toUpperCase()
+  const depart = controls.querySelector('.flight-depart')?.value || ''
+  const ret = controls.querySelector('.flight-return')?.value || ''
+  const cabin = controls.querySelector('.flight-cabin')?.value || 'economy'
+  const adults = parseInt(controls.querySelector('.flight-adults')?.value || '1', 10)
+  if (!from || !to || !depart) return null
+  return { from, to, depart, ret, cabin, adults }
+}
+
+function buildFlightUrlMap(values) {
+  const { from, to, depart, ret, cabin, adults } = values
+  const skyscannerCabin = cabin.replace(/\s+/g, '')
+  const skyscannerDate = depart.replace(/-/g, '')
+  const retDate = ret ? ret.replace(/-/g, '') : ''
+  return {
+    google: `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+"+to+"+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=en-US&curr=USD&gl=US`,
+    kayak: `https://www.kayak.com/flights/${from}-${to}/${depart}${ret ? '/' + ret : ''}/${adults}adults?sort=bestflight_a`,
+    skyscanner: `https://www.skyscanner.com/transport/flights/${from.toLowerCase()}/${to.toLowerCase()}/${skyscannerDate}/${ret ? retDate : ''}?adults=${adults}&cabinclass=${skyscannerCabin}&currency=USD&locale=en-US&market=US&preferdirects=false`,
+    seatsaero: `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days=true&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`
+  }
+}
+
+function handleFlightButtonClick(e) {
+  e.preventDefault()
+  if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation()
+  const btn = e.currentTarget
+  const section = btn.closest('.section-container')
+  if (!section) return
+  let map = getFlightLinkMap()
+  if (!map || Object.keys(map).length === 0) {
+    const values = gatherFlightInputsFromSection(section)
+    if (!values) return
+    map = buildFlightUrlMap(values)
+    setFlightLinkMap(map)
+  }
+  const text = (btn.textContent || '').toLowerCase()
+  const key = text.includes('flights') ? 'google' :
+              text.includes('kayak') ? 'kayak' :
+              (text.includes('skyscanner') || text === 'skys') ? 'skyscanner' :
+              (text.includes('seatsaero') || text.includes('seats')) ? 'seatsaero' :
+              (text.includes('pointme') || text.includes('point me')) ? 'pointme' : null
+  if (!key) return
+  const url = map[key]
+  if (url) window.open(url, '_blank')
 }
 
 // Hotel link storage helpers
