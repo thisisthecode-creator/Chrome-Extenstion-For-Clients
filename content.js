@@ -346,7 +346,7 @@ addBenefitsystemsButtonStyles()
     // Create benefitsystems section header
     const benefitsystemsSectionHeader = document.createElement("div")
     benefitsystemsSectionHeader.className = "section-header"
-    benefitsystemsSectionHeader.textContent = "Benefitsystems Tools"
+    benefitsystemsSectionHeader.textContent = "Benefit Systems"
 
     // Create single Benefitsystems button
     const benefitsystemsAllBtn = createLinkButton(
@@ -391,7 +391,7 @@ addBenefitsystemsButtonStyles()
     // Convert existing sections to new format
     const flightSection = createSectionContainer('Flight Search')
     const hotelSection = createSectionContainer('Hotel Search')
-    const benefitsystemsSection = createSectionContainer('Benefitsystems Tools')
+    const benefitsystemsSection = createSectionContainer('Benefit Systems')
     
     // Move buttons to new sections
     const flightButtons = flightSectionContainer.querySelectorAll('.custom-flight-buttons > *')
@@ -696,11 +696,11 @@ addBenefitsystemsButtonStyles()
       // Create benefitsystems section header
       const benefitsystemsSectionHeader = document.createElement("div")
       benefitsystemsSectionHeader.className = "section-header"
-      benefitsystemsSectionHeader.textContent = "Benefitsystems Tools"
+      benefitsystemsSectionHeader.textContent = "Benefit Systems"
 
       // Create single Benefitsystems button
       const benefitsystemsAllBtn = createLinkButton(
-        "Benefitsystems",
+        "Tools",
         "benefitsystems-all-btn",
         "https://tools.benefitsystems.io",
         createIcon("globe")
@@ -741,7 +741,7 @@ addBenefitsystemsButtonStyles()
       // Convert existing sections to new format
       const flightSection = createSectionContainer('Flight Search')
       const hotelSection = createSectionContainer('Hotel Search')
-      const benefitsystemsSection = createSectionContainer('Benefitsystems Tools')
+    const benefitsystemsSection = createSectionContainer('Benefit Systems')
       
       // Move buttons to new sections
       const flightButtons = flightSectionContainer.querySelectorAll('.custom-flight-buttons > *')
@@ -790,57 +790,65 @@ function addBenefitsystemsButtonStyles() {
   const style = document.createElement("style")
   style.id = "custom-button-styles"
   style.textContent = `
-    /* Basic button styling - no custom colors */
+    /* Container layout: 7 columns, 2 rows fixed */
+    .custom-flight-buttons {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-auto-rows: 40px;
+      gap: 8px;
+    }
+
+    /* Modern button styling */
     .custom-flight-buttons a, .custom-flight-buttons button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 4px 8px;
-      margin: 2px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background: #f8f9fa;
-      color: #333;
+      padding: 8px 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #111827;
       text-decoration: none;
       font-size: 12px;
+      line-height: 1;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, border-color 120ms ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
-    
+
     .custom-flight-buttons a:hover, .custom-flight-buttons button:hover {
-      background: #e9ecef;
-      border-color: #adb5bd;
+      background: #f9fafb;
+      border-color: #d1d5db;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      transform: translateY(-1px);
     }
-    
+
     .custom-flight-buttons a:active, .custom-flight-buttons button:active {
-      background: #dee2e6;
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
-    
+
     .button-icon {
-      margin-right: 4px;
+      margin-right: 6px;
       display: flex;
       align-items: center;
     }
-    
-    /* Section header styling - basic */
+
+    /* Section header styling */
     .section-header {
-      font-weight: bold;
-      padding: 8px 12px;
-      margin-top: 10px;
-      margin-bottom: 5px;
-      border-radius: 4px;
-      background: #e9ecef;
-      color: #495057;
-      border: 1px solid #dee2e6;
+      font-weight: 700;
+      padding: 10px 12px;
+      margin-top: 12px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
     }
-    
-    /* Row separator styling */
-    .custom-flight-buttons.second-row {
-      border-top: 1px solid #dee2e6;
-      padding-top: 6px;
-      margin-top: 6px;
-    }
-    
+
+    /* Remove old second-row separator; grid handles spacing */
+    .custom-flight-buttons.second-row { border-top: 0; padding-top: 0; margin-top: 0; }
+
     /* Drag and Drop Styles */
     .edit-mode .custom-flight-buttons a,
     .edit-mode .custom-flight-buttons button {
@@ -1618,13 +1626,8 @@ function createLinkButton(text, className, url, icon) {
   button.className = className
   button.href = url
   button.target = "_blank" // Open in new tab
-  button.style.display = "inline-flex"
-  button.style.textDecoration = "none"
-  button.style.textAlign = "center"
   button.title = text // Add title attribute for tooltip on hover
-  button.style.width = "90px" // Ensure consistent width
-  button.style.height = "32px" // Ensure consistent height
-  button.style.boxSizing = "border-box" // Include padding in width/height calculation
+  // Let CSS control layout and sizing
 
   // Add event listener to prevent the current page URL from changing
   button.addEventListener("click", (e) => {
@@ -1648,9 +1651,7 @@ function createButton(text, className, clickHandler, icon) {
 
   button.className = className
   button.title = text // Add title attribute for tooltip on hover
-  button.style.width = "90px" // Ensure consistent width
-  button.style.height = "32px" // Ensure consistent height
-  button.style.boxSizing = "border-box" // Include padding in width/height calculation
+  // Let CSS control layout and sizing
   button.addEventListener("click", clickHandler)
   return button
 }
