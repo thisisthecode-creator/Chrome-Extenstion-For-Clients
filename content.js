@@ -402,6 +402,7 @@ addBenefitsystemsButtonStyles()
     mainContainer.appendChild(flightSection)
     mainContainer.appendChild(hotelSection)
     mainContainer.appendChild(benefitsystemsSection)
+    enhanceButtonsUI(mainContainer)
     
     // Add add section button
     const addSectionBtn = document.createElement('button')
@@ -749,6 +750,7 @@ addBenefitsystemsButtonStyles()
       mainContainer.appendChild(flightSection)
       mainContainer.appendChild(hotelSection)
       mainContainer.appendChild(benefitsystemsSection)
+      enhanceButtonsUI(mainContainer)
       
       // Add add section button
       const addSectionBtn = document.createElement('button')
@@ -783,283 +785,216 @@ function addBenefitsystemsButtonStyles() {
   const style = document.createElement("style")
   style.id = "custom-button-styles"
   style.textContent = `
-    /* Container layout: 7 columns, 2 rows fixed */
-    .custom-flight-buttons {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(140px, 1fr));
-      grid-auto-rows: 48px;
-      gap: 10px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #e2e8f0;
-    }
+  :root {
+    --card-bg: #ffffff;
+    --surface: #f8fafc;
+    --text: #0f172a;
+    --muted: #475569;
+    --border: #e2e8f0;
+    --ring: #2563eb;
+    --shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
+    --radius: 12px;
+    --gap: 12px;
+    --btn-h: 44px;
+    --btn-font: 13.5px;
+  }
 
-    /* Modern button styling */
-    .custom-flight-buttons a, .custom-flight-buttons button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 14px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      background: #ffffff;
-      color: #111827;
-      text-decoration: none;
-      font-size: 14px;
-      line-height: 1.1;
-      cursor: pointer;
-      transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, border-color 120ms ease;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-      white-space: nowrap;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --card-bg: #0b1220;
+      --surface: #111827;
+      --text: #e5e7eb;
+      --muted: #93a3b8;
+      --border: #1f2937;
+      --ring: #60a5fa;
+      --shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
+  }
 
-    .custom-flight-buttons a:hover, .custom-flight-buttons button:hover {
-      background: #f9fafb;
-      border-color: #d1d5db;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      transform: translateY(-1px);
-    }
+  /* Main container card */
+  .custom-flight-buttons-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .custom-flight-buttons a:active, .custom-flight-buttons button:active {
-      transform: translateY(0);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-    }
+  /* Section wrapper */
+  .section-container {
+    background: transparent;
+    border-radius: calc(var(--radius) - 2px);
+    padding: 6px 4px 2px 4px;
+    position: relative;
+  }
 
-    .button-icon {
-      margin-right: 6px;
-      display: flex;
-      align-items: center;
-    }
+  /* Section header – clean chip with subtle divider */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 2px 2px 8px 2px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
 
-    /* Section header styling - no background, just separator line below */
-    .section-header {
-      font-weight: 700;
-      padding: 6px 0;
-      margin-top: 12px;
-      margin-bottom: 8px;
-      color: #0f172a;
-      border-bottom: 1px solid #e2e8f0;
-    }
+  .section-title {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .2px;
+    color: var(--muted);
+    padding: 6px 10px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    user-select: none;
+  }
 
-    /* Remove old second-row separator; grid handles spacing */
-    .custom-flight-buttons.second-row { border-top: 0; padding-top: 0; margin-top: 0; }
+  /* Responsive, auto-fit grid */
+  .custom-flight-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-auto-rows: var(--btn-h);
+    gap: var(--gap);
+    margin-top: 8px;
+  }
 
-    /* Drag and Drop Styles */
-    .edit-mode .custom-flight-buttons a,
-    .edit-mode .custom-flight-buttons button {
-      cursor: move !important;
-      position: relative;
-    }
-    
-    .edit-mode .custom-flight-buttons a:hover,
-    .edit-mode .custom-flight-buttons button:hover {
-      background: #fff3cd !important;
-      border-color: #ffc107 !important;
-      transform: scale(1.05);
-    }
-    
-    .dragging {
-      opacity: 0.5;
-      transform: rotate(5deg);
-      z-index: 1000;
-    }
-    
-    .drag-over {
-      background: #d4edda !important;
-      border-color: #28a745 !important;
-      border-style: dashed;
-    }
-    
-    .edit-mode-toggle {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 10000;
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    
-    .edit-mode-toggle:hover {
-      background: #0056b3;
-    }
-    
-    .edit-mode-toggle.edit-active {
-      background: #28a745;
-    }
-    
-    .edit-mode-toggle.edit-active:hover {
-      background: #1e7e34;
-    }
-    
-    .save-button {
-      background: #28a745;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 11px;
-      margin-left: 5px;
-    }
-    
-    .save-button:hover {
-      background: #1e7e34;
-    }
-    
-    /* Section Management Styles */
-    .section-container {
-      position: relative;
-      margin-bottom: 15px;
-    }
-    
-    .section-header {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    
-    .section-title {
-      font-weight: bold;
-      padding: 8px 12px;
-      margin-top: 10px;
-      margin-bottom: 5px;
-      background: #f8f9fa;
-      border: 1px solid #dee2e6;
-      border-radius: 4px;
-      color: #495057;
-      cursor: pointer;
-      user-select: none;
-    }
-    
-    .edit-mode .section-title {
-      cursor: move;
-      background: #fff3cd;
-      border-color: #ffc107;
-    }
-    
-    .edit-mode .section-title:hover {
-      background: #ffeaa7;
-      transform: scale(1.02);
-    }
-    
-    .section-controls {
-      display: none;
-      position: absolute;
-      right: 5px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    
-    .edit-mode .section-controls {
-      display: flex;
-      gap: 2px;
-    }
-    
-    .section-btn {
-      background: #6c757d;
-      color: white;
-      border: none;
-      padding: 2px 6px;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 10px;
-      line-height: 1;
-    }
-    
-    .section-btn:hover {
-      background: #5a6268;
-    }
-    
-    .section-btn.add {
-      background: #28a745;
-    }
-    
-    .section-btn.add:hover {
-      background: #1e7e34;
-    }
-    
-    .section-btn.edit {
-      background: #007bff;
-    }
-    
-    .section-btn.edit:hover {
-      background: #0056b3;
-    }
-    
-    .section-btn.delete {
-      background: #dc3545;
-    }
-    
-    .section-btn.delete:hover {
-      background: #c82333;
-    }
-    
-    .section-input {
-      width: 100%;
-      padding: 6px 8px;
-      border: 2px solid #007bff;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: bold;
-      background: white;
-    }
-    
-    .section-input:focus {
-      outline: none;
-      border-color: #0056b3;
-      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-    }
-    
-    .add-section-btn {
-      background: #28a745;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-      margin: 10px 0;
-      display: none;
-    }
-    
-    .edit-mode .add-section-btn {
-      display: block;
-    }
-    
-    .add-section-btn:hover {
-      background: #1e7e34;
-    }
-    
-    .section-dragging {
-      opacity: 0.5;
-      transform: rotate(2deg);
-    }
-    
-    .section-drop-zone {
-      border: 2px dashed #28a745;
-      background: rgba(40, 167, 69, 0.1);
-      min-height: 50px;
-      margin: 10px 0;
-      border-radius: 4px;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      color: #28a745;
-      font-weight: bold;
-    }
-    
-    .section-drop-zone.active {
-      display: flex;
-    }
+  @media (max-width: 1040px) {
+    .custom-flight-buttons { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  }
+  @media (max-width: 760px) {
+    .custom-flight-buttons { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+    :root { --btn-h: 42px; --btn-font: 13px; }
+  }
+
+  /* Modern button/link base */
+  .custom-flight-buttons a,
+  .custom-flight-buttons button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: var(--btn-h);
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: linear-gradient(0deg, color-mix(in srgb, var(--surface) 78%, transparent), var(--card-bg));
+    color: var(--text);
+    font-size: var(--btn-font);
+    font-weight: 600;
+    letter-spacing: .1px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 1px 0 rgba(0,0,0,.02);
+    transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, background 140ms ease, opacity 120ms;
+    outline: none;
+    position: relative;
+  }
+
+  /* Hover/active */
+  .custom-flight-buttons a:hover,
+  .custom-flight-buttons button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 16px rgba(15,23,42,.06);
+    border-color: color-mix(in srgb, var(--border) 60%, var(--ring));
+    background: color-mix(in srgb, var(--card-bg) 86%, var(--surface));
+  }
+
+  .custom-flight-buttons a:active,
+  .custom-flight-buttons button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(15,23,42,.08) inset;
+  }
+
+  /* Focus ring (keyboard a11y) */
+  .custom-flight-buttons a:focus-visible,
+  .custom-flight-buttons button:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--ring) 66%, transparent);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--ring) 22%, transparent);
+  }
+
+  /* Icon sizing */
+  .button-icon {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+  }
+  .button-icon svg {
+    width: 18px; height: 18px;
+    opacity: .92;
+  }
+
+  /* Subtle grouping divider between multiple button rows (if used) */
+  .custom-flight-buttons + .custom-flight-buttons {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* Edit mode polish */
+  .edit-mode .custom-flight-buttons a,
+  .edit-mode .custom-flight-buttons button {
+    cursor: move !important;
+  }
+  .edit-mode .custom-flight-buttons a:hover,
+  .edit-mode .custom-flight-buttons button:hover {
+    background: color-mix(in srgb, var(--ring) 6%, var(--card-bg));
+    border-color: color-mix(in srgb, var(--ring) 30%, var(--border));
+    transform: scale(1.03);
+  }
+  .dragging { opacity: .6; transform: rotate(.8deg); z-index: 10; }
+  .drag-over { border-style: dashed; }
+
+  /* Edit toggle */
+  .edit-mode-toggle {
+    position: fixed; top: 12px; right: 12px; z-index: 10000;
+    background: var(--ring); color: #fff; border: 0;
+    padding: 10px 12px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; letter-spacing: .2px;
+    box-shadow: var(--shadow); cursor: pointer;
+  }
+  .edit-mode-toggle.edit-active { background: #22c55e; }
+
+  /* Section controls (only in edit) */
+  .section-controls { display: none; gap: 6px; }
+  .edit-mode .section-controls { display: flex; }
+  .section-btn {
+    background: var(--surface); color: var(--muted); border: 1px solid var(--border);
+    padding: 4px 8px; border-radius: 8px; font-size: 12px; cursor: pointer;
+  }
+  .section-btn:hover { color: var(--text); }
+
+  /* Add section button (only in edit) */
+  .add-section-btn {
+    align-self: flex-start;
+    background: #22c55e; color: #fff; border: 0; border-radius: 10px;
+    padding: 8px 12px; font-size: 12px; font-weight: 700; display: none;
+    box-shadow: 0 8px 18px rgba(34,197,94,.2);
+  }
+  .edit-mode .add-section-btn { display: inline-flex; }
+
   `
 
   document.head.appendChild(style)
+}
+
+function enhanceButtonsUI(root = document) {
+  const items = root.querySelectorAll('.custom-flight-buttons a, .custom-flight-buttons button')
+  items.forEach(el => {
+    el.setAttribute('tabindex', '0')
+    if (!el.getAttribute('aria-label')) {
+      const label = (el.textContent || '').trim()
+      if (label) el.setAttribute('aria-label', label)
+    }
+    el.style.whiteSpace = 'nowrap'
+    el.style.textOverflow = 'ellipsis'
+    el.style.overflow = 'hidden'
+  })
 }
 
 // Drag and Drop functionality
