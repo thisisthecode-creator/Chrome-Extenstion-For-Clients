@@ -372,6 +372,40 @@ addBenefitsystemsButtonStyles()
     const hotelSectionContainer = document.createElement("div")
     hotelSectionContainer.className = "hotel-section-container"
     hotelSectionContainer.appendChild(hotelSectionHeader)
+
+    // Hotel controls panel
+    const hotelControls = document.createElement('div')
+    hotelControls.className = 'hotel-controls'
+    hotelControls.innerHTML = `
+      <input type="text" class="hotel-city" placeholder="City" />
+      <input type="date" class="hotel-checkin" />
+      <input type="date" class="hotel-checkout" />
+      <input type="number" min="1" class="hotel-adults" placeholder="Adults" value="2" />
+      <input type="number" min="1" class="hotel-rooms" placeholder="Rooms" value="1" />
+      <button class="hotel-generate">Generate Hotel Links</button>
+    `
+    hotelSectionContainer.appendChild(hotelControls)
+
+    const genHotels = () => {
+      const city = (hotelControls.querySelector('.hotel-city').value || '').trim()
+      const checkin = hotelControls.querySelector('.hotel-checkin').value
+      const checkout = hotelControls.querySelector('.hotel-checkout').value
+      const adults = parseInt(hotelControls.querySelector('.hotel-adults').value || '2', 10)
+      const rooms = parseInt(hotelControls.querySelector('.hotel-rooms').value || '1', 10)
+      if (!city || !checkin || !checkout) return
+
+      // Open or update links for major hotels
+      const urlsToOpen = [
+        `https://www.google.com/travel/search?q=${encodeURIComponent(city)}`,
+        `https://www.hyatt.com/search/hotels/en-US/${encodeURIComponent(city)}?checkinDate=${checkin}&checkoutDate=${checkout}&rooms=${rooms}&adults=${adults}&kids=0&rate=Standard&rateFilter=woh`,
+        `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0`,
+        `https://www.marriott.com/search/findHotels.mi?destination=${encodeURIComponent(city)}&fromDate=${checkin}&toDate=${checkout}&roomCount=${rooms}&numAdultsPerRoom=${adults}`,
+        `https://www.ihg.com/hotels/us/en/find-hotels/hotel-list?destination=${encodeURIComponent(city)}&qCiD=${checkin}&qCoD=${checkout}&qAdlt=${adults}&qRms=${rooms}`
+      ]
+      urlsToOpen.forEach(u => window.open(u, '_blank'))
+    }
+    hotelControls.querySelector('.hotel-generate').addEventListener('click', genHotels)
+
     hotelSectionContainer.appendChild(hotelRowContainer1)
     hotelSectionContainer.appendChild(hotelRowContainer2)
 
@@ -720,6 +754,39 @@ addBenefitsystemsButtonStyles()
       const hotelSectionContainer = document.createElement("div")
       hotelSectionContainer.className = "hotel-section-container"
       hotelSectionContainer.appendChild(hotelSectionHeader)
+
+      // Hotel controls panel (results-page)
+      const hotelControls = document.createElement('div')
+      hotelControls.className = 'hotel-controls'
+      hotelControls.innerHTML = `
+        <input type=\"text\" class=\"hotel-city\" placeholder=\"City\" />
+        <input type=\"date\" class=\"hotel-checkin\" />
+        <input type=\"date\" class=\"hotel-checkout\" />
+        <input type=\"number\" min=\"1\" class=\"hotel-adults\" placeholder=\"Adults\" value=\"2\" />
+        <input type=\"number\" min=\"1\" class=\"hotel-rooms\" placeholder=\"Rooms\" value=\"1\" />
+        <button class=\"hotel-generate\">Generate Hotel Links</button>
+      `
+      hotelSectionContainer.appendChild(hotelControls)
+
+      const genHotels = () => {
+        const city = (hotelControls.querySelector('.hotel-city').value || '').trim()
+        const checkin = hotelControls.querySelector('.hotel-checkin').value
+        const checkout = hotelControls.querySelector('.hotel-checkout').value
+        const adults = parseInt(hotelControls.querySelector('.hotel-adults').value || '2', 10)
+        const rooms = parseInt(hotelControls.querySelector('.hotel-rooms').value || '1', 10)
+        if (!city || !checkin || !checkout) return
+
+        const urlsToOpen = [
+          `https://www.google.com/travel/search?q=${encodeURIComponent(city)}`,
+          `https://www.hyatt.com/search/hotels/en-US/${encodeURIComponent(city)}?checkinDate=${checkin}&checkoutDate=${checkout}&rooms=${rooms}&adults=${adults}&kids=0&rate=Standard&rateFilter=woh`,
+          `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0`,
+          `https://www.marriott.com/search/findHotels.mi?destination=${encodeURIComponent(city)}&fromDate=${checkin}&toDate=${checkout}&roomCount=${rooms}&numAdultsPerRoom=${adults}`,
+          `https://www.ihg.com/hotels/us/en/find-hotels/hotel-list?destination=${encodeURIComponent(city)}&qCiD=${checkin}&qCoD=${checkout}&qAdlt=${adults}&qRms=${rooms}`
+        ]
+        urlsToOpen.forEach(u => window.open(u, '_blank'))
+      }
+      hotelControls.querySelector('.hotel-generate').addEventListener('click', genHotels)
+
       hotelSectionContainer.appendChild(hotelRowContainer1)
       hotelSectionContainer.appendChild(hotelRowContainer2)
 
@@ -996,6 +1063,12 @@ function addBenefitsystemsButtonStyles() {
   .gf-modal .gf-actions { margin-top: 12px; display: flex; gap: 8px; justify-content: flex-end; }
   .gf-modal .gf-btn { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer; }
   .gf-modal .gf-btn.primary { background: var(--ring); color: #fff; border-color: var(--ring); }
+
+  /* Hotel controls */
+  .hotel-controls { display: grid; grid-template-columns: 2fr repeat(3, 1fr) 1fr auto; gap: 8px; align-items: center; margin-top: 6px; }
+  .hotel-controls input { height: 36px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
+  .hotel-controls button { height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--ring); background: var(--ring); color: #fff; font-weight: 600; cursor: pointer; }
+  .hotel-controls button:hover { filter: brightness(1.05); }
 
   `
 
@@ -1783,7 +1856,7 @@ function promptAndOpenHyatt(defaultParams) {
   }
 
   // Generate and open the URL
-  const url = `https://www.hyatt.com/search/hotels/en-US/${encodeURIComponent(city)}?checkinDate=${arrivalDate}&checkoutDate=${departureDate}&rooms=1&adults=2&kids=0&rate=Standard`
+  const url = `https://www.hyatt.com/search/hotels/en-US/${encodeURIComponent(city)}?checkinDate=${arrivalDate}&checkoutDate=${departureDate}&rooms=1&adults=2&kids=0&rate=Standard&rateFilter=woh`
   window.open(url, "_blank")
 }
 
