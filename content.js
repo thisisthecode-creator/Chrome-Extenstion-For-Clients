@@ -794,7 +794,7 @@ function addBenefitsystemsButtonStyles() {
     --ring: #2563eb;
     --shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
     --radius: 12px;
-    --gap: 12px;
+    --gap: 8px;
     --btn-h: 44px;
     --btn-font: 13.5px;
   }
@@ -857,17 +857,17 @@ function addBenefitsystemsButtonStyles() {
   /* Responsive, auto-fit grid */
   .custom-flight-buttons {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
     grid-auto-rows: auto; /* let row height grow to fit full text */
     gap: var(--gap);
     margin-top: 8px;
   }
 
   @media (max-width: 1040px) {
-    .custom-flight-buttons { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+    .custom-flight-buttons { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
   }
   @media (max-width: 760px) {
-    .custom-flight-buttons { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+    .custom-flight-buttons { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
     :root { --btn-h: 42px; --btn-font: 13px; }
   }
 
