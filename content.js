@@ -858,7 +858,7 @@ function addBenefitsystemsButtonStyles() {
   .custom-flight-buttons {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    grid-auto-rows: var(--btn-h);
+    grid-auto-rows: auto; /* let row height grow to fit full text */
     gap: var(--gap);
     margin-top: 8px;
   }
@@ -878,7 +878,8 @@ function addBenefitsystemsButtonStyles() {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    height: var(--btn-h);
+    width: 100%;
+    min-height: var(--btn-h);
     padding: 0 14px;
     border-radius: 10px;
     border: 1px solid var(--border);
@@ -888,11 +889,14 @@ function addBenefitsystemsButtonStyles() {
     font-weight: 600;
     letter-spacing: .1px;
     text-decoration: none;
+    text-align: center;
     cursor: pointer;
     box-shadow: 0 1px 0 rgba(0,0,0,.02);
     transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, background 140ms ease, opacity 120ms;
     outline: none;
     position: relative;
+    white-space: normal;      /* allow wrapping */
+    word-break: break-word;   /* break long words if needed */
   }
 
   /* Hover/active */
