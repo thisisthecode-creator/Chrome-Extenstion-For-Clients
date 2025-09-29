@@ -384,7 +384,7 @@ addBenefitsystemsButtonStyles()
       <input type="number" min="1" class="hotel-rooms" placeholder="Rooms" value="1" />
       <button class="hotel-generate">Generate Hotel Links</button>
     `
-    hotelSectionContainer.appendChild(hotelControls)
+    // We'll insert hotelControls into the final hotel section below
 
     const genHotels = () => {
       const city = (hotelControls.querySelector('.hotel-city').value || '').trim()
@@ -428,6 +428,12 @@ addBenefitsystemsButtonStyles()
     const hotelButtons = hotelSectionContainer.querySelectorAll('.custom-flight-buttons > *')
     const benefitsystemsButtons = benefitsystemsSectionContainer.querySelectorAll('.custom-flight-buttons > *')
     
+    // Insert hotel controls into the hotel section before its buttons
+    const hotelButtonsContainer = hotelSection.querySelector('.custom-flight-buttons')
+    if (hotelButtonsContainer && hotelControls) {
+      hotelSection.insertBefore(hotelControls, hotelButtonsContainer)
+    }
+
     flightButtons.forEach(btn => flightSection.querySelector('.custom-flight-buttons').appendChild(btn))
     hotelButtons.forEach(btn => hotelSection.querySelector('.custom-flight-buttons').appendChild(btn))
     benefitsystemsButtons.forEach(btn => benefitsystemsSection.querySelector('.custom-flight-buttons').appendChild(btn))
@@ -766,7 +772,7 @@ addBenefitsystemsButtonStyles()
         <input type=\"number\" min=\"1\" class=\"hotel-rooms\" placeholder=\"Rooms\" value=\"1\" />
         <button class=\"hotel-generate\">Generate Hotel Links</button>
       `
-      hotelSectionContainer.appendChild(hotelControls)
+      // We'll insert hotelControls into the final hotel section below
 
       const genHotels = () => {
         const city = (hotelControls.querySelector('.hotel-city').value || '').trim()
@@ -813,6 +819,12 @@ addBenefitsystemsButtonStyles()
       hotelButtons.forEach(btn => hotelSection.querySelector('.custom-flight-buttons').appendChild(btn))
       benefitsystemsButtons.forEach(btn => benefitsystemsSection.querySelector('.custom-flight-buttons').appendChild(btn))
       
+      // Insert hotel controls into the hotel section before its buttons
+      const hotelButtonsContainer = hotelSection.querySelector('.custom-flight-buttons')
+      if (hotelButtonsContainer && hotelControls) {
+        hotelSection.insertBefore(hotelControls, hotelButtonsContainer)
+      }
+
       // Add sections to main container
       mainContainer.appendChild(flightSection)
       mainContainer.appendChild(hotelSection)
