@@ -84,6 +84,39 @@ function injectExtensionPanel() {
           <label>Adults</label>
           <input type="number" id="bs-flight-adults" min="1" value="1" />
         </div>
+        <div class="bs-input-group">
+          <label>Language</label>
+          <select id="bs-flight-language">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="pl">Polski</option>
+          </select>
+        </div>
+        <div class="bs-input-group">
+          <label>Currency</label>
+          <select id="bs-flight-currency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="CHF">CHF</option>
+            <option value="PLN">PLN</option>
+          </select>
+        </div>
+        <div class="bs-input-group">
+          <label>Location</label>
+          <select id="bs-flight-location">
+            <option value="US">United States</option>
+            <option value="DE">Germany</option>
+            <option value="GB">United Kingdom</option>
+            <option value="FR">France</option>
+            <option value="AT">Austria</option>
+            <option value="CH">Switzerland</option>
+            <option value="PL">Poland</option>
+          </select>
+        </div>
       </div>
       
       <div class="bs-buttons-grid">
@@ -367,7 +400,10 @@ function getFlightInputData() {
     depart: document.getElementById('bs-flight-depart')?.value || '',
     return: document.getElementById('bs-flight-return')?.value || '',
     cabin: document.getElementById('bs-flight-cabin')?.value || 'economy',
-    adults: parseInt(document.getElementById('bs-flight-adults')?.value || '1', 10)
+    adults: parseInt(document.getElementById('bs-flight-adults')?.value || '1', 10),
+    language: document.getElementById('bs-flight-language')?.value || 'en',
+    currency: document.getElementById('bs-flight-currency')?.value || 'USD',
+    location: document.getElementById('bs-flight-location')?.value || 'US'
   };
 }
 
@@ -394,7 +430,7 @@ function validateHotelData(data) {
 
 // Generate flight URLs
 function generateFlightUrl(service, data) {
-  const { from, to, depart, return: ret, cabin, adults } = data;
+  const { from, to, depart, return: ret, cabin, adults, language, currency, location } = data;
   
   // Format dates for different services
   const skyscannerDate = depart.replace(/-/g, '');
@@ -409,7 +445,7 @@ function generateFlightUrl(service, data) {
   const returnTimestamp = ret ? Math.floor(new Date(ret).getTime() / 1000) : departTimestamp;
   
   const urls = {
-    'google-flights': `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=en-US&curr=USD&gl=US`,
+    'google-flights': `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=${language}&curr=${currency}&gl=${location}`,
     
     'points-yeah': `https://www.pointsyeah.com/search?cabins=${pointsYeahCabin}&cabin=${pointsYeahCabin}&banks=Amex%2CCapital+One%2CChase&airlineProgram=AM%2CAC%2CKL%2CAS%2CAV%2CDL%2CEK%2CEY%2CAY%2CB6%2CQF%2CSQ%2CTK%2CUA%2CVS%2CVA&tripType=${ret ? '2' : '1'}&adults=${adults}&children=0&departure=${from}&arrival=${to}&departDate=${depart}&departDateSec=${depart}&returnDate=${ret || depart}&returnDateSec=${ret || depart}&multiday=false`,
     
@@ -471,7 +507,7 @@ function generateHotelUrl(service, data) {
   const checkoutDate = new Date(checkout);
   
   const urls = {
-    'google-hotels': `https://www.google.com/travel/hotels/${encodeURIComponent(city)}?q=${encodeURIComponent(city)}&g2lb=2502548%2C2503771%2C2503781%2C4258168%2C4270442%2C4284970%2C4291517%2C4597339%2C4814050%2C4874190%2C4893075%2C4965990%2C10207535%2C72171556%2C72298667%2C72302247%2C72313103%2C72317059%2C72379691%2C72406588%2C72414906%2C72421566%2C72470899%2C72471280%2C72472051%2C72473841%2C72481459%2C72485656%2C72486593%2C72494250%2C72513513%2C72536387%2C72538597%2C72549171%2C72570850%2C72584993&hl=en-US&gl=us&ssta=1&ts=CAESCAoCCAMKAggDGhwSGhIUCgcI6Q8QARgBEgcI6Q8QARgCGAEyAhAAKgcKBToDVVNE&ap=ugEHcmV2aWV3cw&qs=CAEyFENnc0lnY1dEXy1IZnVvTGxBUkFCOAJCCQnHYxvJ4JkTEEIJCWjMl9FUsjS1QgkJx2MbyeCZExBCCQlozJfRVLI0tQ&rp=ogECCAKiAQIIAqIBAgiBAbgBAcgBDOgBGegBGfIBA2VuX1o&ictx=1&ved=0CAAQ5JsGahcKEwiYgdOF74aQAxUAAAAAHQAAAAAQBg&utm_campaign=sharing&utm_medium=link&utm_source=htls&checkin=${checkin}&checkout=${checkout}&adults=${adults}&rooms=${rooms}`,
+    'google-hotels': `https://www.google.com/travel/hotels?q=${encodeURIComponent(city)}&ts=CAESABogCgIaABIaEhQKBwjpDxABGAESBwjpDxABGAIYATICEAAqCQoFOgNVU0QaAA&ap=aAE&qs=OAA&hl=en-US&gl=us&ved=0CAAQ5JsGahcKEwiYgdOF74aQAxUAAAAAHQAAAAAQBg&checkin=${checkin}&checkout=${checkout}&adults=${adults}&rooms=${rooms}`,
     
     'hilton': `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0`,
     
