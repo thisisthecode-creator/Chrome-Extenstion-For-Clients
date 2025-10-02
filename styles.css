@@ -51,6 +51,16 @@
   align-items: end;
 }
 
+/* Settings Grid - for Language, Currency, Location */
+.bs-settings-grid {
+  background: linear-gradient(to right, #f8f9fa, #f1f3f4);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #e8eaed;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
 /* Switch Container */
 .bs-switch-container {
   display: flex;
