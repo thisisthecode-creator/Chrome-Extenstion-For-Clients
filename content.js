@@ -285,6 +285,11 @@ function injectExtensionPanel() {
   
   // Initialize event listeners
   initializeEventListeners();
+  
+  // Restore saved flight data after a short delay to ensure inputs are ready
+  setTimeout(() => {
+    restoreFlightData();
+  }, 100);
 }
 
 // Initialize all event listeners
@@ -355,6 +360,9 @@ function handleFlightButtonClick(e) {
   const url = generateFlightUrl(service, flightData);
   
   if (url) {
+    // Save flight data to localStorage before navigation
+    saveFlightDataToStorage(flightData);
+    
     // Google Flights loads in current tab, all others in new tab
     if (service === 'google-flights') {
       window.location.href = url;
@@ -392,6 +400,78 @@ function handleBenefitSystemsButtonClick(e) {
   
   if (url) {
     window.open(url, '_blank');
+  }
+}
+
+// Save flight data to localStorage
+function saveFlightDataToStorage(data) {
+  try {
+    localStorage.setItem('bs-extension-flight-data', JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving flight data:', error);
+  }
+}
+
+// Load flight data from localStorage
+function loadFlightDataFromStorage() {
+  try {
+    const data = localStorage.getItem('bs-extension-flight-data');
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error('Error loading flight data:', error);
+    return null;
+  }
+}
+
+// Restore flight data to input fields
+function restoreFlightData() {
+  const savedData = loadFlightDataFromStorage();
+  if (!savedData) return;
+  
+  // Restore all input fields
+  if (savedData.from) {
+    const fromInput = document.getElementById('bs-flight-from');
+    if (fromInput) fromInput.value = savedData.from;
+  }
+  
+  if (savedData.to) {
+    const toInput = document.getElementById('bs-flight-to');
+    if (toInput) toInput.value = savedData.to;
+  }
+  
+  if (savedData.depart) {
+    const departInput = document.getElementById('bs-flight-depart');
+    if (departInput) departInput.value = savedData.depart;
+  }
+  
+  if (savedData.return) {
+    const returnInput = document.getElementById('bs-flight-return');
+    if (returnInput) returnInput.value = savedData.return;
+  }
+  
+  if (savedData.cabin) {
+    const cabinInput = document.getElementById('bs-flight-cabin');
+    if (cabinInput) cabinInput.value = savedData.cabin;
+  }
+  
+  if (savedData.adults) {
+    const adultsInput = document.getElementById('bs-flight-adults');
+    if (adultsInput) adultsInput.value = savedData.adults;
+  }
+  
+  if (savedData.language) {
+    const languageInput = document.getElementById('bs-flight-language');
+    if (languageInput) languageInput.value = savedData.language;
+  }
+  
+  if (savedData.currency) {
+    const currencyInput = document.getElementById('bs-flight-currency');
+    if (currencyInput) currencyInput.value = savedData.currency;
+  }
+  
+  if (savedData.location) {
+    const locationInput = document.getElementById('bs-flight-location');
+    if (locationInput) locationInput.value = savedData.location;
   }
 }
 
