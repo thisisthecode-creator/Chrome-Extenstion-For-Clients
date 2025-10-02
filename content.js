@@ -463,7 +463,7 @@ function generateHotelUrl(service, data) {
     
     'best-western': `https://www.bestwestern.com/en_US/book/hotels-in-${encodeURIComponent(city.toLowerCase())}.html?checkIn=${checkin}&checkOut=${checkout}&adults=${adults}&rooms=${rooms}`,
     
-    'radisson': `https://www.radissonhotels.com/en-us/hotels/${encodeURIComponent(city.toLowerCase())}?checkInDate=${checkin}&checkOutDate=${checkout}&adults[]=${adults}&rooms=${rooms}`,
+    'radisson': `https://www.radissonhotels.com/en-us/booking/search-results?destination=${encodeURIComponent(city)}&checkInDate=${checkin}&checkOutDate=${checkout}&adults%5B%5D=${adults}&children%5B%5D=0&searchType=lowest`,
     
     'gha': `https://de.ghadiscovery.com/search/hotels?keyword=${encodeURIComponent(city)}&clearBookingParams=1`,
     
