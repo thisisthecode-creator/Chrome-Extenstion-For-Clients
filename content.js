@@ -9,10 +9,26 @@ function injectExtensionPanel() {
     return;
   }
 
-  // Find the target container
-  const targetContainer = document.querySelector('.cOFTkc, .gws-flights-results__result-list');
+  // Try multiple possible container locations
+  const selectors = [
+    '.cOFTkc',                    // Main flights page
+    '.gws-flights-results__result-list',
+    'main',                        // Main content area
+    '[role="main"]',              // Main landmark
+    'body > c-wiz',               // Common Google structure
+    'body'                        // Fallback
+  ];
+  
+  let targetContainer = null;
+  for (const selector of selectors) {
+    targetContainer = document.querySelector(selector);
+    if (targetContainer) {
+      break;
+    }
+  }
   
   if (!targetContainer) {
+    console.log('BS Extension: No container found, trying again...');
     return;
   }
 
@@ -480,8 +496,11 @@ function showNotification(message, type = 'info') {
 
 // Setup observer to inject panel when page loads
 function setupObserver() {
-  // Inject immediately if possible
-  setTimeout(() => injectExtensionPanel(), 1000);
+  // Try multiple times with different delays
+  const delays = [100, 500, 1000, 2000, 3000];
+  delays.forEach(delay => {
+    setTimeout(() => injectExtensionPanel(), delay);
+  });
   
   // Watch for DOM changes
   const observer = new MutationObserver(() => {
@@ -494,12 +513,22 @@ function setupObserver() {
     childList: true,
     subtree: true
   });
+  
+  // Also watch for URL changes (for SPA navigation)
+  let lastUrl = location.href;
+  new MutationObserver(() => {
+    const url = location.href;
+    if (url !== lastUrl) {
+      lastUrl = url;
+      setTimeout(() => injectExtensionPanel(), 500);
+    }
+  }).observe(document, { subtree: true, childList: true });
 }
 
 // Initialize extension
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', setupObserver);
-  } else {
+} else {
   setupObserver();
 }
 
