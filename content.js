@@ -276,6 +276,10 @@ function injectExtensionPanel() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           All Tools
         </button>
+        <button class="bs-btn bs-btn-travel-news" data-service="travel-news">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
+          Travel News
+        </button>
         </div>
     </div>
   `;
@@ -639,7 +643,8 @@ function generateHotelUrl(service, data) {
 // Generate Benefit Systems URLs
 function generateBenefitSystemsUrl(service) {
   const urls = {
-    'bs-tools': 'https://tools.benefitsystems.io'
+    'bs-tools': 'https://tools.benefitsystems.io',
+    'travel-news': 'https://www.inoreader.com/stream/user/1005075234/tag/Travel%20News/view/html?t=Travel%20News&l=https%3A%2F%2Ftools.benefitsystems.io%2FBenefit2.png&cs=m'
   };
   
   return urls[service] || '#';
