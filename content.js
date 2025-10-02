@@ -52,6 +52,13 @@ function injectExtensionPanel() {
           <label>From (IATA)</label>
           <input type="text" id="bs-flight-from" placeholder="JFK" maxlength="3" />
         </div>
+        <div class="bs-switch-container">
+          <button type="button" class="bs-switch-btn" id="bs-flight-switch" title="Switch From/To">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 16V4M7 4L3 8M7 4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+            </svg>
+          </button>
+        </div>
         <div class="bs-input-group">
           <label>To (IATA)</label>
           <input type="text" id="bs-flight-to" placeholder="LAX" maxlength="3" />
@@ -279,6 +286,22 @@ function initializeEventListeners() {
       e.target.value = e.target.value.toUpperCase();
     });
   }
+  
+  // Switch button for From/To
+  const switchBtn = document.getElementById('bs-flight-switch');
+  if (switchBtn && fromInput && toInput) {
+    switchBtn.addEventListener('click', () => {
+      const temp = fromInput.value;
+      fromInput.value = toInput.value;
+      toInput.value = temp;
+      
+      // Add animation
+      switchBtn.classList.add('bs-switch-rotate');
+      setTimeout(() => {
+        switchBtn.classList.remove('bs-switch-rotate');
+      }, 300);
+    });
+  }
 }
 
 // Handle flight button clicks
@@ -296,7 +319,12 @@ function handleFlightButtonClick(e) {
   const url = generateFlightUrl(service, flightData);
   
   if (url) {
-    window.open(url, '_blank');
+    // Google Flights loads in current tab, all others in new tab
+    if (service === 'google-flights') {
+      window.location.href = url;
+    } else {
+      window.open(url, '_blank');
+    }
   }
 }
 

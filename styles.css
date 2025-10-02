@@ -48,6 +48,65 @@
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
   margin-bottom: 16px;
+  align-items: end;
+}
+
+/* Switch Container */
+.bs-switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+/* Switch Button */
+.bs-switch-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #dadce0;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  outline: none;
+}
+
+.bs-switch-btn:hover {
+  border-color: #1a73e8;
+  background: #f1f3f4;
+  transform: scale(1.05);
+}
+
+.bs-switch-btn:active {
+  transform: scale(0.95);
+}
+
+.bs-switch-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: #5f6368;
+  transition: stroke 0.2s ease;
+}
+
+.bs-switch-btn:hover svg {
+  stroke: #1a73e8;
+}
+
+.bs-switch-rotate {
+  animation: rotate180 0.3s ease;
+}
+
+@keyframes rotate180 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
 }
 
 /* Input Group */
