@@ -280,6 +280,14 @@ function injectExtensionPanel() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
           Travel News
         </button>
+        <button class="bs-btn bs-btn-hotel-points" data-service="hotel-points">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="6" width="16" height="14" rx="2"/><path d="M4 10h16"/><circle cx="12" cy="14" r="2"/></svg>
+          Hotel Points
+        </button>
+        <button class="bs-btn bs-btn-airline-miles" data-service="airline-miles">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+          Airline Miles
+        </button>
         </div>
     </div>
   `;
@@ -644,7 +652,9 @@ function generateHotelUrl(service, data) {
 function generateBenefitSystemsUrl(service) {
   const urls = {
     'bs-tools': 'https://tools.benefitsystems.io',
-    'travel-news': 'https://www.inoreader.com/stream/user/1005075234/tag/Travel%20News/view/html?t=Travel%20News&l=https%3A%2F%2Ftools.benefitsystems.io%2FBenefit2.png&cs=m'
+    'travel-news': 'https://www.inoreader.com/stream/user/1005075234/tag/Travel%20News/view/html?t=Travel%20News&l=https%3A%2F%2Ftools.benefitsystems.io%2FBenefit2.png&cs=m',
+    'hotel-points': 'https://www.inoreader.com/stream/user/1005075234/tag/Buy%20Hotels/view/html?t=Buy%20Hotel%20Points&l=https%3A%2F%2Ftools.benefitsystems.io%2FBenefit2.png&cs=m',
+    'airline-miles': 'https://www.inoreader.com/stream/user/1005075234/tag/Buy%20Airlines/view/html?t=Buy%20Airline%20Miles&l=https%3A%2F%2Ftools.benefitsystems.io%2FBenefit2.png&cs=m'
   };
   
   return urls[service] || '#';
