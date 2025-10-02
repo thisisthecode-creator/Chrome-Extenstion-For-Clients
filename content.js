@@ -459,7 +459,7 @@ function generateHotelUrl(service, data) {
     
     'choice': `https://www.choicehotels.com/de-de/${encodeURIComponent(city.toLowerCase())}/hotels?checkInDate=${checkin}&checkOutDate=${checkout}`,
     
-    'melia': `https://www.melia.com/en/hotels/${encodeURIComponent(city.toLowerCase())}?checkIn=${checkin}&checkOut=${checkout}&rooms=${rooms}&adults=${adults}`,
+    'melia': `https://www.melia.com/en/booking?checkIn=${checkin}&checkOut=${checkout}&rooms=${rooms}&adults=${adults}&destination=${encodeURIComponent(city)}`,
     
     'best-western': `https://www.bestwestern.com/en_US/book/hotels-in-${encodeURIComponent(city.toLowerCase())}.html?checkIn=${checkin}&checkOut=${checkout}&adults=${adults}&rooms=${rooms}`,
     
