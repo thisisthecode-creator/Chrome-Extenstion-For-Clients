@@ -44,11 +44,11 @@
 
 /* Input Grid */
 .bs-inputs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 16px;
-  align-items: end;
+  align-items: flex-end;
 }
 
 /* Settings Grid - for Language, Currency, Location */
@@ -58,15 +58,26 @@
   border-radius: 8px;
   margin-bottom: 16px;
   border: 1px solid #e8eaed;
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
 }
 
-/* Switch Container */
+/* Flight inputs in one row */
+.bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+/* Switch Container - reduced padding */
 .bs-switch-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 10px;
+  padding-bottom: 0;
+  margin: 0 4px;
 }
 
 /* Switch Button */
@@ -74,8 +85,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border: 2px solid #dadce0;
   border-radius: 50%;
   background: #ffffff;
@@ -83,6 +94,7 @@
   transition: all 0.2s ease;
   padding: 0;
   outline: none;
+  flex-shrink: 0;
 }
 
 .bs-switch-btn:hover {
@@ -124,6 +136,35 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 0 1 auto;
+  min-width: 100px;
+}
+
+/* Specific widths for flight input fields */
+.bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) .bs-input-group {
+  flex: 0 0 auto;
+}
+
+.bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) .bs-input-group:has(#bs-flight-from),
+.bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) .bs-input-group:has(#bs-flight-to) {
+  min-width: 85px;
+  max-width: 85px;
+}
+
+.bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) .bs-input-group:has(#bs-flight-depart),
+.bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) .bs-input-group:has(#bs-flight-return) {
+  min-width: 140px;
+  max-width: 140px;
+}
+
+.bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) .bs-input-group:has(#bs-flight-cabin) {
+  min-width: 130px;
+  max-width: 130px;
+}
+
+.bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) .bs-input-group:has(#bs-flight-adults) {
+  min-width: 70px;
+  max-width: 70px;
 }
 
 .bs-input-group label {
@@ -472,6 +513,13 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  /* On smaller screens, allow wrapping for flight inputs */
+  .bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) {
+    flex-wrap: wrap;
+  }
+}
+
 @media (max-width: 768px) {
   .bs-extension-panel {
     margin: 8px;
@@ -483,8 +531,22 @@
   }
 
   .bs-inputs-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 10px;
+  }
+
+  /* Mobile: stack all inputs vertically */
+  .bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) {
+    flex-direction: column;
+  }
+
+  .bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) .bs-input-group {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .bs-switch-container {
+    margin: 8px 0;
   }
 
   .bs-buttons-grid {
