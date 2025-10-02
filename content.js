@@ -438,8 +438,12 @@ function generateHotelUrl(service, data) {
   const checkInIHG = toIHG(checkin);
   const checkOutIHG = toIHG(checkout);
   
+  // Format dates for Google Hotels (YYYY-MM-DD)
+  const checkinDate = new Date(checkin);
+  const checkoutDate = new Date(checkout);
+  
   const urls = {
-    'google-hotels': `https://www.google.com/travel/hotels?q=${encodeURIComponent(city)}&ts=CAESABogCgIaABIaEhQKBwjpDxABGAESBwjpDxABGAIYATICEAAqCQoFOgNVU0QaAA&ap=aAE`,
+    'google-hotels': `https://www.google.com/travel/hotels/${encodeURIComponent(city)}?q=${encodeURIComponent(city)}&g2lb=2502548%2C2503771%2C2503781%2C4258168%2C4270442%2C4284970%2C4291517%2C4597339%2C4814050%2C4874190%2C4893075%2C4965990%2C10207535%2C72171556%2C72298667%2C72302247%2C72313103%2C72317059%2C72379691%2C72406588%2C72414906%2C72421566%2C72470899%2C72471280%2C72472051%2C72473841%2C72481459%2C72485656%2C72486593%2C72494250%2C72513513%2C72536387%2C72538597%2C72549171%2C72570850%2C72584993&hl=en-US&gl=us&ssta=1&ts=CAESCAoCCAMKAggDGhwSGhIUCgcI6Q8QARgBEgcI6Q8QARgCGAEyAhAAKgcKBToDVVNE&ap=ugEHcmV2aWV3cw&qs=CAEyFENnc0lnY1dEXy1IZnVvTGxBUkFCOAJCCQnHYxvJ4JkTEEIJCWjMl9FUsjS1QgkJx2MbyeCZExBCCQlozJfRVLI0tQ&rp=ogECCAKiAQIIAqIBAgiBAbgBAcgBDOgBGegBGfIBA2VuX1o&ictx=1&ved=0CAAQ5JsGahcKEwiYgdOF74aQAxUAAAAAHQAAAAAQBg&utm_campaign=sharing&utm_medium=link&utm_source=htls&checkin=${checkin}&checkout=${checkout}&adults=${adults}&rooms=${rooms}`,
     
     'hilton': `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0`,
     
