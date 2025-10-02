@@ -552,7 +552,7 @@ function generateFlightUrl(service, data) {
     
     'fare-class': `https://seats.aero/fareclass?from=${from}&to=${to}&date=${depart}&carriers=&connections=false`,
     
-    'flight-connections': `https://www.flightconnections.com/flights-from-${from.toLowerCase()}-to-${to.toLowerCase()}`,
+    'flight-connections': `https://www.flightconnections.com/de/fl%C3%BCge-von-${from.toLowerCase()}-nach-${to.toLowerCase()}`,
     
     'turbli': `https://turbli.com/${from}/${to}/${depart}/`
   };
