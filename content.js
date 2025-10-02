@@ -120,6 +120,14 @@ function injectExtensionPanel() {
           <label>Adults</label>
           <input type="number" id="bs-flight-adults" min="1" value="1" />
         </div>
+        <div class="bs-input-group">
+          <label>Airline (Optional)</label>
+          <input type="text" id="bs-flight-airline" placeholder="W6" maxlength="3" />
+        </div>
+        <div class="bs-input-group">
+          <label>Flight # (Optional)</label>
+          <input type="text" id="bs-flight-number" placeholder="1444" />
+        </div>
       </div>
       
       <div class="bs-buttons-grid">
@@ -170,6 +178,14 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-turbli" data-service="turbli">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9"/></svg>
           Turbli
+        </button>
+        <button class="bs-btn bs-btn-pointsyeah-seatmap" data-service="pointsyeah-seatmap" style="display: none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></svg>
+          PointsYeah Seatmap
+        </button>
+        <button class="bs-btn bs-btn-seats-aero" data-service="seats-aero" style="display: none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 4v5m6-5v5M9 20v-5m6 5v-5M4 9h5m-5 6h5m10-6h5m-5 6h5"/></svg>
+          Seats.aero
         </button>
       </div>
     </div>
@@ -299,7 +315,7 @@ function injectExtensionPanel() {
   initializeEventListeners();
   
   // Restore saved flight data after a short delay to ensure inputs are ready
-  setTimeout(() => {
+      setTimeout(() => {
     restoreFlightData();
   }, 100);
 }
@@ -327,6 +343,8 @@ function initializeEventListeners() {
   // Auto-uppercase flight IATA codes
   const fromInput = document.getElementById('bs-flight-from');
   const toInput = document.getElementById('bs-flight-to');
+  const airlineInput = document.getElementById('bs-flight-airline');
+  const flightNumberInput = document.getElementById('bs-flight-number');
   
   if (fromInput) {
     fromInput.addEventListener('input', (e) => {
@@ -339,6 +357,39 @@ function initializeEventListeners() {
       e.target.value = e.target.value.toUpperCase();
     });
   }
+  
+  if (airlineInput) {
+    airlineInput.addEventListener('input', (e) => {
+      e.target.value = e.target.value.toUpperCase();
+      toggleSeatmapButtons();
+    });
+  }
+  
+  if (flightNumberInput) {
+    flightNumberInput.addEventListener('input', () => {
+      toggleSeatmapButtons();
+    });
+  }
+  
+  // Toggle seatmap buttons visibility based on airline and flight number
+  function toggleSeatmapButtons() {
+    const airline = airlineInput?.value?.trim() || '';
+    const flightNumber = flightNumberInput?.value?.trim() || '';
+    const showButtons = airline && flightNumber;
+    
+    const pointsYeahBtn = document.querySelector('.bs-btn-pointsyeah-seatmap');
+    const seatsAeroBtn = document.querySelector('.bs-btn-seats-aero');
+    
+    if (pointsYeahBtn) {
+      pointsYeahBtn.style.display = showButtons ? '' : 'none';
+    }
+    if (seatsAeroBtn) {
+      seatsAeroBtn.style.display = showButtons ? '' : 'none';
+    }
+  }
+  
+  // Initial check on load
+  toggleSeatmapButtons();
   
   // Switch button for From/To
   const switchBtn = document.getElementById('bs-flight-switch');
@@ -485,6 +536,35 @@ function restoreFlightData() {
     const locationInput = document.getElementById('bs-flight-location');
     if (locationInput) locationInput.value = savedData.location;
   }
+  
+  if (savedData.airline) {
+    const airlineInput = document.getElementById('bs-flight-airline');
+    if (airlineInput) airlineInput.value = savedData.airline;
+  }
+  
+  if (savedData.flightNumber) {
+    const flightNumberInput = document.getElementById('bs-flight-number');
+    if (flightNumberInput) flightNumberInput.value = savedData.flightNumber;
+  }
+  
+  // Trigger seatmap button visibility check after restoration
+  setTimeout(() => {
+    const airlineInput = document.getElementById('bs-flight-airline');
+    const flightNumberInput = document.getElementById('bs-flight-number');
+    const airline = airlineInput?.value?.trim() || '';
+    const flightNumber = flightNumberInput?.value?.trim() || '';
+    const showButtons = airline && flightNumber;
+    
+    const pointsYeahBtn = document.querySelector('.bs-btn-pointsyeah-seatmap');
+    const seatsAeroBtn = document.querySelector('.bs-btn-seats-aero');
+    
+    if (pointsYeahBtn) {
+      pointsYeahBtn.style.display = showButtons ? '' : 'none';
+    }
+    if (seatsAeroBtn) {
+      seatsAeroBtn.style.display = showButtons ? '' : 'none';
+    }
+  }, 100);
 }
 
 // Get flight input data
@@ -498,7 +578,9 @@ function getFlightInputData() {
     adults: parseInt(document.getElementById('bs-flight-adults')?.value || '1', 10),
     language: document.getElementById('bs-flight-language')?.value || 'en',
     currency: document.getElementById('bs-flight-currency')?.value || 'USD',
-    location: document.getElementById('bs-flight-location')?.value || 'US'
+    location: document.getElementById('bs-flight-location')?.value || 'US',
+    airline: document.getElementById('bs-flight-airline')?.value?.trim()?.toUpperCase() || '',
+    flightNumber: document.getElementById('bs-flight-number')?.value?.trim() || ''
   };
 }
 
@@ -566,7 +648,11 @@ function generateFlightUrl(service, data) {
     
     'flight-connections': `https://www.flightconnections.com/de/fl%C3%BCge-von-${from.toLowerCase()}-nach-${to.toLowerCase()}`,
     
-    'turbli': `https://turbli.com/${from}/${to}/${depart}/`
+    'turbli': `https://turbli.com/${from}/${to}/${depart}/`,
+    
+    'pointsyeah-seatmap': data.airline && data.flightNumber ? `https://www.pointsyeah.com/seatmap/detail?airline=${encodeURIComponent(data.airline)}&departure=${from}&arrival=${to}&date=${depart}&flightNumber=${encodeURIComponent(data.flightNumber)}&cabins=Economy%2CPremium%20Economy%2CBusiness%2CFirst` : '#',
+    
+    'seats-aero': data.airline && data.flightNumber ? `https://seats.aero/seatmap?airline=${encodeURIComponent(data.airline)}&from=${from}&to=${to}&date=${depart}&flight=${encodeURIComponent(data.flightNumber)}` : '#'
   };
   
   return urls[service] || '#';

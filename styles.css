@@ -167,6 +167,16 @@
   max-width: 70px;
 }
 
+.bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) .bs-input-group:has(#bs-flight-airline) {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.bs-section:nth-child(1) .bs-inputs-grid:not(.bs-settings-grid) .bs-input-group:has(#bs-flight-number) {
+  min-width: 90px;
+  max-width: 90px;
+}
+
 .bs-input-group label {
   font-size: 12px;
   font-weight: 500;
