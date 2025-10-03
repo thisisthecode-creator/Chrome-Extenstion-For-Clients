@@ -85,11 +85,11 @@ function injectExtensionPanel() {
           <input type="number" id="bs-flight-adults" min="1" value="1" />
         </div>
         <div class="bs-input-group">
-          <label>Airline (Optional)</label>
+          <label>Airline</label>
           <input type="text" id="bs-flight-airline" placeholder="W6" maxlength="3" />
         </div>
         <div class="bs-input-group">
-          <label>Flight # (Optional)</label>
+          <label>Flight #</label>
           <input type="text" id="bs-flight-number" placeholder="1444" />
         </div>
       </div>
@@ -144,11 +144,11 @@ function injectExtensionPanel() {
           Turbli
         </button>
         <button class="bs-btn bs-btn-pointsyeah-seatmap" data-service="pointsyeah-seatmap" style="display: none;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></svg>
-          PointsYeah Seatmap
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 11h10M7 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M7 11v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8"/><path d="M5 11h14"/></svg>
+          PointsYeah
         </button>
         <button class="bs-btn bs-btn-seats-aero" data-service="seats-aero" style="display: none;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 4v5m6-5v5M9 20v-5m6 5v-5M4 9h5m-5 6h5m10-6h5m-5 6h5"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 11h10M7 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M7 11v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8"/><path d="M5 11h14"/></svg>
           Seats.aero
         </button>
       </div>
