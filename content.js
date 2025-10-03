@@ -46,6 +46,19 @@ function injectExtensionPanel() {
           <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
         </svg>
         <span>Flight Search</span>
+        <div class="bs-header-actions">
+          <button class="bs-action-btn bs-action-save" id="bs-save-flight" title="Save flight data">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </button>
+          <button class="bs-action-btn bs-action-reset" id="bs-reset-flight" title="Reset flight data">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
       </div>
       
       <div class="bs-inputs-grid">
@@ -148,6 +161,19 @@ function injectExtensionPanel() {
           <path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6h14"/><path d="M4 14h16v7H4z"/>
         </svg>
         <span>Hotel Search</span>
+        <div class="bs-header-actions">
+          <button class="bs-action-btn bs-action-save" id="bs-save-hotel" title="Save hotel data">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </button>
+          <button class="bs-action-btn bs-action-reset" id="bs-reset-hotel" title="Reset hotel data">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
       </div>
       
       <div class="bs-inputs-grid">
@@ -300,8 +326,9 @@ function injectExtensionPanel() {
   initializeCollapsible();
   
   // Restore saved flight data after a short delay to ensure inputs are ready
-      setTimeout(() => {
+  setTimeout(() => {
     restoreFlightData();
+    restoreHotelData();
   }, 100);
 }
 
@@ -391,6 +418,68 @@ function initializeEventListeners() {
       }, 300);
     });
   }
+  
+  // Save and Reset buttons for Flight Search
+  const saveFlightBtn = document.getElementById('bs-save-flight');
+  const resetFlightBtn = document.getElementById('bs-reset-flight');
+  
+  if (saveFlightBtn) {
+    saveFlightBtn.addEventListener('click', () => {
+      const flightData = getFlightInputData();
+      saveFlightDataToStorage(flightData);
+      showNotification('Flight data saved!', 'success');
+    });
+  }
+  
+  if (resetFlightBtn) {
+    resetFlightBtn.addEventListener('click', () => {
+      // Clear all flight input fields
+      if (fromInput) fromInput.value = '';
+      if (toInput) toInput.value = '';
+      if (document.getElementById('bs-flight-depart')) document.getElementById('bs-flight-depart').value = '';
+      if (document.getElementById('bs-flight-return')) document.getElementById('bs-flight-return').value = '';
+      if (document.getElementById('bs-flight-cabin')) document.getElementById('bs-flight-cabin').value = 'economy';
+      if (document.getElementById('bs-flight-adults')) document.getElementById('bs-flight-adults').value = '1';
+      if (airlineInput) airlineInput.value = '';
+      if (flightNumberInput) flightNumberInput.value = '';
+      
+      // Clear saved data
+      localStorage.removeItem('bs-extension-flight-data');
+      
+      // Hide seatmap buttons
+      toggleSeatmapButtons();
+      
+      showNotification('Flight data reset!', 'info');
+    });
+  }
+  
+  // Save and Reset buttons for Hotel Search
+  const saveHotelBtn = document.getElementById('bs-save-hotel');
+  const resetHotelBtn = document.getElementById('bs-reset-hotel');
+  
+  if (saveHotelBtn) {
+    saveHotelBtn.addEventListener('click', () => {
+      const hotelData = getHotelInputData();
+      saveHotelDataToStorage(hotelData);
+      showNotification('Hotel data saved!', 'success');
+    });
+  }
+  
+  if (resetHotelBtn) {
+    resetHotelBtn.addEventListener('click', () => {
+      // Clear all hotel input fields
+      if (document.getElementById('bs-hotel-city')) document.getElementById('bs-hotel-city').value = '';
+      if (document.getElementById('bs-hotel-checkin')) document.getElementById('bs-hotel-checkin').value = '';
+      if (document.getElementById('bs-hotel-checkout')) document.getElementById('bs-hotel-checkout').value = '';
+      if (document.getElementById('bs-hotel-adults')) document.getElementById('bs-hotel-adults').value = '2';
+      if (document.getElementById('bs-hotel-rooms')) document.getElementById('bs-hotel-rooms').value = '1';
+      
+      // Clear saved data
+      localStorage.removeItem('bs-extension-hotel-data');
+      
+      showNotification('Hotel data reset!', 'info');
+    });
+  }
 }
 
 // Handle flight button clicks
@@ -457,6 +546,26 @@ function saveFlightDataToStorage(data) {
     localStorage.setItem('bs-extension-flight-data', JSON.stringify(data));
   } catch (error) {
     console.error('Error saving flight data:', error);
+  }
+}
+
+// Save hotel data to localStorage
+function saveHotelDataToStorage(data) {
+  try {
+    localStorage.setItem('bs-extension-hotel-data', JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving hotel data:', error);
+  }
+}
+
+// Load hotel data from localStorage
+function loadHotelDataFromStorage() {
+  try {
+    const data = localStorage.getItem('bs-extension-hotel-data');
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error('Error loading hotel data:', error);
+    return null;
   }
 }
 
@@ -550,6 +659,37 @@ function restoreFlightData() {
       seatsAeroBtn.style.display = showButtons ? '' : 'none';
     }
   }, 100);
+}
+
+// Restore hotel data to input fields
+function restoreHotelData() {
+  const savedData = loadHotelDataFromStorage();
+  if (!savedData) return;
+  
+  if (savedData.city) {
+    const cityInput = document.getElementById('bs-hotel-city');
+    if (cityInput) cityInput.value = savedData.city;
+  }
+  
+  if (savedData.checkin) {
+    const checkinInput = document.getElementById('bs-hotel-checkin');
+    if (checkinInput) checkinInput.value = savedData.checkin;
+  }
+  
+  if (savedData.checkout) {
+    const checkoutInput = document.getElementById('bs-hotel-checkout');
+    if (checkoutInput) checkoutInput.value = savedData.checkout;
+  }
+  
+  if (savedData.adults) {
+    const adultsInput = document.getElementById('bs-hotel-adults');
+    if (adultsInput) adultsInput.value = savedData.adults;
+  }
+  
+  if (savedData.rooms) {
+    const roomsInput = document.getElementById('bs-hotel-rooms');
+    if (roomsInput) roomsInput.value = savedData.rooms;
+  }
 }
 
 // Get flight input data

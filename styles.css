@@ -43,6 +43,62 @@
   stroke-width: 2;
 }
 
+/* Header Actions (Save/Reset buttons) */
+.bs-header-actions {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.bs-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.bs-action-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2.5;
+  transition: all 0.2s ease;
+}
+
+.bs-action-save svg {
+  stroke: #34a853;
+}
+
+.bs-action-save:hover {
+  background: #e6f4ea;
+}
+
+.bs-action-save:hover svg {
+  stroke: #1e8e3e;
+}
+
+.bs-action-reset svg {
+  stroke: #ea4335;
+}
+
+.bs-action-reset:hover {
+  background: #fce8e6;
+}
+
+.bs-action-reset:hover svg {
+  stroke: #d93025;
+}
+
+.bs-action-btn:active {
+  transform: scale(0.9);
+}
+
 
 /* Collapsible Content */
 .bs-content {
