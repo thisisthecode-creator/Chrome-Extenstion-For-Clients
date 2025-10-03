@@ -15,5 +15,11 @@
       "css": ["styles.css", "flight-details-styles.css"]
     }
   ],
-  "permissions": ["activeTab"]
+  "permissions": ["activeTab"],
+  "web_accessible_resources": [
+    {
+      "resources": ["icon128.png"],
+      "matches": ["*://www.google.com/*"]
+    }
+  ]
 }

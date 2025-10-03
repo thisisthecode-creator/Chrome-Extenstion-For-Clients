@@ -33,6 +33,7 @@
   font-size: 16px;
   font-weight: 600;
   color: #202124;
+  position: relative;
 }
 
 .bs-section-icon {
@@ -40,6 +41,27 @@
   height: 20px;
   stroke: #1a73e8;
   stroke-width: 2;
+}
+
+/* Benefit Systems Section */
+.bs-section-benefits {
+  position: relative;
+}
+
+/* Benefit Systems Logo */
+.bs-logo {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.bs-logo:hover {
+  opacity: 1;
 }
 
 /* Input Grid */
