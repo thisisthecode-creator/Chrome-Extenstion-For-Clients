@@ -145,9 +145,23 @@
 
 /* Settings Footer - for Language, Currency, Location */
 .bs-settings-footer {
-  padding: 12px 16px 16px;
+  padding: 12px 16px;
   border-top: 1px solid #e8eaed;
   background: #fafafa;
+  position: relative;
+}
+
+/* Footer Button Container */
+.bs-footer-button-container {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+
+.bs-footer-button-container .bs-btn {
+  font-size: 13px;
+  padding: 6px 12px;
+  min-height: 32px;
 }
 
 .bs-settings-compact {
@@ -349,37 +363,38 @@
   gap: 10px;
 }
 
-/* Button Base */
+/* Button Base - Google Style */
 .bs-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 12px 16px;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
+  padding: 8px 16px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-size: 14px;
   font-weight: 500;
-  color: #ffffff;
-  background: linear-gradient(135deg, #1a73e8, #1557b0);
+  color: #1a73e8;
+  background: #fff;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transition: all 0.1s ease;
   outline: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 42px;
+  min-height: 36px;
+  box-shadow: none;
 }
 
 .bs-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+  background: #f8f9fa;
+  border-color: #c6c6c6;
+  box-shadow: 0 1px 1px 0 rgba(60,64,67,.08), 0 1px 3px 1px rgba(60,64,67,.16);
 }
 
 .bs-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  background: #f1f3f4;
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
 }
 
 .bs-btn svg {

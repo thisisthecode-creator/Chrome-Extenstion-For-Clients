@@ -243,35 +243,34 @@ function injectExtensionPanel() {
       </div>
     </div>
 
-    <!-- Benefit Systems Content -->
-    <div class="bs-section bs-section-benefits-content">
+    <!-- Search News Section -->
+    <div class="bs-section">
+      <div class="bs-section-header">
+        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <span>Search News</span>
+      </div>
+      
       <div class="bs-search-container">
-        <label for="bs-search-term">Search News & Deals</label>
+        <label for="bs-search-term">Search Term</label>
         <input type="text" id="bs-search-term" placeholder="e.g., Hyatt, Amex Green..." />
       </div>
       
       <div class="bs-buttons-grid">
-        <button class="bs-btn bs-btn-bs-tools" data-service="bs-tools">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          All Tools
-        </button>
         <button class="bs-btn bs-btn-travel-news" data-service="travel-news">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
           Travel News
         </button>
         <button class="bs-btn bs-btn-hotel-points" data-service="hotel-points">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="6" width="16" height="14" rx="2"/><path d="M4 10h16"/><circle cx="12" cy="14" r="2"/></svg>
           Hotel Points
         </button>
         <button class="bs-btn bs-btn-airline-miles" data-service="airline-miles">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
           Airline Miles
         </button>
         <button class="bs-btn bs-btn-credit-cards" data-service="credit-cards">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
           Credit Cards
         </button>
-        </div>
+      </div>
     </div>
     </div>
     
@@ -322,6 +321,11 @@ function injectExtensionPanel() {
             <option value="PL">Poland</option>
           </select>
         </div>
+      </div>
+      <div class="bs-footer-button-container">
+        <button class="bs-btn bs-btn-bs-tools" data-service="bs-tools">
+          Benefit Systems
+        </button>
       </div>
     </div>
   `;
