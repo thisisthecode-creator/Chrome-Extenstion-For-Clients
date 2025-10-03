@@ -46,6 +46,13 @@
 /* Benefit Systems Section */
 .bs-section-benefits {
   position: relative;
+  border-top: 2px solid #e8eaed;
+  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.bs-section-benefits-content {
+  border-bottom: none;
 }
 
 /* Benefit Systems Logo */

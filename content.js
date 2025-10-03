@@ -38,6 +38,7 @@ function injectExtensionPanel() {
   
   // Create panel HTML structure
   panel.innerHTML = `
+    <div class="bs-content" id="bs-collapsible-content">
     <!-- Flight Search Section -->
     <div class="bs-section">
       <div class="bs-section-header">
@@ -242,17 +243,8 @@ function injectExtensionPanel() {
       </div>
     </div>
 
-    <!-- Benefit Systems Section -->
-    <div class="bs-section bs-section-benefits">
-      <div class="bs-section-header">
-        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-        </svg>
-        <span>Benefit Systems</span>
-        <img src="${chrome.runtime.getURL('icon128.png')}" alt="Benefit Systems Logo" class="bs-logo" id="bs-toggle-logo" title="Click to collapse/expand" />
-      </div>
-      
-      <div class="bs-content" id="bs-collapsible-content">
+    <!-- Benefit Systems Content -->
+    <div class="bs-section bs-section-benefits-content">
       <div class="bs-search-container">
         <label for="bs-search-term">Search News & Deals</label>
         <input type="text" id="bs-search-term" placeholder="e.g., Hyatt, Amex Green..." />
@@ -279,6 +271,18 @@ function injectExtensionPanel() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
           Credit Cards
         </button>
+        </div>
+    </div>
+    </div>
+    
+    <!-- Benefit Systems Header (Always Visible) -->
+    <div class="bs-section bs-section-benefits">
+      <div class="bs-section-header">
+        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+        <span>Benefit Systems</span>
+        <img src="${chrome.runtime.getURL('icon128.png')}" alt="Benefit Systems Logo" class="bs-logo" id="bs-toggle-logo" title="Click to collapse/expand" />
         </div>
     </div>
     
@@ -319,7 +323,6 @@ function injectExtensionPanel() {
           </select>
         </div>
       </div>
-    </div>
     </div>
   `;
   
