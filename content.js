@@ -252,6 +252,11 @@ function injectExtensionPanel() {
         <img src="${chrome.runtime.getURL('icon128.png')}" alt="Benefit Systems Logo" class="bs-logo" />
       </div>
       
+      <div class="bs-search-container">
+        <label for="bs-search-term">Search News & Deals</label>
+        <input type="text" id="bs-search-term" placeholder="e.g., Hyatt, Marriott..." />
+      </div>
+      
       <div class="bs-buttons-grid">
         <button class="bs-btn bs-btn-bs-tools" data-service="bs-tools">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -740,11 +745,15 @@ function generateHotelUrl(service, data) {
 
 // Generate Benefit Systems URLs
 function generateBenefitSystemsUrl(service) {
+  // Get search term from input
+  const searchTerm = document.getElementById('bs-search-term')?.value?.trim() || '';
+  const termParam = searchTerm ? `?term=${encodeURIComponent(searchTerm)}` : '';
+  
   const urls = {
     'bs-tools': 'https://tools.benefitsystems.io',
-    'travel-news': 'https://www.inoreader.com/stream/user/1005075234/tag/Travel%20News/view/html?t=Travel%20News&l=https%3A%2F%2Ftools.benefitsystems.io%2FBenefit2.png&cs=m',
-    'hotel-points': 'https://www.inoreader.com/stream/user/1005075234/tag/Buy%20Hotels/view/html?t=Buy%20Hotel%20Points&l=https%3A%2F%2Ftools.benefitsystems.io%2FBenefit2.png&cs=m',
-    'airline-miles': 'https://www.inoreader.com/stream/user/1005075234/tag/Buy%20Airlines/view/html?t=Buy%20Airline%20Miles&l=https%3A%2F%2Ftools.benefitsystems.io%2FBenefit2.png&cs=m'
+    'travel-news': `https://www.inoreader.com/folder/Travel%20News${termParam}`,
+    'hotel-points': `https://www.inoreader.com/folder/Buy%20Hotels${termParam}`,
+    'airline-miles': `https://www.inoreader.com/folder/Buy%20Airlines${termParam}`
   };
   
   return urls[service] || '#';
