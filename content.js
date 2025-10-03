@@ -97,59 +97,45 @@ function injectExtensionPanel() {
       
       <div class="bs-buttons-grid">
         <button class="bs-btn bs-btn-google-flights" data-service="google-flights">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           Google Flights
         </button>
         <button class="bs-btn bs-btn-points-yeah" data-service="points-yeah">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           PointsYeah
         </button>
         <button class="bs-btn bs-btn-award-tool" data-service="award-tool">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>
           AwardTool
         </button>
         <button class="bs-btn bs-btn-seats-aero" data-service="seats-aero">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/><path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"/></svg>
           Seats.aero
         </button>
         <button class="bs-btn bs-btn-point-me" data-service="point-me">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
           Point.me
         </button>
         <button class="bs-btn bs-btn-kayak" data-service="kayak">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11h3m9-9 6 6-6 6m-3-3h12"/></svg>
           Kayak
         </button>
         <button class="bs-btn bs-btn-skyscanner" data-service="skyscanner">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           Skyscanner
         </button>
         <button class="bs-btn bs-btn-air-canada" data-service="air-canada">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
           Air Canada
         </button>
         <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
           Rovemiles
         </button>
         <button class="bs-btn bs-btn-fare-class" data-service="fare-class">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           Fare Class
         </button>
         <button class="bs-btn bs-btn-flight-connections" data-service="flight-connections">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           Connections
         </button>
         <button class="bs-btn bs-btn-turbli" data-service="turbli">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9"/></svg>
           Turbli
         </button>
         <button class="bs-btn bs-btn-pointsyeah-seatmap" data-service="pointsyeah-seatmap" style="display: none;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 11h10M7 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M7 11v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8"/><path d="M5 11h14"/></svg>
           PY Seats
         </button>
         <button class="bs-btn bs-btn-seats-aero-seatmap" data-service="seats-aero-seatmap" style="display: none;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 11h10M7 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M7 11v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8"/><path d="M5 11h14"/></svg>
           SA Seats
         </button>
       </div>
@@ -189,55 +175,42 @@ function injectExtensionPanel() {
       
       <div class="bs-buttons-grid">
         <button class="bs-btn bs-btn-rooms-aero" data-service="rooms-aero">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/><path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"/></svg>
           Rooms.aero
         </button>
         <button class="bs-btn bs-btn-hilton" data-service="hilton">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
           Hilton
         </button>
         <button class="bs-btn bs-btn-hyatt" data-service="hyatt">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="6" width="16" height="14" rx="2"/><path d="M4 10h16"/></svg>
           Hyatt
         </button>
         <button class="bs-btn bs-btn-marriott" data-service="marriott">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/></svg>
           Marriott
         </button>
         <button class="bs-btn bs-btn-ihg" data-service="ihg">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
           IHG
         </button>
         <button class="bs-btn bs-btn-accor" data-service="accor">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           Accor
         </button>
         <button class="bs-btn bs-btn-wyndham" data-service="wyndham">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           Wyndham
         </button>
         <button class="bs-btn bs-btn-choice" data-service="choice">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           Choice
         </button>
         <button class="bs-btn bs-btn-melia" data-service="melia">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           Melia
         </button>
         <button class="bs-btn bs-btn-gha" data-service="gha">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           GHA
         </button>
         <button class="bs-btn bs-btn-google-hotels" data-service="google-hotels">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           Google Hotels
         </button>
         <button class="bs-btn bs-btn-best-western" data-service="best-western">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
           BestWest
         </button>
         <button class="bs-btn bs-btn-radisson" data-service="radisson">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/></svg>
           Radisson
         </button>
       </div>
@@ -311,7 +284,7 @@ function injectExtensionPanel() {
           </select>
         </div>
         <div class="bs-settings-item bs-settings-link">
-          <a href="https://tools.benefitsystems.io" target="_blank" class="bs-link">Location</a>
+          <a href="https://tools.benefitsystems.io" target="_blank" class="bs-link">Benefit Systems</a>
         </div>
       </div>
     </div>

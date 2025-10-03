@@ -362,15 +362,6 @@
   border-color: #000000;
 }
 
-.bs-btn svg {
-  width: 16px;
-  height: 16px;
-  stroke: #000000;
-  stroke-width: 2;
-  fill: none;
-  flex-shrink: 0;
-}
-
 /* Button Colors - All buttons now have white background and black text */
 .bs-btn-google-flights,
 .bs-btn-points-yeah,
@@ -544,11 +535,6 @@
     padding: 10px 12px;
     font-size: 12px;
     min-height: 38px;
-  }
-
-  .bs-btn svg {
-    width: 14px;
-    height: 14px;
   }
 
   .bs-notification {
