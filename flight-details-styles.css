@@ -3,10 +3,10 @@
 .injected-flight-details {
   margin: 0;
   padding: 8px 12px;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   border-radius: 0 0 8px 8px;
   font-size: 13px;
-  color: #5f6368;
+  color: #000000;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   width: 100%;
   box-sizing: border-box;
@@ -43,7 +43,7 @@
   justify-content: center;
   width: 16px;
   height: 16px;
-  color: #5f6368;
+  color: #000000;
   flex-shrink: 0;
 }
 
@@ -94,8 +94,8 @@
 .tooltip-text {
   visibility: hidden;
   width: 200px;
-  background-color: #333;
-  color: white;
+  background-color: #ffffff;
+  color: #000000;
   text-align: center;
   border-radius: 6px;
   padding: 8px;
@@ -107,6 +107,7 @@
   opacity: 0;
   transition: opacity 0.3s;
   font-size: 12px;
+  border: 1px solid #dadce0;
 }
 
 .tooltip-text::after {
@@ -117,7 +118,7 @@
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #333 transparent transparent transparent;
+  border-color: #ffffff transparent transparent transparent;
 }
 
 /* Animation for new content */
@@ -154,7 +155,7 @@
 
 /* Add a subtle hover effect */
 .injected-flight-details:hover {
-  background-color: #f0f2f5;
+  background-color: #ffffff;
 }
 
 /* Fix for Google Flights containers that might clip our content */

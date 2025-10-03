@@ -146,11 +146,11 @@ function injectExtensionPanel() {
         </button>
         <button class="bs-btn bs-btn-pointsyeah-seatmap" data-service="pointsyeah-seatmap" style="display: none;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 11h10M7 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M7 11v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8"/><path d="M5 11h14"/></svg>
-          PointsYeah
+          PointsYeah Seatmap
         </button>
-        <button class="bs-btn bs-btn-seats-aero" data-service="seats-aero" style="display: none;">
+        <button class="bs-btn bs-btn-seats-aero-seatmap" data-service="seats-aero-seatmap" style="display: none;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 11h10M7 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M7 11v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8"/><path d="M5 11h14"/></svg>
-          Seats.aero
+          Seats.aero Seatmap
         </button>
       </div>
     </div>
@@ -311,8 +311,7 @@ function injectExtensionPanel() {
           </select>
         </div>
         <div class="bs-settings-item bs-settings-link">
-          <a href="https://tools.benefitsystems.io" target="_blank" class="bs-link">Benefit Systems</a>
-          <img src="${chrome.runtime.getURL('icon128.png')}" alt="Logo" class="bs-logo-small" id="bs-toggle-logo" title="Click to collapse/expand" />
+          <a href="https://tools.benefitsystems.io" target="_blank" class="bs-link">Location</a>
         </div>
       </div>
     </div>
@@ -391,7 +390,7 @@ function initializeEventListeners() {
     const showButtons = airline && flightNumber;
     
     const pointsYeahBtn = document.querySelector('.bs-btn-pointsyeah-seatmap');
-    const seatsAeroBtn = document.querySelector('.bs-btn-seats-aero');
+    const seatsAeroBtn = document.querySelector('.bs-btn-seats-aero-seatmap');
     
     if (pointsYeahBtn) {
       pointsYeahBtn.style.display = showButtons ? '' : 'none';
@@ -569,7 +568,7 @@ function restoreFlightData() {
     const showButtons = airline && flightNumber;
     
     const pointsYeahBtn = document.querySelector('.bs-btn-pointsyeah-seatmap');
-    const seatsAeroBtn = document.querySelector('.bs-btn-seats-aero');
+    const seatsAeroBtn = document.querySelector('.bs-btn-seats-aero-seatmap');
     
     if (pointsYeahBtn) {
       pointsYeahBtn.style.display = showButtons ? '' : 'none';
@@ -665,7 +664,7 @@ function generateFlightUrl(service, data) {
     
     'pointsyeah-seatmap': data.airline && data.flightNumber ? `https://www.pointsyeah.com/seatmap/detail?airline=${encodeURIComponent(data.airline)}&departure=${from}&arrival=${to}&date=${depart}&flightNumber=${encodeURIComponent(data.flightNumber)}&cabins=Economy%2CPremium%20Economy%2CBusiness%2CFirst` : '#',
     
-    'seats-aero': data.airline && data.flightNumber ? `https://seats.aero/seatmap?airline=${encodeURIComponent(data.airline)}&from=${from}&to=${to}&date=${depart}&flight=${encodeURIComponent(data.flightNumber)}` : '#'
+    'seats-aero-seatmap': data.airline && data.flightNumber ? `https://seats.aero/seatmap?airline=${encodeURIComponent(data.airline)}&from=${from}&to=${to}&date=${depart}&flight=${encodeURIComponent(data.flightNumber)}` : '#'
   };
   
   return urls[service] || '#';
@@ -789,40 +788,9 @@ function showNotification(message, type = 'info') {
   }, 3000);
 }
 
-// Initialize collapse/expand functionality for logo
+// Initialize collapse/expand functionality (removed - no longer needed without logo)
 function initializeCollapsible() {
-  const logo = document.getElementById('bs-toggle-logo');
-  const content = document.getElementById('bs-collapsible-content');
-  const panel = document.querySelector('.bs-extension-panel');
-  
-  if (!logo || !content || !panel) return;
-  
-  // Load saved state
-  const isCollapsed = localStorage.getItem('bs-panel-collapsed') === 'true';
-  if (isCollapsed) {
-    content.style.display = 'none';
-    panel.classList.add('bs-collapsed');
-  }
-  
-  // Add click handler to logo
-  logo.style.cursor = 'pointer';
-  logo.addEventListener('click', (e) => {
-    e.stopPropagation();
-    
-    const isCurrentlyCollapsed = content.style.display === 'none';
-    
-    if (isCurrentlyCollapsed) {
-      // Expand
-      content.style.display = 'block';
-      panel.classList.remove('bs-collapsed');
-      localStorage.setItem('bs-panel-collapsed', 'false');
-  } else {
-      // Collapse
-      content.style.display = 'none';
-      panel.classList.add('bs-collapsed');
-      localStorage.setItem('bs-panel-collapsed', 'true');
-    }
-  });
+  // Functionality removed as logo toggle has been removed
 }
 
 // Setup observer to inject panel when page loads

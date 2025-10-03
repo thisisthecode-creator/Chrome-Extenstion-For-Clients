@@ -32,14 +32,14 @@
   margin-bottom: 16px;
   font-size: 16px;
   font-weight: 600;
-  color: #202124;
+  color: #000000;
   position: relative;
 }
 
 .bs-section-icon {
   width: 20px;
   height: 20px;
-  stroke: #1a73e8;
+  stroke: #000000;
   stroke-width: 2;
 }
 
@@ -66,7 +66,7 @@
 .bs-search-container label {
   font-size: 12px;
   font-weight: 500;
-  color: #5f6368;
+  color: #000000;
 }
 
 .bs-search-container input {
@@ -74,21 +74,21 @@
   border: 2px solid #dadce0;
   border-radius: 24px;
   font-size: 14px;
-  background: white;
-  color: #202124;
+  background: #ffffff;
+  color: #000000;
   transition: all 0.2s ease;
   width: 100%;
   max-width: 400px;
 }
 
 .bs-search-container input:hover {
-  border-color: #c4c7c9;
+  border-color: #000000;
 }
 
 .bs-search-container input:focus {
   outline: none;
-  border-color: #1a73e8;
-  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .bs-search-container input::placeholder {
@@ -118,7 +118,7 @@
 }
 
 .bs-link {
-  color: #1a73e8;
+  color: #000000;
   text-decoration: none;
   font-size: 11px;
   font-weight: 500;
@@ -127,23 +127,6 @@
 
 .bs-link:hover {
   text-decoration: underline;
-}
-
-.bs-logo-small {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  opacity: 0.9;
-  transition: all 0.2s ease;
-}
-
-.bs-logo-small:hover {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.bs-logo-small:active {
-  transform: scale(0.95);
 }
 
 .bs-settings-compact {
@@ -164,7 +147,7 @@
 .bs-settings-item label {
   font-size: 11px;
   font-weight: 500;
-  color: #5f6368;
+  color: #000000;
   white-space: nowrap;
 }
 
@@ -173,21 +156,21 @@
   border: 1px solid #dadce0;
   border-radius: 4px;
   font-size: 11px;
-  background: white;
-  color: #202124;
+  background: #ffffff;
+  color: #000000;
   cursor: pointer;
   transition: all 0.2s ease;
   min-width: 90px;
 }
 
 .bs-settings-item select:hover {
-  border-color: #1a73e8;
+  border-color: #000000;
 }
 
 .bs-settings-item select:focus {
   outline: none;
-  border-color: #1a73e8;
-  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+  border-color: #000000;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Flight inputs in one row */
@@ -225,8 +208,8 @@
 }
 
 .bs-switch-btn:hover {
-  border-color: #1a73e8;
-  background: #f1f3f4;
+  border-color: #000000;
+  background: #ffffff;
   transform: scale(1.05);
 }
 
@@ -237,12 +220,12 @@
 .bs-switch-btn svg {
   width: 20px;
   height: 20px;
-  stroke: #5f6368;
+  stroke: #000000;
   transition: stroke 0.2s ease;
 }
 
 .bs-switch-btn:hover svg {
-  stroke: #1a73e8;
+  stroke: #000000;
 }
 
 .bs-switch-rotate {
@@ -307,7 +290,7 @@
 .bs-input-group label {
   font-size: 12px;
   font-weight: 500;
-  color: #5f6368;
+  color: #000000;
   margin-left: 2px;
 }
 
@@ -317,7 +300,7 @@
   border: 1px solid #dadce0;
   border-radius: 8px;
   font-size: 14px;
-  color: #202124;
+  color: #000000;
   background: #ffffff;
   transition: all 0.2s ease;
   outline: none;
@@ -325,13 +308,13 @@
 
 .bs-input-group input:focus,
 .bs-input-group select:focus {
-  border-color: #1a73e8;
-  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .bs-input-group input:hover,
 .bs-input-group select:hover {
-  border-color: #999;
+  border-color: #000000;
 }
 
 .bs-input-group input::placeholder {
@@ -356,8 +339,8 @@
   font-family: 'Google Sans', Roboto, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #1a73e8;
-  background: transparent;
+  color: #000000 !important;
+  background: #ffffff !important;
   cursor: pointer;
   transition: all 0.1s ease;
   outline: none;
@@ -369,234 +352,84 @@
 }
 
 .bs-btn:hover {
-  background: transparent;
-  border-color: #1a73e8;
-  text-decoration: underline;
+  background: #ffffff !important;
+  border-color: #000000;
+  text-decoration: none;
 }
 
 .bs-btn:active {
-  background: transparent;
-  border-color: #1a73e8;
+  background: #ffffff !important;
+  border-color: #000000;
 }
 
 .bs-btn svg {
   width: 16px;
   height: 16px;
-  stroke: currentColor;
+  stroke: #000000;
   stroke-width: 2;
   fill: none;
   flex-shrink: 0;
 }
 
-/* Button Colors - Flight Services */
-.bs-btn-google-flights {
-  background: linear-gradient(135deg, #4285f4, #3367d6);
-}
-
-.bs-btn-google-flights:hover {
-  background: linear-gradient(135deg, #5294ff, #4285f4);
-}
-
-.bs-btn-points-yeah {
-  background: linear-gradient(135deg, #1e88e5, #1565c0);
-}
-
-.bs-btn-points-yeah:hover {
-  background: linear-gradient(135deg, #42a5f5, #1e88e5);
-}
-
-.bs-btn-award-tool {
-  background: linear-gradient(135deg, #4caf50, #388e3c);
-}
-
-.bs-btn-award-tool:hover {
-  background: linear-gradient(135deg, #66bb6a, #4caf50);
-}
-
-.bs-btn-seats-aero {
-  background: linear-gradient(135deg, #ff9800, #f57c00);
-}
-
-.bs-btn-seats-aero:hover {
-  background: linear-gradient(135deg, #ffb74d, #ff9800);
-}
-
-.bs-btn-point-me {
-  background: linear-gradient(135deg, #ff6f00, #e65100);
-}
-
-.bs-btn-point-me:hover {
-  background: linear-gradient(135deg, #ff8f00, #ff6f00);
-}
-
-.bs-btn-kayak {
-  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
-}
-
-.bs-btn-kayak:hover {
-  background: linear-gradient(135deg, #ab47bc, #9c27b0);
-}
-
-.bs-btn-skyscanner {
-  background: linear-gradient(135deg, #00acc1, #0097a7);
-}
-
-.bs-btn-skyscanner:hover {
-  background: linear-gradient(135deg, #26c6da, #00acc1);
-}
-
-.bs-btn-air-canada {
-  background: linear-gradient(135deg, #e53935, #c62828);
-}
-
-.bs-btn-air-canada:hover {
-  background: linear-gradient(135deg, #ef5350, #e53935);
-}
-
-.bs-btn-rovemiles {
-  background: linear-gradient(135deg, #5e35b1, #4527a0);
-}
-
-.bs-btn-rovemiles:hover {
-  background: linear-gradient(135deg, #7e57c2, #5e35b1);
-}
-
-.bs-btn-fare-class {
-  background: linear-gradient(135deg, #3f51b5, #303f9f);
-}
-
-.bs-btn-fare-class:hover {
-  background: linear-gradient(135deg, #5c6bc0, #3f51b5);
-}
-
-.bs-btn-flight-connections {
-  background: linear-gradient(135deg, #009688, #00796b);
-}
-
-.bs-btn-flight-connections:hover {
-  background: linear-gradient(135deg, #26a69a, #009688);
-}
-
-.bs-btn-turbli {
-  background: linear-gradient(135deg, #607d8b, #455a64);
-}
-
-.bs-btn-turbli:hover {
-  background: linear-gradient(135deg, #78909c, #607d8b);
-}
-
-/* Button Colors - Hotel Services */
-.bs-btn-google-hotels {
-  background: linear-gradient(135deg, #ea4335, #c5221f);
-}
-
-.bs-btn-google-hotels:hover {
-  background: linear-gradient(135deg, #f44336, #ea4335);
-}
-
-.bs-btn-hilton {
-  background: linear-gradient(135deg, #00274c, #001a33);
-}
-
-.bs-btn-hilton:hover {
-  background: linear-gradient(135deg, #003366, #00274c);
-}
-
-.bs-btn-hyatt {
-  background: linear-gradient(135deg, #0077b5, #005582);
-}
-
-.bs-btn-hyatt:hover {
-  background: linear-gradient(135deg, #0088cc, #0077b5);
-}
-
-.bs-btn-marriott {
-  background: linear-gradient(135deg, #283593, #1a237e);
-}
-
-.bs-btn-marriott:hover {
-  background: linear-gradient(135deg, #3949ab, #283593);
-}
-
-.bs-btn-ihg {
-  background: linear-gradient(135deg, #c62828, #b71c1c);
-}
-
-.bs-btn-ihg:hover {
-  background: linear-gradient(135deg, #d32f2f, #c62828);
-}
-
-.bs-btn-accor {
-  background: linear-gradient(135deg, #ff5722, #f4511e);
-}
-
-.bs-btn-accor:hover {
-  background: linear-gradient(135deg, #ff7043, #ff5722);
-}
-
-.bs-btn-wyndham {
-  background: linear-gradient(135deg, #002b49, #001e33);
-}
-
-.bs-btn-wyndham:hover {
-  background: linear-gradient(135deg, #003b66, #002b49);
-}
-
-.bs-btn-choice {
-  background: linear-gradient(135deg, #f57c00, #ef6c00);
-}
-
-.bs-btn-choice:hover {
-  background: linear-gradient(135deg, #ff9800, #f57c00);
-}
-
-.bs-btn-melia {
-  background: linear-gradient(135deg, #e91e63, #c2185b);
-}
-
-.bs-btn-melia:hover {
-  background: linear-gradient(135deg, #ec407a, #e91e63);
-}
-
-.bs-btn-best-western {
-  background: linear-gradient(135deg, #0d47a1, #0a3880);
-}
-
-.bs-btn-best-western:hover {
-  background: linear-gradient(135deg, #1565c0, #0d47a1);
-}
-
-.bs-btn-radisson {
-  background: linear-gradient(135deg, #673ab7, #5e35b1);
-}
-
-.bs-btn-radisson:hover {
-  background: linear-gradient(135deg, #7e57c2, #673ab7);
-}
-
-.bs-btn-gha {
-  background: linear-gradient(135deg, #00695c, #004d40);
-}
-
-.bs-btn-gha:hover {
-  background: linear-gradient(135deg, #00897b, #00695c);
-}
-
-.bs-btn-rooms-aero {
-  background: linear-gradient(135deg, #ff6f00, #e65100);
-}
-
-.bs-btn-rooms-aero:hover {
-  background: linear-gradient(135deg, #ff8f00, #ff6f00);
-}
-
-/* Button Colors - Benefit Systems */
+/* Button Colors - All buttons now have white background and black text */
+.bs-btn-google-flights,
+.bs-btn-points-yeah,
+.bs-btn-award-tool,
+.bs-btn-seats-aero,
+.bs-btn-point-me,
+.bs-btn-kayak,
+.bs-btn-skyscanner,
+.bs-btn-air-canada,
+.bs-btn-rovemiles,
+.bs-btn-fare-class,
+.bs-btn-flight-connections,
+.bs-btn-turbli,
+.bs-btn-google-hotels,
+.bs-btn-hilton,
+.bs-btn-hyatt,
+.bs-btn-marriott,
+.bs-btn-ihg,
+.bs-btn-accor,
+.bs-btn-wyndham,
+.bs-btn-choice,
+.bs-btn-melia,
+.bs-btn-best-western,
+.bs-btn-radisson,
+.bs-btn-gha,
+.bs-btn-rooms-aero,
 .bs-btn-bs-tools {
-  background: linear-gradient(135deg, #1a73e8, #1557b0);
+  background: #ffffff !important;
+  color: #000000 !important;
 }
 
+.bs-btn-google-flights:hover,
+.bs-btn-points-yeah:hover,
+.bs-btn-award-tool:hover,
+.bs-btn-seats-aero:hover,
+.bs-btn-point-me:hover,
+.bs-btn-kayak:hover,
+.bs-btn-skyscanner:hover,
+.bs-btn-air-canada:hover,
+.bs-btn-rovemiles:hover,
+.bs-btn-fare-class:hover,
+.bs-btn-flight-connections:hover,
+.bs-btn-turbli:hover,
+.bs-btn-google-hotels:hover,
+.bs-btn-hilton:hover,
+.bs-btn-hyatt:hover,
+.bs-btn-marriott:hover,
+.bs-btn-ihg:hover,
+.bs-btn-accor:hover,
+.bs-btn-wyndham:hover,
+.bs-btn-choice:hover,
+.bs-btn-melia:hover,
+.bs-btn-best-western:hover,
+.bs-btn-radisson:hover,
+.bs-btn-gha:hover,
+.bs-btn-rooms-aero:hover,
 .bs-btn-bs-tools:hover {
-  background: linear-gradient(135deg, #2b7de9, #1a73e8);
+  background: #ffffff !important;
+  color: #000000 !important;
 }
 
 /* Notification */
@@ -725,40 +558,40 @@
   }
 }
 
-/* Dark Mode Support (optional) */
+/* Dark Mode Support - Override to keep white background and black text */
 @media (prefers-color-scheme: dark) {
   .bs-extension-panel {
-    background: #202124;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    background: #ffffff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   }
 
   .bs-section {
-    border-bottom-color: #3c4043;
+    border-bottom-color: #e8eaed;
   }
 
   .bs-section-header {
-    color: #e8eaed;
+    color: #000000;
   }
 
   .bs-input-group label {
-    color: #9aa0a6;
+    color: #000000;
   }
 
   .bs-input-group input,
   .bs-input-group select {
-    background: #303134;
-    border-color: #5f6368;
-    color: #e8eaed;
+    background: #ffffff;
+    border-color: #dadce0;
+    color: #000000;
   }
 
   .bs-input-group input:focus,
   .bs-input-group select:focus {
-    border-color: #8ab4f8;
-    box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.2);
+    border-color: #000000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
   }
 
   .bs-input-group input::placeholder {
-    color: #5f6368;
+    color: #999999;
   }
 }
 
@@ -769,7 +602,7 @@
 
 /* Focus visible for accessibility */
 .bs-btn:focus-visible {
-  outline: 2px solid #1a73e8;
+  outline: 2px solid #000000;
   outline-offset: 2px;
 }
 
