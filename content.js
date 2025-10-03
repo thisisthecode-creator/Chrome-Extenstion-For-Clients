@@ -270,19 +270,8 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-credit-cards" data-service="credit-cards">
           Credit Cards
         </button>
-      </div>
-    </div>
-    </div>
-    
-    <!-- Benefit Systems Header (Always Visible) -->
-    <div class="bs-section bs-section-benefits">
-      <div class="bs-section-header">
-        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-        </svg>
-        <span>Benefit Systems</span>
-        <img src="${chrome.runtime.getURL('icon128.png')}" alt="Benefit Systems Logo" class="bs-logo" id="bs-toggle-logo" title="Click to collapse/expand" />
         </div>
+    </div>
     </div>
     
     <!-- Settings Footer -->
@@ -321,11 +310,10 @@ function injectExtensionPanel() {
             <option value="PL">Poland</option>
           </select>
         </div>
-      </div>
-      <div class="bs-footer-button-container">
-        <button class="bs-btn bs-btn-bs-tools" data-service="bs-tools">
-          Benefit Systems
-        </button>
+        <div class="bs-settings-item bs-settings-link">
+          <a href="https://tools.benefitsystems.io" target="_blank" class="bs-link">Benefit Systems</a>
+          <img src="${chrome.runtime.getURL('icon128.png')}" alt="Logo" class="bs-logo-small" id="bs-toggle-logo" title="Click to collapse/expand" />
+        </div>
       </div>
     </div>
   `;
