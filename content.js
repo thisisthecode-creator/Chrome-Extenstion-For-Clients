@@ -47,42 +47,6 @@ function injectExtensionPanel() {
         <span>Flight Search</span>
       </div>
       
-      <div class="bs-inputs-grid bs-settings-grid">
-        <div class="bs-input-group">
-          <label>Language</label>
-          <select id="bs-flight-language">
-            <option value="en">English</option>
-            <option value="de">Deutsch</option>
-            <option value="fr">Français</option>
-            <option value="es">Español</option>
-            <option value="it">Italiano</option>
-            <option value="pl">Polski</option>
-          </select>
-      </div>
-        <div class="bs-input-group">
-          <label>Currency</label>
-          <select id="bs-flight-currency">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-            <option value="CHF">CHF</option>
-            <option value="PLN">PLN</option>
-          </select>
-        </div>
-        <div class="bs-input-group">
-          <label>Location</label>
-          <select id="bs-flight-location">
-            <option value="US">United States</option>
-            <option value="DE">Germany</option>
-            <option value="GB">United Kingdom</option>
-            <option value="FR">France</option>
-            <option value="AT">Austria</option>
-            <option value="CH">Switzerland</option>
-            <option value="PL">Poland</option>
-          </select>
-        </div>
-      </div>
-      
       <div class="bs-inputs-grid">
         <div class="bs-input-group">
           <label>From (IATA)</label>
@@ -306,6 +270,45 @@ function injectExtensionPanel() {
           Airline Miles
         </button>
         </div>
+    </div>
+    
+    <!-- Settings Footer -->
+    <div class="bs-settings-footer">
+      <div class="bs-settings-compact">
+        <div class="bs-settings-item">
+          <label>Language</label>
+          <select id="bs-flight-language">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="pl">Polski</option>
+        </select>
+        </div>
+        <div class="bs-settings-item">
+          <label>Currency</label>
+          <select id="bs-flight-currency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="CHF">CHF</option>
+            <option value="PLN">PLN</option>
+          </select>
+        </div>
+        <div class="bs-settings-item">
+          <label>Location</label>
+          <select id="bs-flight-location">
+            <option value="US">United States</option>
+            <option value="DE">Germany</option>
+            <option value="GB">United Kingdom</option>
+            <option value="FR">France</option>
+            <option value="AT">Austria</option>
+            <option value="CH">Switzerland</option>
+            <option value="PL">Poland</option>
+          </select>
+        </div>
+      </div>
     </div>
   `;
   
