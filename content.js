@@ -146,11 +146,11 @@ function injectExtensionPanel() {
         </button>
         <button class="bs-btn bs-btn-pointsyeah-seatmap" data-service="pointsyeah-seatmap" style="display: none;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 11h10M7 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M7 11v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8"/><path d="M5 11h14"/></svg>
-          PointsYeah Seatmap
+          PY Seats
         </button>
         <button class="bs-btn bs-btn-seats-aero-seatmap" data-service="seats-aero-seatmap" style="display: none;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 11h10M7 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M7 11v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8"/><path d="M5 11h14"/></svg>
-          Seats.aero Seatmap
+          SA Seats
         </button>
       </div>
     </div>
