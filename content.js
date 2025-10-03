@@ -50,7 +50,7 @@ function injectExtensionPanel() {
       
       <div class="bs-inputs-grid">
         <div class="bs-input-group">
-          <label>From (IATA)</label>
+          <label>From</label>
           <input type="text" id="bs-flight-from" placeholder="JFK" maxlength="3" />
         </div>
         <div class="bs-switch-container">
@@ -61,7 +61,7 @@ function injectExtensionPanel() {
           </button>
         </div>
         <div class="bs-input-group">
-          <label>To (IATA)</label>
+          <label>To</label>
           <input type="text" id="bs-flight-to" placeholder="LAX" maxlength="3" />
         </div>
         <div class="bs-input-group">
@@ -90,7 +90,7 @@ function injectExtensionPanel() {
           <input type="text" id="bs-flight-airline" placeholder="W6" maxlength="3" />
         </div>
         <div class="bs-input-group">
-          <label>Flight #</label>
+          <label>Flight Nr</label>
           <input type="text" id="bs-flight-number" placeholder="1444" />
         </div>
       </div>
