@@ -249,9 +249,10 @@ function injectExtensionPanel() {
           <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
         </svg>
         <span>Benefit Systems</span>
-        <img src="${chrome.runtime.getURL('icon128.png')}" alt="Benefit Systems Logo" class="bs-logo" />
+        <img src="${chrome.runtime.getURL('icon128.png')}" alt="Benefit Systems Logo" class="bs-logo" id="bs-toggle-logo" title="Click to collapse/expand" />
       </div>
       
+      <div class="bs-content" id="bs-collapsible-content">
       <div class="bs-search-container">
         <label for="bs-search-term">Search News & Deals</label>
         <input type="text" id="bs-search-term" placeholder="e.g., Hyatt, Marriott..." />
@@ -315,6 +316,7 @@ function injectExtensionPanel() {
         </div>
       </div>
     </div>
+    </div>
   `;
   
   // Insert panel at the top
@@ -322,6 +324,9 @@ function injectExtensionPanel() {
   
   // Initialize event listeners
   initializeEventListeners();
+  
+  // Initialize collapse/expand functionality
+  initializeCollapsible();
   
   // Restore saved flight data after a short delay to ensure inputs are ready
       setTimeout(() => {
@@ -780,6 +785,42 @@ function showNotification(message, type = 'info') {
     notification.classList.add('bs-notification-hide');
     setTimeout(() => notification.remove(), 300);
   }, 3000);
+}
+
+// Initialize collapse/expand functionality for logo
+function initializeCollapsible() {
+  const logo = document.getElementById('bs-toggle-logo');
+  const content = document.getElementById('bs-collapsible-content');
+  const panel = document.querySelector('.bs-extension-panel');
+  
+  if (!logo || !content || !panel) return;
+  
+  // Load saved state
+  const isCollapsed = localStorage.getItem('bs-panel-collapsed') === 'true';
+  if (isCollapsed) {
+    content.style.display = 'none';
+    panel.classList.add('bs-collapsed');
+  }
+  
+  // Add click handler to logo
+  logo.style.cursor = 'pointer';
+  logo.addEventListener('click', (e) => {
+    e.stopPropagation();
+    
+    const isCurrentlyCollapsed = content.style.display === 'none';
+    
+    if (isCurrentlyCollapsed) {
+      // Expand
+      content.style.display = 'block';
+      panel.classList.remove('bs-collapsed');
+      localStorage.setItem('bs-panel-collapsed', 'false');
+  } else {
+      // Collapse
+      content.style.display = 'none';
+      panel.classList.add('bs-collapsed');
+      localStorage.setItem('bs-panel-collapsed', 'true');
+    }
+  });
 }
 
 // Setup observer to inject panel when page loads

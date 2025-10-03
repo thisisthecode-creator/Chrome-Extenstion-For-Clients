@@ -57,11 +57,34 @@
   height: 40px;
   object-fit: contain;
   opacity: 0.9;
-  transition: opacity 0.2s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .bs-logo:hover {
   opacity: 1;
+  transform: scale(1.1);
+}
+
+.bs-logo:active {
+  transform: scale(0.95);
+}
+
+/* Collapsible Content */
+.bs-content {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+/* Collapsed State */
+.bs-extension-panel.bs-collapsed {
+  min-height: auto;
+}
+
+.bs-extension-panel.bs-collapsed .bs-section-header {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 12px;
 }
 
 /* Search Container */
