@@ -48,7 +48,7 @@ function injectExtensionPanel() {
           <div class="bs-toggle-item">
             <label class="bs-toggle-label" for="bs-flight-toggle">Flight Search</label>
             <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-flight-toggle">
+              <input type="checkbox" id="bs-flight-toggle" checked>
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
@@ -72,7 +72,7 @@ function injectExtensionPanel() {
     
     <div class="bs-content" id="bs-collapsible-content">
     <!-- Flight Search Section -->
-    <div class="bs-section" id="bs-flight-section" style="display: none;">
+    <div class="bs-section" id="bs-flight-section">
       <div class="bs-section-header">
         <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
@@ -328,11 +328,78 @@ function injectExtensionPanel() {
   // Initialize collapse/expand functionality
   initializeCollapsible();
   
+  // Load and apply saved toggle states
+  const toggleStates = loadToggleStates();
+  applyToggleStates(toggleStates);
+  
   // Restore saved flight data after a short delay to ensure inputs are ready
   setTimeout(() => {
     restoreFlightData();
     restoreHotelData();
   }, 100);
+}
+
+// Save toggle states to localStorage
+function saveToggleStates() {
+  const flightToggle = document.getElementById('bs-flight-toggle');
+  const hotelToggle = document.getElementById('bs-hotel-toggle');
+  const settingsToggle = document.getElementById('bs-settings-toggle');
+  
+  const toggleStates = {
+    flight: flightToggle ? flightToggle.checked : false,
+    hotel: hotelToggle ? hotelToggle.checked : false,
+    settings: settingsToggle ? settingsToggle.checked : false
+  };
+  
+  localStorage.setItem('bs-toggle-states', JSON.stringify(toggleStates));
+}
+
+// Load toggle states from localStorage
+function loadToggleStates() {
+  const savedStates = localStorage.getItem('bs-toggle-states');
+  if (savedStates) {
+    try {
+      const toggleStates = JSON.parse(savedStates);
+      return toggleStates;
+    } catch (e) {
+      console.log('BS Extension: Error parsing saved toggle states');
+    }
+  }
+  
+  // Default states if no saved data
+  return {
+    flight: true,  // Flight Search ON by default
+    hotel: false,  // Hotel Search OFF by default
+    settings: false // Settings OFF by default
+  };
+}
+
+// Apply toggle states to UI
+function applyToggleStates(toggleStates) {
+  const flightToggle = document.getElementById('bs-flight-toggle');
+  const hotelToggle = document.getElementById('bs-hotel-toggle');
+  const settingsToggle = document.getElementById('bs-settings-toggle');
+  const flightSection = document.getElementById('bs-flight-section');
+  const hotelSection = document.getElementById('bs-hotel-section');
+  const settingsSection = document.getElementById('bs-settings-section');
+  
+  // Apply flight toggle state
+  if (flightToggle && flightSection) {
+    flightToggle.checked = toggleStates.flight;
+    flightSection.style.display = toggleStates.flight ? 'block' : 'none';
+  }
+  
+  // Apply hotel toggle state
+  if (hotelToggle && hotelSection) {
+    hotelToggle.checked = toggleStates.hotel;
+    hotelSection.style.display = toggleStates.hotel ? 'block' : 'none';
+  }
+  
+  // Apply settings toggle state
+  if (settingsToggle && settingsSection) {
+    settingsToggle.checked = toggleStates.settings;
+    settingsSection.style.display = toggleStates.settings ? 'block' : 'none';
+  }
 }
 
 // Initialize all event listeners
@@ -364,6 +431,7 @@ function initializeEventListeners() {
       } else {
         flightSection.style.display = 'none';
       }
+      saveToggleStates();
     });
   }
   
@@ -374,6 +442,7 @@ function initializeEventListeners() {
       } else {
         hotelSection.style.display = 'none';
       }
+      saveToggleStates();
     });
   }
   
@@ -384,6 +453,7 @@ function initializeEventListeners() {
       } else {
         settingsSection.style.display = 'none';
       }
+      saveToggleStates();
     });
   }
   
