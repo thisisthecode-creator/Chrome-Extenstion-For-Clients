@@ -18,11 +18,11 @@
 /* Logo Container */
 .bs-logo-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 20px;
   background: #f8f9fa;
-  border-bottom: 1px solid #e8eaed;
+  border-bottom: 1px solid #000000;
 }
 
 .bs-logo-link {
@@ -45,7 +45,7 @@
 
 /* Section Container */
 .bs-section {
-  border-bottom: 1px solid #e8eaed;
+  border-bottom: 1px solid #000000;
   padding: 16px 20px;
 }
 
@@ -598,7 +598,7 @@
   }
 
   .bs-section {
-    border-bottom-color: #e8eaed;
+    border-bottom-color: #000000;
   }
 
   .bs-section-header {
