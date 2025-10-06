@@ -5,7 +5,7 @@
 /* Main Panel */
 .bs-extension-panel {
   margin: 16px 0;
-  background: #ffffff;
+  background: #f8f9fa;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
@@ -20,7 +20,7 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
-  background: #ffffff;
+  background: #f8f9fa;
   border-bottom: 1px solid #e8eaed;
 }
 
