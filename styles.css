@@ -14,6 +14,24 @@
   width: 100%;
 }
 
+/* Logo Container */
+.bs-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8eaed;
+}
+
+.bs-logo {
+  max-height: 60px;
+  max-width: 200px;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+}
+
 /* Section Container */
 .bs-section {
   border-bottom: 1px solid #e8eaed;
@@ -111,45 +129,6 @@
   min-height: auto;
 }
 
-/* Search Container */
-.bs-search-container {
-  margin-bottom: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.bs-search-container label {
-  font-size: 12px;
-  font-weight: 500;
-  color: #000000;
-}
-
-.bs-search-container input {
-  padding: 10px 12px;
-  border: 2px solid #dadce0;
-  border-radius: 24px;
-  font-size: 14px;
-  background: #ffffff;
-  color: #000000;
-  transition: all 0.2s ease;
-  width: 100%;
-  max-width: 400px;
-}
-
-.bs-search-container input:hover {
-  border-color: #000000;
-}
-
-.bs-search-container input:focus {
-  outline: none;
-  border-color: #000000;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
-}
-
-.bs-search-container input::placeholder {
-  color: #80868b;
-}
 
 /* Input Grid */
 .bs-inputs-grid {

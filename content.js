@@ -38,6 +38,11 @@ function injectExtensionPanel() {
   
   // Create panel HTML structure
   panel.innerHTML = `
+    <!-- Benefit Systems Logo -->
+    <div class="bs-logo-container">
+      <img src="https://saegzrncsjcsvgcjkniv.supabase.co/storage/v1/object/sign/Logo/BenefitSystems.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZWM2ZTk3Zi03YjQ2LTQ0ODMtODNjMS00ZDQwODU5N2MyOTgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL0JlbmVmaXRTeXN0ZW1zLnBuZyIsImlhdCI6MTc1OTc5MDg1MSwiZXhwIjoxNzY4NDMwODUxfQ.wRo7pPjUbmM-Rzo0fXGUChNcgwpM_aTnMjlz4IB5RHk" alt="Benefit Systems" class="bs-logo" />
+    </div>
+    
     <div class="bs-content" id="bs-collapsible-content">
     <!-- Flight Search Section -->
     <div class="bs-section">
@@ -242,35 +247,6 @@ function injectExtensionPanel() {
       </div>
     </div>
 
-    <!-- Search News Section -->
-    <div class="bs-section">
-      <div class="bs-section-header">
-        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-        </svg>
-        <span>Search News</span>
-      </div>
-      
-      <div class="bs-search-container">
-        <label for="bs-search-term">Search Term</label>
-        <input type="text" id="bs-search-term" placeholder="e.g., Hyatt, Amex Green..." />
-      </div>
-      
-      <div class="bs-buttons-grid">
-        <button class="bs-btn bs-btn-travel-news" data-service="travel-news">
-          Travel News
-        </button>
-        <button class="bs-btn bs-btn-hotel-points" data-service="hotel-points">
-          Hotel Points
-        </button>
-        <button class="bs-btn bs-btn-airline-miles" data-service="airline-miles">
-          Airline Miles
-        </button>
-        <button class="bs-btn bs-btn-credit-cards" data-service="credit-cards">
-          Credit Cards
-        </button>
-        </div>
-    </div>
     </div>
     
     <!-- Settings Footer -->
@@ -346,11 +322,6 @@ function initializeEventListeners() {
     btn.addEventListener('click', handleHotelButtonClick);
   });
   
-  // Benefit Systems buttons
-  const bsButtons = document.querySelectorAll('.bs-section:nth-child(3) .bs-btn');
-  bsButtons.forEach(btn => {
-    btn.addEventListener('click', handleBenefitSystemsButtonClick);
-  });
   
   // Auto-uppercase flight IATA codes
   const fromInput = document.getElementById('bs-flight-from');
@@ -528,17 +499,6 @@ function handleHotelButtonClick(e) {
   }
 }
 
-// Handle Benefit Systems button clicks
-function handleBenefitSystemsButtonClick(e) {
-  e.preventDefault();
-  
-  const service = e.currentTarget.dataset.service;
-  const url = generateBenefitSystemsUrl(service);
-  
-  if (url) {
-    window.open(url, '_blank');
-  }
-}
 
 // Save flight data to localStorage
 function saveFlightDataToStorage(data) {
@@ -859,24 +819,6 @@ function generateHotelUrl(service, data) {
   return urls[service] || '#';
 }
 
-// Generate Benefit Systems URLs
-function generateBenefitSystemsUrl(service) {
-  // Get search term from input
-  const searchTerm = document.getElementById('bs-search-term')?.value?.trim() || '';
-  const termParam = searchTerm ? `?term=${encodeURIComponent(searchTerm)}` : '';
-  
-  const urls = {
-    'bs-tools': 'https://tools.benefitsystems.io',
-    'travel-news': `https://www.inoreader.com/folder/Travel%20News${termParam}`,
-    'hotel-points': `https://www.inoreader.com/folder/Buy%20Hotels${termParam}`,
-    'airline-miles': `https://www.inoreader.com/folder/Buy%20Airlines${termParam}`,
-    'credit-cards': searchTerm 
-      ? `https://www.uscreditcardguide.com/en/?s=${encodeURIComponent(searchTerm)}&searchsubmit=U`
-      : 'https://www.uscreditcardguide.com/en/'
-  };
-  
-  return urls[service] || '#';
-}
 
 // Show notification
 function showNotification(message, type = 'info') {
