@@ -59,6 +59,13 @@ function injectExtensionPanel() {
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
+          <div class="bs-toggle-item">
+            <label class="bs-toggle-label" for="bs-settings-toggle">Settings</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-settings-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -270,7 +277,7 @@ function injectExtensionPanel() {
     </div>
     
     <!-- Settings Footer -->
-    <div class="bs-settings-footer">
+    <div class="bs-settings-footer" id="bs-settings-section" style="display: none;">
       <div class="bs-settings-compact">
         <div class="bs-settings-item">
           <label>Language</label>
@@ -345,8 +352,10 @@ function initializeEventListeners() {
   // Section toggle functionality
   const flightToggle = document.getElementById('bs-flight-toggle');
   const hotelToggle = document.getElementById('bs-hotel-toggle');
+  const settingsToggle = document.getElementById('bs-settings-toggle');
   const flightSection = document.getElementById('bs-flight-section');
   const hotelSection = document.getElementById('bs-hotel-section');
+  const settingsSection = document.getElementById('bs-settings-section');
   
   if (flightToggle && flightSection) {
     flightToggle.addEventListener('change', () => {
@@ -364,6 +373,16 @@ function initializeEventListeners() {
         hotelSection.style.display = 'block';
       } else {
         hotelSection.style.display = 'none';
+      }
+    });
+  }
+  
+  if (settingsToggle && settingsSection) {
+    settingsToggle.addEventListener('change', () => {
+      if (settingsToggle.checked) {
+        settingsSection.style.display = 'block';
+      } else {
+        settingsSection.style.display = 'none';
       }
     });
   }
