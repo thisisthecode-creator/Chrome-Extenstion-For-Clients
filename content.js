@@ -40,7 +40,7 @@ function injectExtensionPanel() {
   panel.innerHTML = `
     <!-- Benefit Systems Logo -->
     <div class="bs-logo-container">
-      <a href="https://www.benefitsystems.io" target="_blank" class="bs-logo-link">
+      <a href="https://www.benefitsystems.io/" target="_blank" class="bs-logo-link">
         <img src="https://saegzrncsjcsvgcjkniv.supabase.co/storage/v1/object/sign/Logo/BenefitSystems.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZWM2ZTk3Zi03YjQ2LTQ0ODMtODNjMS00ZDQwODU5N2MyOTgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL0JlbmVmaXRTeXN0ZW1zLnBuZyIsImlhdCI6MTc1OTc5MDg1MSwiZXhwIjoxNzY4NDMwODUxfQ.wRo7pPjUbmM-Rzo0fXGUChNcgwpM_aTnMjlz4IB5RHk" alt="Benefit Systems" class="bs-logo" />
       </a>
     </div>
@@ -288,7 +288,7 @@ function injectExtensionPanel() {
           </select>
         </div>
         <div class="bs-settings-item bs-settings-link">
-          <a href="https://tools.benefitsystems.io" target="_blank" class="bs-link">Benefit Systems</a>
+          <a href="https://www.benefitsystems.io/" target="_blank" class="bs-link">Benefit Systems</a>
         </div>
       </div>
     </div>

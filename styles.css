@@ -6,6 +6,7 @@
 .bs-extension-panel {
   margin: 16px 0;
   background: #f8f9fa;
+  border: 2px solid #000000;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
