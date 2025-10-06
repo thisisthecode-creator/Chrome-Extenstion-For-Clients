@@ -38,16 +38,34 @@ function injectExtensionPanel() {
   
   // Create panel HTML structure
   panel.innerHTML = `
-    <!-- Benefit Systems Logo -->
-    <div class="bs-logo-container">
-      <a href="https://www.benefitsystems.io/" target="_blank" class="bs-logo-link">
-        <img src="https://saegzrncsjcsvgcjkniv.supabase.co/storage/v1/object/sign/Logo/BenefitSystems.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZWM2ZTk3Zi03YjQ2LTQ0ODMtODNjMS00ZDQwODU5N2MyOTgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL0JlbmVmaXRTeXN0ZW1zLnBuZyIsImlhdCI6MTc1OTc5MDg1MSwiZXhwIjoxNzY4NDMwODUxfQ.wRo7pPjUbmM-Rzo0fXGUChNcgwpM_aTnMjlz4IB5RHk" alt="Benefit Systems" class="bs-logo" />
-      </a>
+    <!-- Benefit Systems Logo with Section Toggles -->
+    <div class="bs-logo-container" id="bs-logo-container">
+      <div class="bs-logo-header">
+        <a href="https://www.benefitsystems.io/" target="_blank" class="bs-logo-link">
+          <img src="https://saegzrncsjcsvgcjkniv.supabase.co/storage/v1/object/sign/Logo/BenefitSystems.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZWM2ZTk3Zi03YjQ2LTQ0ODMtODNjMS00ZDQwODU5N2MyOTgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL0JlbmVmaXRTeXN0ZW1zLnBuZyIsImlhdCI6MTc1OTc5MDg1MSwiZXhwIjoxNzY4NDMwODUxfQ.wRo7pPjUbmM-Rzo0fXGUChNcgwpM_aTnMjlz4IB5RHk" alt="Benefit Systems" class="bs-logo" />
+        </a>
+        <div class="bs-section-toggles">
+          <div class="bs-toggle-item">
+            <label class="bs-toggle-label" for="bs-flight-toggle">Flight Search</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-flight-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-toggle-item">
+            <label class="bs-toggle-label" for="bs-hotel-toggle">Hotel Search</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-hotel-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
     
     <div class="bs-content" id="bs-collapsible-content">
     <!-- Flight Search Section -->
-    <div class="bs-section">
+    <div class="bs-section" id="bs-flight-section" style="display: none;">
       <div class="bs-section-header">
         <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
@@ -162,7 +180,7 @@ function injectExtensionPanel() {
     </div>
 
     <!-- Hotel Search Section -->
-    <div class="bs-section">
+    <div class="bs-section" id="bs-hotel-section" style="display: none;">
       <div class="bs-section-header">
         <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6h14"/><path d="M4 14h16v7H4z"/>
@@ -324,6 +342,31 @@ function initializeEventListeners() {
     btn.addEventListener('click', handleHotelButtonClick);
   });
   
+  // Section toggle functionality
+  const flightToggle = document.getElementById('bs-flight-toggle');
+  const hotelToggle = document.getElementById('bs-hotel-toggle');
+  const flightSection = document.getElementById('bs-flight-section');
+  const hotelSection = document.getElementById('bs-hotel-section');
+  
+  if (flightToggle && flightSection) {
+    flightToggle.addEventListener('change', () => {
+      if (flightToggle.checked) {
+        flightSection.style.display = 'block';
+      } else {
+        flightSection.style.display = 'none';
+      }
+    });
+  }
+  
+  if (hotelToggle && hotelSection) {
+    hotelToggle.addEventListener('change', () => {
+      if (hotelToggle.checked) {
+        hotelSection.style.display = 'block';
+      } else {
+        hotelSection.style.display = 'none';
+      }
+    });
+  }
   
   // Auto-uppercase flight IATA codes
   const fromInput = document.getElementById('bs-flight-from');
