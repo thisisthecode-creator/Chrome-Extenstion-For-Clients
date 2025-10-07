@@ -60,9 +60,9 @@ function injectExtensionPanel() {
             </label>
           </div>
           <div class="bs-toggle-item">
-            <label class="bs-toggle-label" for="bs-search-news-toggle">Search News</label>
+            <label class="bs-toggle-label" for="bs-search-toggle">Search</label>
             <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-search-news-toggle">
+              <input type="checkbox" id="bs-search-toggle">
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
@@ -281,13 +281,13 @@ function injectExtensionPanel() {
       </div>
     </div>
 
-    <!-- Search News Section -->
-    <div class="bs-section" id="bs-search-news-section" style="display: none;">
+    <!-- Search Section -->
+    <div class="bs-section" id="bs-search-section" style="display: none;">
       <div class="bs-section-header">
         <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
-        <span>Search News</span>
+        <span>Search</span>
       </div>
       
       <div class="bs-search-container">
@@ -296,17 +296,8 @@ function injectExtensionPanel() {
       </div>
       
       <div class="bs-buttons-grid">
-        <button class="bs-btn bs-btn-travel-news" data-service="travel-news">
-          Travel News
-        </button>
-        <button class="bs-btn bs-btn-hotel-points" data-service="hotel-points">
-          Hotel Points
-        </button>
-        <button class="bs-btn bs-btn-airline-miles" data-service="airline-miles">
-          Airline Miles
-        </button>
-        <button class="bs-btn bs-btn-credit-cards" data-service="credit-cards">
-          Credit Cards
+        <button class="bs-btn bs-btn-search-engine" data-service="search-engine">
+          Search Engine
         </button>
       </div>
     </div>
@@ -380,13 +371,13 @@ function injectExtensionPanel() {
 function saveToggleStates() {
   const flightToggle = document.getElementById('bs-flight-toggle');
   const hotelToggle = document.getElementById('bs-hotel-toggle');
-  const searchNewsToggle = document.getElementById('bs-search-news-toggle');
+  const searchToggle = document.getElementById('bs-search-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   
   const toggleStates = {
     flight: flightToggle ? flightToggle.checked : false,
     hotel: hotelToggle ? hotelToggle.checked : false,
-    searchNews: searchNewsToggle ? searchNewsToggle.checked : false,
+    search: searchToggle ? searchToggle.checked : false,
     settings: settingsToggle ? settingsToggle.checked : false
   };
   
@@ -409,7 +400,7 @@ function loadToggleStates() {
   return {
     flight: true,  // Flight Search ON by default
     hotel: false,  // Hotel Search OFF by default
-    searchNews: false,  // Search News OFF by default
+    search: false,  // Search OFF by default
     settings: false // Settings OFF by default
   };
 }
@@ -418,11 +409,11 @@ function loadToggleStates() {
 function applyToggleStates(toggleStates) {
   const flightToggle = document.getElementById('bs-flight-toggle');
   const hotelToggle = document.getElementById('bs-hotel-toggle');
-  const searchNewsToggle = document.getElementById('bs-search-news-toggle');
+  const searchToggle = document.getElementById('bs-search-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   const flightSection = document.getElementById('bs-flight-section');
   const hotelSection = document.getElementById('bs-hotel-section');
-  const searchNewsSection = document.getElementById('bs-search-news-section');
+  const searchSection = document.getElementById('bs-search-section');
   const settingsSection = document.getElementById('bs-settings-section');
   
   // Apply flight toggle state
@@ -437,10 +428,10 @@ function applyToggleStates(toggleStates) {
     hotelSection.style.display = toggleStates.hotel ? 'block' : 'none';
   }
   
-  // Apply search news toggle state
-  if (searchNewsToggle && searchNewsSection) {
-    searchNewsToggle.checked = toggleStates.searchNews;
-    searchNewsSection.style.display = toggleStates.searchNews ? 'block' : 'none';
+  // Apply search toggle state
+  if (searchToggle && searchSection) {
+    searchToggle.checked = toggleStates.search;
+    searchSection.style.display = toggleStates.search ? 'block' : 'none';
   }
   
   // Apply settings toggle state
@@ -464,20 +455,20 @@ function initializeEventListeners() {
     btn.addEventListener('click', handleHotelButtonClick);
   });
   
-  // Search News buttons
-  const searchNewsButtons = document.querySelectorAll('#bs-search-news-section .bs-btn');
-  searchNewsButtons.forEach(btn => {
-    btn.addEventListener('click', handleSearchNewsButtonClick);
+  // Search buttons
+  const searchButtons = document.querySelectorAll('#bs-search-section .bs-btn');
+  searchButtons.forEach(btn => {
+    btn.addEventListener('click', handleSearchButtonClick);
   });
   
   // Section toggle functionality
   const flightToggle = document.getElementById('bs-flight-toggle');
   const hotelToggle = document.getElementById('bs-hotel-toggle');
-  const searchNewsToggle = document.getElementById('bs-search-news-toggle');
+  const searchToggle = document.getElementById('bs-search-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   const flightSection = document.getElementById('bs-flight-section');
   const hotelSection = document.getElementById('bs-hotel-section');
-  const searchNewsSection = document.getElementById('bs-search-news-section');
+  const searchSection = document.getElementById('bs-search-section');
   const settingsSection = document.getElementById('bs-settings-section');
   
   if (flightToggle && flightSection) {
@@ -502,12 +493,12 @@ function initializeEventListeners() {
     });
   }
   
-  if (searchNewsToggle && searchNewsSection) {
-    searchNewsToggle.addEventListener('change', () => {
-      if (searchNewsToggle.checked) {
-        searchNewsSection.style.display = 'block';
+  if (searchToggle && searchSection) {
+    searchToggle.addEventListener('change', () => {
+      if (searchToggle.checked) {
+        searchSection.style.display = 'block';
       } else {
-        searchNewsSection.style.display = 'none';
+        searchSection.style.display = 'none';
       }
       saveToggleStates();
     });
@@ -700,31 +691,27 @@ function handleHotelButtonClick(e) {
   }
 }
 
-// Handle Search News button clicks
-function handleSearchNewsButtonClick(e) {
+// Handle Search button clicks
+function handleSearchButtonClick(e) {
   e.preventDefault();
   
   const service = e.currentTarget.dataset.service;
-  const url = generateBenefitSystemsUrl(service);
+  const url = generateSearchUrl(service);
   
   if (url) {
     window.open(url, '_blank');
   }
 }
 
-// Generate Benefit Systems URLs
-function generateBenefitSystemsUrl(service) {
+// Generate Search URLs
+function generateSearchUrl(service) {
   // Get search term from input
   const searchTerm = document.getElementById('bs-search-term')?.value?.trim() || '';
-  const termParam = searchTerm ? `?term=${encodeURIComponent(searchTerm)}` : '';
   
   const urls = {
-    'travel-news': `https://www.inoreader.com/folder/Travel%20News${termParam}`,
-    'hotel-points': `https://www.inoreader.com/folder/Buy%20Hotels${termParam}`,
-    'airline-miles': `https://www.inoreader.com/folder/Buy%20Airlines${termParam}`,
-    'credit-cards': searchTerm 
-      ? `https://www.uscreditcardguide.com/en/?s=${encodeURIComponent(searchTerm)}&searchsubmit=U`
-      : 'https://www.uscreditcardguide.com/en/'
+    'search-engine': searchTerm 
+      ? `https://cse.google.com/cse?cx=6527d99d498034300&q=${encodeURIComponent(searchTerm)}`
+      : 'https://cse.google.com/cse?cx=6527d99d498034300'
   };
   
   return urls[service] || '#';
