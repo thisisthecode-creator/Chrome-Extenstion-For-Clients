@@ -296,6 +296,18 @@ function injectExtensionPanel() {
       </div>
       
       <div class="bs-buttons-grid">
+        <button class="bs-btn bs-btn-travel-news" data-service="travel-news">
+          Travel News
+        </button>
+        <button class="bs-btn bs-btn-hotel-points" data-service="hotel-points">
+          Hotel Points
+        </button>
+        <button class="bs-btn bs-btn-airline-miles" data-service="airline-miles">
+          Airline Miles
+        </button>
+        <button class="bs-btn bs-btn-credit-cards" data-service="credit-cards">
+          Credit Cards
+        </button>
         <button class="bs-btn bs-btn-search-engine" data-service="search-engine">
           Search Engine
         </button>
@@ -707,8 +719,15 @@ function handleSearchButtonClick(e) {
 function generateSearchUrl(service) {
   // Get search term from input
   const searchTerm = document.getElementById('bs-search-term')?.value?.trim() || '';
+  const termParam = searchTerm ? `?term=${encodeURIComponent(searchTerm)}` : '';
   
   const urls = {
+    'travel-news': `https://www.inoreader.com/folder/Travel%20News${termParam}`,
+    'hotel-points': `https://www.inoreader.com/folder/Buy%20Hotels${termParam}`,
+    'airline-miles': `https://www.inoreader.com/folder/Buy%20Airlines${termParam}`,
+    'credit-cards': searchTerm 
+      ? `https://www.uscreditcardguide.com/en/?s=${encodeURIComponent(searchTerm)}&searchsubmit=U`
+      : 'https://www.uscreditcardguide.com/en/',
     'search-engine': searchTerm 
       ? `https://cse.google.com/cse?cx=6527d99d498034300&q=${encodeURIComponent(searchTerm)}`
       : 'https://cse.google.com/cse?cx=6527d99d498034300'
