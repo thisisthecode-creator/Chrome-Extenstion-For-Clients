@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Benefit Systems Private Extension 1.0",
+  "name": "Benefit Systems Private Extension",
   "version": "1.0",
   "description": "Access to all Benefitsystems tools and calculators",
   "icons": {
