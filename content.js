@@ -67,6 +67,13 @@ function injectExtensionPanel() {
             </label>
           </div>
           <div class="bs-toggle-item">
+            <label class="bs-toggle-label" for="bs-information-toggle">Information</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-information-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-toggle-item">
             <label class="bs-toggle-label" for="bs-settings-toggle">Settings</label>
             <label class="bs-toggle-switch">
               <input type="checkbox" id="bs-settings-toggle">
@@ -103,7 +110,7 @@ function injectExtensionPanel() {
       <div class="bs-inputs-grid">
         <div class="bs-input-group">
           <label>From</label>
-          <input type="text" id="bs-flight-from" placeholder="JFK" maxlength="3" />
+          <input type="text" id="bs-flight-from" placeholder="JFK or New York" autocomplete="off" />
         </div>
         <div class="bs-switch-container">
           <button type="button" class="bs-switch-btn" id="bs-flight-switch" title="Switch From/To">
@@ -114,7 +121,7 @@ function injectExtensionPanel() {
         </div>
         <div class="bs-input-group">
           <label>To</label>
-          <input type="text" id="bs-flight-to" placeholder="LAX" maxlength="3" />
+          <input type="text" id="bs-flight-to" placeholder="LAX or Los Angeles" autocomplete="off" />
         </div>
         <div class="bs-input-group">
           <label>Depart</label>
@@ -128,18 +135,28 @@ function injectExtensionPanel() {
           <label>Cabin</label>
           <select id="bs-flight-cabin">
           <option value="economy">Economy</option>
-          <option value="premium_economy">Premium Economy</option>
+          <option value="premium_economy">PremEco</option>
           <option value="business">Business</option>
           <option value="first">First</option>
         </select>
       </div>
         <div class="bs-input-group">
           <label>Adults</label>
-          <input type="number" id="bs-flight-adults" min="1" value="1" />
+          <select id="bs-flight-adults">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
         </div>
         <div class="bs-input-group">
           <label>Airline</label>
-          <input type="text" id="bs-flight-airline" placeholder="W6" maxlength="3" />
+          <input type="text" id="bs-flight-airline" placeholder="W6" maxlength="2" />
         </div>
         <div class="bs-input-group">
           <label>Flight Nr</label>
@@ -314,11 +331,99 @@ function injectExtensionPanel() {
       </div>
     </div>
 
+    <!-- Information Section -->
+    <div class="bs-section" id="bs-information-section" style="display: none;">
+        <div class="bs-section-header">
+          <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 16v-4"/>
+            <path d="M12 8h.01"/>
+          </svg>
+          <span>Information</span>
+          <div class="bs-header-actions">
+            <button class="bs-action-btn bs-action-save" id="bs-save-information" title="Save information data">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </button>
+            <button class="bs-action-btn bs-action-reset" id="bs-reset-information" title="Reset information data">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+    
+          
+          <!-- Card Selection Panel -->
+          <div class="card-selection-panel">
+            <div class="bs-section-header">
+              <h4>My Credit Cards <span class="card-count" id="total-cards-count">(Loading...)</span></h4>
+            </div>
+            <div class="bs-section-content">
+              <div class="card-selection-controls">
+                <input type="text" id="card-search-input" placeholder="Search cards..." class="card-search-input">
+              </div>
+              <div class="card-selection-grid" id="card-selection-grid">
+                <!-- Cards will be loaded here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Cards Comparison -->
+          <div class="selected-cards-comparison" id="selected-cards-comparison">
+            <div class="selected-cards-grid" id="selected-cards-grid">
+              <!-- Selected cards comparison table will be displayed here -->
+            </div>
+          </div>
+
+          <!-- Results Display -->
+          <div class="results-display" id="results-display">
+
+              <!-- Available Transfer Partners -->
+              <div class="available-transfer-partners" id="available-transfer-partners">
+                <div class="partners-header">
+                  <h4>Available Transfer Partners (<span id="partners-count">0</span>)</h4>
+                  <div class="partners-search-controls">
+                    <input type="text" id="partners-search-input" placeholder="Search transfer partners..." class="partners-search-input">
+                    <select id="partners-type-filter" class="partners-type-filter">
+                      <option value="">All Types</option>
+                      <option value="Airline">Airlines</option>
+                      <option value="Hotel">Hotels</option>
+                    </select>
+                    <select id="partners-alliance-filter" class="partners-alliance-filter">
+                      <option value="">All Alliances</option>
+                      <option value="Star Alliance">Star Alliance</option>
+                      <option value="SkyTeam">SkyTeam</option>
+                      <option value="Oneworld">Oneworld</option>
+                      <option value="None">No Alliance</option>
+                    </select>
+                  </div>
+                </div>
+              <div class="partners-content" id="partners-content">
+                <!-- Filtered transfer partners will be displayed here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     </div>
     
-    <!-- Settings Footer -->
-    <div class="bs-settings-footer" id="bs-settings-section" style="display: none;">
-      <div class="bs-settings-compact">
+    <!-- Settings Section -->
+    <div class="bs-section" id="bs-settings-section" style="display: none;">
+      <div class="bs-section-header">
+        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+        </svg>
+        <span>Settings</span>
+      </div>
+      
+      <div class="bs-settings-content">
+        <div class="bs-settings-compact">
         <div class="bs-settings-item">
           <label>Language</label>
           <select id="bs-flight-language">
@@ -355,6 +460,7 @@ function injectExtensionPanel() {
         <div class="bs-settings-item bs-settings-link">
           <a href="https://www.benefitsystems.io/" target="_blank" class="bs-link">Benefit Systems</a>
         </div>
+        </div>
       </div>
     </div>
   `;
@@ -376,6 +482,14 @@ function injectExtensionPanel() {
   setTimeout(() => {
     restoreFlightData();
     restoreHotelData();
+    // Initialize airport autocomplete after inputs are ready
+    initializeAirportAutocomplete();
+    // Initialize transfer partners tooltip
+    initializeTransferPartnersTooltip();
+    // Initialize Information section content
+    initializeInformationContent();
+    // Initialize credit card multipliers
+    initializeCreditCardMultipliers();
   }, 100);
 }
 
@@ -384,12 +498,14 @@ function saveToggleStates() {
   const flightToggle = document.getElementById('bs-flight-toggle');
   const hotelToggle = document.getElementById('bs-hotel-toggle');
   const searchToggle = document.getElementById('bs-search-toggle');
+  const informationToggle = document.getElementById('bs-information-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   
   const toggleStates = {
     flight: flightToggle ? flightToggle.checked : false,
     hotel: hotelToggle ? hotelToggle.checked : false,
     search: searchToggle ? searchToggle.checked : false,
+    information: informationToggle ? informationToggle.checked : false,
     settings: settingsToggle ? settingsToggle.checked : false
   };
   
@@ -413,6 +529,7 @@ function loadToggleStates() {
     flight: true,  // Flight Search ON by default
     hotel: false,  // Hotel Search OFF by default
     search: false,  // Search OFF by default
+    information: false,  // Information OFF by default
     settings: false // Settings OFF by default
   };
 }
@@ -422,10 +539,12 @@ function applyToggleStates(toggleStates) {
   const flightToggle = document.getElementById('bs-flight-toggle');
   const hotelToggle = document.getElementById('bs-hotel-toggle');
   const searchToggle = document.getElementById('bs-search-toggle');
+  const informationToggle = document.getElementById('bs-information-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   const flightSection = document.getElementById('bs-flight-section');
   const hotelSection = document.getElementById('bs-hotel-section');
   const searchSection = document.getElementById('bs-search-section');
+  const informationSection = document.getElementById('bs-information-section');
   const settingsSection = document.getElementById('bs-settings-section');
   
   // Apply flight toggle state
@@ -446,6 +565,12 @@ function applyToggleStates(toggleStates) {
     searchSection.style.display = toggleStates.search ? 'block' : 'none';
   }
   
+  // Apply information toggle state
+  if (informationToggle && informationSection) {
+    informationToggle.checked = toggleStates.information;
+    informationSection.style.display = toggleStates.information ? 'block' : 'none';
+  }
+  
   // Apply settings toggle state
   if (settingsToggle && settingsSection) {
     settingsToggle.checked = toggleStates.settings;
@@ -455,6 +580,8 @@ function applyToggleStates(toggleStates) {
 
 // Initialize all event listeners
 function initializeEventListeners() {
+  console.log('=== INITIALIZING EVENT LISTENERS ===');
+  
   // Flight buttons
   const flightButtons = document.querySelectorAll('.bs-section:nth-child(1) .bs-btn');
   flightButtons.forEach(btn => {
@@ -477,11 +604,29 @@ function initializeEventListeners() {
   const flightToggle = document.getElementById('bs-flight-toggle');
   const hotelToggle = document.getElementById('bs-hotel-toggle');
   const searchToggle = document.getElementById('bs-search-toggle');
+  const informationToggle = document.getElementById('bs-information-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   const flightSection = document.getElementById('bs-flight-section');
   const hotelSection = document.getElementById('bs-hotel-section');
   const searchSection = document.getElementById('bs-search-section');
+  const informationSection = document.getElementById('bs-information-section');
   const settingsSection = document.getElementById('bs-settings-section');
+  
+  console.log('Toggle elements found:', {
+    flightToggle: !!flightToggle,
+    hotelToggle: !!hotelToggle,
+    searchToggle: !!searchToggle,
+    informationToggle: !!informationToggle,
+    settingsToggle: !!settingsToggle
+  });
+  
+  console.log('Section elements found:', {
+    flightSection: !!flightSection,
+    hotelSection: !!hotelSection,
+    searchSection: !!searchSection,
+    informationSection: !!informationSection,
+    settingsSection: !!settingsSection
+  });
   
   if (flightToggle && flightSection) {
     flightToggle.addEventListener('change', () => {
@@ -516,35 +661,97 @@ function initializeEventListeners() {
     });
   }
   
-  if (settingsToggle && settingsSection) {
-    settingsToggle.addEventListener('change', () => {
-      if (settingsToggle.checked) {
-        settingsSection.style.display = 'block';
+  if (informationToggle && informationSection) {
+    console.log('Setting up Information toggle event listener...');
+    informationToggle.addEventListener('change', () => {
+      console.log('Information toggle changed:', informationToggle.checked);
+      if (informationToggle.checked) {
+        informationSection.style.display = 'block';
+        console.log('Information section shown');
       } else {
-        settingsSection.style.display = 'none';
+        informationSection.style.display = 'none';
+        console.log('Information section hidden');
       }
       saveToggleStates();
     });
+    
+    // Also add click handler as backup
+    informationToggle.addEventListener('click', () => {
+      console.log('Information toggle clicked');
+      setTimeout(() => {
+        if (informationToggle.checked) {
+          informationSection.style.display = 'block';
+          console.log('Information section shown via click');
+        } else {
+          informationSection.style.display = 'none';
+          console.log('Information section hidden via click');
+        }
+      }, 10);
+    });
+  } else {
+    console.log('Information toggle or section not found:', { informationToggle, informationSection });
+  }
+
+      // Information data management buttons
+      const informationSaveBtn = document.getElementById('bs-save-information');
+      const informationResetBtn = document.getElementById('bs-reset-information');
+      
+      if (informationSaveBtn) {
+        informationSaveBtn.addEventListener('click', function() {
+          console.log('Information save button clicked');
+          // Save current information data
+          saveInformationData();
+        });
+      }
+      
+      if (informationResetBtn) {
+        informationResetBtn.addEventListener('click', function() {
+          console.log('Information reset button clicked');
+          // Clear information data
+          clearInformationData();
+        });
+      }
+  
+  if (settingsToggle && settingsSection) {
+    console.log('Setting up Settings toggle event listener...');
+    settingsToggle.addEventListener('change', () => {
+      console.log('Settings toggle changed:', settingsToggle.checked);
+      if (settingsToggle.checked) {
+        settingsSection.style.display = 'block';
+        console.log('Settings section shown');
+      } else {
+        settingsSection.style.display = 'none';
+        console.log('Settings section hidden');
+      }
+      saveToggleStates();
+    });
+    
+    // Also add click handler as backup
+    settingsToggle.addEventListener('click', () => {
+      console.log('Settings toggle clicked');
+      setTimeout(() => {
+        if (settingsToggle.checked) {
+          settingsSection.style.display = 'block';
+          console.log('Settings section shown via click');
+        } else {
+          settingsSection.style.display = 'none';
+          console.log('Settings section hidden via click');
+        }
+      }, 10);
+    });
+  } else {
+    console.log('Settings toggle or section not found:', { settingsToggle, settingsSection });
   }
   
-  // Auto-uppercase flight IATA codes
+  console.log('=== EVENT LISTENERS INITIALIZATION COMPLETE ===');
+  
+  // Handle airport input changes (autocomplete will handle the logic)
   const fromInput = document.getElementById('bs-flight-from');
   const toInput = document.getElementById('bs-flight-to');
   const airlineInput = document.getElementById('bs-flight-airline');
   const flightNumberInput = document.getElementById('bs-flight-number');
   
-  if (fromInput) {
-    fromInput.addEventListener('input', (e) => {
-      e.target.value = e.target.value.toUpperCase();
-    });
-  }
-  
-  if (toInput) {
-    toInput.addEventListener('input', (e) => {
-      e.target.value = e.target.value.toUpperCase();
-    });
-  }
-  
+  // Auto-uppercase airline codes
   if (airlineInput) {
     airlineInput.addEventListener('input', (e) => {
       e.target.value = e.target.value.toUpperCase();
@@ -655,6 +862,18 @@ function initializeEventListeners() {
       showNotification('Hotel data reset!', 'info');
     });
   }
+  
+  // Add collapsible functionality for My Credit Cards section
+  const creditCardsHeader = document.querySelector('#bs-information-section .card-selection-panel .bs-section-header');
+  if (creditCardsHeader) {
+    creditCardsHeader.addEventListener('click', function() {
+      const section = this.closest('.card-selection-panel');
+      if (section) {
+        section.classList.toggle('expanded');
+        console.log('My Credit Cards section toggled');
+      }
+    });
+  }
 }
 
 // Handle flight button clicks
@@ -755,6 +974,121 @@ function saveHotelDataToStorage(data) {
   }
 }
 
+// Save information data to localStorage
+function saveInformationData() {
+  try {
+    const selectedCards = Array.from(window.selectedCards || new Set());
+    const informationData = {
+      selectedCards: selectedCards,
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem('bs-information-data', JSON.stringify(informationData));
+    
+    // Show success feedback
+    showFeedback('Information data saved successfully!', 'success');
+    console.log('Information data saved:', informationData);
+  } catch (error) {
+    console.error('Error saving information data:', error);
+    showFeedback('Error saving data. Please try again.', 'error');
+  }
+}
+
+// Clear information data from localStorage
+function clearInformationData() {
+  try {
+    localStorage.removeItem('bs-information-data');
+    
+    // Clear selected cards
+    if (window.selectedCards) {
+      window.selectedCards.clear();
+    }
+    
+    // Re-render the interface
+    if (window.renderCardSelection) {
+      window.renderCardSelection();
+    }
+    if (window.renderSelectedCards) {
+      window.renderSelectedCards();
+    }
+    if (window.filterTransferPartnersBySelectedCards) {
+      window.filterTransferPartnersBySelectedCards();
+    }
+    if (window.updateCounts) {
+      window.updateCounts();
+    }
+    
+    // Show success feedback
+    showFeedback('Information data cleared successfully!', 'success');
+    console.log('Information data cleared');
+  } catch (error) {
+    console.error('Error clearing information data:', error);
+    showFeedback('Error clearing data. Please try again.', 'error');
+  }
+}
+
+// Show feedback message
+function showFeedback(message, type = 'info') {
+  // Remove existing feedback
+  const existingFeedback = document.querySelector('.bs-feedback');
+  if (existingFeedback) {
+    existingFeedback.remove();
+  }
+  
+  // Create feedback element
+  const feedback = document.createElement('div');
+  feedback.className = `bs-feedback bs-feedback-${type}`;
+  feedback.textContent = message;
+  
+  // Style the feedback
+  feedback.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    max-width: 300px;
+  `;
+  
+  // Set colors based on type
+  if (type === 'success') {
+    feedback.style.background = '#d1f2eb';
+    feedback.style.color = '#0e6b47';
+    feedback.style.border = '1px solid #a3e4d7';
+  } else if (type === 'error') {
+    feedback.style.background = '#fadbd8';
+    feedback.style.color = '#a93226';
+    feedback.style.border = '1px solid #f1948a';
+  } else {
+    feedback.style.background = '#e8f0fe';
+    feedback.style.color = '#1a73e8';
+    feedback.style.border = '1px solid #a3c4f3';
+  }
+  
+  // Add to document
+  document.body.appendChild(feedback);
+  
+  // Auto remove after 3 seconds
+  setTimeout(() => {
+    if (feedback.parentNode) {
+      feedback.style.opacity = '0';
+      feedback.style.transform = 'translateX(100%)';
+      setTimeout(() => {
+        if (feedback.parentNode) {
+          feedback.parentNode.removeChild(feedback);
+        }
+      }, 300);
+    }
+  }, 3000);
+}
+
+// Make showFeedback available globally
+window.showFeedback = showFeedback;
+
 // Load hotel data from localStorage
 function loadHotelDataFromStorage() {
   try {
@@ -812,6 +1146,7 @@ function restoreFlightData() {
     const adultsInput = document.getElementById('bs-flight-adults');
     if (adultsInput) adultsInput.value = savedData.adults;
   }
+  
   
   if (savedData.language) {
     const languageInput = document.getElementById('bs-flight-language');
@@ -891,9 +1226,44 @@ function restoreHotelData() {
 
 // Get flight input data
 function getFlightInputData() {
+  const fromInput = document.getElementById('bs-flight-from');
+  const toInput = document.getElementById('bs-flight-to');
+  
+  // Extract IATA codes from airport data or fallback to input value
+  let fromCode = '';
+  let toCode = '';
+  
+  if (fromInput) {
+    const fromAirportData = fromInput.dataset.airportData;
+    if (fromAirportData) {
+      try {
+        const airport = JSON.parse(fromAirportData);
+        fromCode = airport.iata || fromInput.value?.trim()?.toUpperCase() || '';
+      } catch (e) {
+        fromCode = fromInput.value?.trim()?.toUpperCase() || '';
+      }
+    } else {
+      fromCode = fromInput.value?.trim()?.toUpperCase() || '';
+    }
+  }
+  
+  if (toInput) {
+    const toAirportData = toInput.dataset.airportData;
+    if (toAirportData) {
+      try {
+        const airport = JSON.parse(toAirportData);
+        toCode = airport.iata || toInput.value?.trim()?.toUpperCase() || '';
+      } catch (e) {
+        toCode = toInput.value?.trim()?.toUpperCase() || '';
+      }
+    } else {
+      toCode = toInput.value?.trim()?.toUpperCase() || '';
+    }
+  }
+
   return {
-    from: document.getElementById('bs-flight-from')?.value?.trim()?.toUpperCase() || '',
-    to: document.getElementById('bs-flight-to')?.value?.trim()?.toUpperCase() || '',
+    from: fromCode,
+    to: toCode,
     depart: document.getElementById('bs-flight-depart')?.value || '',
     return: document.getElementById('bs-flight-return')?.value || '',
     cabin: document.getElementById('bs-flight-cabin')?.value || 'economy',
@@ -1114,6 +1484,42 @@ function setupObserver() {
       setTimeout(() => injectExtensionPanel(), 500);
     }
   }).observe(document, { subtree: true, childList: true });
+}
+
+// Initialize airport autocomplete
+function initializeAirportAutocomplete() {
+  // Wait for airport data service to be available
+  const initAutocomplete = () => {
+    if (!window.airportDataService) {
+      setTimeout(initAutocomplete, 100);
+      return;
+    }
+
+    // Find airport input fields
+    const fromInput = document.getElementById('bs-flight-from');
+    const toInput = document.getElementById('bs-flight-to');
+
+    if (fromInput && !fromInput.dataset.autocompleteInitialized) {
+      new AirportAutocomplete(fromInput, {
+        maxResults: 8,
+        minQueryLength: 1
+      });
+      fromInput.dataset.autocompleteInitialized = 'true';
+      console.log('Airport autocomplete initialized for FROM input');
+    }
+
+    if (toInput && !toInput.dataset.autocompleteInitialized) {
+      new AirportAutocomplete(toInput, {
+        maxResults: 8,
+        minQueryLength: 1
+      });
+      toInput.dataset.autocompleteInitialized = 'true';
+      console.log('Airport autocomplete initialized for TO input');
+    }
+  };
+
+  // Start initialization
+  initAutocomplete();
 }
 
 // Initialize extension
