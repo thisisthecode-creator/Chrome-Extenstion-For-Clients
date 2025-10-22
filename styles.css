@@ -921,8 +921,8 @@
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   z-index: 10001;
-  max-width: 600px;
-  max-height: 500px;
+  max-width: 1000px;
+  max-height: 600px;
   overflow-y: auto;
   font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
   font-size: 12px;
@@ -1114,6 +1114,201 @@
 
 .legend-color.bilt {
   background: #7c3aed;
+}
+
+.legend-color.wells-fargo {
+  background: #d97706;
+}
+
+/* Transfer Partners Tooltip Table Styles */
+.transfer-partners-tooltip .comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  min-width: 800px;
+  font-size: 11px;
+}
+
+.transfer-partners-tooltip .comparison-table thead {
+  background: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.transfer-partners-tooltip .comparison-table th {
+  padding: 6px 4px;
+  font-weight: 600;
+  font-size: 10px;
+  color: #000000 !important;
+  text-align: center;
+  border-right: 1px solid #e8eaed;
+  white-space: nowrap;
+  min-width: 50px;
+  width: 60px;
+}
+
+/* Make all credit card columns the same width in tooltips */
+.transfer-partners-tooltip .amex-col,
+.transfer-partners-tooltip .chase-col,
+.transfer-partners-tooltip .citi-col,
+.transfer-partners-tooltip .capital-one-col,
+.transfer-partners-tooltip .bilt-col,
+.transfer-partners-tooltip .wells-fargo-col {
+  width: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
+}
+
+.transfer-partners-tooltip .comparison-table td {
+  padding: 6px 4px;
+  border-right: 1px solid #e8eaed;
+  border-bottom: 1px solid #e8eaed;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 50px;
+  color: #000000 !important;
+}
+
+/* Make all credit card cells the same width in tooltips */
+.transfer-partners-tooltip .amex-cell,
+.transfer-partners-tooltip .chase-cell,
+.transfer-partners-tooltip .citi-cell,
+.transfer-partners-tooltip .capital-one-cell,
+.transfer-partners-tooltip .bilt-cell,
+.transfer-partners-tooltip .wells-fargo-cell {
+  width: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
+}
+
+.transfer-partners-tooltip .partner-name-header {
+  text-align: left !important;
+  min-width: 120px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #000000 !important;
+}
+
+.transfer-partners-tooltip .partner-name-cell {
+  text-align: left !important;
+  padding: 6px 4px;
+  min-width: 120px;
+}
+
+.transfer-partners-tooltip .partner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.transfer-partners-tooltip .partner-name {
+  font-weight: 600;
+  color: #000000 !important;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.transfer-partners-tooltip .partner-program {
+  font-size: 11px;
+  color: #000000 !important;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.transfer-partners-tooltip .partner-alliance {
+  font-size: 10px;
+  color: #000000 !important;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.transfer-partners-tooltip .ratio-value {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 1px solid #e8eaed;
+  background: white;
+  display: inline-block;
+  min-width: 30px;
+}
+
+.transfer-partners-tooltip .ratio-value.amex {
+  color: #006fcf;
+  background: #e3f2fd;
+  border-color: #bbdefb;
+}
+
+.transfer-partners-tooltip .ratio-value.chase {
+  color: #0f5132;
+  background: #d1f2eb;
+  border-color: #a3e4d7;
+}
+
+.transfer-partners-tooltip .ratio-value.citi {
+  color: #0566c3;
+  background: #e3f2fd;
+  border-color: #bbdefb;
+}
+
+.transfer-partners-tooltip .ratio-value.capital-one {
+  color: #dc2626;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.transfer-partners-tooltip .ratio-value.bilt {
+  color: #7c3aed;
+  background: #f3e8ff;
+  border-color: #ddd6fe;
+}
+
+.transfer-partners-tooltip .ratio-value.wells-fargo {
+  color: #d97706;
+  background: #fef3c7;
+  border-color: #fde68a;
+}
+
+/* Color-coded ratio values based on transfer rates */
+.transfer-partners-tooltip .ratio-value.excellent {
+  color: #0e6b47 !important;
+  background: #d1f2eb !important;
+  border-color: #a3e4d7 !important;
+}
+
+.transfer-partners-tooltip .ratio-value.good {
+  color: #b45309 !important;
+  background: #fef3c7 !important;
+  border-color: #fde68a !important;
+}
+
+.transfer-partners-tooltip .ratio-value.poor {
+  color: #dc2626 !important;
+  background: #fef2f2 !important;
+  border-color: #fecaca !important;
+}
+
+.transfer-partners-tooltip .ratio-value.no-value {
+  color: #dc2626 !important;
+  background: transparent !important;
+  border: none !important;
+  font-weight: bold;
+}
+
+.transfer-partners-tooltip .comparison-table-container {
+  overflow-x: auto;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 /* Dark mode support for tooltip */
@@ -2808,7 +3003,7 @@
 }
 
 .comparison-table th {
-  padding: 8px 4px;
+  padding: 4px 4px;
   font-weight: 600;
   font-size: 14px;
   color: #000000 !important;
@@ -2816,6 +3011,7 @@
   border-right: 1px solid #e8eaed;
   white-space: nowrap;
   min-width: 50px;
+  line-height: 1.2;
 }
 
 /* Sortable header styles */
@@ -2925,13 +3121,14 @@
 }
 
 .comparison-table td {
-  padding: 8px 4px;
+  padding: 4px 4px;
   border-right: 1px solid #e8eaed;
   border-bottom: 1px solid #e8eaed;
   text-align: center;
   vertical-align: middle;
   min-width: 50px;
   color: #000000 !important;
+  line-height: 1.2;
 }
 
 /* Ensure all text in comparison table is black */
@@ -2948,6 +3145,452 @@
 
 .comparison-table td:last-child {
   border-right: none;
+}
+
+/* Transfer Partners Comparison Styles */
+.transfer-partners-comparison {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.transfer-partners-comparison .comparison-header {
+  padding: 12px 16px;
+  background: white;
+  border-bottom: 1px solid #e8eaed;
+}
+
+.transfer-partners-comparison .comparison-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 16px;
+}
+
+.transfer-partners-comparison .search-container {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.transfer-partners-comparison .buttons-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.transfer-partners-comparison .selected-cards-filter {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.transfer-partners-comparison .selected-cards-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.transfer-partners-comparison .selected-cards-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.transfer-partners-comparison .selected-cards-btn.active {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.transfer-partners-comparison .selected-cards-btn.active:hover {
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.transfer-partners-comparison .btn-icon {
+  font-size: 16px;
+}
+
+.transfer-partners-comparison .search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e8eaed;
+  border-radius: 6px;
+  font-size: 12px;
+  background: #ffffff;
+  color: #202124;
+  transition: border-color 0.2s ease;
+}
+
+.transfer-partners-comparison .search-input:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+}
+
+.transfer-partners-comparison .search-input::placeholder {
+  color: #5f6368;
+}
+
+.transfer-partners-comparison .credit-card-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.transfer-partners-comparison .filter-btn {
+  padding: 6px 12px;
+  border: 1px solid #e8eaed;
+  background: #ffffff;
+  color: #5f6368;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.transfer-partners-comparison .filter-btn:hover {
+  background: #f8f9fa;
+  border-color: #dadce0;
+  color: #202124;
+}
+
+.transfer-partners-comparison .filter-btn.active {
+  background: #1a73e8;
+  border-color: #1a73e8;
+  color: #ffffff;
+}
+
+.transfer-partners-comparison .filter-btn.active:hover {
+  background: #1557b0;
+  border-color: #1557b0;
+}
+
+.transfer-partners-comparison .display-toggle {
+  display: flex;
+  gap: 4px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.transfer-partners-comparison .toggle-btn {
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  color: #5f6368;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.transfer-partners-comparison .toggle-btn:hover {
+  background: #e8eaed;
+  color: #202124;
+}
+
+.transfer-partners-comparison .toggle-btn.active {
+  background: #1a73e8;
+  color: white;
+}
+
+/* Selected Cards Toggle Styles */
+.selected-cards-comparison .comparison-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-cards-comparison .display-toggle {
+  display: flex;
+  gap: 4px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.selected-cards-comparison .toggle-btn {
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  color: #5f6368;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.selected-cards-comparison .toggle-btn:hover {
+  background: #e8eaed;
+  color: #202124;
+}
+
+.selected-cards-comparison .toggle-btn.active {
+  background: #1a73e8;
+  color: white;
+}
+
+/* Ensure ads column is visible */
+.selected-cards-comparison .ads-col {
+  display: table-cell !important;
+  visibility: visible !important;
+  width: auto !important;
+  min-width: 50px !important;
+}
+
+/* Ensure table shows all columns */
+.selected-cards-comparison .comparison-table {
+  min-width: 1000px !important;
+}
+
+.selected-cards-comparison .comparison-table th,
+.selected-cards-comparison .comparison-table td {
+  min-width: 50px !important;
+}
+
+.transfer-partners-comparison .comparison-table-container {
+  overflow-x: auto;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.transfer-partners-comparison .comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  min-width: 600px;
+}
+
+.transfer-partners-comparison .comparison-table thead {
+  background: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.transfer-partners-comparison .comparison-table th {
+  padding: 4px 4px;
+  font-weight: 600;
+  font-size: 12px;
+  color: #000000 !important;
+  text-align: center;
+  border-right: 1px solid #e8eaed;
+  white-space: nowrap;
+  min-width: 60px;
+  width: 80px;
+  line-height: 1.2;
+}
+
+/* Make all credit card columns the same width */
+.transfer-partners-comparison .amex-col,
+.transfer-partners-comparison .chase-col,
+.transfer-partners-comparison .citi-col,
+.transfer-partners-comparison .capital-one-col,
+.transfer-partners-comparison .bilt-col,
+.transfer-partners-comparison .wells-fargo-col {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+}
+
+.transfer-partners-comparison .comparison-table td {
+  padding: 4px 4px;
+  border-right: 1px solid #e8eaed;
+  border-bottom: 1px solid #e8eaed;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 60px;
+  color: #000000 !important;
+  line-height: 1.2;
+}
+
+/* Make all credit card cells the same width */
+.transfer-partners-comparison .amex-cell,
+.transfer-partners-comparison .chase-cell,
+.transfer-partners-comparison .citi-cell,
+.transfer-partners-comparison .capital-one-cell,
+.transfer-partners-comparison .bilt-cell,
+.transfer-partners-comparison .wells-fargo-cell {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+}
+
+.transfer-partners-comparison .partner-name-header {
+  text-align: left !important;
+  min-width: 150px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000 !important;
+}
+
+.transfer-partners-comparison .program-header {
+  text-align: left;
+  min-width: 120px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000 !important;
+}
+
+.transfer-partners-comparison .alliance-header {
+  text-align: left;
+  min-width: 120px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000 !important;
+}
+
+.transfer-partners-comparison .program-cell {
+  text-align: left !important;
+  font-size: 12px;
+  color: #000000 !important;
+  padding: 8px 4px;
+  min-width: 120px;
+}
+
+.transfer-partners-comparison .partner-name-header .sort-button {
+  justify-content: flex-start;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000 !important;
+}
+
+.transfer-partners-comparison .partner-name-cell {
+  text-align: left !important;
+  padding: 8px 4px;
+  min-width: 150px;
+}
+
+.transfer-partners-comparison .program-cell {
+  text-align: left;
+  padding: 8px 4px;
+  min-width: 120px;
+}
+
+.transfer-partners-comparison .alliance-cell {
+  text-align: left;
+  padding: 8px 4px;
+  min-width: 120px;
+}
+
+.transfer-partners-comparison .partner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.transfer-partners-comparison .partner-name {
+  font-weight: 600;
+  color: #000000 !important;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.transfer-partners-comparison .partner-program {
+  font-size: 12px;
+  color: #000000 !important;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.transfer-partners-comparison .partner-alliance {
+  font-size: 11px;
+  color: #000000 !important;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.transfer-partners-comparison .ratio-value {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #e8eaed;
+  background: white;
+  display: inline-block;
+  min-width: 40px;
+}
+
+.transfer-partners-comparison .ratio-value.amex {
+  color: #006fcf;
+  background: #e3f2fd;
+  border-color: #bbdefb;
+}
+
+.transfer-partners-comparison .ratio-value.chase {
+  color: #0f5132;
+  background: #d1f2eb;
+  border-color: #a3e4d7;
+}
+
+.transfer-partners-comparison .ratio-value.citi {
+  color: #0566c3;
+  background: #e3f2fd;
+  border-color: #bbdefb;
+}
+
+.transfer-partners-comparison .ratio-value.capital-one {
+  color: #dc2626;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.transfer-partners-comparison .ratio-value.bilt {
+  color: #7c3aed;
+  background: #f3e8ff;
+  border-color: #ddd6fe;
+}
+
+/* Color-coded ratio values based on transfer rates */
+.transfer-partners-comparison .ratio-value.excellent {
+  color: #0e6b47 !important;
+  background: #d1f2eb !important;
+  border-color: #a3e4d7 !important;
+}
+
+.transfer-partners-comparison .ratio-value.good {
+  color: #b45309 !important;
+  background: #fef3c7 !important;
+  border-color: #fde68a !important;
+}
+
+.transfer-partners-comparison .ratio-value.poor {
+  color: #dc2626 !important;
+  background: #fef2f2 !important;
+  border-color: #fecaca !important;
+}
+
+.transfer-partners-comparison .ratio-value.no-value {
+  color: #dc2626 !important;
+  background: transparent !important;
+  border: none !important;
+  font-weight: bold;
 }
 
 .card-name-cell {
