@@ -972,15 +972,15 @@
 
 .partners-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
 }
 
 .partner-card {
   background: #f8f9fa;
   border: 1px solid #e8eaed;
-  border-radius: 6px;
-  padding: 12px;
+  border-radius: 3px;
+  padding: 8px;
   transition: all 0.2s ease;
 }
 
@@ -991,26 +991,26 @@
 }
 
 .partner-header {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .partner-name {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: #000000;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .partner-program {
-  font-size: 11px;
+  font-size: 10px;
   color: #5f6368;
   font-style: italic;
 }
 
 .partner-alliance {
-  font-size: 10px;
+  font-size: 9px;
   color: #9aa0a6;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -1018,28 +1018,28 @@
 .partner-ratios {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4px;
+  gap: 3px;
 }
 
 .ratio-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2px 0;
+  padding: 1px 0;
 }
 
 .ratio-label {
-  font-size: 10px;
+  font-size: 9px;
   color: #5f6368;
   font-weight: 500;
 }
 
 .ratio-value {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 3px;
-  min-width: 24px;
+  padding: 1px 4px;
+  border-radius: 1px;
+  min-width: 20px;
   text-align: center;
 }
 
@@ -1205,42 +1205,42 @@
 .transfer-partners-tooltip .partner-name {
   font-weight: 600;
   color: #000000 !important;
-  font-size: 12px;
+  font-size: 11px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .transfer-partners-tooltip .partner-program {
-  font-size: 11px;
+  font-size: 10px;
   color: #000000 !important;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .transfer-partners-tooltip .partner-alliance {
-  font-size: 10px;
+  font-size: 9px;
   color: #000000 !important;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .transfer-partners-tooltip .ratio-value {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  padding: 2px 4px;
-  border-radius: 3px;
+  padding: 1px 3px;
+  border-radius: 1px;
   border: 1px solid #e8eaed;
   background: white;
   display: inline-block;
-  min-width: 30px;
+  min-width: 24px;
 }
 
 .transfer-partners-tooltip .ratio-value.amex {
@@ -1360,26 +1360,26 @@
 .results-display {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .selected-cards-summary {
   background: #ffffff;
   border: 1px solid #e8eaed;
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 4px;
+  padding: 12px;
 }
 
 .available-transfer-partners {
   background: #ffffff;
   border: 1px solid #e8eaed;
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 4px;
+  padding: 12px;
 }
 
 .summary-header {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .summary-header h4 {
@@ -1545,14 +1545,14 @@
 .partners-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 8px;
 }
 
 .partner-card {
   background: #f8f9fa;
   border: 1px solid #e8eaed;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 3px;
+  padding: 8px;
   transition: all 0.2s ease;
 }
 
@@ -1563,46 +1563,46 @@
 }
 
 .partner-header {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .partner-header h5 {
-  margin: 0 0 4px 0;
-  font-size: 14px;
+  margin: 0 0 2px 0;
+  font-size: 12px;
   font-weight: 600;
   color: #202124;
 }
 
 .partner-program {
-  font-size: 12px;
+  font-size: 10px;
   color: #1a73e8;
   font-weight: 500;
   font-style: italic;
 }
 
 .partner-alliance {
-  font-size: 10px;
+  font-size: 9px;
   color: #9aa0a6;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-left: 8px;
+  margin-left: 6px;
 }
 
 .partner-ratios {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4px;
+  gap: 3px;
 }
 
 .ratio-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 6px;
+  padding: 2px 4px;
   background: #ffffff;
-  border-radius: 4px;
-  font-size: 11px;
-  border-left: 3px solid #dadce0;
+  border-radius: 2px;
+  font-size: 9px;
+  border-left: 2px solid #dadce0;
 }
 
 .ratio-card {
@@ -2282,17 +2282,17 @@
 .selected-cards-display {
   background: #ffffff;
   border: 1px solid #e8eaed;
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 4px;
+  padding: 12px;
 }
 
 .selected-cards-header {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .selected-cards-header h4 {
-  margin: 0 0 12px 0;
-  font-size: 16px;
+  margin: 0 0 8px 0;
+  font-size: 15px;
   font-weight: 600;
   color: #202124;
 }
@@ -2324,17 +2324,20 @@
 }
 
 .selected-card-item {
-  background: #f8f9fa;
+  background: white;
   border: 1px solid #e8eaed;
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 8px;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .selected-card-item:hover {
-  background: #ffffff;
+  background: white;
   border-color: #1a73e8;
-  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.1);
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+  transform: translateY(-1px);
 }
 
 .selected-card-header {
@@ -2479,9 +2482,10 @@
 
 /* Simplified Information Section Styles */
 .selected-cards-simple {
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e8eaed;
+  border-radius: 4px;
+  padding: 16px;
   margin-top: 16px;
 }
 
@@ -2595,48 +2599,48 @@
 
 /* Simplified Transfer Partners */
 .partners-section {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .partners-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
   border-bottom: 1px solid #e8eaed;
 }
 
 .partners-header h5 {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #202124;
 }
 
 .partners-count {
-  font-size: 12px;
+  font-size: 11px;
   color: #5f6368;
   background: #f1f3f4;
-  padding: 2px 8px;
-  border-radius: 12px;
+  padding: 1px 6px;
+  border-radius: 10px;
 }
 
 .partners-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .partner-item {
   background: #f8f9fa;
   border: 1px solid #e8eaed;
-  border-radius: 6px;
-  padding: 12px;
+  border-radius: 3px;
+  padding: 8px;
 }
 
 .partner-name {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: #202124;
   margin-bottom: 6px;
@@ -2666,33 +2670,38 @@
 .card-selection-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 8px;
+  margin: 12px 0;
+  padding: 0 4px;
 }
 
 .card-selection-item {
   background: white;
-  border: 2px solid #e8eaed;
-  border-radius: 8px;
-  padding: 16px;
+  border: 1px solid #e8eaed;
+  border-radius: 4px;
+  padding: 12px;
   transition: all 0.2s ease;
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .card-selection-item:hover {
   border-color: #1a73e8;
-  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.1);
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+  transform: translateY(-1px);
 }
 
 .card-selection-item.selected {
   border-color: #1a73e8;
-  background: #f8f9ff;
+  background: white;
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+  transform: translateY(-1px);
 }
 
 .card-selection-content {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
 }
 
 .card-checkbox {
@@ -2705,14 +2714,14 @@
 
 .card-logo {
   flex-shrink: 0;
-  width: 40px;
-  height: 25px;
+  width: 32px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f8f9fa;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 2px;
+  font-size: 14px;
 }
 
 .card-details {
@@ -2721,37 +2730,37 @@
 }
 
 .card-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #202124;
-  margin-bottom: 4px;
-  line-height: 1.3;
+  margin-bottom: 2px;
+  line-height: 1.2;
 }
 
 .card-fee {
-  font-size: 12px;
+  font-size: 11px;
   color: #5f6368;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .card-multipliers {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
 }
 
 .multiplier-item {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   background: #e8f0fe;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 11px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 10px;
 }
 
 .multiplier-icon {
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .multiplier-value {
@@ -2873,15 +2882,17 @@
 .card-item {
   background: white;
   border: 1px solid #e8eaed;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 12px;
+  border-radius: 4px;
+  padding: 20px;
+  margin: 16px 0;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .card-item:hover {
   border-color: #1a73e8;
-  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.1);
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+  transform: translateY(-1px);
 }
 
 .card-header {
@@ -2963,9 +2974,10 @@
 
 /* Comparison Table Styles */
 .selected-cards-comparison {
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e8eaed;
+  border-radius: 4px;
+  padding: 16px;
   margin-top: 16px;
 }
 

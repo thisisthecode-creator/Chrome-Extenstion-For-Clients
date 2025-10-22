@@ -110,7 +110,7 @@ function injectExtensionPanel() {
       <div class="bs-inputs-grid">
         <div class="bs-input-group">
           <label>From</label>
-          <input type="text" id="bs-flight-from" placeholder="JFK or New York" autocomplete="off" />
+          <input type="text" id="bs-flight-from" placeholder="New York" autocomplete="off" />
         </div>
         <div class="bs-switch-container">
           <button type="button" class="bs-switch-btn" id="bs-flight-switch" title="Switch From/To">
@@ -121,7 +121,7 @@ function injectExtensionPanel() {
         </div>
         <div class="bs-input-group">
           <label>To</label>
-          <input type="text" id="bs-flight-to" placeholder="LAX or Los Angeles" autocomplete="off" />
+          <input type="text" id="bs-flight-to" placeholder="Vienna" autocomplete="off" />
         </div>
         <div class="bs-input-group">
           <label>Depart</label>
@@ -1322,7 +1322,7 @@ function generateFlightUrl(service, data) {
       ? `https://www.awardtool.com/flight?flightWay=roundtrip&pax=${adults}&children=0&cabins=${cabin}&range=false&rangeV2=false&from=${from}&to=${to}&programs=&targetId=&roundTripDepartureDate=${departTimestamp}&roundTripReturnDate=${returnTimestamp}`
       : `https://www.awardtool.com/flight?flightWay=oneway&pax=${adults}&children=0&cabins=${cabin}&range=true&rangeV2=false&from=${from}&to=${to}&programs=&targetId=&oneWayRangeStartDate=${departTimestamp}&oneWayRangeEndDate=${departTimestamp}`,
     
-    'seats-aero': `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days=true&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`,
+    'seats-aero': `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`,
     
     'point-me': `https://point.me/results?departureCity=${from}&departureIata=${from}&arrivalCity=${to}&arrivalIata=${to}&legType=${ret ? 'roundtrip' : 'oneway'}&classOfService=${cabin}&passengers=${adults}&departureDate=${depart}&arrivalDate=${ret || ''}`,
     
