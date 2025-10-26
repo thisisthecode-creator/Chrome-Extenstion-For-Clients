@@ -226,7 +226,8 @@ function createFlightDetailsElement(flightInfo) {
   
   detailsContainer.style.cssText = `
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: flex-start;
     padding: 2px 4px;
     font-size: 12px;
@@ -237,15 +238,22 @@ function createFlightDetailsElement(flightInfo) {
     margin: -13px 1px 0px -120px;
     border: 1px solid rgb(255, 255, 255);
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px;
-    flex-wrap: wrap;
-    white-space: nowrap;
     max-width: 50%;
     position: relative;
     z-index: 100;
     min-height: 32px;
     align-self: flex-start;
     text-align: left;
-    gap: 12px;
+  `
+
+  // Create first row for flight details
+  const flightDetailsRow = document.createElement("div")
+  flightDetailsRow.style.cssText = `
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    white-space: nowrap;
   `
 
   // Aircraft info
@@ -262,10 +270,9 @@ function createFlightDetailsElement(flightInfo) {
       background: #f5f5f5;
       border-radius: 3px;
       border: 1px solid #e0e0e0;
-      margin-right: 4px;
     `
     aircraftElement.innerHTML = `✈️ ${flightInfo.aircraft}`
-    detailsContainer.appendChild(aircraftElement)
+    flightDetailsRow.appendChild(aircraftElement)
   }
 
   // Airline and Flight Number
@@ -282,10 +289,9 @@ function createFlightDetailsElement(flightInfo) {
       background: #f5f5f5;
       border-radius: 3px;
       border: 1px solid #e0e0e0;
-      margin-right: 4px;
     `
     airlineElement.innerHTML = `🏢 ${flightInfo.airlineCode} ${flightInfo.flightNumber}`
-    detailsContainer.appendChild(airlineElement)
+    flightDetailsRow.appendChild(airlineElement)
   }
 
   // Travel Time
@@ -302,10 +308,9 @@ function createFlightDetailsElement(flightInfo) {
       background: #f5f5f5;
       border-radius: 3px;
       border: 1px solid #e0e0e0;
-      margin-right: 4px;
     `
     timeElement.innerHTML = `⏱️ ${flightInfo.travelTime}`
-    detailsContainer.appendChild(timeElement)
+    flightDetailsRow.appendChild(timeElement)
   }
 
   // Legroom with proper color coding
@@ -330,10 +335,9 @@ function createFlightDetailsElement(flightInfo) {
         border: 1px solid ${textColor}20;
         box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         transition: all 0.2s ease;
-        margin-right: 4px;
       `
       legroomElement.innerHTML = `🪑 ${legroomCmFormatted}`
-      detailsContainer.appendChild(legroomElement)
+      flightDetailsRow.appendChild(legroomElement)
     }
   }
 
@@ -355,13 +359,179 @@ function createFlightDetailsElement(flightInfo) {
       border: 1px solid ${isNonstop ? '#4caf50' : '#ffc107'}40;
       box-shadow: 0 1px 2px rgba(0,0,0,0.1);
       transition: all 0.2s ease;
-      margin-right: 4px;
     `
     stopsElement.innerHTML = `✈️ ${flightInfo.stops}`
-    detailsContainer.appendChild(stopsElement)
+    flightDetailsRow.appendChild(stopsElement)
   }
-  
 
+  // Add the flight details row to the container
+  detailsContainer.appendChild(flightDetailsRow)
+
+  // Add links in a second row
+  if (flightInfo.airlineCode && flightInfo.flightNumber) {
+    const linksRow = document.createElement("div")
+    linksRow.style.cssText = `
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 4px;
+    `
+    
+    // Create individual link buttons
+    const links = [
+      { text: "PY Seats", website: "pointsyeah.com", action: () => {
+        const fromInput = document.getElementById('bs-flight-from')
+        const toInput = document.getElementById('bs-flight-to')
+        const departInput = document.getElementById('bs-flight-depart')
+        if (fromInput && toInput && departInput) {
+          let fromCode = fromInput.value.split(' ')[0] || 'MUC'
+          let toCode = toInput.value.split(' ')[0] || 'WAW'
+          const pySeatsUrl = `https://www.pointsyeah.com/seatmap/detail?airline=${encodeURIComponent(flightInfo.airlineCode)}&departure=${fromCode}&arrival=${toCode}&date=${departInput.value}&flightNumber=${encodeURIComponent(flightInfo.flightNumber)}&cabins=Economy%2CPremium%20Economy%2CBusiness%2CFirst`
+          window.open(pySeatsUrl, '_blank')
+        }
+      }},
+      { text: "SA Seats", website: "seats.aero", action: () => {
+        const fromInput = document.getElementById('bs-flight-from')
+        const toInput = document.getElementById('bs-flight-to')
+        const departInput = document.getElementById('bs-flight-depart')
+        if (fromInput && toInput && departInput) {
+          let fromCode = fromInput.value.split(' ')[0] || 'MUC'
+          let toCode = toInput.value.split(' ')[0] || 'WAW'
+          const saSeatsUrl = `https://seats.aero/seatmap?airline=${encodeURIComponent(flightInfo.airlineCode)}&from=${fromCode}&to=${toCode}&date=${departInput.value}&flight=${encodeURIComponent(flightInfo.flightNumber)}`
+          window.open(saSeatsUrl, '_blank')
+        }
+      }},
+      { text: "FareClass", website: "seats.aero", action: () => {
+        const fromInput = document.getElementById('bs-flight-from')
+        const toInput = document.getElementById('bs-flight-to')
+        const departInput = document.getElementById('bs-flight-depart')
+        
+        if (fromInput && toInput && departInput) {
+          let fromCode = ''
+          let toCode = ''
+          
+          if (fromInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(fromInput.dataset.airportData)
+              fromCode = airport.iata || fromInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+          }
+          
+          if (toInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(toInput.dataset.airportData)
+              toCode = airport.iata || toInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              toCode = toInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            toCode = toInput.value?.trim()?.toUpperCase() || ''
+          }
+
+          const fareClassUrl = `https://seats.aero/fareclass?from=${fromCode}&to=${toCode}&date=${departInput.value}&connections=true&codeshares=true`
+          window.open(fareClassUrl, '_blank')
+        }
+      }},
+      { text: "FareViewer", website: "seats.aero", action: () => {
+        const fromInput = document.getElementById('bs-flight-from')
+        const toInput = document.getElementById('bs-flight-to')
+        const departInput = document.getElementById('bs-flight-depart')
+        
+        if (fromInput && toInput && departInput) {
+          let fromCode = ''
+          let toCode = ''
+          
+          if (fromInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(fromInput.dataset.airportData)
+              fromCode = airport.iata || fromInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+          }
+          
+          if (toInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(toInput.dataset.airportData)
+              toCode = airport.iata || toInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              toCode = toInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            toCode = toInput.value?.trim()?.toUpperCase() || ''
+          }
+
+          const fareViewerUrl = `https://seats.aero/fares?from=${fromCode}&to=${toCode}&date=${departInput.value}&carriers=${flightInfo.airlineCode}&currency=USD`
+          window.open(fareViewerUrl, '_blank')
+        }
+      }}
+    ]
+    
+    // Create individual link buttons with website labels
+    links.forEach(link => {
+      const linkWrapper = document.createElement("div")
+      linkWrapper.style.cssText = `
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1px;
+      `
+      
+      const linkButton = document.createElement("button")
+      linkButton.textContent = link.text
+      linkButton.style.cssText = `
+        background: transparent;
+        color: #1a73e8;
+        padding: 1px 3px;
+        border-radius: 3px;
+        border: none;
+        font-size: 10px;
+        font-weight: 500;
+        text-decoration: underline;
+        letter-spacing: 0.3px;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        cursor: pointer;
+      `
+      
+      const websiteLabel = document.createElement("div")
+      websiteLabel.textContent = link.website || ""
+      websiteLabel.style.cssText = `
+        font-size: 8px;
+        color: #666666;
+        text-align: center;
+        white-space: nowrap;
+        line-height: 1;
+      `
+      
+      linkButton.addEventListener('click', (e) => {
+        e.stopPropagation()
+        link.action()
+      })
+      
+      linkButton.addEventListener('mouseenter', () => {
+        linkButton.style.color = '#1557b0'
+        linkButton.style.textDecoration = 'none'
+      })
+      
+      linkButton.addEventListener('mouseleave', () => {
+        linkButton.style.color = '#1a73e8'
+        linkButton.style.textDecoration = 'underline'
+      })
+      
+      linkWrapper.appendChild(linkButton)
+      linkWrapper.appendChild(websiteLabel)
+      linksRow.appendChild(linkWrapper)
+    })
+    
+    detailsContainer.appendChild(linksRow)
+  }
 
   return detailsContainer
 }
