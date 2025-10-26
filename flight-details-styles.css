@@ -1,19 +1,70 @@
 /* Flight Details Injector Styles */
 
+/* Hide Google Flights elements */
+.gvkrdb.AdWm1c.tPgKwe.ogfYpf[aria-label*="Total duration"],
+.BbR8Ec,
+.Ak5kof {
+  display: none !important;
+}
+
+/* Ensure dropdown appears above all other elements */
+.injected-flight-details [style*="position: absolute"] {
+  z-index: 9999 !important;
+}
+
+/* Force parent containers to align left */
+.MX5RWe.sSHqwe.y52p7d,
+.L5Okte.y52p7d,
+[jsname="Vk3Wef"],
+.gws-flights-results__itinerary-card {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+}
+
 .injected-flight-details {
-  margin: 0;
-  padding: 8px 12px;
-  background-color: #ffffff;
-  border-radius: 0 0 8px 8px;
-  font-size: 13px;
-  color: #000000;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2px 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgb(0, 0, 0);
+  background: rgb(255, 255, 255);
+  border-radius: 0px;
+  margin: -13px 1px 0px -120px;
+  border: 1px solid rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px;
+  flex-wrap: wrap;
+  white-space: nowrap;
+  max-width: 50%;
   position: relative;
-  z-index: 10;
-  display: block !important;
+  z-index: 100;
+  min-height: 32px;
+  align-self: flex-start;
+  text-align: left;
+  width: fit-content;
+  box-sizing: border-box;
   visibility: visible !important;
+  gap: 12px;
+}
+
+.injected-flight-details:hover {
+  /* No hover effects - container stays static */
+}
+
+/* Hide CO2 emissions elements */
+.y0NSEe.V1iAHe.tPgKwe.ogfYpf,
+[data-co2currentflight],
+[data-relativeemissions],
+.AdWm1c.lc3qH.ogfYpf.PtgtFe,
+.N6PNV.Dd7uHc.ogfYpf.juCwOd.BYjnCf,
+.N6PNV.URDlle.ogfYpf.juCwOd.BYjnCf,
+[aria-label*="Carbon emissions"],
+[jsname="Prr8lb"] {
+  display: none !important;
+  visibility: hidden !important;
 }
 
 .flight-details-separator {
@@ -140,6 +191,43 @@
 .L5Okte.y52p7d {
   position: relative !important;
   overflow: visible !important;
+}
+
+/* Additional positioning adjustments for better left alignment */
+.injected-flight-details {
+  margin-left: -30px !important;
+  margin-right: 20px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+/* Ensure proper spacing from price elements */
+.injected-flight-details + * {
+  margin-left: 10px !important;
+}
+
+/* Add spacing to parent containers to create gap from price */
+.MX5RWe.sSHqwe.y52p7d,
+.L5Okte.y52p7d {
+  padding-right: 20px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+}
+
+/* Ensure flight details are always left-aligned in their containers */
+.injected-flight-details {
+  margin-left: -30px !important;
+  margin-right: 20px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  justify-content: flex-start !important;
+  align-self: flex-start !important;
+  text-align: left !important;
 }
 
 /* Make sure our content is always visible */

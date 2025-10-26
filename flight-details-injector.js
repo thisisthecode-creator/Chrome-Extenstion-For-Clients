@@ -1,467 +1,511 @@
-// Flight Details Injector
-// This script injects additional flight information directly into Google Flights search results
+// Flight Details Injector - Simplified Version
+// This script replaces CO2 emissions with flight details
 
-// Database of aircraft seat information for reference
-const aircraftSeatDatabase = {
-  // Airbus
-  A319: { legroom: { economy: 30, premium: 34, business: 38 }, width: { economy: 18, premium: 18.5, business: 21 } },
-  A320: { legroom: { economy: 30, premium: 34, business: 38 }, width: { economy: 18, premium: 18.5, business: 21 } },
-  A321: { legroom: { economy: 31, premium: 35, business: 38 }, width: { economy: 18, premium: 18.5, business: 21 } },
-  A330: {
-    legroom: { economy: 31, premium: 35, business: 60, first: 82 },
-    width: { economy: 18, premium: 19, business: 21, first: 24 },
-  },
-  A350: {
-    legroom: { economy: 32, premium: 38, business: 60, first: 82 },
-    width: { economy: 18, premium: 19, business: 22, first: 26 },
-  },
-  A380: {
-    legroom: { economy: 32, premium: 38, business: 60, first: 82 },
-    width: { economy: 18.5, premium: 19.5, business: 22, first: 26 },
-  },
+console.log("Flight Details Injector loaded")
 
-  // Boeing
-  737: { legroom: { economy: 30, premium: 34, business: 38 }, width: { economy: 17, premium: 17.5, business: 20 } },
-  747: {
-    legroom: { economy: 31, premium: 38, business: 60, first: 80 },
-    width: { economy: 17.5, premium: 18.5, business: 20, first: 22 },
-  },
-  757: { legroom: { economy: 31, premium: 35, business: 45 }, width: { economy: 17.5, premium: 18.5, business: 21 } },
-  767: {
-    legroom: { economy: 31, premium: 35, business: 60, first: 80 },
-    width: { economy: 17.5, premium: 18.5, business: 20, first: 22 },
-  },
-  777: {
-    legroom: { economy: 31, premium: 38, business: 60, first: 80 },
-    width: { economy: 17.5, premium: 18.5, business: 22, first: 24 },
-  },
-  787: {
-    legroom: { economy: 32, premium: 38, business: 60, first: 80 },
-    width: { economy: 17.5, premium: 18.5, business: 22, first: 24 },
-  },
-
-  // Embraer
-  "Embraer 170": { legroom: { economy: 31, business: 36 }, width: { economy: 18, business: 20 } },
-  "Embraer 175": { legroom: { economy: 31, business: 36 }, width: { economy: 18, business: 20 } },
-  "Embraer 190": { legroom: { economy: 31, business: 36 }, width: { economy: 18, business: 20 } },
-  "Embraer 195": { legroom: { economy: 29, business: 36 }, width: { economy: 18, business: 20 } },
-
-  // Bombardier/CRJ
-  CRJ: { legroom: { economy: 29, business: 34 }, width: { economy: 17, business: 19 } },
-  "CRJ 700": { legroom: { economy: 29, business: 34 }, width: { economy: 17, business: 19 } },
-  "CRJ 900": { legroom: { economy: 29, business: 34 }, width: { economy: 17, business: 19 } },
-
-  // Other common aircraft
-  "Dash 8": { legroom: { economy: 30, business: 34 }, width: { economy: 17, business: 19 } },
-  "ATR 72": { legroom: { economy: 29, business: 34 }, width: { economy: 17, business: 19 } },
+// Function to convert inches to centimeters
+function inchesToCm(inches) {
+  return Math.round(inches * 2.54)
 }
 
-// Airline-specific overrides for certain aircraft
-const airlineAircraftOverrides = {
-  LH: {
-    // Lufthansa
-    A320: { legroom: { economy: 31, premium: 35, business: 40 } },
-    A350: { legroom: { economy: 31, premium: 38, business: 64 } },
-  },
-  BA: {
-    // British Airways
-    A320: { legroom: { economy: 29, premium: 34, business: 38 } },
-    777: { legroom: { economy: 31, premium: 38, business: 72, first: 78 } },
-  },
-  AA: {
-    // American Airlines
-    737: { legroom: { economy: 30, premium: 34, business: 37 } },
-  },
-  DL: {
-    // Delta
-    A320: { legroom: { economy: 31, premium: 34, business: 37 } },
-    737: { legroom: { economy: 31, premium: 34, business: 37 } },
-  },
-  UA: {
-    // United
-    737: { legroom: { economy: 30, premium: 34, business: 38 } },
-  },
-  OS: {
-    // Austrian
-    "Embraer 195": { legroom: { economy: 29, business: 36 } },
-  },
+// Function to format legroom with cm
+function formatLegroomWithCm(legroom) {
+  const match = legroom.match(/(\d+(?:\.\d+)?)\s*in/)
+  if (match) {
+    const inches = parseFloat(match[1])
+    const cm = inchesToCm(inches)
+    return `${cm}cm`
+  }
+  return legroom
 }
 
-// Database of airline amenities
-const airlineAmenities = {
-  LH: {
-    // Lufthansa
-    economy: ["Power outlets", "Wi-Fi (fee)", "Personal entertainment"],
-    premium: ["Power outlets", "Wi-Fi (fee)", "Personal entertainment", "Enhanced meals"],
-    business: ["Lie-flat seats", "Power outlets", "Wi-Fi", "Personal entertainment", "Premium meals"],
-  },
-  BA: {
-    // British Airways
-    economy: ["Wi-Fi (fee)", "Personal entertainment"],
-    premium: ["Power outlets", "Wi-Fi (fee)", "Personal entertainment", "Enhanced meals"],
-    business: ["Lie-flat seats", "Power outlets", "Wi-Fi", "Personal entertainment", "Premium meals"],
-  },
-  AA: {
-    // American Airlines
-    economy: ["Power outlets", "Wi-Fi (fee)", "Personal entertainment"],
-    premium: ["Power outlets", "Wi-Fi (fee)", "Personal entertainment", "Enhanced meals"],
-    business: ["Lie-flat seats", "Power outlets", "Wi-Fi", "Personal entertainment", "Premium meals"],
-  },
-  DL: {
-    // Delta
-    economy: ["Power outlets", "Wi-Fi (fee)", "Personal entertainment"],
-    premium: ["Power outlets", "Wi-Fi (fee)", "Personal entertainment", "Enhanced meals"],
-    business: ["Lie-flat seats", "Power outlets", "Wi-Fi", "Personal entertainment", "Premium meals"],
-  },
-  UA: {
-    // United
-    economy: ["Power outlets", "Wi-Fi (fee)", "Personal entertainment"],
-    premium: ["Power outlets", "Wi-Fi (fee)", "Personal entertainment", "Enhanced meals"],
-    business: ["Lie-flat seats", "Power outlets", "Wi-Fi", "Personal entertainment", "Premium meals"],
-  },
-  OS: {
-    // Austrian
-    economy: ["Wi-Fi (fee)"],
-    business: ["Recliner seats", "Power outlets", "Wi-Fi", "Premium meals"],
-  },
+// Function to get legroom color
+function getLegroomColor(cm) {
+  if (cm > 76) return '#e8f5e8' // Green for > 76cm (30 in)
+  if (cm === 76) return '#fff3cd' // Yellow for exactly 76cm (30 in)
+  return '#f8d7da' // Red for < 76cm (< 30 in)
 }
 
-// Function to extract flight information from flight element
+// Function to get legroom text color
+function getLegroomTextColor(cm) {
+  if (cm > 76) return '#155724' // Dark green
+  if (cm === 76) return '#856404' // Dark yellow
+  return '#721c24' // Dark red
+}
+
+// Function to get legroom info based on aircraft type
+function getLegroomInfo(aircraftType, airlineCode) {
+  // Legroom database in inches
+  const legroomData = {
+    'Airbus A320': 30,
+    'Airbus A321': 30,
+    'Airbus A330': 31,
+    'Airbus A350': 32,
+    'Airbus A380': 32,
+    'Boeing 737': 30,
+    'Boeing 747': 31,
+    'Boeing 757': 30,
+    'Boeing 767': 31,
+    'Boeing 777': 32,
+    'Boeing 787': 32,
+    'Embraer 170': 29,
+    'Embraer 175': 29,
+    'Embraer 190': 29,
+    'Embraer 195': 29,
+    'CRJ 700': 29,
+    'CRJ 900': 29,
+    'Dash 8': 30,
+    'ATR 72': 29
+  }
+  
+  // Airline-specific overrides
+  const airlineOverrides = {
+    'LH': { 'Airbus A320': 31, 'Airbus A350': 31 },
+    'BA': { 'Airbus A320': 29, 'Boeing 777': 31 },
+    'AA': { 'Boeing 737': 30 },
+    'DL': { 'Airbus A320': 31, 'Boeing 737': 31 },
+    'UA': { 'Boeing 737': 30 },
+    'OS': { 'Embraer 195': 29 }
+  }
+  
+  // Get legroom for specific aircraft and airline
+  let legroomInches = 30 // Default fallback
+  
+  if (aircraftType) {
+    // Check airline-specific override first
+    if (airlineCode && airlineOverrides[airlineCode] && airlineOverrides[airlineCode][aircraftType]) {
+      legroomInches = airlineOverrides[airlineCode][aircraftType]
+    } else if (legroomData[aircraftType]) {
+      legroomInches = legroomData[aircraftType]
+    }
+  }
+  
+  return `${legroomInches} in`
+}
+
+  // Function to extract flight information
 function extractFlightInfo(flightElement) {
-  try {
-    // Initialize flight info object
-    const flightInfo = {
-      airline: "",
-      airlineCode: "",
-      flightNumber: "",
-      aircraft: "",
-      legroom: "",
-      cabin: "",
-      amenities: [],
-    }
+  const flightInfo = {
+    airline: "",
+    airlineCode: "",
+    flightNumber: "",
+    aircraft: "",
+    legroom: "",
+    cabin: "",
+    amenities: [],
+    stops: "",
+    stopsInfo: "",
+    travelTime: ""
+  }
 
-    // Extract airline and flight number
-    const flightNumberElement = flightElement.querySelector(".Xsgmwe.sI2Nye")
-    if (flightNumberElement) {
-      const flightCodeText = flightNumberElement.textContent.trim()
-      const flightCodeMatch = flightCodeText.match(/([A-Z0-9]{2})\s*(\d+)/)
-      if (flightCodeMatch) {
-        flightInfo.airlineCode = flightCodeMatch[1]
-        flightInfo.flightNumber = flightCodeMatch[2]
-      }
-    }
-
-    // Extract airline name
-    const airlineNameElement = flightElement.querySelector(".Xsgmwe:not(.sI2Nye)")
-    if (airlineNameElement) {
-      flightInfo.airline = airlineNameElement.textContent.trim()
-    }
-
-    // Extract cabin class
-    const cabinClassElement = flightElement.querySelector('.Xsgmwe[jsname="Pvlywd"]')
-    if (cabinClassElement) {
-      flightInfo.cabin = cabinClassElement.textContent.trim().toLowerCase()
-    }
-
-    // Extract aircraft type
-    const aircraftTypeElement = flightElement.querySelector('.Xsgmwe:not([jsname="Pvlywd"]):not(.sI2Nye):not(.QS0io)')
-    if (aircraftTypeElement) {
-      flightInfo.aircraft = aircraftTypeElement.textContent.trim()
-    }
-
-    // Look for legroom information in the flight details
-    const flightDetailsContainer = flightElement.closest(".sSHqwe, .L5Okte")
-    if (flightDetailsContainer) {
-      const legroomElement = flightDetailsContainer.querySelector(".WtSsrd")
-      if (legroomElement && legroomElement.textContent.includes("legroom")) {
-        flightInfo.legroom = legroomElement.textContent.trim()
-      } else {
-        // If no explicit legroom info, try to get it from our database
-        if (flightInfo.aircraft && flightInfo.cabin) {
-          const legroomInfo = getLegroomInfo(flightInfo.aircraft, flightInfo.airlineCode, flightInfo.cabin)
-          if (legroomInfo) {
-            flightInfo.legroom = legroomInfo
+  const allText = flightElement.textContent
+  console.log("All text content:", allText)
+  
+  // Clean up "Operated by" text from the content
+  const cleanedText = allText.replace(/Operated by\s+/gi, '')
+  console.log("Cleaned text content:", cleanedText)
+  
+  // Look for flight numbers in data-gs attributes first
+  const dataGsElements = flightElement.querySelectorAll('[data-gs]')
+  for (const element of dataGsElements) {
+    const dataGs = element.getAttribute('data-gs')
+    console.log("Found data-gs:", dataGs)
+    if (dataGs) {
+      try {
+        const decoded = atob(dataGs)
+        console.log("Decoded data-gs:", decoded)
+        
+        // Try multiple patterns to find flight numbers
+        const patterns = [
+          /(LH|LO|AA|DL|UA|BA|AF|KL|LX|OS|SK|AY|IB|VY|FR|W6|U2|EW|DE|AB|4U|X3)(\d+)/g,
+          /(LH|LO|AA|DL|UA|BA|AF|KL|LX|OS|SK|AY|IB|VY|FR|W6|U2|EW|DE|AB|4U|X3)(\d+)/,
+          /([A-Z]{2})(\d{3,4})/g,
+          /([A-Z]{2})(\d{3,4})/
+        ]
+        
+        for (const pattern of patterns) {
+          const matches = decoded.match(pattern)
+          if (matches && matches.length > 0) {
+            const firstMatch = matches[0]
+            const codeMatch = firstMatch.match(/([A-Z]{2})(\d+)/)
+            if (codeMatch) {
+              flightInfo.airlineCode = codeMatch[1]
+              flightInfo.flightNumber = codeMatch[2]
+              console.log("Extracted from data-gs:", flightInfo.airlineCode, flightInfo.flightNumber)
+              break
+            }
           }
         }
+      } catch (e) {
+        console.log("Could not decode data-gs:", e)
       }
     }
-
-    // Get amenities if available
-    if (flightInfo.airlineCode && flightInfo.cabin) {
-      flightInfo.amenities = getAmenities(flightInfo.airlineCode, flightInfo.cabin)
-    }
-
-    return flightInfo
-  } catch (error) {
-    console.error("Error extracting flight info:", error)
-    return null
   }
-}
+  
+  // Look for airline names in text content
+  const airlineNames = ['LOT', 'Lufthansa', 'American Airlines', 'Delta', 'United', 'British Airways', 'Air France', 'KLM', 'Swiss', 'Austrian', 'SAS', 'Finnair', 'Iberia', 'Vueling', 'Ryanair', 'Wizz Air', 'EasyJet', 'Eurowings', 'Air Berlin', 'Germanwings']
+  
+  for (const airlineName of airlineNames) {
+    if (cleanedText.includes(airlineName)) {
+      flightInfo.airline = airlineName
+      console.log("Extracted airline name from text:", flightInfo.airline)
+      break
+    }
+  }
 
-// Function to get legroom information from our database
-function getLegroomInfo(aircraftType, airlineCode, cabinClass) {
-  // Try to match the aircraft type to our database
-  let aircraftKey = null
+  // Set default aircraft based on airline
+  if (!flightInfo.aircraft) {
+    if (flightInfo.airlineCode === 'LO' || flightInfo.airlineCode === 'LH') {
+      flightInfo.aircraft = 'Airbus A320'
+    } else if (flightInfo.airlineCode === 'AA' || flightInfo.airlineCode === 'DL' || flightInfo.airlineCode === 'UA') {
+      flightInfo.aircraft = 'Boeing 737'
+    } else {
+      flightInfo.aircraft = 'Aircraft'
+    }
+    console.log("Using default aircraft:", flightInfo.aircraft)
+  }
 
-  // Check for exact match
-  if (aircraftSeatDatabase[aircraftType]) {
-    aircraftKey = aircraftType
+  // Look for stops information
+  const stopsPatterns = [
+    /(Nonstop|Direct)/i,
+    /(\d+)\s*stop/i,
+    /(\d+)\s*stops/i
+  ]
+  
+  for (const pattern of stopsPatterns) {
+    const match = cleanedText.match(pattern)
+    if (match) {
+      if (match[1].toLowerCase().includes('nonstop') || match[1].toLowerCase().includes('direct')) {
+        flightInfo.stops = "Nonstop"
+        flightInfo.stopsInfo = "Direct flight"
   } else {
-    // Check for partial match
-    for (const key in aircraftSeatDatabase) {
-      if (aircraftType.includes(key)) {
-        aircraftKey = key
-        break
+        const stopCount = parseInt(match[1])
+        flightInfo.stops = `${stopCount} stop${stopCount > 1 ? 's' : ''}`
+        flightInfo.stopsInfo = `${stopCount} stop${stopCount > 1 ? 's' : ''}`
       }
+      break
+    }
+  }
+  
+  // Extract travel time directly from the page
+  const timeElement = flightElement.querySelector('.gvkrdb.AdWm1c.tPgKwe.ogfYpf[aria-label*="Total duration"]')
+  if (timeElement) {
+    flightInfo.travelTime = timeElement.textContent.trim()
+    console.log("Extracted travel time:", flightInfo.travelTime)
+  } else {
+    // Fallback: look for time patterns in the text
+    const timeMatch = cleanedText.match(/(\d+\s*(?:hr|hour|h)\s*\d+\s*(?:min|minutes|m)|(\d+\s*(?:hr|hour|h))|(\d+\s*(?:min|minutes|m)))/i)
+    if (timeMatch) {
+      flightInfo.travelTime = timeMatch[0].trim()
+      console.log("Extracted travel time from text:", flightInfo.travelTime)
     }
   }
 
-  if (!aircraftKey) return null
+  // Set legroom based on aircraft and airline
+  flightInfo.legroom = getLegroomInfo(flightInfo.aircraft, flightInfo.airlineCode)
 
-  // Check if there's an airline-specific override
-  let legroom = null
-  if (airlineCode && airlineAircraftOverrides[airlineCode] && airlineAircraftOverrides[airlineCode][aircraftKey]) {
-    const airlineOverride = airlineAircraftOverrides[airlineCode][aircraftKey]
-    if (airlineOverride.legroom && airlineOverride.legroom[cabinClass]) {
-      legroom = airlineOverride.legroom[cabinClass]
-    }
-  }
-
-  // If no airline override, use the base aircraft info
-  if (!legroom && aircraftSeatDatabase[aircraftKey].legroom && aircraftSeatDatabase[aircraftKey].legroom[cabinClass]) {
-    legroom = aircraftSeatDatabase[aircraftKey].legroom[cabinClass]
-  }
-
-  if (!legroom) return null
-
-  // Format the legroom information
-  const rating = getLegroomRating(legroom)
-  return `${rating} legroom (${legroom} in)`
+  return flightInfo
 }
 
-// Function to get amenities for an airline and cabin class
-function getAmenities(airlineCode, cabinClass) {
-  if (!airlineCode || !cabinClass) return []
-
-  if (airlineAmenities[airlineCode] && airlineAmenities[airlineCode][cabinClass]) {
-    return airlineAmenities[airlineCode][cabinClass]
-  }
-
-  // Default amenities if airline not found
-  const defaultAmenities = {
-    economy: ["Personal entertainment"],
-    premium: ["Power outlets", "Personal entertainment"],
-    business: ["Power outlets", "Wi-Fi", "Personal entertainment"],
-    first: ["Power outlets", "Wi-Fi", "Personal entertainment", "Premium service"],
-  }
-
-  return defaultAmenities[cabinClass] || []
-}
-
-// Function to rate legroom
-function getLegroomRating(legroom) {
-  if (!legroom) return "Unknown"
-
-  if (legroom < 30) return "Below average"
-  if (legroom < 32) return "Average"
-  if (legroom < 34) return "Above average"
-  if (legroom < 38) return "Good"
-  if (legroom < 60) return "Excellent"
-  return "Exceptional"
-}
-
-// Function to create and inject flight details element
+// Function to create flight details element
 function createFlightDetailsElement(flightInfo) {
   if (!flightInfo) return null
 
-  // Create container for flight details
   const detailsContainer = document.createElement("div")
   detailsContainer.className = "injected-flight-details"
 
-  // Add a subtle separator
-  const separator = document.createElement("div")
-  separator.className = "flight-details-separator"
-  detailsContainer.appendChild(separator)
-
-  // Create flight info section
-  const flightInfoSection = document.createElement("div")
-  flightInfoSection.className = "flight-info-section"
-
-  // Add aircraft type
-  if (flightInfo.aircraft) {
-    const aircraftElement = document.createElement("div")
-    aircraftElement.className = "aircraft-info"
-
-    const aircraftIcon = document.createElement("span")
-    aircraftIcon.className = "info-icon aircraft-icon"
-    aircraftIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path></svg>`
-
-    const aircraftText = document.createElement("span")
-    aircraftText.className = "info-text"
-    aircraftText.textContent = flightInfo.aircraft
-
-    aircraftElement.appendChild(aircraftIcon)
-    aircraftElement.appendChild(aircraftText)
-    flightInfoSection.appendChild(aircraftElement)
-  }
-
-  // Add legroom information
+  // Calculate legroom for color coding
+  let legroomCm = 0
   if (flightInfo.legroom) {
-    const legroomElement = document.createElement("div")
-    legroomElement.className = "legroom-info"
-
-    const legroomIcon = document.createElement("span")
-    legroomIcon.className = "info-icon legroom-icon"
-    legroomIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 11.84l-.09.16-.41.71-3.25 5.62 1.85 2.8-.5.87-5.2-3 2.89-5H9c-1.1 0-2-.9-2-2V3h6v6h5.77c1.47 0 2.4 1.53 1.8 2.83l.03.01zM13 15H6V3H4v12c0 1.1.9 2 2 2h7v-2z"></path></svg>`
-
-    const legroomText = document.createElement("span")
-    legroomText.className = "info-text"
-    legroomText.textContent = flightInfo.legroom
-
-    // Add color coding based on legroom rating
-    if (flightInfo.legroom.includes("Below average")) {
-      legroomText.classList.add("below-average")
-    } else if (flightInfo.legroom.includes("Average")) {
-      legroomText.classList.add("average")
-    } else if (
-      flightInfo.legroom.includes("Above average") ||
-      flightInfo.legroom.includes("Good") ||
-      flightInfo.legroom.includes("Excellent") ||
-      flightInfo.legroom.includes("Exceptional")
-    ) {
-      legroomText.classList.add("above-average")
+    const match = flightInfo.legroom.match(/(\d+(?:\.\d+)?)\s*in/)
+    if (match) {
+      const inches = parseFloat(match[1])
+      legroomCm = inchesToCm(inches)
     }
+  }
+  
+  detailsContainer.style.cssText = `
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2px 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgb(0, 0, 0);
+    background: rgb(255, 255, 255);
+    border-radius: 0px;
+    margin: -13px 1px 0px -120px;
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px;
+    flex-wrap: wrap;
+    white-space: nowrap;
+    max-width: 50%;
+    position: relative;
+    z-index: 100;
+    min-height: 32px;
+    align-self: flex-start;
+    text-align: left;
+    gap: 12px;
+  `
 
-    legroomElement.appendChild(legroomIcon)
-    legroomElement.appendChild(legroomText)
-    flightInfoSection.appendChild(legroomElement)
+  // Aircraft info
+  if (flightInfo.aircraft) {
+    const aircraftElement = document.createElement("span")
+    aircraftElement.style.cssText = `
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-weight: 500;
+      color: #666666;
+      font-size: 11px;
+      padding: 1px 3px;
+      background: #f5f5f5;
+      border-radius: 3px;
+      border: 1px solid #e0e0e0;
+      margin-right: 4px;
+    `
+    aircraftElement.innerHTML = `✈️ ${flightInfo.aircraft}`
+    detailsContainer.appendChild(aircraftElement)
   }
 
-  // Add amenities if available
-  if (flightInfo.amenities && flightInfo.amenities.length > 0) {
-    const amenitiesElement = document.createElement("div")
-    amenitiesElement.className = "amenities-info"
-
-    const amenitiesIcon = document.createElement("span")
-    amenitiesIcon.className = "info-icon amenities-icon"
-    amenitiesIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>`
-
-    const amenitiesText = document.createElement("span")
-    amenitiesText.className = "info-text"
-    amenitiesText.textContent = flightInfo.amenities.join(", ")
-
-    amenitiesElement.appendChild(amenitiesIcon)
-    amenitiesElement.appendChild(amenitiesText)
-    flightInfoSection.appendChild(amenitiesElement)
+  // Airline and Flight Number
+  if (flightInfo.airlineCode && flightInfo.flightNumber) {
+    const airlineElement = document.createElement("span")
+    airlineElement.style.cssText = `
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-weight: 500;
+      color: #666666;
+      font-size: 11px;
+      padding: 1px 3px;
+      background: #f5f5f5;
+      border-radius: 3px;
+      border: 1px solid #e0e0e0;
+      margin-right: 4px;
+    `
+    airlineElement.innerHTML = `🏢 ${flightInfo.airlineCode} ${flightInfo.flightNumber}`
+    detailsContainer.appendChild(airlineElement)
   }
 
-  // Add all sections to the container
-  detailsContainer.appendChild(flightInfoSection)
+  // Travel Time
+  if (flightInfo.travelTime) {
+    const timeElement = document.createElement("span")
+    timeElement.style.cssText = `
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      font-weight: 500;
+      color: #666666;
+      font-size: 11px;
+      padding: 1px 3px;
+      background: #f5f5f5;
+      border-radius: 3px;
+      border: 1px solid #e0e0e0;
+      margin-right: 4px;
+    `
+    timeElement.innerHTML = `⏱️ ${flightInfo.travelTime}`
+    detailsContainer.appendChild(timeElement)
+  }
+
+  // Legroom with proper color coding
+  if (flightInfo.legroom) {
+    const legroomCmFormatted = formatLegroomWithCm(flightInfo.legroom)
+    if (legroomCmFormatted) {
+      const legroomElement = document.createElement("span")
+      const backgroundColor = getLegroomColor(legroomCm)
+      const textColor = getLegroomTextColor(legroomCm)
+      
+      legroomElement.style.cssText = `
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        padding: 2px 6px;
+        background: ${backgroundColor};
+        border-radius: 4px;
+        font-weight: 600;
+        color: ${textColor};
+        font-size: 11px;
+        white-space: nowrap;
+        border: 1px solid ${textColor}20;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        transition: all 0.2s ease;
+        margin-right: 4px;
+      `
+      legroomElement.innerHTML = `🪑 ${legroomCmFormatted}`
+      detailsContainer.appendChild(legroomElement)
+    }
+  }
+
+  // Add stops and travel time information
+  if (flightInfo.stops) {
+    const stopsElement = document.createElement("span")
+    const isNonstop = flightInfo.stops === 'Nonstop'
+    stopsElement.style.cssText = `
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 2px 6px;
+      background: ${isNonstop ? 'linear-gradient(135deg, #d5f4e6 0%, #c8e6c9 100%)' : 'linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%)'};
+      border-radius: 4px;
+      font-weight: 600;
+      color: ${isNonstop ? '#2d5a27' : '#8b6914'};
+      font-size: 11px;
+      white-space: nowrap;
+      border: 1px solid ${isNonstop ? '#4caf50' : '#ffc107'}40;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+      margin-right: 4px;
+    `
+    stopsElement.innerHTML = `✈️ ${flightInfo.stops}`
+    detailsContainer.appendChild(stopsElement)
+  }
+  
+
 
   return detailsContainer
 }
 
-// Function to inject flight details into flight elements
+// Function to remove unwanted span elements
+function removeUnwantedSpans() {
+  // Remove "Operated by" spans and their content
+  let operatedByCount = 0
+  const allSpans = document.querySelectorAll('span')
+  allSpans.forEach(span => {
+    if (span.textContent && span.textContent.includes('Operated by')) {
+      // Find the parent element that contains the entire "Operated by" text
+      let parent = span.parentElement
+      while (parent && parent.textContent && parent.textContent.includes('Operated by')) {
+        // Check if this parent contains only "Operated by" and airline name
+        const text = parent.textContent.trim()
+        if (text.startsWith('Operated by') || text.includes('Operated by')) {
+          parent.remove()
+          operatedByCount++
+          break
+        }
+        parent = parent.parentElement
+      }
+    }
+  })
+  
+  console.log(`Removed ${operatedByCount} "Operated by" spans`)
+}
+
+
+// Function to replace CO2 emissions display with flight details
+function replaceEmissionsWithFlightDetails() {
+  try {
+    console.log("=== REPLACING EMISSIONS WITH FLIGHT DETAILS ===")
+    
+    // Remove unwanted spans first
+    removeUnwantedSpans()
+    
+    // Find all flight elements first
+    const flightElements = document.querySelectorAll('li.pIav2d, .yR1fYc, .mxvQLc')
+    console.log(`Found ${flightElements.length} flight elements to process`)
+    
+    flightElements.forEach((flightElement, index) => {
+      console.log(`Processing flight element ${index + 1}`)
+      
+      // Find emissions container in this flight
+      const emissionsContainer = flightElement.querySelector('.y0NSEe.V1iAHe.tPgKwe.ogfYpf, .y0NSEe.axwZ3c.y52p7d.ogfYpf')
+      
+      if (emissionsContainer) {
+        console.log(`Found emissions container in flight ${index + 1}`)
+        
+        // Extract flight info from this flight element
+        const flightInfo = extractFlightInfo(flightElement)
+        console.log(`Flight ${index + 1} info:`, flightInfo)
+        
+        if (flightInfo && (flightInfo.aircraft || flightInfo.airlineCode)) {
+          // Create flight details element
+          const detailsElement = createFlightDetailsElement(flightInfo)
+          if (detailsElement) {
+            console.log(`Replacing emissions with flight details for flight ${index + 1}`)
+            // Replace the emissions container with our flight details
+            emissionsContainer.parentNode.replaceChild(detailsElement, emissionsContainer)
+            console.log(`Successfully replaced emissions for flight ${index + 1}`)
+          } else {
+            console.log(`Failed to create details element for flight ${index + 1}`)
+            // Just hide the emissions if we can't create details
+            emissionsContainer.style.display = 'none'
+          }
+        } else {
+          console.log(`Insufficient flight info for flight ${index + 1}, just hiding emissions`)
+          // Just hide the emissions if we don't have enough info
+          emissionsContainer.style.display = 'none'
+        }
+      } else {
+        console.log(`No emissions container found in flight ${index + 1}`)
+      }
+    })
+    
+    // Also hide any remaining emissions elements
+    const emissionsSelectors = [
+      '[data-co2currentflight]',
+      '[data-relativeemissions]',
+      '.AdWm1c.lc3qH.ogfYpf.PtgtFe',
+      '.N6PNV.Dd7uHc.ogfYpf.juCwOd.BYjnCf',
+      '.N6PNV.URDlle.ogfYpf.juCwOd.BYjnCf',
+      '[aria-label*="Carbon emissions"]',
+      '[jsname="Prr8lb"]'
+    ];
+
+    emissionsSelectors.forEach(selector => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach(element => {
+        if (element.textContent.includes('CO2') || 
+            element.textContent.includes('emissions') ||
+            element.getAttribute('data-co2currentflight') ||
+            element.getAttribute('data-relativeemissions') ||
+            element.getAttribute('aria-label')?.includes('Carbon emissions')) {
+          element.style.display = 'none';
+        }
+      });
+    });
+    
+  } catch (error) {
+    console.error("Error replacing emissions display:", error);
+  }
+}
+
+// Function to inject flight details
 function injectFlightDetails() {
   try {
+    console.log("=== INJECTING FLIGHT DETAILS ===")
+    
     // Skip injection on the main flights homepage, but not on search results
     if (
       window.location.href.includes("tcfs") &&
       !window.location.href.includes("search") &&
       !document.querySelector(".MX5RWe.sSHqwe.y52p7d, .L5Okte.y52p7d")
     ) {
+      console.log("Skipping injection on homepage")
       return
     }
 
-    // Find all flight elements
-    const flightElements = document.querySelectorAll(".MX5RWe.sSHqwe.y52p7d, .L5Okte.y52p7d")
 
-    flightElements.forEach((flightElement) => {
-      // Check if details are already injected
-      if (flightElement.querySelector(".injected-flight-details")) {
-        return
-      }
+    // Replace CO2 emissions with flight details
+    replaceEmissionsWithFlightDetails();
 
-      // Extract flight info
-      const flightInfo = extractFlightInfo(flightElement)
-      if (!flightInfo) return
-
-      // Create details element
-      const detailsElement = createFlightDetailsElement(flightInfo)
-      if (!detailsElement) return
-
-      // Always append to the end of the flight element to ensure consistent placement
-      // This ensures the details are always at the bottom of the listing
-      flightElement.appendChild(detailsElement)
-
-      // Make sure the flight element can accommodate the added content
-      flightElement.style.position = "relative"
-      flightElement.style.overflow = "visible"
-
-      // Ensure the parent containers don't clip our content
-      let parent = flightElement.parentElement
-      while (parent && parent !== document.body) {
-        const style = window.getComputedStyle(parent)
-        if (style.overflow === "hidden" || style.overflowY === "hidden") {
-          parent.style.overflow = "visible"
-          parent.style.overflowY = "visible"
-        }
-        parent = parent.parentElement
-      }
-    })
+    console.log("=== FLIGHT DETAILS INJECTION COMPLETE ===")
   } catch (error) {
     console.error("Error injecting flight details:", error)
   }
 }
 
-// Set up observer to watch for DOM changes
-function setupFlightDetailsObserver() {
-  // Skip injection on the main flights homepage, but not on search results
-  if (
-    window.location.href.includes("tcfs") &&
-    !window.location.href.includes("search") &&
-    !document.querySelector(".MX5RWe.sSHqwe.y52p7d, .L5Okte.y52p7d")
-  ) {
-    console.log("Skipping flight details injection on Google Flights homepage")
-    return
-  }
-
-  // Create a mutation observer to watch for changes to the DOM
-  const observer = new MutationObserver((mutations) => {
-    let shouldInject = false
-
-    for (const mutation of mutations) {
-      if (mutation.addedNodes.length) {
-        shouldInject = true
-        break
-      }
-    }
-
-    if (shouldInject) {
-      // Use setTimeout to allow the DOM to settle
-      setTimeout(injectFlightDetails, 500)
-    }
-  })
-
-  // Start observing the document body for changes
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-  })
-
-  // Also inject flight details immediately
-  setTimeout(injectFlightDetails, 500)
-}
-
-// Function to ensure injected content remains visible
+// Function to ensure visibility
 function ensureVisibility() {
+  // Remove unwanted spans first
+  removeUnwantedSpans()
+  
+  
   // This runs periodically to make sure our injected content stays visible
-  // even if Google's JavaScript modifies the DOM
   const injectedElements = document.querySelectorAll(".injected-flight-details")
 
   injectedElements.forEach((element) => {
     // Make sure the element is visible
-    element.style.display = "block"
+    element.style.display = "flex"
 
     // Make sure parent containers don't hide our content
     let parent = element.parentElement
@@ -475,9 +519,56 @@ function ensureVisibility() {
     }
   })
 
+  // Also replace any emissions that might have been re-added
+  replaceEmissionsWithFlightDetails()
+
   // Schedule the next check
   setTimeout(ensureVisibility, 2000)
 }
 
+// Start the injection
+injectFlightDetails()
+
 // Start the visibility checker
 setTimeout(ensureVisibility, 2000)
+
+// Also run when the page loads
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', injectFlightDetails)
+} else {
+  injectFlightDetails()
+}
+
+// Run when new content is added to the page
+const observer = new MutationObserver((mutations) => {
+  let shouldRun = false
+  mutations.forEach((mutation) => {
+    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+      // Check if any of the added nodes contain flight elements
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          if (node.querySelector && (
+            node.querySelector('li.pIav2d') ||
+            node.querySelector('.yR1fYc') ||
+            node.querySelector('.mxvQLc') ||
+            node.classList.contains('pIav2d') ||
+            node.classList.contains('yR1fYc') ||
+            node.classList.contains('mxvQLc')
+          )) {
+            shouldRun = true
+          }
+        }
+      })
+    }
+  })
+  
+  if (shouldRun) {
+    console.log("New flight content detected, running injection")
+    setTimeout(injectFlightDetails, 500)
+  }
+})
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
+})
