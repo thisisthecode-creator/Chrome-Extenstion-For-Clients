@@ -473,16 +473,8 @@ function createFlightDetailsElement(flightInfo) {
       }}
     ]
     
-    // Create individual link buttons with website labels
+    // Create individual link buttons
     links.forEach(link => {
-      const linkWrapper = document.createElement("div")
-      linkWrapper.style.cssText = `
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1px;
-      `
-      
       const linkButton = document.createElement("button")
       linkButton.textContent = link.text
       linkButton.style.cssText = `
@@ -500,16 +492,6 @@ function createFlightDetailsElement(flightInfo) {
         cursor: pointer;
       `
       
-      const websiteLabel = document.createElement("div")
-      websiteLabel.textContent = link.website || ""
-      websiteLabel.style.cssText = `
-        font-size: 8px;
-        color: #666666;
-        text-align: center;
-        white-space: nowrap;
-        line-height: 1;
-      `
-      
       linkButton.addEventListener('click', (e) => {
         e.stopPropagation()
         link.action()
@@ -525,9 +507,7 @@ function createFlightDetailsElement(flightInfo) {
         linkButton.style.textDecoration = 'underline'
       })
       
-      linkWrapper.appendChild(linkButton)
-      linkWrapper.appendChild(websiteLabel)
-      linksRow.appendChild(linkWrapper)
+      linksRow.appendChild(linkButton)
     })
     
     detailsContainer.appendChild(linksRow)
