@@ -379,7 +379,141 @@ function createFlightDetailsElement(flightInfo) {
     
     // Create individual link buttons
     const links = [
-      { text: "PY Seats", website: "pointsyeah.com", action: () => {
+      { text: "PointsYeah", action: () => {
+        const fromInput = document.getElementById('bs-flight-from')
+        const toInput = document.getElementById('bs-flight-to')
+        const departInput = document.getElementById('bs-flight-depart')
+        const returnInput = document.getElementById('bs-flight-return')
+        
+        if (fromInput && toInput && departInput) {
+          let fromCode = ''
+          let toCode = ''
+          
+          if (fromInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(fromInput.dataset.airportData)
+              fromCode = airport.iata || fromInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+          }
+          
+          if (toInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(toInput.dataset.airportData)
+              toCode = airport.iata || toInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              toCode = toInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            toCode = toInput.value?.trim()?.toUpperCase() || ''
+          }
+
+          // Check if it's round-trip or one-way
+          const isRoundTrip = returnInput && returnInput.value && returnInput.value.trim() !== ''
+          const tripType = isRoundTrip ? '2' : '1' // 2 = round-trip, 1 = one-way
+          
+          let pointsYeahUrl = `https://www.pointsyeah.com/search?cabins=Economy&cabin=Economy&banks=Amex%2CCapital+One%2CChase&airlineProgram=AM%2CAC%2CKL%2CAS%2CAV%2CDL%2CEK%2CEY%2CAY%2CB6%2CQF%2CSQ%2CTK%2CUA%2CVS%2CVA&tripType=${tripType}&adults=1&children=0&departure=${fromCode}&arrival=${toCode}&departDate=${departInput.value}&departDateSec=${departInput.value}`
+          
+          if (isRoundTrip) {
+            pointsYeahUrl += `&returnDate=${returnInput.value}&returnDateSec=${returnInput.value}&multiday=false`
+          }
+          
+          window.open(pointsYeahUrl, '_blank')
+        }
+      }},
+      { text: "AwardTool", action: () => {
+        const fromInput = document.getElementById('bs-flight-from')
+        const toInput = document.getElementById('bs-flight-to')
+        const departInput = document.getElementById('bs-flight-depart')
+        const returnInput = document.getElementById('bs-flight-return')
+        
+        if (fromInput && toInput && departInput) {
+          let fromCode = ''
+          let toCode = ''
+          
+          if (fromInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(fromInput.dataset.airportData)
+              fromCode = airport.iata || fromInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+          }
+          
+          if (toInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(toInput.dataset.airportData)
+              toCode = airport.iata || toInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              toCode = toInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            toCode = toInput.value?.trim()?.toUpperCase() || ''
+          }
+
+          // Check if it's round-trip or one-way
+          const isRoundTrip = returnInput && returnInput.value && returnInput.value.trim() !== ''
+          const flightWay = isRoundTrip ? 'roundtrip' : 'oneway'
+          
+          // Convert date to timestamp
+          const departDate = new Date(departInput.value)
+          const departTimestamp = Math.floor(departDate.getTime() / 1000)
+          
+          let awardToolUrl
+          
+          if (isRoundTrip) {
+            // Round-trip: use roundTripDepartureDate and roundTripReturnDate
+            const returnDate = new Date(returnInput.value)
+            const returnTimestamp = Math.floor(returnDate.getTime() / 1000)
+            awardToolUrl = `https://www.awardtool.com/flight?flightWay=${flightWay}&pax=1&children=0&cabins=economy&range=false&rangeV2=false&from=${fromCode}&to=${toCode}&programs=&targetId=&roundTripDepartureDate=${departTimestamp}&roundTripReturnDate=${returnTimestamp}`
+          } else {
+            // One-way: use oneWayRangeStartDate and oneWayRangeEndDate
+            awardToolUrl = `https://www.awardtool.com/flight?flightWay=${flightWay}&pax=1&children=0&cabins=economy&range=true&rangeV2=false&from=${fromCode}&to=${toCode}&programs=&targetId=&oneWayRangeStartDate=${departTimestamp}&oneWayRangeEndDate=${departTimestamp}`
+          }
+          
+          window.open(awardToolUrl, '_blank')
+        }
+      }},
+      { text: "Seats.Aero", action: () => {
+        const fromInput = document.getElementById('bs-flight-from')
+        const toInput = document.getElementById('bs-flight-to')
+        const departInput = document.getElementById('bs-flight-depart')
+        if (fromInput && toInput && departInput) {
+          let fromCode = ''
+          let toCode = ''
+          
+          if (fromInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(fromInput.dataset.airportData)
+              fromCode = airport.iata || fromInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+          }
+          
+          if (toInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(toInput.dataset.airportData)
+              toCode = airport.iata || toInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              toCode = toInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            toCode = toInput.value?.trim()?.toUpperCase() || ''
+          }
+
+          const seatsAeroUrl = `https://seats.aero/search?min_seats=1&applicable_cabin=economy&additional_days_num=7&max_fees=40000&disable_live_filtering=false&date=${departInput.value}&origins=${fromCode}&destinations=${toCode}`
+          window.open(seatsAeroUrl, '_blank')
+        }
+      }},
+      { text: "PY Seats", action: () => {
         const fromInput = document.getElementById('bs-flight-from')
         const toInput = document.getElementById('bs-flight-to')
         const departInput = document.getElementById('bs-flight-depart')
@@ -390,7 +524,7 @@ function createFlightDetailsElement(flightInfo) {
           window.open(pySeatsUrl, '_blank')
         }
       }},
-      { text: "SA Seats", website: "seats.aero", action: () => {
+      { text: "SA Seats", action: () => {
         const fromInput = document.getElementById('bs-flight-from')
         const toInput = document.getElementById('bs-flight-to')
         const departInput = document.getElementById('bs-flight-depart')
@@ -401,7 +535,7 @@ function createFlightDetailsElement(flightInfo) {
           window.open(saSeatsUrl, '_blank')
         }
       }},
-      { text: "FareClass", website: "seats.aero", action: () => {
+      { text: "FareClass", action: () => {
         const fromInput = document.getElementById('bs-flight-from')
         const toInput = document.getElementById('bs-flight-to')
         const departInput = document.getElementById('bs-flight-depart')
@@ -436,7 +570,7 @@ function createFlightDetailsElement(flightInfo) {
           window.open(fareClassUrl, '_blank')
         }
       }},
-      { text: "FareViewer", website: "seats.aero", action: () => {
+      { text: "FareViewer", action: () => {
         const fromInput = document.getElementById('bs-flight-from')
         const toInput = document.getElementById('bs-flight-to')
         const departInput = document.getElementById('bs-flight-depart')
