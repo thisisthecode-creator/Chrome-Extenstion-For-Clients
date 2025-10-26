@@ -432,7 +432,7 @@ function createFlightDetailsElement(flightInfo) {
             toCode = toInput.value?.trim()?.toUpperCase() || ''
           }
 
-          const fareClassUrl = `https://seats.aero/fareclass?from=${fromCode}&to=${toCode}&date=${departInput.value}&connections=true&codeshares=true`
+          const fareClassUrl = `https://seats.aero/fareclass?from=${fromCode}&to=${toCode}&date=${departInput.value}&connections=false&codeshares=false`
           window.open(fareClassUrl, '_blank')
         }
       }},
