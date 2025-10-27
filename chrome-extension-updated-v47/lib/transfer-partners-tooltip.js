@@ -1782,7 +1782,16 @@ function renderAvailableTransferPartners(displayType = 'ratio') {
 function updateCounts() {
   try {
     console.log('updateCounts called');
+    const selectedCount = document.getElementById('selected-count');
     const partnersCount = document.getElementById('partners-count');
+    
+    if (selectedCount) {
+      const count = window.selectedCards ? window.selectedCards.size : 0;
+      selectedCount.textContent = count;
+      console.log('Updated selected count:', count);
+    } else {
+      console.warn('Selected count element not found');
+    }
     
     if (partnersCount) {
       const count = filteredTransferPartners ? filteredTransferPartners.length : 0;
@@ -1790,14 +1799,6 @@ function updateCounts() {
       console.log('Updated partners count:', count);
     } else {
       console.warn('Partners count element not found');
-    }
-    
-    // Update Selected Cards count in the header (it's displayed inline)
-    const selectedCardsHeader = document.querySelector('.selected-cards-comparison .comparison-header h4');
-    if (selectedCardsHeader && window.selectedCards) {
-      const count = window.selectedCards.size;
-      selectedCardsHeader.textContent = `Selected Cards (${count})`;
-      console.log('Updated selected cards header count:', count);
     }
   } catch (error) {
     console.error('Error in updateCounts:', error);

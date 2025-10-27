@@ -92,27 +92,18 @@ function injectExtensionPanel() {
           <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
         </svg>
         <span>Flight Search</span>
-        <div class="bs-header-controls">
-          <div class="bs-auto-reload-toggle">
-            <label class="bs-toggle-label" for="bs-auto-reload-toggle">Auto-reload</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-auto-reload-toggle" checked>
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-          <div class="bs-header-actions">
-            <button class="bs-action-btn bs-action-save" id="bs-save-flight" title="Save flight data">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </button>
-            <button class="bs-action-btn bs-action-reset" id="bs-reset-flight" title="Reset flight data">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
-            </button>
-          </div>
+        <div class="bs-header-actions">
+          <button class="bs-action-btn bs-action-save" id="bs-save-flight" title="Save flight data">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </button>
+          <button class="bs-action-btn bs-action-reset" id="bs-reset-flight" title="Reset flight data">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
         </div>
       </div>
       
@@ -597,9 +588,6 @@ function initializeEventListeners() {
     btn.addEventListener('click', handleFlightButtonClick);
   });
   
-  // Add auto-reload functionality for flight inputs
-  setupFlightInputAutoReload();
-  
   // Hotel buttons
   const hotelButtons = document.querySelectorAll('.bs-section:nth-child(2) .bs-btn');
   hotelButtons.forEach(btn => {
@@ -912,138 +900,6 @@ function handleFlightButtonClick(e) {
     } else {
       window.open(url, '_blank');
     }
-  }
-}
-
-// Setup auto-reload functionality for flight inputs
-function setupFlightInputAutoReload() {
-  console.log('Setting up flight input auto-reload...');
-  
-  // Get all flight input elements
-  const flightInputs = [
-    document.getElementById('bs-flight-from'),
-    document.getElementById('bs-flight-to'),
-    document.getElementById('bs-flight-depart'),
-    document.getElementById('bs-flight-return'),
-    document.getElementById('bs-flight-cabin'),
-    document.getElementById('bs-flight-adults'),
-    document.getElementById('bs-flight-airline'),
-    document.getElementById('bs-flight-number')
-  ];
-  
-  // Add change event listeners to each input
-  flightInputs.forEach(input => {
-    if (input) {
-      console.log('Adding auto-reload listener to:', input.id);
-      
-      // Use different event types for different input types
-      const eventType = input.type === 'text' || input.type === 'date' ? 'input' : 'change';
-      
-      input.addEventListener(eventType, function() {
-        console.log('Flight input changed:', input.id, 'value:', input.value);
-        
-        // Check if auto-reload is enabled
-        const autoReloadToggle = document.getElementById('bs-auto-reload-toggle');
-        if (!autoReloadToggle || !autoReloadToggle.checked) {
-          console.log('Auto-reload is disabled, skipping reload');
-          return;
-        }
-        
-        // For date inputs, use 'change' event instead of 'input' to avoid calendar navigation triggers
-        if (input.type === 'date') {
-          // Use a separate change event listener for date inputs
-          input.addEventListener('change', function() {
-            console.log('Date input changed:', input.id, 'value:', input.value);
-            
-            // Check if auto-reload is enabled
-            const autoReloadToggle = document.getElementById('bs-auto-reload-toggle');
-            if (!autoReloadToggle || !autoReloadToggle.checked) {
-              console.log('Auto-reload is disabled, skipping reload');
-              return;
-            }
-            
-            // Debounce the auto-reload to avoid too many requests
-            clearTimeout(this.autoReloadTimeout);
-            this.autoReloadTimeout = setTimeout(() => {
-              autoReloadGoogleFlights();
-            }, 1000); // 1 second delay
-          });
-          return; // Skip the general input listener for date fields
-        }
-        
-        // Debounce the auto-reload to avoid too many requests
-        clearTimeout(this.autoReloadTimeout);
-        this.autoReloadTimeout = setTimeout(() => {
-          autoReloadGoogleFlights();
-        }, 1000); // 1 second delay
-      });
-    }
-  });
-  
-  // Add event listener to the toggle switch
-  const autoReloadToggle = document.getElementById('bs-auto-reload-toggle');
-  if (autoReloadToggle) {
-    autoReloadToggle.addEventListener('change', function() {
-      console.log('Auto-reload toggle changed:', this.checked);
-      
-      // Save toggle state to localStorage
-      localStorage.setItem('bs-auto-reload-enabled', this.checked);
-      
-      if (this.checked) {
-        console.log('Auto-reload enabled');
-      } else {
-        console.log('Auto-reload disabled');
-        // Clear any pending auto-reload timeouts
-        flightInputs.forEach(input => {
-          if (input && input.autoReloadTimeout) {
-            clearTimeout(input.autoReloadTimeout);
-          }
-        });
-      }
-    });
-    
-    // Load saved toggle state
-    const savedState = localStorage.getItem('bs-auto-reload-enabled');
-    if (savedState !== null) {
-      autoReloadToggle.checked = savedState === 'true';
-      console.log('Restored auto-reload state:', autoReloadToggle.checked);
-    }
-  }
-}
-
-// Auto-reload Google Flights with current input data
-function autoReloadGoogleFlights() {
-  console.log('Auto-reloading Google Flights...');
-  
-  const flightData = getFlightInputData();
-  
-  // Only auto-reload if we have the minimum required data: From, To, AND at least one date
-  const hasFromTo = flightData.from && flightData.to;
-  const hasDate = flightData.depart || flightData.return;
-  
-  if (hasFromTo && hasDate) {
-    console.log('Auto-reloading with complete data:', flightData);
-    
-    const url = generateFlightUrl('google-flights', flightData);
-    
-    if (url) {
-      // Save flight data to localStorage
-      saveFlightDataToStorage(flightData);
-      
-      // Navigate to Google Flights with new parameters
-      window.location.href = url;
-    }
-  } else {
-    console.log('Not enough data for auto-reload:', {
-      hasFromTo,
-      hasDate,
-      flightData: {
-        from: flightData.from,
-        to: flightData.to,
-        depart: flightData.depart,
-        return: flightData.return
-      }
-    });
   }
 }
 
