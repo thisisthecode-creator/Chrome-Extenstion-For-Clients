@@ -135,7 +135,7 @@
 
 /* Collapsible My Credit Cards section */
 .card-selection-panel .bs-section-content {
-  display: none; /* Hide content by default */
+  display: block; /* Show content by default */
 }
 
 .card-selection-panel .bs-section-header {
@@ -147,7 +147,7 @@
 }
 
 .card-selection-panel .bs-section-header::after {
-  content: '▼'; /* Down arrow for collapsed state */
+  content: '▲'; /* Up arrow for expanded state by default */
   font-size: 12px;
   transition: transform 0.3s ease;
   color: #5f6368;
@@ -156,6 +156,14 @@
 .card-selection-panel.expanded .bs-section-header::after {
   content: '▲'; /* Up arrow for expanded state */
   transform: rotate(0deg); /* No rotation needed if using ▲ */
+}
+
+.card-selection-panel:not(.expanded) .bs-section-header::after {
+  content: '▼'; /* Down arrow for collapsed state */
+}
+
+.card-selection-panel:not(.expanded) .bs-section-content {
+  display: none; /* Hide content when collapsed */
 }
 
 .card-selection-panel.expanded .bs-section-content {
@@ -1962,7 +1970,7 @@
 }
 
 .multiplier-value {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
 }
@@ -2189,9 +2197,10 @@
 
 .card-selection-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   gap: 12px;
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
 }
 
@@ -2202,6 +2211,7 @@
   padding: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
 }
 
 .card-selection-item:hover {
@@ -2668,11 +2678,14 @@
 
 /* Updated Card Selection Styles */
 .card-selection-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   gap: 8px;
   margin: 12px 0;
   padding: 0 4px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .card-selection-item {
@@ -2683,6 +2696,7 @@
   transition: all 0.2s ease;
   cursor: pointer;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  position: relative;
 }
 
 .card-selection-item:hover {
@@ -2693,9 +2707,19 @@
 
 .card-selection-item.selected {
   border-color: #1a73e8;
-  background: white;
+  background: #e8f0fe;
   box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
   transform: translateY(-1px);
+}
+
+.card-selection-item.selected::before {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #1a73e8;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .card-selection-content {
@@ -3015,15 +3039,15 @@
 }
 
 .comparison-table th {
-  padding: 4px 4px;
+  padding: 2px 2px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
   color: #000000 !important;
   text-align: center;
   border-right: 1px solid #e8eaed;
   white-space: nowrap;
-  min-width: 50px;
-  line-height: 1.2;
+  min-width: 35px;
+  line-height: 1.1;
 }
 
 /* Sortable header styles */
@@ -3040,13 +3064,13 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 2px 4px;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  font-size: 16px;
+  gap: 2px;
+  font-size: 12px;
   transition: background-color 0.2s ease;
   width: 100%;
 }
@@ -3133,14 +3157,14 @@
 }
 
 .comparison-table td {
-  padding: 4px 4px;
+  padding: 2px 2px;
   border-right: 1px solid #e8eaed;
   border-bottom: 1px solid #e8eaed;
   text-align: center;
   vertical-align: middle;
-  min-width: 50px;
+  min-width: 35px;
   color: #000000 !important;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 /* Ensure all text in comparison table is black */
@@ -3328,6 +3352,12 @@
   align-items: center;
 }
 
+.selected-cards-comparison .comparison-header h4 {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+}
+
 .selected-cards-comparison .display-toggle {
   display: flex;
   gap: 4px;
@@ -3337,11 +3367,11 @@
 }
 
 .selected-cards-comparison .toggle-btn {
-  padding: 6px 12px;
+  padding: 8px 16px;
   border: none;
   background: transparent;
   color: #5f6368;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   border-radius: 4px;
   cursor: pointer;
@@ -3366,14 +3396,35 @@
   min-width: 50px !important;
 }
 
-/* Ensure table shows all columns */
-.selected-cards-comparison .comparison-table {
-  min-width: 1000px !important;
+/* Selected Cards - Larger font sizes for better readability */
+.selected-cards-comparison .comparison-table th {
+  font-size: 16px !important;
+  padding: 6px 4px !important;
 }
 
-.selected-cards-comparison .comparison-table th,
 .selected-cards-comparison .comparison-table td {
-  min-width: 50px !important;
+  font-size: 16px !important;
+  padding: 6px 4px !important;
+}
+
+.selected-cards-comparison .multiplier-value {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+.selected-cards-comparison .card-name {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.selected-cards-comparison .card-program {
+  font-size: 12px !important;
+  color: #666 !important;
+}
+
+.selected-cards-comparison .sort-button {
+  font-size: 16px !important;
+  padding: 6px 8px !important;
 }
 
 .transfer-partners-comparison .comparison-table-container {
@@ -3607,7 +3658,7 @@
 
 .card-name-cell {
   text-align: left;
-  min-width: 150px;
+  min-width: 100px;
 }
 
 .card-name-cell .card-info {
@@ -3621,28 +3672,32 @@
 
 .card-name-cell .card-name {
   text-align: left;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 .card-name-cell .card-program {
   text-align: left;
+  font-size: 9px;
+  color: #666;
 }
 
 .card-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .card-info .card-logo {
   flex-shrink: 0;
-  width: 28px;
-  height: 18px;
+  width: 20px;
+  height: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f8f9fa;
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: 3px;
+  font-size: 10px;
 }
 
 .card-details {
@@ -3669,10 +3724,10 @@
 }
 
 .multiplier-value {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
-  padding: 3px 6px;
-  border-radius: 4px;
+  padding: 2px 4px;
+  border-radius: 3px;
   display: inline-block;
   min-width: 35px;
 }
