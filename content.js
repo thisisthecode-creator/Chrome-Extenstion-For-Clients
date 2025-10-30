@@ -92,11 +92,26 @@ function injectExtensionPanel() {
           <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
         </svg>
         <span>Flight Search</span>
+        <button class="bs-action-btn bs-action-refresh" id="bs-refresh-flight" title="Refresh results">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"/>
+            <polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10"/>
+            <path d="M20.49 15a9 9 0 0 1-14.13 3.36L1 14"/>
+          </svg>
+        </button>
         <div class="bs-header-controls">
           <div class="bs-auto-reload-toggle">
             <label class="bs-toggle-label" for="bs-auto-reload-toggle">Auto-reload</label>
             <label class="bs-toggle-switch">
               <input type="checkbox" id="bs-auto-reload-toggle" checked>
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-external-links-toggle">Search Links</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-external-links-toggle">
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
@@ -142,9 +157,8 @@ function injectExtensionPanel() {
         </div>
         <div class="bs-input-group">
           <label>Cabin</label>
-          <select id="bs-flight-cabin">
+          <select id="bs-flight-cabin" style="min-width: 160px;">
           <option value="economy">Economy</option>
-          <option value="premium_economy">PremEco</option>
           <option value="business">Business</option>
           <option value="first">First</option>
         </select>
@@ -163,17 +177,9 @@ function injectExtensionPanel() {
             <option value="9">9</option>
           </select>
         </div>
-        <div class="bs-input-group">
-          <label>Airline</label>
-          <input type="text" id="bs-flight-airline" placeholder="W6" maxlength="2" />
-        </div>
-        <div class="bs-input-group">
-          <label>Flight Nr</label>
-          <input type="text" id="bs-flight-number" placeholder="1444" />
-        </div>
       </div>
       
-      <div class="bs-buttons-grid">
+      <div class="bs-buttons-grid" id="bs-external-links" style="display:none;">
         <button class="bs-btn bs-btn-google-flights" data-service="google-flights">
           Google Flights
         </button>
@@ -226,7 +232,30 @@ function injectExtensionPanel() {
           <path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6h14"/><path d="M4 14h16v7H4z"/>
         </svg>
         <span>Hotel Search</span>
-        <div class="bs-header-actions">
+        <button class="bs-action-btn bs-action-refresh" id="bs-refresh-hotel" title="Refresh results">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"/>
+            <polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10"/>
+            <path d="M20.49 15a9 9 0 0 1-14.13 3.36L1 14"/>
+          </svg>
+        </button>
+        <div class="bs-header-controls">
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-hotel-auto-reload-toggle">Auto-reload</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-hotel-auto-reload-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-hotel-external-links-toggle">Search Links</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-hotel-external-links-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-header-actions">
           <button class="bs-action-btn bs-action-save" id="bs-save-hotel" title="Save hotel data">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="20 6 9 17 4 12"/>
@@ -238,6 +267,7 @@ function injectExtensionPanel() {
               <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
           </button>
+          </div>
         </div>
       </div>
       
@@ -264,7 +294,7 @@ function injectExtensionPanel() {
         </div>
       </div>
       
-      <div class="bs-buttons-grid">
+      <div class="bs-buttons-grid" id="bs-hotel-external-links" style="display:none;">
         <button class="bs-btn bs-btn-rooms-aero" data-service="rooms-aero">
           Rooms.aero
         </button>
@@ -349,24 +379,47 @@ function injectExtensionPanel() {
             <path d="M12 8h.01"/>
           </svg>
           <span>Information</span>
-          <div class="bs-header-actions">
-            <button class="bs-action-btn bs-action-save" id="bs-save-information" title="Save information data">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-            </button>
-            <button class="bs-action-btn bs-action-reset" id="bs-reset-information" title="Reset information data">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
+          <div class="bs-header-controls">
+            <div class="bs-auto-reload-toggle">
+              <label class="bs-toggle-label" for="bs-info-cards-toggle">My Credit Cards</label>
+              <label class="bs-toggle-switch">
+                <input type="checkbox" id="bs-info-cards-toggle" checked>
+                <span class="bs-toggle-slider"></span>
+              </label>
+            </div>
+            <div class="bs-auto-reload-toggle">
+              <label class="bs-toggle-label" for="bs-info-partners-toggle">Available Transfer Partners</label>
+              <label class="bs-toggle-switch">
+                <input type="checkbox" id="bs-info-partners-toggle" checked>
+                <span class="bs-toggle-slider"></span>
+              </label>
+            </div>
+            <div class="bs-auto-reload-toggle">
+              <label class="bs-toggle-label" for="bs-info-selected-toggle">Selected Cards</label>
+              <label class="bs-toggle-switch">
+                <input type="checkbox" id="bs-info-selected-toggle" checked>
+                <span class="bs-toggle-slider"></span>
+              </label>
+            </div>
+            <div class="bs-header-actions">
+              <button class="bs-action-btn bs-action-save" id="bs-save-information" title="Save information data">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </button>
+              <button class="bs-action-btn bs-action-reset" id="bs-reset-information" title="Reset information data">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
     
           
           <!-- Card Selection Panel -->
-          <div class="card-selection-panel">
+          <div class="card-selection-panel" id="bs-info-cards-panel">
             <div class="bs-section-header">
               <h4>My Credit Cards <span class="card-count" id="total-cards-count">(Loading...)</span></h4>
             </div>
@@ -596,9 +649,40 @@ function initializeEventListeners() {
   flightButtons.forEach(btn => {
     btn.addEventListener('click', handleFlightButtonClick);
   });
-  
+
+  // External links toggle
+  const linksToggle = document.getElementById('bs-external-links-toggle');
+  const linksContainer = document.getElementById('bs-external-links');
+  if (linksToggle && linksContainer) {
+    const saved = localStorage.getItem('bs-external-links-enabled');
+    if (saved !== null) {
+      linksToggle.checked = saved === 'true';
+    }
+    linksContainer.style.display = linksToggle.checked ? '' : 'none';
+    linksToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-external-links-enabled', linksToggle.checked);
+      linksContainer.style.display = linksToggle.checked ? '' : 'none';
+    });
+  }
+
   // Add auto-reload functionality for flight inputs
   setupFlightInputAutoReload();
+  
+  // Hotel external links toggle
+  const hotelLinksToggle = document.getElementById('bs-hotel-external-links-toggle');
+  const hotelLinksContainer = document.getElementById('bs-hotel-external-links');
+  if (hotelLinksToggle && hotelLinksContainer) {
+    const savedHotelLinks = localStorage.getItem('bs-hotel-external-links-enabled');
+    if (savedHotelLinks !== null) hotelLinksToggle.checked = savedHotelLinks === 'true';
+    hotelLinksContainer.style.display = hotelLinksToggle.checked ? '' : 'none';
+    hotelLinksToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-hotel-external-links-enabled', hotelLinksToggle.checked);
+      hotelLinksContainer.style.display = hotelLinksToggle.checked ? '' : 'none';
+    });
+  }
+  
+  // Hotel auto-reload setup
+  setupHotelInputAutoReload();
   
   // Hotel buttons
   const hotelButtons = document.querySelectorAll('.bs-section:nth-child(2) .bs-btn');
@@ -704,6 +788,45 @@ function initializeEventListeners() {
     console.log('Information toggle or section not found:', { informationToggle, informationSection });
   }
 
+  // Information section sub-toggles
+  const infoCardsToggle = document.getElementById('bs-info-cards-toggle');
+  const infoPartnersToggle = document.getElementById('bs-info-partners-toggle');
+  const infoSelectedToggle = document.getElementById('bs-info-selected-toggle');
+  const infoCardsPanel = document.getElementById('bs-info-cards-panel');
+  const infoPartnersPanel = document.getElementById('available-transfer-partners');
+  const infoSelectedPanel = document.getElementById('selected-cards-comparison');
+
+  if (infoCardsToggle && infoCardsPanel) {
+    const saved = localStorage.getItem('bs-info-cards-enabled');
+    if (saved !== null) infoCardsToggle.checked = saved === 'true';
+    infoCardsPanel.style.display = infoCardsToggle.checked ? '' : 'none';
+    infoCardsToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-info-cards-enabled', infoCardsToggle.checked);
+      infoCardsPanel.style.display = infoCardsToggle.checked ? '' : 'none';
+    });
+  }
+
+  if (infoPartnersToggle && infoPartnersPanel) {
+    const saved = localStorage.getItem('bs-info-partners-enabled');
+    if (saved !== null) infoPartnersToggle.checked = saved === 'true';
+    infoPartnersPanel.style.display = infoPartnersToggle.checked ? '' : 'none';
+    infoPartnersToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-info-partners-enabled', infoPartnersToggle.checked);
+      infoPartnersPanel.style.display = infoPartnersToggle.checked ? '' : 'none';
+    });
+  }
+
+  if (infoSelectedToggle && infoSelectedPanel) {
+    const saved = localStorage.getItem('bs-info-selected-enabled');
+    if (saved !== null) infoSelectedToggle.checked = saved === 'true';
+    infoSelectedPanel.style.display = infoSelectedToggle.checked ? '' : 'none';
+    infoSelectedToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-info-selected-enabled', infoSelectedToggle.checked);
+      infoSelectedPanel.style.display = infoSelectedToggle.checked ? '' : 'none';
+    });
+  }
+
+
       // Information data management buttons
       const informationSaveBtn = document.getElementById('bs-save-information');
       const informationResetBtn = document.getElementById('bs-reset-information');
@@ -723,6 +846,7 @@ function initializeEventListeners() {
           clearInformationData();
         });
       }
+  
   
   if (settingsToggle && settingsSection) {
     console.log('Setting up Settings toggle event listener...');
@@ -755,44 +879,19 @@ function initializeEventListeners() {
     console.log('Settings toggle or section not found:', { settingsToggle, settingsSection });
   }
   
+  
   console.log('=== EVENT LISTENERS INITIALIZATION COMPLETE ===');
   
   // Handle airport input changes (autocomplete will handle the logic)
   const fromInput = document.getElementById('bs-flight-from');
   const toInput = document.getElementById('bs-flight-to');
-  const airlineInput = document.getElementById('bs-flight-airline');
-  const flightNumberInput = document.getElementById('bs-flight-number');
+  const airlineInput = null;
+  const flightNumberInput = null;
   
-  // Auto-uppercase airline codes
-  if (airlineInput) {
-    airlineInput.addEventListener('input', (e) => {
-      e.target.value = e.target.value.toUpperCase();
-      toggleSeatmapButtons();
-    });
-  }
-  
-  if (flightNumberInput) {
-    flightNumberInput.addEventListener('input', () => {
-      toggleSeatmapButtons();
-    });
-  }
+  // Removed airline/flight number inputs
   
   // Toggle seatmap buttons visibility based on airline and flight number
-  function toggleSeatmapButtons() {
-    const airline = airlineInput?.value?.trim() || '';
-    const flightNumber = flightNumberInput?.value?.trim() || '';
-    const showButtons = airline && flightNumber;
-    
-    const pointsYeahBtn = document.querySelector('.bs-btn-pointsyeah-seatmap');
-    const seatsAeroBtn = document.querySelector('.bs-btn-seats-aero-seatmap');
-    
-    if (pointsYeahBtn) {
-      pointsYeahBtn.style.display = showButtons ? '' : 'none';
-    }
-    if (seatsAeroBtn) {
-      seatsAeroBtn.style.display = showButtons ? '' : 'none';
-    }
-  }
+  function toggleSeatmapButtons() { /* no-op without airline/flight number */ }
   
   // Initial check on load
   toggleSeatmapButtons();
@@ -824,6 +923,24 @@ function initializeEventListeners() {
       showNotification('Flight data saved!', 'success');
     });
   }
+
+  // Refresh button
+  const refreshFlightBtn = document.getElementById('bs-refresh-flight');
+  if (refreshFlightBtn) {
+    refreshFlightBtn.addEventListener('click', () => {
+      // Mark that we want to wait for full load on the next page
+      try { sessionStorage.setItem('bs-wait-full-load', '1') } catch(_) {}
+      autoReloadGoogleFlights();
+    });
+  }
+  
+  // Hotel refresh button
+  const refreshHotelBtn = document.getElementById('bs-refresh-hotel');
+  if (refreshHotelBtn) {
+    refreshHotelBtn.addEventListener('click', () => {
+      autoReloadHotels();
+    });
+  }
   
   if (resetFlightBtn) {
     resetFlightBtn.addEventListener('click', () => {
@@ -834,8 +951,7 @@ function initializeEventListeners() {
       if (document.getElementById('bs-flight-return')) document.getElementById('bs-flight-return').value = '';
       if (document.getElementById('bs-flight-cabin')) document.getElementById('bs-flight-cabin').value = 'economy';
       if (document.getElementById('bs-flight-adults')) document.getElementById('bs-flight-adults').value = '1';
-      if (airlineInput) airlineInput.value = '';
-      if (flightNumberInput) flightNumberInput.value = '';
+      // airline/flight number removed
       
       // Clear saved data
       localStorage.removeItem('bs-extension-flight-data');
@@ -926,9 +1042,7 @@ function setupFlightInputAutoReload() {
     document.getElementById('bs-flight-depart'),
     document.getElementById('bs-flight-return'),
     document.getElementById('bs-flight-cabin'),
-    document.getElementById('bs-flight-adults'),
-    document.getElementById('bs-flight-airline'),
-    document.getElementById('bs-flight-number')
+    document.getElementById('bs-flight-adults')
   ];
   
   // Add change event listeners to each input
@@ -1045,6 +1159,51 @@ function autoReloadGoogleFlights() {
       }
     });
   }
+}
+
+// Setup auto-reload for hotel inputs
+function setupHotelInputAutoReload() {
+  console.log('Setting up hotel input auto-reload...');
+  const hotelInputs = [
+    document.getElementById('bs-hotel-city'),
+    document.getElementById('bs-hotel-checkin'),
+    document.getElementById('bs-hotel-checkout'),
+    document.getElementById('bs-hotel-adults'),
+    document.getElementById('bs-hotel-rooms')
+  ];
+
+  hotelInputs.forEach(input => {
+    if (!input) return;
+    const eventType = input.type === 'text' || input.type === 'date' ? 'input' : 'change';
+    input.addEventListener(eventType, function() {
+      const autoToggle = document.getElementById('bs-hotel-auto-reload-toggle');
+      if (!autoToggle || !autoToggle.checked) return;
+      clearTimeout(this.autoReloadTimeout);
+      this.autoReloadTimeout = setTimeout(() => {
+        autoReloadHotels();
+      }, 1000);
+    });
+  });
+
+  const autoToggle = document.getElementById('bs-hotel-auto-reload-toggle');
+  if (autoToggle) {
+    autoToggle.addEventListener('change', function() {
+      localStorage.setItem('bs-hotel-auto-reload-enabled', this.checked);
+      if (!this.checked) {
+        hotelInputs.forEach(input => input && input.autoReloadTimeout && clearTimeout(input.autoReloadTimeout));
+      }
+    });
+    const saved = localStorage.getItem('bs-hotel-auto-reload-enabled');
+    if (saved !== null) autoToggle.checked = saved === 'true';
+  }
+}
+
+function autoReloadHotels() {
+  console.log('Auto-reloading Google Hotels...');
+  const hotelData = getHotelInputData();
+  if (!validateHotelData(hotelData)) return;
+  const url = generateHotelUrl('google-hotels', hotelData);
+  if (url) window.open(url, '_blank');
 }
 
 // Handle hotel button clicks
@@ -1308,32 +1467,16 @@ function restoreFlightData() {
   }
   
   if (savedData.airline) {
-    const airlineInput = document.getElementById('bs-flight-airline');
-    if (airlineInput) airlineInput.value = savedData.airline;
+    // airline removed
   }
   
   if (savedData.flightNumber) {
-    const flightNumberInput = document.getElementById('bs-flight-number');
-    if (flightNumberInput) flightNumberInput.value = savedData.flightNumber;
+    // flight number removed
   }
   
   // Trigger seatmap button visibility check after restoration
   setTimeout(() => {
-    const airlineInput = document.getElementById('bs-flight-airline');
-    const flightNumberInput = document.getElementById('bs-flight-number');
-    const airline = airlineInput?.value?.trim() || '';
-    const flightNumber = flightNumberInput?.value?.trim() || '';
-    const showButtons = airline && flightNumber;
-    
-    const pointsYeahBtn = document.querySelector('.bs-btn-pointsyeah-seatmap');
-    const seatsAeroBtn = document.querySelector('.bs-btn-seats-aero-seatmap');
-    
-    if (pointsYeahBtn) {
-      pointsYeahBtn.style.display = showButtons ? '' : 'none';
-    }
-    if (seatsAeroBtn) {
-      seatsAeroBtn.style.display = showButtons ? '' : 'none';
-    }
+    // seatmap buttons remain hidden without airline/flight number
   }, 100);
 }
 
@@ -1414,9 +1557,7 @@ function getFlightInputData() {
     adults: parseInt(document.getElementById('bs-flight-adults')?.value || '1', 10),
     language: document.getElementById('bs-flight-language')?.value || 'en',
     currency: document.getElementById('bs-flight-currency')?.value || 'USD',
-    location: document.getElementById('bs-flight-location')?.value || 'US',
-    airline: document.getElementById('bs-flight-airline')?.value?.trim()?.toUpperCase() || '',
-    flightNumber: document.getElementById('bs-flight-number')?.value?.trim() || ''
+    location: document.getElementById('bs-flight-location')?.value || 'US'
   };
 }
 
@@ -1458,15 +1599,15 @@ function generateFlightUrl(service, data) {
   const returnTimestamp = ret ? Math.floor(new Date(ret).getTime() / 1000) : departTimestamp;
   
   const urls = {
-    'google-flights': `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+in+${cabin}+class&hl=${language}&curr=${currency}&gl=${location}`,
+    'google-flights': `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+${cabin}+class+nonstop&hl=${language}&curr=${currency}&gl=${location}+tfu=EgYIAxAAGAA`,
     
-    'points-yeah': `https://www.pointsyeah.com/search?cabins=${pointsYeahCabin}&cabin=${pointsYeahCabin}&banks=Amex%2CCapital+One%2CChase&airlineProgram=AM%2CAC%2CKL%2CAS%2CAV%2CDL%2CEK%2CEY%2CAY%2CB6%2CQF%2CSQ%2CTK%2CUA%2CVS%2CVA&tripType=${ret ? '2' : '1'}&adults=${adults}&children=0&departure=${from}&arrival=${to}&departDate=${depart}&departDateSec=${depart}&returnDate=${ret || depart}&returnDateSec=${ret || depart}&multiday=false`,
+    'points-yeah': `https://www.pointsyeah.com/search?cabins=${pointsYeahCabin}&cabin=${pointsYeahCabin}&banks=Amex%2CCapital+One%2CChase&airlineProgram=AM%2CAC%2CKL%2CAS%2CAV%2CDL%2CEK%2CEY%2CAY%2CB6%2CQF%2CSQ%2CTK%2CUA%2CVS%2CVA&tripType=${ret ? '2' : '1'}&adults=${adults}&children=0&departure=${from}&arrival=${to}&departDate=${depart}&departDateSec=${depart}&returnDate=${ret || depart}&returnDateSec=${ret || depart}&multiday=false&stops=0`,
     
     'award-tool': ret 
       ? `https://www.awardtool.com/flight?flightWay=roundtrip&pax=${adults}&children=0&cabins=${cabin}&range=false&rangeV2=false&from=${from}&to=${to}&programs=&targetId=&roundTripDepartureDate=${departTimestamp}&roundTripReturnDate=${returnTimestamp}`
       : `https://www.awardtool.com/flight?flightWay=oneway&pax=${adults}&children=0&cabins=${cabin}&range=true&rangeV2=false&from=${from}&to=${to}&programs=&targetId=&oneWayRangeStartDate=${departTimestamp}&oneWayRangeEndDate=${departTimestamp}`,
     
-    'seats-aero': `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}`,
+    'seats-aero': `https://seats.aero/search?min_seats=${adults}&applicable_cabin=${cabin}&additional_days_num=7&max_fees=40000&date=${depart}&origins=${from}&destinations=${to}&stops=0`,
     
     'point-me': `https://point.me/results?departureCity=${from}&departureIata=${from}&arrivalCity=${to}&arrivalIata=${to}&legType=${ret ? 'roundtrip' : 'oneway'}&classOfService=${cabin}&passengers=${adults}&departureDate=${depart}&arrivalDate=${ret || ''}`,
     
@@ -1480,7 +1621,7 @@ function generateFlightUrl(service, data) {
     
     'rovemiles': `https://www.rovemiles.com/search/flights?origin=${from}&destination=${to}&cabin=${cabin}&adults=${adults}&children=0&infants=0&payment=miles&start_date=${depart}`,
     
-    'fare-class': `https://seats.aero/fareclass?from=${from}&to=${to}&date=${depart}&carriers=&connections=false`,
+    'fare-class': `https://seats.aero/fareclass?from=${from}&to=${to}&date=${depart}&carriers=&connections=false&stops=0`,
     
     'flight-connections': `https://www.flightconnections.com/de/fl%C3%BCge-von-${from.toLowerCase()}-nach-${to.toLowerCase()}`,
     
@@ -1488,7 +1629,7 @@ function generateFlightUrl(service, data) {
     
     'pointsyeah-seatmap': data.airline && data.flightNumber ? `https://www.pointsyeah.com/seatmap/detail?airline=${encodeURIComponent(data.airline)}&departure=${from}&arrival=${to}&date=${depart}&flightNumber=${encodeURIComponent(data.flightNumber)}&cabins=Economy%2CPremium%20Economy%2CBusiness%2CFirst` : '#',
     
-    'seats-aero-seatmap': data.airline && data.flightNumber ? `https://seats.aero/seatmap?airline=${encodeURIComponent(data.airline)}&from=${from}&to=${to}&date=${depart}&flight=${encodeURIComponent(data.flightNumber)}` : '#'
+    'seats-aero-seatmap': data.airline && data.flightNumber ? `https://seats.aero/seatmap?airline=${encodeURIComponent(data.airline)}&from=${from}&to=${to}&date=${depart}&flight=${encodeURIComponent(data.flightNumber)}&stops=0` : '#'
   };
   
   return urls[service] || '#';
@@ -1599,6 +1740,7 @@ function initializeCollapsible() {
   // Functionality removed as logo toggle has been removed
 }
 
+
 // Setup observer to inject panel when page loads
 function setupObserver() {
   // Try multiple times with different delays
@@ -1628,6 +1770,47 @@ function setupObserver() {
       setTimeout(() => injectExtensionPanel(), 500);
     }
   }).observe(document, { subtree: true, childList: true });
+
+  // If a manual refresh was triggered, wait for full load indicators
+  try {
+    if (sessionStorage.getItem('bs-wait-full-load') === '1') {
+      waitForFullLoad().then(() => {
+        try { sessionStorage.removeItem('bs-wait-full-load') } catch(_) {}
+        showNotification('Page fully loaded', 'success');
+      });
+    }
+  } catch(_) {}
+}
+
+// Wait for full load: window load + core results present
+function waitForFullLoad() {
+  return new Promise((resolve) => {
+    const done = () => resolve();
+
+    const checkDomReady = () => {
+      const hasResults = document.querySelector('.XwbuFf') && (document.querySelector('li.pIav2d, .yR1fYc, .mxvQLc'));
+      if (hasResults) {
+        done();
+        return true;
+      }
+      return false;
+    };
+
+    if (document.readyState === 'complete' && checkDomReady()) {
+      return done();
+    }
+
+    window.addEventListener('load', () => {
+      if (checkDomReady()) return done();
+      const obs = new MutationObserver(() => {
+        if (checkDomReady()) {
+          obs.disconnect();
+          done();
+        }
+      });
+      obs.observe(document.body, { childList: true, subtree: true });
+    }, { once: true });
+  });
 }
 
 // Initialize airport autocomplete
