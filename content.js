@@ -115,6 +115,13 @@ function injectExtensionPanel() {
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-casm-toggle">CASM</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-casm-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
           <div class="bs-header-actions">
             <button class="bs-action-btn bs-action-save" id="bs-save-flight" title="Save flight data">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -222,6 +229,89 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-seats-aero-seatmap" data-service="seats-aero-seatmap" style="display: none;">
           SA Seats
         </button>
+      </div>
+
+      <!-- CASM Calculator Section -->
+      <div class="bs-casm-calculator" id="bs-casm-calculator" style="display: none;">
+        <!-- Input Row -->
+        <div class="bs-casm-row">
+          <div class="bs-casm-inputs">
+            <div class="bs-casm-field">
+              <label>Distance</label>
+              <div class="bs-casm-input-wrap">
+                <input type="number" id="bs-casm-distance" placeholder="Auto" step="0.1" min="0" />
+                <button type="button" id="bs-casm-calculate-distance" class="bs-casm-icon-btn" title="Calculate from airports">📐</button>
+              </div>
+            </div>
+            
+            <div class="bs-casm-field">
+              <label>Airline</label>
+              <select id="bs-casm-airline">
+                <option value="">Select</option>
+              </select>
+            </div>
+            
+            <div class="bs-casm-field">
+              <label>Cash</label>
+              <input type="number" id="bs-casm-cash-price" placeholder="Price" step="0.01" min="0" />
+            </div>
+
+            <div class="bs-casm-field">
+              <label>Region</label>
+              <select id="bs-casm-region">
+                <option value="North America">North America</option>
+                <option value="Europe">Europe</option>
+                <option value="Asia–Pacific">Asia–Pacific</option>
+                <option value="Latin America">Latin America</option>
+                <option value="Middle East & Africa">Middle East & Africa</option>
+              </select>
+            </div>
+
+            <div class="bs-casm-field">
+              <label>Check-In Bags</label>
+              <input type="number" id="bs-casm-bags" placeholder="0" min="0" value="1" />
+            </div>
+
+            <div class="bs-casm-field">
+              <label>Bag Fee</label>
+              <input type="number" id="bs-casm-bag-fee" placeholder="0" step="0.01" min="0" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Row -->
+        <div class="bs-casm-row bs-casm-results-row" id="bs-casm-results" style="display: none;">
+          <div class="bs-casm-results-section">
+            <div class="bs-casm-results-group">
+              <div class="bs-casm-result">
+                <span class="bs-casm-result-label">CASM Cost</span>
+                <span class="bs-casm-result-value" id="bs-casm-cost">$0.00</span>
+              </div>
+              <div class="bs-casm-result">
+                <span class="bs-casm-result-label">Cash</span>
+                <span class="bs-casm-result-value" id="bs-casm-cash-display">—</span>
+              </div>
+              <div class="bs-casm-result bs-casm-margin">
+                <span class="bs-casm-result-label">Margin</span>
+                <span class="bs-casm-result-value">
+                  <span id="bs-casm-margin">$0.00</span>
+                  <span class="bs-casm-percentage" id="bs-casm-margin-pct">(0%)</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="bs-casm-results-group">
+              <div class="bs-casm-result">
+                <span class="bs-casm-result-label">Bag Cost</span>
+                <span class="bs-casm-result-value" id="bs-casm-bag-cost">$0.00</span>
+              </div>
+              <div class="bs-casm-result bs-casm-total-cost">
+                <span class="bs-casm-result-label">Total Cost</span>
+                <span class="bs-casm-result-value" id="bs-casm-total-cost">$0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -664,6 +754,9 @@ function initializeEventListeners() {
       linksContainer.style.display = linksToggle.checked ? '' : 'none';
     });
   }
+
+  // Initialize CASM Calculator
+  initializeCASMCalculator();
 
   // Add auto-reload functionality for flight inputs
   setupFlightInputAutoReload();
@@ -1414,7 +1507,283 @@ function loadFlightDataFromStorage() {
   }
 }
 
-// Restore flight data to input fields
+// Calculate great circle distance between two airport codes (in miles)
+async function calculateDistanceBetweenAirports(fromCode, toCode) {
+  if (!fromCode || !toCode || !window.airportDataService) {
+    return null;
+  }
+
+  try {
+    const fromAirport = await window.airportDataService.getAirportByIATA(fromCode);
+    const toAirport = await window.airportDataService.getAirportByIATA(toCode);
+
+    if (!fromAirport || !toAirport) {
+      return null;
+    }
+
+    // Haversine formula for great circle distance
+    const R = 3958.8; // Earth radius in miles
+    const lat1 = (fromAirport.latitude * Math.PI) / 180;
+    const lat2 = (toAirport.latitude * Math.PI) / 180;
+    const deltaLat = ((toAirport.latitude - fromAirport.latitude) * Math.PI) / 180;
+    const deltaLon = ((toAirport.longitude - fromAirport.longitude) * Math.PI) / 180;
+
+    const a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+              Math.cos(lat1) * Math.cos(lat2) *
+              Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c;
+  } catch (error) {
+    console.error('Error calculating distance:', error);
+    return null;
+  }
+}
+
+// Extract airports from URL
+function extractAirportsFromURL() {
+  try {
+    const url = new URL(window.location.href);
+    const searchParams = url.searchParams;
+    
+    // Try different URL parameter formats
+    let fromCode = searchParams.get('origins') || searchParams.get('from') || searchParams.get('departure');
+    let toCode = searchParams.get('destinations') || searchParams.get('to') || searchParams.get('arrival');
+    
+    // Also check the query string format: flights+from+WAW+to+VIE
+    const q = searchParams.get('q') || '';
+    const match = q.match(/from\+([A-Z]{3}).*?to\+([A-Z]{3})/i);
+    if (match && !fromCode) {
+      fromCode = match[1].toUpperCase();
+      toCode = match[2].toUpperCase();
+    }
+    
+    // Try parsing from pathname
+    const pathMatch = window.location.pathname.match(/\/([A-Z]{3})-([A-Z]{3})\//i);
+    if (pathMatch && !fromCode) {
+      fromCode = pathMatch[1].toUpperCase();
+      toCode = pathMatch[2].toUpperCase();
+    }
+    
+    return {
+      from: fromCode ? fromCode.toUpperCase() : null,
+      to: toCode ? toCode.toUpperCase() : null
+    };
+  } catch (error) {
+    console.error('Error extracting airports from URL:', error);
+    return { from: null, to: null };
+  }
+}
+
+// Initialize CASM Calculator
+function initializeCASMCalculator() {
+  const casmToggle = document.getElementById('bs-casm-toggle');
+  const casmCalculator = document.getElementById('bs-casm-calculator');
+  const airlineSelect = document.getElementById('bs-casm-airline');
+  const distanceInput = document.getElementById('bs-casm-distance');
+  const cashPriceInput = document.getElementById('bs-casm-cash-price');
+  const calculateDistanceBtn = document.getElementById('bs-casm-calculate-distance');
+  const resultsDiv = document.getElementById('bs-casm-results');
+
+  if (!casmToggle || !casmCalculator) return;
+
+  // Populate airline dropdown
+  if (airlineSelect && window.getAirlinesList) {
+    const airlines = window.getAirlinesList();
+    airlines.forEach(airline => {
+      const casm = window.getAirlineCASM(airline);
+      if (casm) {
+        const option = document.createElement('option');
+        option.value = airline;
+        option.textContent = `${airline} (CASM: ${casm.toFixed(1)}¢)`;
+        airlineSelect.appendChild(option);
+      }
+    });
+  }
+
+  // Toggle CASM calculator visibility
+  const savedCasmState = localStorage.getItem('bs-casm-enabled');
+  if (savedCasmState !== null) {
+    casmToggle.checked = savedCasmState === 'true';
+    casmCalculator.style.display = casmToggle.checked ? 'block' : 'none';
+  }
+
+  casmToggle.addEventListener('change', () => {
+    localStorage.setItem('bs-casm-enabled', casmToggle.checked);
+    casmCalculator.style.display = casmToggle.checked ? 'block' : 'none';
+    
+    if (casmToggle.checked) {
+      // Try to auto-fill from URL or inputs
+      autoFillCASMFromURL();
+    }
+  });
+
+  // Calculate distance from airports
+  if (calculateDistanceBtn) {
+    calculateDistanceBtn.addEventListener('click', async () => {
+      const flightData = getFlightInputData();
+      if (!flightData.from || !flightData.to) {
+        alert('Please enter departure and arrival airports first');
+        return;
+      }
+
+      calculateDistanceBtn.disabled = true;
+      calculateDistanceBtn.textContent = '⏳';
+
+      const distance = await calculateDistanceBetweenAirports(flightData.from, flightData.to);
+      
+      if (distance !== null) {
+        distanceInput.value = distance.toFixed(1);
+        calculateCASM();
+      } else {
+        alert('Could not calculate distance. Please enter it manually.');
+      }
+
+      calculateDistanceBtn.textContent = '📐';
+      calculateDistanceBtn.disabled = false;
+    });
+  }
+
+  // Get baggage inputs
+  const regionSelect = document.getElementById('bs-casm-region');
+  const bagsInput = document.getElementById('bs-casm-bags');
+  const bagFeeInput = document.getElementById('bs-casm-bag-fee');
+
+  // Auto-calculate when inputs change
+  if (distanceInput) {
+    distanceInput.addEventListener('input', calculateCASM);
+    distanceInput.addEventListener('change', calculateCASM);
+  }
+
+  if (airlineSelect) {
+    airlineSelect.addEventListener('change', calculateCASM);
+  }
+
+  if (cashPriceInput) {
+    cashPriceInput.addEventListener('input', calculateCASM);
+    cashPriceInput.addEventListener('change', calculateCASM);
+  }
+
+  if (regionSelect) {
+    regionSelect.addEventListener('change', calculateCASM);
+  }
+
+  if (bagsInput) {
+    bagsInput.addEventListener('input', calculateCASM);
+    bagsInput.addEventListener('change', calculateCASM);
+  }
+
+  if (bagFeeInput) {
+    bagFeeInput.addEventListener('input', calculateCASM);
+    bagFeeInput.addEventListener('change', calculateCASM);
+  }
+
+  // Calculate CASM with baggage costs
+  function calculateCASM() {
+    if (!resultsDiv) return;
+
+    const distance = parseFloat(distanceInput?.value) || 0;
+    const airline = airlineSelect?.value || '';
+    const cashPrice = parseFloat(cashPriceInput?.value) || 0;
+    const region = regionSelect?.value || 'North America';
+    const bags = Math.max(0, parseFloat(bagsInput?.value) || 0);
+    const bagFee = parseFloat(bagFeeInput?.value) || 0;
+
+    if (!distance || !airline) {
+      resultsDiv.style.display = 'none';
+      return;
+    }
+
+    const casm = window.getAirlineCASM(airline);
+    if (!casm) {
+      resultsDiv.style.display = 'none';
+      return;
+    }
+
+    // Calculate CASM-based cost (convert cents to dollars)
+    const casmCost = (casm * distance) / 100;
+
+    // Calculate baggage expected cost
+    const expectedBagCostPerBag = window.getExpectedBagCostPerBag ? window.getExpectedBagCostPerBag(region) : 7.75;
+    const bagExpectedCostTotal = bags * expectedBagCostPerBag;
+
+    // Total operating cost = CASM + baggage
+    const totalOperatingCost = casmCost + bagExpectedCostTotal;
+
+    // Bag revenue if bag fee provided
+    const bagRevenue = bags * bagFee;
+
+    // Calculate margin (including bag revenue if provided)
+    const totalRevenue = cashPrice + bagRevenue;
+    const margin = totalRevenue > 0 ? totalRevenue - totalOperatingCost : (cashPrice > 0 ? cashPrice - totalOperatingCost : null);
+    const marginPct = totalRevenue > 0 && margin !== null ? ((margin / totalRevenue) * 100).toFixed(1) : null;
+
+    // Update display
+    const costEl = document.getElementById('bs-casm-cost');
+    const bagCostEl = document.getElementById('bs-casm-bag-cost');
+    const totalCostEl = document.getElementById('bs-casm-total-cost');
+    const cashEl = document.getElementById('bs-casm-cash-display');
+    const marginEl = document.getElementById('bs-casm-margin');
+    const marginPctEl = document.getElementById('bs-casm-margin-pct');
+
+    if (costEl) costEl.textContent = `$${casmCost.toFixed(2)}`;
+    if (bagCostEl) bagCostEl.textContent = `$${bagExpectedCostTotal.toFixed(2)}`;
+    if (totalCostEl) totalCostEl.textContent = `$${totalOperatingCost.toFixed(2)}`;
+    if (cashEl) cashEl.textContent = cashPrice > 0 ? `$${cashPrice.toFixed(2)}` : '—';
+
+    // Calculate and display margin
+    if (margin !== null) {
+      if (marginEl) {
+        marginEl.textContent = `$${margin.toFixed(2)}`;
+        marginEl.style.color = margin >= 0 ? '#4caf50' : '#f44336';
+      }
+      if (marginPctEl && marginPct !== null) {
+        marginPctEl.textContent = `(${margin >= 0 ? '+' : ''}${marginPct}%)`;
+        marginPctEl.style.color = margin >= 0 ? '#4caf50' : '#f44336';
+      }
+    } else {
+      if (marginEl) {
+        marginEl.textContent = '$0.00';
+        marginEl.style.color = '#666';
+      }
+      if (marginPctEl) {
+        marginPctEl.textContent = '(0%)';
+        marginPctEl.style.color = '#666';
+      }
+    }
+
+    resultsDiv.style.display = 'block';
+  }
+
+  // Auto-fill from URL
+  async function autoFillCASMFromURL() {
+    // First try URL
+    const urlAirports = extractAirportsFromURL();
+    if (urlAirports.from && urlAirports.to) {
+      const distance = await calculateDistanceBetweenAirports(urlAirports.from, urlAirports.to);
+      if (distance !== null && distanceInput) {
+        distanceInput.value = distance.toFixed(1);
+      }
+    } else {
+      // Fallback to form inputs
+      const flightData = getFlightInputData();
+      if (flightData.from && flightData.to) {
+        const distance = await calculateDistanceBetweenAirports(flightData.from, flightData.to);
+        if (distance !== null && distanceInput) {
+          distanceInput.value = distance.toFixed(1);
+        }
+      }
+    }
+
+    calculateCASM();
+  }
+
+  // Auto-fill on load if enabled
+  if (casmToggle.checked) {
+    setTimeout(autoFillCASMFromURL, 500);
+  }
+}
+
 function restoreFlightData() {
   const savedData = loadFlightDataFromStorage();
   if (!savedData) return;
