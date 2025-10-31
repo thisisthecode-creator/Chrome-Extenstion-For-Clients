@@ -512,13 +512,13 @@
 }
 
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-cabin) {
-  min-width: 100px;
-  max-width: 100px;
+  min-width: 160px;
+  max-width: 160px;
 }
 
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-adults) {
-  min-width: 60px;
-  max-width: 60px;
+  min-width: 80px;
+  max-width: 80px;
 }
 
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-airline) {
@@ -3897,6 +3897,410 @@
   .card-program {
     font-size: 10px;
   }
+}
+
+/* Award Analysis Section - Separate Toggle */
+.bs-award-content {
+  padding: 20px;
+}
+
+.bs-award-controls {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.bs-award-controls .bs-input-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.bs-award-controls .bs-input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.bs-award-controls .bs-input-group input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.bs-award-controls .bs-input-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.bs-input-suffix {
+  font-size: 12px;
+  color: #666;
+  margin-left: 8px;
+}
+
+.bs-award-results {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 100px;
+}
+
+.bs-award-placeholder {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+.bs-award-placeholder p {
+  margin: 0;
+  padding: 20px;
+}
+
+.bs-award-analysis {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bs-award-program-card {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bs-award-program-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.bs-award-program-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.bs-award-booking-classes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bs-award-class-button {
+  background: #e3f2fd;
+  border: 1px solid #bbdefb;
+  border-radius: 6px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  position: relative;
+}
+
+.bs-award-class-button:hover {
+  background: #bbdefb;
+  border-color: #90caf9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bs-award-class-button.bs-good-deal {
+  background: #e8f5e8;
+  border-color: #c8e6c9;
+}
+
+.bs-award-class-button.bs-good-deal:hover {
+  background: #c8e6c9;
+  border-color: #a5d6a7;
+}
+
+.bs-class-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.bs-booking-class {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1976d2;
+}
+
+.bs-savings-indicator {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: #fff;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.bs-award-class-button.bs-good-deal .bs-savings-indicator {
+  background: #4caf50;
+  color: #fff;
+  border-color: #4caf50;
+}
+
+.bs-class-details {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: #666;
+}
+
+.bs-miles {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.bs-plus {
+  color: #999;
+}
+
+.bs-taxes {
+  color: #666;
+}
+
+.bs-total-cost {
+  font-size: 12px;
+  color: #888;
+  font-weight: 500;
+}
+
+.bs-award-no-results {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.bs-award-filters {
+  margin: 16px 0;
+  padding: 16px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+}
+
+.bs-filter-group label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.bs-checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 8px;
+}
+
+.bs-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+}
+
+.bs-checkbox-label:hover {
+  background: #f8f9fa;
+  border-color: #007bff;
+}
+
+.bs-checkbox-label input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+}
+
+.bs-checkbox-text {
+  color: #495057;
+  line-height: 1.3;
+}
+
+.bs-award-cabin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.bs-award-cabin-class {
+  font-size: 11px;
+  color: #6c757d;
+  background: #e9ecef;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.bs-award-cabin-details {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.bs-award-filtered {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  background: #f8f9fa !important;
+  border-color: #e9ecef !important;
+}
+
+.bs-filter-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.bs-help-btn {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bs-help-btn:hover {
+  background: #e9ecef;
+  color: #007bff;
+}
+
+.bs-help-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Modal styles */
+.bs-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.bs-modal {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.bs-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e9ecef;
+  background: #f8f9fa;
+}
+
+.bs-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.bs-modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.bs-modal-close:hover {
+  background: #e9ecef;
+  color: #333;
+}
+
+.bs-modal-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.bs-booking-classes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bs-booking-class {
+  padding: 16px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+}
+
+.bs-booking-class h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.bs-booking-class p {
+  margin: 4px 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #495057;
+}
+
+.bs-modal-footer {
+  padding: 20px;
+  border-top: 1px solid #e9ecef;
+  background: #f8f9fa;
+  text-align: right;
 }
 
 

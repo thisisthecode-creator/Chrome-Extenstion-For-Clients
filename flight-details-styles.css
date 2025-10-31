@@ -1,5 +1,15 @@
 /* Flight Details Injector Styles */
 
+/* Hide Google's search filters when extension is active */
+.rIZzse {
+  display: none !important;
+}
+
+/* Hide Google Flights tip/notification popup */
+span[jsname="S3Zlrc"].Xm6fzc.g2sH3c {
+  display: none !important;
+}
+
 /* Hide Google Flights elements */
 .gvkrdb.AdWm1c.tPgKwe.ogfYpf[aria-label*="Total duration"],
 .BbR8Ec,

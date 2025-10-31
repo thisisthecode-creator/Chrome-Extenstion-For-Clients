@@ -11,15 +11,18 @@
   "content_scripts": [
     {
       "matches": ["*://www.google.com/travel/flights*"],
-      "js": ["lib/airport-data.js", "lib/airport-autocomplete.js", "lib/transfer-partners-data.js", "lib/transfer-partners-tooltip.js", "lib/credit-cards-data.js", "content.js", "flight-details-injector.js"],
+      "js": ["lib/airport-data.js", "lib/airport-autocomplete.js", "lib/transfer-partners-data.js", "lib/credit-cards-data.js", "lib/transfer-partners-tooltip.js", "lib/loyaltyPrograms.js", "lib/cpmData.js", "lib/seatsAeroClient.js", "content.js", "flight-details-injector.js"],
       "css": ["styles.css", "flight-details-styles.css"]
     }
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "permissions": ["activeTab"],
-  "host_permissions": ["https://raw.githubusercontent.com/*", "https://saegzrncsjcsvgcjkniv.supabase.co/*"],
+  "host_permissions": ["https://raw.githubusercontent.com/*", "https://saegzrncsjcsvgcjkniv.supabase.co/*", "https://seats.aero/*"],
   "web_accessible_resources": [
     {
-      "resources": ["icon128.png"],
+      "resources": ["icon128.png", "points_history_cpm_rows.json"],
       "matches": ["*://www.google.com/*"]
     }
   ]
