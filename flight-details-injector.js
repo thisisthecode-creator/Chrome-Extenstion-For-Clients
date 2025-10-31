@@ -881,30 +881,26 @@ function createStandaloneAwardSection() {
   `
   awardSection.appendChild(controls)
   
-  // Create booking class filters
+  // Create booking class filters dropdown
   const filters = document.createElement('div')
   filters.style.cssText = 'background:#ffffff;border:1px solid #000000;border-radius:8px;padding:16px;margin-bottom:20px;'
   filters.innerHTML = `
-    <div style="margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:12px;">
       <label style="font-size:14px;color:#333;font-weight:500;">Filter by Booking Class:</label>
-    </div>
-    <div style="display:flex;gap:20px;flex-wrap:wrap;">
-      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
-        <input type="checkbox" id="bs-standalone-filter-economy" checked style="transform:scale(1.1);">
-        <span style="font-size:14px;color:#333;">Economy (Y)</span>
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
-        <input type="checkbox" id="bs-standalone-filter-premium-economy" checked style="transform:scale(1.1);">
-        <span style="font-size:14px;color:#333;">Premium Economy (W)</span>
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
-        <input type="checkbox" id="bs-standalone-filter-business" checked style="transform:scale(1.1);">
-        <span style="font-size:14px;color:#333;">Business (J)</span>
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
-        <input type="checkbox" id="bs-standalone-filter-first" checked style="transform:scale(1.1);">
-        <span style="font-size:14px;color:#333;">First (F)</span>
-      </label>
+      <select id="bs-standalone-cabin-filter" style="
+        border:1px solid #ddd;
+        padding:8px 12px;
+        border-radius:6px;
+        font-size:14px;
+        min-width:200px;
+        cursor:pointer;
+      ">
+        <option value="all" selected>All Booking Classes</option>
+        <option value="economy">Economy Only (Y)</option>
+        <option value="premium-economy">Premium Economy Only (W)</option>
+        <option value="business">Business Only (J)</option>
+        <option value="first">First Only (F)</option>
+      </select>
     </div>
   `
   awardSection.appendChild(filters)
@@ -929,10 +925,7 @@ function createStandaloneAwardSection() {
   // Add event listeners
   const cashPriceInput = document.getElementById('bs-standalone-cash-price')
   const milesValueInput = document.getElementById('bs-standalone-miles-value')
-  const economyFilter = document.getElementById('bs-standalone-filter-economy')
-  const premiumFilter = document.getElementById('bs-standalone-filter-premium-economy')
-  const businessFilter = document.getElementById('bs-standalone-filter-business')
-  const firstFilter = document.getElementById('bs-standalone-filter-first')
+  const cabinFilter = document.getElementById('bs-standalone-cabin-filter')
   
   // Ensure the Miles Value input starts empty so defaults come from Supabase
   if (milesValueInput && milesValueInput.value) {
@@ -955,21 +948,19 @@ function createStandaloneAwardSection() {
     milesValueInput.addEventListener('change', updateStandaloneResults)
   }
   
-  // Add filter event listeners
-  if (economyFilter) {
-    economyFilter.addEventListener('change', updateStandaloneResults)
-  }
-  if (premiumFilter) {
-    premiumFilter.addEventListener('change', updateStandaloneResults)
-  }
-  if (businessFilter) {
-    businessFilter.addEventListener('change', updateStandaloneResults)
-  }
-  if (firstFilter) {
-    firstFilter.addEventListener('change', updateStandaloneResults)
+  // Add filter event listener
+  if (cabinFilter) {
+    cabinFilter.addEventListener('change', updateStandaloneResults)
   }
   
   // Do not set a default for miles value; leave empty to use Supabase market CPM
+  
+  // Sync cash price from CASM if available
+  const casmCashInput = document.getElementById('bs-casm-cash-price')
+  if (casmCashInput && casmCashInput.value && cashPriceInput) {
+    cashPriceInput.value = casmCashInput.value
+    cashPriceInput.dispatchEvent(new Event('input', { bubbles: true }))
+  }
   
   // Initial update
   updateStandaloneResults()
@@ -998,11 +989,34 @@ function updateStandaloneAwardResults() {
     return
   }
   
-  // Get filter states
-  const economyFilter = document.getElementById('bs-standalone-filter-economy')?.checked ?? true
-  const premiumFilter = document.getElementById('bs-standalone-filter-premium-economy')?.checked ?? true
-  const businessFilter = document.getElementById('bs-standalone-filter-business')?.checked ?? true
-  const firstFilter = document.getElementById('bs-standalone-filter-first')?.checked ?? true
+  // Get filter state from dropdown
+  const cabinFilter = document.getElementById('bs-standalone-cabin-filter')
+  const filterValue = cabinFilter?.value || 'all'
+  
+  // Convert dropdown value to individual filter states
+  let economyFilter = true
+  let premiumFilter = true
+  let businessFilter = true
+  let firstFilter = true
+  
+  if (filterValue === 'economy') {
+    premiumFilter = false
+    businessFilter = false
+    firstFilter = false
+  } else if (filterValue === 'premium-economy') {
+    economyFilter = false
+    businessFilter = false
+    firstFilter = false
+  } else if (filterValue === 'business') {
+    economyFilter = false
+    premiumFilter = false
+    firstFilter = false
+  } else if (filterValue === 'first') {
+    economyFilter = false
+    premiumFilter = false
+    businessFilter = false
+  }
+  // else 'all' - all filters remain true
   
   let html = '<div style="display:flex;flex-direction:column;gap:20px;">'
 

@@ -260,7 +260,7 @@ function injectExtensionPanel() {
               <label>Region</label>
               <select id="bs-casm-region">
                 <option value="North America">North America</option>
-                <option value="Europe">Europe</option>
+                <option value="Europe" selected>Europe</option>
                 <option value="Asia–Pacific">Asia–Pacific</option>
                 <option value="Latin America">Latin America</option>
                 <option value="Middle East & Africa">Middle East & Africa</option>
@@ -281,34 +281,29 @@ function injectExtensionPanel() {
 
         <!-- Results Row -->
         <div class="bs-casm-row bs-casm-results-row" id="bs-casm-results" style="display: none;">
-          <div class="bs-casm-results-section">
-            <div class="bs-casm-results-group">
-              <div class="bs-casm-result">
-                <span class="bs-casm-result-label">CASM Cost</span>
-                <span class="bs-casm-result-value" id="bs-casm-cost">$0.00</span>
-              </div>
-              <div class="bs-casm-result">
-                <span class="bs-casm-result-label">Cash</span>
-                <span class="bs-casm-result-value" id="bs-casm-cash-display">—</span>
-              </div>
-              <div class="bs-casm-result bs-casm-margin">
-                <span class="bs-casm-result-label">Margin</span>
-                <span class="bs-casm-result-value">
-                  <span id="bs-casm-margin">$0.00</span>
-                  <span class="bs-casm-percentage" id="bs-casm-margin-pct">(0%)</span>
-                </span>
-              </div>
+          <div class="bs-casm-results">
+            <div class="bs-casm-result">
+              <span class="bs-casm-result-label">CASM Cost</span>
+              <span class="bs-casm-result-value" id="bs-casm-cost">$0.00</span>
             </div>
-
-            <div class="bs-casm-results-group">
-              <div class="bs-casm-result">
-                <span class="bs-casm-result-label">Bag Cost</span>
-                <span class="bs-casm-result-value" id="bs-casm-bag-cost">$0.00</span>
-              </div>
-              <div class="bs-casm-result bs-casm-total-cost">
-                <span class="bs-casm-result-label">Total Cost</span>
-                <span class="bs-casm-result-value" id="bs-casm-total-cost">$0.00</span>
-              </div>
+            <div class="bs-casm-result">
+              <span class="bs-casm-result-label">Cash</span>
+              <span class="bs-casm-result-value" id="bs-casm-cash-display">—</span>
+            </div>
+            <div class="bs-casm-result bs-casm-margin">
+              <span class="bs-casm-result-label">Margin</span>
+              <span class="bs-casm-result-value">
+                <span id="bs-casm-margin">$0.00</span>
+                <span class="bs-casm-percentage" id="bs-casm-margin-pct">(0%)</span>
+              </span>
+            </div>
+            <div class="bs-casm-result">
+              <span class="bs-casm-result-label">Bag Cost</span>
+              <span class="bs-casm-result-value" id="bs-casm-bag-cost">$0.00</span>
+            </div>
+            <div class="bs-casm-result bs-casm-total-cost">
+              <span class="bs-casm-result-label">Total Cost</span>
+              <span class="bs-casm-result-value" id="bs-casm-total-cost">$0.00</span>
             </div>
           </div>
         </div>
@@ -1575,6 +1570,44 @@ function extractAirportsFromURL() {
   }
 }
 
+// Sync CASM cash price to Award Flight Analysis inputs
+function syncCashPriceToAwardAnalysis() {
+  const casmCashInput = document.getElementById('bs-casm-cash-price');
+  if (!casmCashInput) return;
+
+  const casmCashPrice = casmCashInput.value.trim();
+  
+  // Only sync if there's a value
+  if (!casmCashPrice) return;
+  
+  // Sync to global programs panel cash price input
+  const globalCashInput = document.getElementById('bs-cash-price-input');
+  if (globalCashInput) {
+    globalCashInput.value = casmCashPrice;
+    // Trigger both input and change events to ensure the panel updates
+    globalCashInput.dispatchEvent(new Event('input', { bubbles: true }));
+    globalCashInput.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  // Sync to standalone award section cash price input
+  const standaloneCashInput = document.getElementById('bs-standalone-cash-price');
+  if (standaloneCashInput) {
+    standaloneCashInput.value = casmCashPrice;
+    // Trigger input event which should trigger the update (debounced)
+    standaloneCashInput.dispatchEvent(new Event('input', { bubbles: true }));
+    // Also trigger change event to ensure immediate update
+    standaloneCashInput.dispatchEvent(new Event('change', { bubbles: true }));
+    // Also try to call the update function directly if available
+    setTimeout(() => {
+      if (typeof window.updateStandaloneAwardResults === 'function') {
+        window.updateStandaloneAwardResults();
+      } else if (typeof updateStandaloneAwardResults === 'function') {
+        updateStandaloneAwardResults();
+      }
+    }, 150);
+  }
+}
+
 // Initialize CASM Calculator
 function initializeCASMCalculator() {
   const casmToggle = document.getElementById('bs-casm-toggle');
@@ -1660,8 +1693,17 @@ function initializeCASMCalculator() {
   }
 
   if (cashPriceInput) {
-    cashPriceInput.addEventListener('input', calculateCASM);
-    cashPriceInput.addEventListener('change', calculateCASM);
+    cashPriceInput.addEventListener('input', () => {
+      calculateCASM();
+      syncCashPriceToAwardAnalysis();
+    });
+    cashPriceInput.addEventListener('change', () => {
+      calculateCASM();
+      syncCashPriceToAwardAnalysis();
+    });
+    cashPriceInput.addEventListener('blur', () => {
+      syncCashPriceToAwardAnalysis();
+    });
   }
 
   if (regionSelect) {
@@ -1685,7 +1727,7 @@ function initializeCASMCalculator() {
     const distance = parseFloat(distanceInput?.value) || 0;
     const airline = airlineSelect?.value || '';
     const cashPrice = parseFloat(cashPriceInput?.value) || 0;
-    const region = regionSelect?.value || 'North America';
+    const region = regionSelect?.value || 'Europe';
     const bags = Math.max(0, parseFloat(bagsInput?.value) || 0);
     const bagFee = parseFloat(bagFeeInput?.value) || 0;
 
