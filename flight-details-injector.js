@@ -1133,7 +1133,7 @@ function updateStandaloneAwardResults() {
 
           html += `<div style="display:grid;grid-template-columns:40px 120px 1fr 150px 170px 170px;align-items:center;column-gap:16px;padding:10px 12px;border-top:1px solid #000000;">`
       // col1 code
-      html += `<div style=\"font-weight:800;color:#1976d2;min-width:32px;font-size:13px;\">${c.key}</div>`
+      html += `<div style=\"color:#333;font-weight:600;min-width:110px;font-size:13px;\">${c.key}</div>`
       // col2 cabin
       html += `<div style=\"color:#333;font-weight:600;min-width:110px;font-size:13px;\">${cabinName}</div>`
       // middle values
@@ -1160,9 +1160,9 @@ function updateStandaloneAwardResults() {
         return (window.getProgramPointValueBySource ? window.getProgramPointValueBySource(av.Source) : 0.019) * 100
       })()
       // col3 miles + taxes
-      html += `<div style=\"color:#444;white-space:nowrap;font-size:13px;\">${formatMilesDots(c.miles)} miles + $${cabinTaxesUSD.toFixed(2)} taxes</div>`
+      html += `<div style=\"color:#333;font-weight:600;min-width:110px;font-size:13px;white-space:nowrap;\">${formatMilesDots(c.miles)} miles + $${cabinTaxesUSD.toFixed(2)} taxes</div>`
       // col4 Total pill
-      html += `<div style=\"min-width:150px;text-align:left;\"><span style=\"font-size:13px;font-weight:700;padding:4px 10px;border-radius:10px;border:2px solid #000;background:#fff;\">Total: $${total.toFixed(2)}</span></div>`
+      html += `<div style=\"min-width:150px;text-align:left;\"><span style=\"font-size:13px;font-weight:600;background:#fff;color:#333;min-width:110px;\">Total: $${total.toFixed(2)}</span></div>`
       if (effectiveCpmCents !== null && isFinite(effectiveCpmCents)) {
         const marketPerThousand = (window.__marketCpmBySource && typeof window.__marketCpmBySource[av.Source] === 'number') ? window.__marketCpmBySource[av.Source] : null
         const avgCpm = (typeof marketPerThousand === 'number') ? (marketPerThousand / 10) : programAvgCpmCents // convert USD per 1000 to cents per mile
@@ -1172,12 +1172,12 @@ function updateStandaloneAwardResults() {
         const ratio = avgCpm > 0 ? (effectiveCpmCents / avgCpm) : null
         const ratioDisplay = (ratio && isFinite(ratio)) ? `${(Math.round(ratio * 10) / 10).toString().replace(/\.0$/, '')}x` : ''
         // col5 CPM pill + indicator
-        html += `<div style=\"min-width:170px;\"><span style=\"font-size:13px;font-weight:700;padding:4px 10px;border-radius:14px;background:${isBetterCpm ? '#e8f5e9' : '#fdecea'};color:${isBetterCpm ? '#1b5e20' : '#c62828'};border:2px solid ${isBetterCpm ? '#4caf50' : '#f44336'};\">CPM ${effectiveCpmCents.toFixed(1)}¢${ratioDisplay ? `<span style='margin-left:6px;font-weight:700;color:inherit;opacity:0.8;'>${ratioDisplay}</span>` : ''}</span><div style=\"margin-top:4px;max-width:120px;\">${createSavingsBar(cpmBetterPct)}</div></div>`
+        html += `<div style=\"min-width:170px;display:flex;flex-direction:column;align-items:center;\"><span style=\"font-size:13px;font-weight:700;padding:4px 10px;border-radius:14px;background:${isBetterCpm ? '#e8f5e9' : '#fdecea'};color:#000;border:2px solid ${isBetterCpm ? '#4caf50' : '#f44336'};width:120px;text-align:center;box-sizing:border-box;\">${effectiveCpmCents.toFixed(1)}¢${ratioDisplay ? ` - <span style='font-weight:700;color:#000;opacity:0.6;'>${ratioDisplay}</span>` : ''}</span><div style=\"margin-top:8px;width:120px;\">${createSavingsBar(cpmBetterPct)}</div></div>`
       } else {
         html += `<div></div>`
       }
       // col6 savings pill + indicator + caption
-      html += `<div style=\"text-align:right;min-width:140px;\"><span style=\"font-size:13px;font-weight:700;padding:4px 10px;border-radius:14px;background:${isGoodDeal ? '#e8f5e9' : '#fdecea'};color:${isGoodDeal ? '#1b5e20' : '#c62828'};border:2px solid ${isGoodDeal ? '#4caf50' : '#f44336'};\">${isGoodDeal ? 'Save' : 'More'} ${Math.abs(savingsPct).toFixed(0)}%</span><div style=\"margin-top:4px;max-width:120px;\">${createSavingsBar(Math.max(0, savingsPct))}</div></div>`
+      html += `<div style=\"min-width:140px;display:flex;flex-direction:column;align-items:center;\"><span style=\"font-size:13px;font-weight:700;padding:4px 10px;border-radius:14px;background:${isGoodDeal ? '#e8f5e9' : '#fdecea'};color:#000;border:2px solid ${isGoodDeal ? '#4caf50' : '#f44336'};width:120px;text-align:center;box-sizing:border-box;\">${isGoodDeal ? 'Save' : 'More'} ${Math.abs(savingsPct).toFixed(0)}%</span><div style=\"margin-top:8px;width:120px;\">${createSavingsBar(Math.max(0, savingsPct))}</div></div>`
       
       html += `</div>`
     })
@@ -1197,8 +1197,8 @@ function createSavingsBar(savingsPct) {
   const position = (normalizedSavings / maxSavings) * 100
 
   return `
-    <div style="position: relative; height: 6px; background: linear-gradient(to right, #f44336 0%, #ffc107 50%, #4caf50 100%); border-radius: 3px; margin: 4px 0;">
-      <div style="position: absolute; top: -3px; left: ${position}%; width: 12px; height: 12px; background: #2196f3; border: 2px solid #fff; border-radius: 50%; transform: translateX(-50%); box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+    <div style="position: relative; height: 6px; width: 100%; background: linear-gradient(to right, #f44336 0%, #ffc107 50%, #4caf50 100%); border-radius: 3px; margin: 4px 0;">
+      <div style="position: absolute; top: 6px; left: ${position}%; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 8px solid #000000; transform: translateX(-50%);"></div>
     </div>
   `
 }

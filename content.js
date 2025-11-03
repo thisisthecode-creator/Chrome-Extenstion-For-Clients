@@ -238,10 +238,7 @@ function injectExtensionPanel() {
           <div class="bs-casm-inputs">
             <div class="bs-casm-field">
               <label>Distance</label>
-              <div class="bs-casm-input-wrap">
-                <input type="number" id="bs-casm-distance" placeholder="Auto" step="0.1" min="0" />
-                <button type="button" id="bs-casm-calculate-distance" class="bs-casm-icon-btn" title="Calculate from airports">📐</button>
-              </div>
+              <input type="number" id="bs-casm-distance" placeholder="Auto" step="0.1" min="0" />
             </div>
             
             <div class="bs-casm-field">
@@ -1615,7 +1612,6 @@ function initializeCASMCalculator() {
   const airlineSelect = document.getElementById('bs-casm-airline');
   const distanceInput = document.getElementById('bs-casm-distance');
   const cashPriceInput = document.getElementById('bs-casm-cash-price');
-  const calculateDistanceBtn = document.getElementById('bs-casm-calculate-distance');
   const resultsDiv = document.getElementById('bs-casm-results');
 
   if (!casmToggle || !casmCalculator) return;
@@ -1651,31 +1647,7 @@ function initializeCASMCalculator() {
     }
   });
 
-  // Calculate distance from airports
-  if (calculateDistanceBtn) {
-    calculateDistanceBtn.addEventListener('click', async () => {
-      const flightData = getFlightInputData();
-      if (!flightData.from || !flightData.to) {
-        alert('Please enter departure and arrival airports first');
-        return;
-      }
-
-      calculateDistanceBtn.disabled = true;
-      calculateDistanceBtn.textContent = '⏳';
-
-      const distance = await calculateDistanceBetweenAirports(flightData.from, flightData.to);
-      
-      if (distance !== null) {
-        distanceInput.value = distance.toFixed(1);
-        calculateCASM();
-      } else {
-        alert('Could not calculate distance. Please enter it manually.');
-      }
-
-      calculateDistanceBtn.textContent = '📐';
-      calculateDistanceBtn.disabled = false;
-    });
-  }
+  // Removed manual calculate distance button (auto-filled from URL or inputs)
 
   // Get baggage inputs
   const regionSelect = document.getElementById('bs-casm-region');
