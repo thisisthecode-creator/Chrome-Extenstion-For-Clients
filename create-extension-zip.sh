@@ -52,8 +52,16 @@ zip -r "$ZIP_NAME" \
   -x "*.DS_Store" \
   2>&1 | grep -E "(adding|updating|error)" || true
 
-# Restore original manifest
-mv manifest.json.bak manifest.json
-
-echo "✓ Created ${ZIP_NAME} with version ${NEXT_VERSION}"
+# Check if zip was created successfully
+if [ -f "$ZIP_NAME" ]; then
+  # Keep the updated manifest.json (don't restore backup)
+  rm -f manifest.json.bak
+  echo "✓ Created ${ZIP_NAME} with version ${NEXT_VERSION}"
+  echo "✓ Updated manifest.json to version ${NEXT_VERSION}"
+else
+  # Restore backup if zip creation failed
+  mv manifest.json.bak manifest.json
+  echo "✗ Failed to create zip, manifest.json restored"
+  exit 1
+fi
 
