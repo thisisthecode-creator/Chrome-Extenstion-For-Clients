@@ -52,29 +52,8 @@ zip -r "$ZIP_NAME" \
   -x "*.DS_Store" \
   2>&1 | grep -E "(adding|updating|error)" || true
 
-# Check if zip was created successfully
-if [ -f "$ZIP_NAME" ]; then
-  # Keep the updated manifest.json (don't restore backup)
-  rm -f manifest.json.bak
-  echo "✓ Created ${ZIP_NAME} with version ${NEXT_VERSION}"
-  echo "✓ Updated manifest.json to version ${NEXT_VERSION}"
-  
-  # Commit and push manifest.json to GitHub
-  echo "Committing and pushing version ${NEXT_VERSION} to GitHub..."
-  git add manifest.json
-  if git commit -m "Version ${NEXT_VERSION}: Update manifest.json" > /dev/null 2>&1; then
-    if git push origin main > /dev/null 2>&1; then
-      echo "✓ Pushed version ${NEXT_VERSION} to GitHub"
-    else
-      echo "⚠ Created zip but failed to push to GitHub (check your connection)"
-    fi
-  else
-    echo "⚠ Created zip but no changes to commit (manifest.json may already be at version ${NEXT_VERSION})"
-  fi
-else
-  # Restore backup if zip creation failed
-  mv manifest.json.bak manifest.json
-  echo "✗ Failed to create zip, manifest.json restored"
-  exit 1
-fi
+# Restore original manifest
+mv manifest.json.bak manifest.json
+
+echo "✓ Created ${ZIP_NAME} with version ${NEXT_VERSION}"
 
