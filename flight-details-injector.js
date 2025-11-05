@@ -2085,48 +2085,116 @@ function removeUnwantedSpans() {
 // Function to replace CO2 emissions display with flight details
 function replaceEmissionsWithFlightDetails() {
   try {
-    console.log("=== REPLACING EMISSIONS WITH FLIGHT DETAILS ===")
+    console.log("[BS Extension] === REPLACING EMISSIONS WITH FLIGHT DETAILS ===")
     
     // Remove unwanted spans first
     removeUnwantedSpans()
     
     // Find all flight elements first
     const flightElements = document.querySelectorAll('li.pIav2d, .yR1fYc, .mxvQLc')
-    console.log(`Found ${flightElements.length} flight elements to process`)
+    console.log(`[BS Extension] Found ${flightElements.length} flight elements to process`)
+    
+    if (flightElements.length === 0) {
+      console.log("[BS Extension] No flight elements found, waiting for page to load...")
+      return
+    }
     
     flightElements.forEach((flightElement, index) => {
-      console.log(`Processing flight element ${index + 1}`)
-      
-      // Find emissions container in this flight
-      const emissionsContainer = flightElement.querySelector('.y0NSEe.V1iAHe.tPgKwe.ogfYpf, .y0NSEe.axwZ3c.y52p7d.ogfYpf')
-      
-      if (emissionsContainer) {
-        console.log(`Found emissions container in flight ${index + 1}`)
-        
-        // Extract flight info from this flight element
-        const flightInfo = extractFlightInfo(flightElement)
-        console.log(`Flight ${index + 1} info:`, flightInfo)
-        
-        if (flightInfo && (flightInfo.aircraft || flightInfo.airlineCode)) {
-          // Create flight details element
-          const detailsElement = createFlightDetailsElement(flightInfo, flightElement)
-          if (detailsElement) {
-            console.log(`Replacing emissions with flight details for flight ${index + 1}`)
-            // Replace the emissions container with our flight details
-            emissionsContainer.parentNode.replaceChild(detailsElement, emissionsContainer)
-            console.log(`Successfully replaced emissions for flight ${index + 1}`)
+      try {
+        // Check if this flight element has already been processed
+        if (flightElement.dataset.bsInjected === 'true') {
+          // Check if injection is still valid (not replaced by Google)
+          const existingInjection = flightElement.querySelector('.injected-flight-details')
+          if (existingInjection) {
+            console.log(`[BS Extension] Flight ${index + 1} already injected, skipping`)
+            return
           } else {
-            console.log(`Failed to create details element for flight ${index + 1}`)
-            // Just hide the emissions if we can't create details
+            // Injection was removed, allow re-injection
+            delete flightElement.dataset.bsInjected
+          }
+        }
+        
+        console.log(`[BS Extension] Processing flight element ${index + 1}`)
+        
+        // Find emissions container in this flight
+        const emissionsContainer = flightElement.querySelector('.y0NSEe.V1iAHe.tPgKwe.ogfYpf, .y0NSEe.axwZ3c.y52p7d.ogfYpf')
+        
+        if (emissionsContainer) {
+          // Check if this emissions container was already replaced
+          if (emissionsContainer.classList.contains('injected-flight-details') || 
+              emissionsContainer.dataset.bsReplaced === 'true') {
+            console.log(`[BS Extension] Emissions container ${index + 1} already replaced, skipping`)
+            return
+          }
+          
+          console.log(`[BS Extension] Found emissions container in flight ${index + 1}`)
+          
+          // Extract flight info from this flight element with retry logic
+          let flightInfo = null
+          try {
+            flightInfo = extractFlightInfo(flightElement)
+            // If extraction failed, try once more after a short delay
+            if (!flightInfo || (!flightInfo.aircraft && !flightInfo.airlineCode)) {
+              setTimeout(() => {
+                try {
+                  const retryInfo = extractFlightInfo(flightElement)
+                  if (retryInfo && (retryInfo.aircraft || retryInfo.airlineCode)) {
+                    // Re-process this element with the new info
+                    const retryDetails = createFlightDetailsElement(retryInfo, flightElement)
+                    if (retryDetails) {
+                      const existingInjection = flightElement.querySelector('.injected-flight-details')
+                      if (existingInjection) {
+                        existingInjection.parentNode.replaceChild(retryDetails, existingInjection)
+                      } else if (emissionsContainer && emissionsContainer.parentNode) {
+                        emissionsContainer.parentNode.replaceChild(retryDetails, emissionsContainer)
+                        flightElement.dataset.bsInjected = 'true'
+                      }
+                    }
+                  }
+                } catch (retryError) {
+                  console.error(`[BS Extension] Retry extraction failed:`, retryError)
+                }
+              }, 200)
+            }
+          } catch (error) {
+            console.error(`[BS Extension] Error extracting flight info:`, error)
+          }
+          
+          console.log(`[BS Extension] Flight ${index + 1} info:`, flightInfo)
+          
+          if (flightInfo && (flightInfo.aircraft || flightInfo.airlineCode)) {
+            // Create flight details element
+            const detailsElement = createFlightDetailsElement(flightInfo, flightElement)
+            if (detailsElement) {
+              console.log(`[BS Extension] Replacing emissions with flight details for flight ${index + 1}`)
+              // Mark emissions container as replaced before replacement
+              emissionsContainer.dataset.bsReplaced = 'true'
+              // Replace the emissions container with our flight details
+              emissionsContainer.parentNode.replaceChild(detailsElement, emissionsContainer)
+              // Mark flight element as injected
+              flightElement.dataset.bsInjected = 'true'
+              console.log(`[BS Extension] Successfully replaced emissions for flight ${index + 1}`)
+            } else {
+              console.warn(`[BS Extension] Failed to create details element for flight ${index + 1}`)
+              // Just hide the emissions if we can't create details
+              emissionsContainer.style.display = 'none'
+              emissionsContainer.dataset.bsReplaced = 'true'
+            }
+          } else {
+            console.log(`[BS Extension] Insufficient flight info for flight ${index + 1}, just hiding emissions`)
+            // Just hide the emissions if we don't have enough info
             emissionsContainer.style.display = 'none'
+            emissionsContainer.dataset.bsReplaced = 'true'
           }
         } else {
-          console.log(`Insufficient flight info for flight ${index + 1}, just hiding emissions`)
-          // Just hide the emissions if we don't have enough info
-          emissionsContainer.style.display = 'none'
+          // Check if there's already an injected element (emissions might have been removed)
+          const existingInjection = flightElement.querySelector('.injected-flight-details')
+          if (!existingInjection) {
+            console.log(`[BS Extension] No emissions container found in flight ${index + 1}, but no injection either`)
+          }
         }
-      } else {
-        console.log(`No emissions container found in flight ${index + 1}`)
+      } catch (error) {
+        console.error(`[BS Extension] Error processing flight element ${index + 1}:`, error)
       }
     })
     
@@ -2159,10 +2227,67 @@ function replaceEmissionsWithFlightDetails() {
   }
 }
 
+// Debounce function for injection
+let injectionTimeout = null
+let isInjecting = false
+
+function debouncedInjection(delay = 300) {
+  if (injectionTimeout) {
+    clearTimeout(injectionTimeout)
+  }
+  injectionTimeout = setTimeout(() => {
+    if (!isInjecting) {
+      injectFlightDetails()
+    }
+  }, delay)
+}
+
+// Function to check if page is ready for injection
+function isPageReady() {
+  // Check if document is ready
+  if (document.readyState === 'loading') {
+    return false
+  }
+  
+  // Check if we're on a valid Google Flights page
+  if (!window.location.href.includes('google.com/travel/flights')) {
+    return false
+  }
+  
+  // Check if flight results container exists
+  const hasFlightResults = document.querySelector('li.pIav2d, .yR1fYc, .mxvQLc, .MX5RWe.sSHqwe.y52p7d, .L5Okte.y52p7d')
+  if (!hasFlightResults) {
+    // Wait a bit more for dynamic content
+    return false
+  }
+  
+  return true
+}
+
 // Function to inject flight details
 function injectFlightDetails() {
+  // Prevent concurrent injections
+  if (isInjecting) {
+    console.log("[BS Extension] Injection already in progress, skipping")
+    return
+  }
+  
   try {
-    console.log("=== INJECTING FLIGHT DETAILS ===")
+    isInjecting = true
+    console.log("[BS Extension] === INJECTING FLIGHT DETAILS ===")
+    
+    // Check if page is ready
+    if (!isPageReady()) {
+      console.log("[BS Extension] Page not ready for injection, will retry")
+      isInjecting = false
+      // Retry after a delay
+      setTimeout(() => {
+        if (!isInjecting) {
+          injectFlightDetails()
+        }
+      }, 1000)
+      return
+    }
     
     // Skip injection on the main flights homepage, but not on search results
     if (
@@ -2170,17 +2295,19 @@ function injectFlightDetails() {
       !window.location.href.includes("search") &&
       !document.querySelector(".MX5RWe.sSHqwe.y52p7d, .L5Okte.y52p7d")
     ) {
-      console.log("Skipping injection on homepage")
+      console.log("[BS Extension] Skipping injection on homepage")
+      isInjecting = false
       return
     }
-
 
     // Replace CO2 emissions with flight details
     replaceEmissionsWithFlightDetails();
 
-    console.log("=== FLIGHT DETAILS INJECTION COMPLETE ===")
+    console.log("[BS Extension] === FLIGHT DETAILS INJECTION COMPLETE ===")
   } catch (error) {
-    console.error("Error injecting flight details:", error)
+    console.error("[BS Extension] Error injecting flight details:", error)
+  } finally {
+    isInjecting = false
   }
 }
 
@@ -2216,49 +2343,161 @@ function ensureVisibility() {
   setTimeout(ensureVisibility, 2000)
 }
 
-// Start the injection
-injectFlightDetails()
+// Initialize injection with proper error handling
+(function initializeInjection() {
+  'use strict';
+  
+  try {
+    console.log("[BS Extension] Flight details injector initializing...")
+    
+    // Wait for page to be ready
+    function waitForReady() {
+      if (isPageReady()) {
+        console.log("[BS Extension] Page ready, starting injection")
+        injectFlightDetails()
+      } else {
+        // Retry after a delay
+        setTimeout(waitForReady, 500)
+      }
+    }
+    
+    // Start the injection when ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(waitForReady, 300)
+      })
+    } else {
+      setTimeout(waitForReady, 300)
+    }
+    
+    // Also run when page fully loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (!isInjecting) {
+          injectFlightDetails()
+        }
+      }, 1000)
+    })
+    
+    // Handle URL changes (SPA navigation)
+    let lastUrl = location.href
+    new MutationObserver(() => {
+      const url = location.href
+      if (url !== lastUrl) {
+        lastUrl = url
+        console.log("[BS Extension] URL changed, re-injecting")
+        // Reset injection flags
+        document.querySelectorAll('[data-bs-injected]').forEach(el => {
+          delete el.dataset.bsInjected
+        })
+        setTimeout(() => {
+          if (!isInjecting) {
+            injectFlightDetails()
+          }
+        }, 1000)
+      }
+    }).observe(document, { subtree: true, childList: true })
+    
+  } catch (error) {
+    console.error("[BS Extension] Error initializing injection:", error)
+  }
+})()
 
 // Start the visibility checker
-setTimeout(ensureVisibility, 2000)
+setTimeout(() => {
+  ensureVisibility()
+}, 2000)
 
-// Also run when the page loads
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', injectFlightDetails)
-} else {
-  injectFlightDetails()
-}
+// Debounced observer for detecting new flight content
+let observerTimeout = null
+let lastMutationTime = 0
 
 // Run when new content is added to the page
 const observer = new MutationObserver((mutations) => {
+  // Ignore mutations from our own injections
   let shouldRun = false
+  let hasFlightElements = false
+  
   mutations.forEach((mutation) => {
-    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-      // Check if any of the added nodes contain flight elements
+    // Skip if this mutation was caused by our injection
+    if (mutation.addedNodes.length > 0) {
       mutation.addedNodes.forEach((node) => {
         if (node.nodeType === Node.ELEMENT_NODE) {
+          // Skip if this is our injected element
+          if (node.classList && node.classList.contains('injected-flight-details')) {
+            return
+          }
+          
+          // Check if this node or its children contain flight elements
           if (node.querySelector && (
             node.querySelector('li.pIav2d') ||
             node.querySelector('.yR1fYc') ||
             node.querySelector('.mxvQLc') ||
+            node.querySelector('.MX5RWe.sSHqwe.y52p7d') ||
+            node.querySelector('.L5Okte.y52p7d')
+          )) {
+            hasFlightElements = true
+          }
+          
+          if (
             node.classList.contains('pIav2d') ||
             node.classList.contains('yR1fYc') ||
-            node.classList.contains('mxvQLc')
-          )) {
-            shouldRun = true
+            node.classList.contains('mxvQLc') ||
+            node.classList.contains('MX5RWe') ||
+            node.classList.contains('L5Okte')
+          ) {
+            hasFlightElements = true
           }
+        }
+      })
+    }
+    
+    // Check for removed nodes (Google might have re-rendered)
+    if (mutation.removedNodes.length > 0) {
+      mutation.removedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE && 
+            node.classList && 
+            node.classList.contains('injected-flight-details')) {
+          // Our injection was removed, need to re-inject
+          shouldRun = true
         }
       })
     }
   })
   
-  if (shouldRun) {
-    console.log("New flight content detected, running injection")
-    setTimeout(injectFlightDetails, 500)
+  if (hasFlightElements || shouldRun) {
+    const now = Date.now()
+    // Debounce: only trigger if last mutation was more than 500ms ago
+    if (now - lastMutationTime > 500) {
+      lastMutationTime = now
+      console.log("[BS Extension] New flight content detected, scheduling injection")
+      debouncedInjection(500)
+    } else {
+      // Reset the timeout
+      if (observerTimeout) {
+        clearTimeout(observerTimeout)
+      }
+      observerTimeout = setTimeout(() => {
+        console.log("[BS Extension] Debounced injection triggered")
+        debouncedInjection(300)
+      }, 500)
+    }
   }
 })
 
-observer.observe(document.body, {
-  childList: true,
-  subtree: true
-})
+// Start observing once body is available
+function startObserver() {
+  if (document.body) {
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: false // Don't watch attributes to reduce overhead
+    })
+    console.log("[BS Extension] MutationObserver started")
+  } else {
+    // Wait for body to be available
+    setTimeout(startObserver, 100)
+  }
+}
+
+startObserver()

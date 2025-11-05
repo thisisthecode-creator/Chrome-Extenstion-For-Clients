@@ -1,55 +1,128 @@
 // Background service worker to proxy cross-origin fetches to Seats.aero
 // This avoids CORS blocks from the page origin (google.com)
 
-self.addEventListener('install', () => {
+'use strict';
+
+// Log service worker initialization
+console.log('[BS Extension] Background service worker initializing...');
+
+self.addEventListener('install', (event) => {
+  console.log('[BS Extension] Service worker installing...');
   // Activate immediately
-  self.skipWaiting()
-})
+  self.skipWaiting();
+});
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim())
-})
+  console.log('[BS Extension] Service worker activating...');
+  event.waitUntil(
+    self.clients.claim().catch(err => {
+      console.error('[BS Extension] Error claiming clients:', err);
+    })
+  );
+});
+
+// Handle extension startup errors
+self.addEventListener('error', (event) => {
+  console.error('[BS Extension] Service worker error:', event.error);
+});
+
+self.addEventListener('unhandledrejection', (event) => {
+  console.error('[BS Extension] Unhandled promise rejection:', event.reason);
+});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (!message) return
+  try {
+    if (!message || !message.type) {
+      console.warn('[BS Extension] Invalid message received:', message);
+      return false;
+    }
 
-  if (message.type === 'seatsAeroFetch') {
-    const { url, headers } = message
-    ;(async () => {
-      try {
-        const res = await fetch(url, { headers: headers || {} })
-        const status = res.status
-        const ok = res.ok
-        const text = await res.text()
-        let body
+    // Validate sender origin for security
+    if (sender && sender.origin && !sender.origin.includes('google.com')) {
+      console.warn('[BS Extension] Message from unauthorized origin:', sender.origin);
+      return false;
+    }
+
+    if (message.type === 'seatsAeroFetch') {
+      const { url, headers } = message;
+      
+      // Validate URL
+      if (!url || typeof url !== 'string') {
+        sendResponse({ ok: false, status: 0, error: 'Invalid URL' });
+        return false;
+      }
+
+      // Only allow requests to approved domains
+      const allowedDomains = ['seats.aero', 'raw.githubusercontent.com', 'saegzrncsjcsvgcjkniv.supabase.co'];
+      const urlObj = new URL(url);
+      if (!allowedDomains.some(domain => urlObj.hostname.includes(domain))) {
+        console.warn('[BS Extension] Blocked request to unauthorized domain:', urlObj.hostname);
+        sendResponse({ ok: false, status: 0, error: 'Unauthorized domain' });
+        return false;
+      }
+
+      (async () => {
         try {
-          body = JSON.parse(text)
-        } catch (_) {
-          body = text
+          const res = await fetch(url, { headers: headers || {} });
+          const status = res.status;
+          const ok = res.ok;
+          const text = await res.text();
+          let body;
+          try {
+            body = JSON.parse(text);
+          } catch (_) {
+            body = text;
+          }
+          sendResponse({ ok, status, body });
+        } catch (err) {
+          console.error('[BS Extension] Fetch error:', err);
+          sendResponse({ ok: false, status: 0, error: String(err) });
         }
-        sendResponse({ ok, status, body })
-      } catch (err) {
-        sendResponse({ ok: false, status: 0, error: String(err) })
-      }
-    })()
-    return true
-  }
+      })();
+      return true; // Keep channel open for async response
+    }
 
-  if (message.type === 'supabaseFetch') {
-    const { url, init } = message.payload || {}
-    ;(async () => {
-      try {
-        const res = await fetch(url, init)
-        const ok = res.ok
-        const status = res.status
-        const data = await res.json().catch(() => ({}))
-        sendResponse({ ok, status, data })
-      } catch (err) {
-        sendResponse({ ok: false, status: 0, error: String(err) })
+    if (message.type === 'supabaseFetch') {
+      const { url, init } = message.payload || {};
+      
+      if (!url || typeof url !== 'string') {
+        sendResponse({ ok: false, status: 0, error: 'Invalid URL' });
+        return false;
       }
-    })()
-    return true
+
+      // Validate Supabase URL
+      const urlObj = new URL(url);
+      if (!urlObj.hostname.includes('supabase.co')) {
+        console.warn('[BS Extension] Blocked Supabase request to unauthorized domain:', urlObj.hostname);
+        sendResponse({ ok: false, status: 0, error: 'Unauthorized domain' });
+        return false;
+      }
+
+      (async () => {
+        try {
+          const res = await fetch(url, init);
+          const ok = res.ok;
+          const status = res.status;
+          const data = await res.json().catch(() => ({}));
+          sendResponse({ ok, status, data });
+        } catch (err) {
+          console.error('[BS Extension] Supabase fetch error:', err);
+          sendResponse({ ok: false, status: 0, error: String(err) });
+        }
+      })();
+      return true; // Keep channel open for async response
+    }
+
+    // Unknown message type
+    console.warn('[BS Extension] Unknown message type:', message.type);
+    return false;
+  } catch (error) {
+    console.error('[BS Extension] Error handling message:', error);
+    sendResponse({ ok: false, status: 0, error: String(error) });
+    return false;
   }
-})
+});
+
+console.log('[BS Extension] Background service worker ready');
 
 

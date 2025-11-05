@@ -80,13 +80,6 @@ function injectExtensionPanel() {
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
-          <div class="bs-toggle-item">
-            <label class="bs-toggle-label" for="bs-calculator-toggle">Calculator</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-calculator-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
         </div>
       </div>
     </div>
@@ -614,256 +607,6 @@ function injectExtensionPanel() {
         </div>
       </div>
     </div>
-    
-    <!-- Calculator Section -->
-    <div class="bs-section" id="bs-calculator-section" style="display: none; padding: 0;">
-      <div style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); border-radius: 16px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); overflow: hidden;">
-        <!-- Header -->
-        <div style="background: linear-gradient(to right, #fbbf24, #f59e0b); padding: 24px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px; color: white;">
-                <rect width="16" height="20" x="4" y="2" rx="2"></rect>
-                <line x1="8" x2="16" y1="6" y2="6"></line>
-                <line x1="16" x2="16" y1="14" y2="18"></line>
-                <path d="M16 10h.01"></path>
-                <path d="M12 10h.01"></path>
-                <path d="M8 10h.01"></path>
-                <path d="M12 14h.01"></path>
-                <path d="M8 14h.01"></path>
-                <path d="M12 18h.01"></path>
-                <path d="M8 18h.01"></path>
-              </svg>
-              <h2 style="font-size: 20px; font-weight: 600; color: white; margin: 0;">Total Value Calculator</h2>
-            </div>
-            <button type="button" id="bs-calculator-info-btn" style="padding: 8px; color: rgba(255, 255, 255, 0.8); background: transparent; border: none; border-radius: 50%; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='white'; this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.8)'; this.style.background='transparent'">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 16v-4"></path>
-                <path d="M12 8h.01"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        <!-- Content -->
-        <div style="padding: 24px;">
-          <form id="bs-calculator-form" style="display: flex; flex-direction: column; gap: 32px;">
-            <!-- Loyalty Program Section -->
-            <div style="display: flex; flex-direction: column; gap: 16px;">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
-                  <rect width="20" height="14" x="2" y="5" rx="2"></rect>
-                  <line x1="2" x2="22" y1="10" y2="10"></line>
-                </svg>
-                <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin: 0;">Loyalty Program</h3>
-              </div>
-              
-              <div style="background: linear-gradient(to right, #fefce8, #fff7ed); border-radius: 12px; padding: 16px; border: 1px solid #fef3c7;">
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                  <select id="bs-calculator-program" required style="flex: 1; border-radius: 8px; border: 1px solid #d1d5db; background: white; padding: 12px 16px; font-weight: 500; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.borderColor='#fbbf24'" onfocus="this.style.borderColor='#f59e0b'; this.style.outline='none'; this.style.boxShadow='0 0 0 3px rgba(251, 191, 36, 0.1)'" onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
-                    <optgroup label="💳 Credit Card Programs">
-                    </optgroup>
-                    <optgroup label="✈️ Airlines">
-                    </optgroup>
-                    <optgroup label="🏨 Hotels">
-                    </optgroup>
-                  </select>
-                  <button type="button" id="bs-calculator-favorite" style="padding: 12px; border-radius: 50%; background: transparent; border: none; cursor: pointer; color: #9ca3af; transition: all 0.2s; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#f59e0b'; this.style.background='#fef3c7'" onmouseout="this.style.color='#9ca3af'; this.style.background='transparent'">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                  </button>
-                </div>
-                
-                <!-- Historical Data Cards -->
-                <div id="bs-calculator-history-cards" style="display: none; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                  <div style="background: white; border-radius: 8px; padding: 12px; border: 1px solid #fde68a; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-                    <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 4px;">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #16a34a;">
-                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-                        <polyline points="16 7 22 7 22 13"></polyline>
-                      </svg>
-                      <span style="font-size: 11px; font-weight: 500; color: #4b5563;">Current</span>
-                    </div>
-                    <span style="font-size: 14px; font-weight: 700; color: #111827;" id="bs-calculator-current">$-</span>
-                  </div>
-                  <div style="background: white; border-radius: 8px; padding: 12px; border: 1px solid #fde68a; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-                    <span style="font-size: 11px; font-weight: 500; color: #4b5563; margin-bottom: 4px; display: block;">6-Month Avg</span>
-                    <span style="font-size: 14px; font-weight: 700; color: #111827;" id="bs-calculator-avg6">$-</span>
-                  </div>
-                  <div style="background: white; border-radius: 8px; padding: 12px; border: 1px solid #fde68a; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-                    <span style="font-size: 11px; font-weight: 500; color: #4b5563; margin-bottom: 4px; display: block;">12-Month Avg</span>
-                    <span style="font-size: 14px; font-weight: 700; color: #111827;" id="bs-calculator-avg12">$-</span>
-                  </div>
-                  <div style="background: white; border-radius: 8px; padding: 12px; border: 1px solid #fde68a; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-                    <span style="font-size: 11px; font-weight: 500; color: #4b5563; margin-bottom: 4px; display: block;">24-Month Avg</span>
-                    <span style="font-size: 14px; font-weight: 700; color: #111827;" id="bs-calculator-avg24">$-</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Calculation Parameters -->
-            <div style="display: flex; flex-direction: column; gap: 24px;">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
-                  <rect width="16" height="20" x="4" y="2" rx="2"></rect>
-                  <line x1="8" x2="16" y1="6" y2="6"></line>
-                  <line x1="16" x2="16" y1="14" y2="18"></line>
-                  <path d="M16 10h.01"></path>
-                  <path d="M12 10h.01"></path>
-                  <path d="M8 10h.01"></path>
-                  <path d="M12 14h.01"></path>
-                  <path d="M8 14h.01"></path>
-                  <path d="M12 18h.01"></path>
-                  <path d="M8 18h.01"></path>
-                </svg>
-                <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin: 0;">Calculation Parameters</h3>
-              </div>
-              
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                <!-- Left Column - Points & Miles -->
-                <div style="display: flex; flex-direction: column; gap: 20px;">
-                  <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-                    <h4 style="font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
-                      </svg>
-                      Points &amp; Miles
-                    </h4>
-                    <div style="display: flex; flex-direction: column; gap: 16px;">
-                      <div>
-                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Points/Miles Amount <span style="color: #ef4444;">*</span></label>
-                        <input type="number" id="bs-calculator-miles" placeholder="0" min="0" required style="width: 100%; border-radius: 8px; border: 1px solid #d1d5db; padding: 12px; text-align: right; font-size: 18px; font-weight: 500; transition: all 0.2s;" onfocus="this.style.borderColor='#f59e0b'; this.style.outline='none'; this.style.boxShadow='0 0 0 3px rgba(251, 191, 36, 0.1)'" onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
-                      </div>
-                      <div>
-                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Cost per 1,000 Points ($)</label>
-                        <input type="number" id="bs-calculator-cost-per-1000" placeholder="0.00" min="0" step="0.01" style="width: 100%; border-radius: 8px; border: 1px solid #d1d5db; padding: 12px; text-align: right; transition: all 0.2s;" onfocus="this.style.borderColor='#f59e0b'; this.style.outline='none'; this.style.boxShadow='0 0 0 3px rgba(251, 191, 36, 0.1)'" onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- Right Column - Cash & Fees -->
-                <div style="display: flex; flex-direction: column; gap: 20px;">
-                  <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-                    <h4 style="font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" x2="12" y1="2" y2="22"></line>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                      </svg>
-                      Cash &amp; Fees
-                    </h4>
-                    <div style="display: flex; flex-direction: column; gap: 16px;">
-                      <div>
-                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Cash Price ($)</label>
-                        <input type="number" id="bs-calculator-cash-price" placeholder="0.00" min="0" step="0.01" style="width: 100%; border-radius: 8px; border: 1px solid #d1d5db; padding: 12px; text-align: right; transition: all 0.2s;" onfocus="this.style.borderColor='#f59e0b'; this.style.outline='none'; this.style.boxShadow='0 0 0 3px rgba(251, 191, 36, 0.1)'" onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
-                      </div>
-                      <div>
-                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Taxes &amp; Fees ($)</label>
-                        <input type="number" id="bs-calculator-taxes" placeholder="0.00" min="0" step="0.01" style="width: 100%; border-radius: 8px; border: 1px solid #d1d5db; padding: 12px; text-align: right; transition: all 0.2s;" onfocus="this.style.borderColor='#f59e0b'; this.style.outline='none'; this.style.boxShadow='0 0 0 3px rgba(251, 191, 36, 0.1)'" onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
-                      </div>
-                      <div>
-                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px;">Credit Card Multiplier</label>
-                        <input type="number" id="bs-calculator-multiplier" placeholder="0.0" min="0" step="0.1" style="width: 100%; border-radius: 8px; border: 1px solid #d1d5db; padding: 12px; text-align: right; transition: all 0.2s;" onfocus="this.style.borderColor='#f59e0b'; this.style.outline='none'; this.style.boxShadow='0 0 0 3px rgba(251, 191, 36, 0.1)'" onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Action Buttons -->
-            <div style="display: flex; flex-direction: column; gap: 16px;">
-              <div style="display: flex; justify-content: center;">
-                <button type="button" id="bs-calculator-reset" style="display: flex; align-items: center; gap: 8px; padding: 12px 24px; color: #4b5563; background: transparent; border: none; cursor: pointer; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.color='#1f2937'" onmouseout="this.style.color='#4b5563'">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-                    <path d="M3 3v5h5"></path>
-                  </svg>
-                  Reset Form
-                </button>
-              </div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                <button type="button" id="bs-calculator-converter" style="display: flex; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(to right, #10b981, #059669); color: white; padding: 16px 24px; border-radius: 12px; font-weight: 600; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: none; cursor: pointer; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.background='linear-gradient(to right, #059669, #047857)'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='linear-gradient(to right, #10b981, #059669)'; this.style.transform='scale(1)'">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" x2="12" y1="2" y2="22"></line>
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                  </svg>
-                  Currency Converter
-                </button>
-                <button type="submit" style="display: flex; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(to right, #fbbf24, #f59e0b); color: white; padding: 16px 24px; border-radius: 12px; font-weight: 600; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: none; cursor: pointer; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.background='linear-gradient(to right, #f59e0b, #d97706)'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='linear-gradient(to right, #fbbf24, #f59e0b)'; this.style.transform='scale(1)'">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="16" height="20" x="4" y="2" rx="2"></rect>
-                    <line x1="8" x2="16" y1="6" y2="6"></line>
-                    <line x1="16" x2="16" y1="14" y2="18"></line>
-                    <path d="M16 10h.01"></path>
-                    <path d="M12 10h.01"></path>
-                    <path d="M8 10h.01"></path>
-                    <path d="M12 14h.01"></path>
-                    <path d="M8 14h.01"></path>
-                    <path d="M12 18h.01"></path>
-                    <path d="M8 18h.01"></path>
-                  </svg>
-                  Calculate Value
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      
-      <!-- Results Section -->
-      <div id="bs-calculator-results" style="display: none; margin-top: 16px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); border-radius: 16px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); overflow: hidden;">
-        <div style="background: linear-gradient(to right, #f97316, #ea580c); padding: 24px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px; color: white;">
-                <rect width="16" height="20" x="4" y="2" rx="2"></rect>
-                <line x1="8" x2="16" y1="6" y2="6"></line>
-                <line x1="16" x2="16" y1="14" y2="18"></line>
-                <path d="M16 10h.01"></path>
-                <path d="M12 10h.01"></path>
-                <path d="M8 10h.01"></path>
-                <path d="M12 14h.01"></path>
-                <path d="M8 14h.01"></path>
-                <path d="M12 18h.01"></path>
-                <path d="M8 18h.01"></path>
-              </svg>
-              <h2 style="font-size: 20px; font-weight: 600; color: white; margin: 0;">Calculator Results</h2>
-            </div>
-            <button type="button" id="bs-calculator-results-info-btn" style="padding: 8px; color: rgba(255, 255, 255, 0.8); background: transparent; border: none; border-radius: 50%; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='white'; this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.color='rgba(255,255,255,0.8)'; this.style.background='transparent'">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 16v-4"></path>
-                <path d="M12 8h.01"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div style="padding: 24px; display: flex; align-items: center; justify-content: center; min-height: 400px;" id="bs-calculator-results-placeholder">
-          <div style="text-align: center;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 64px; height: 64px; margin: 0 auto 16px; color: #fb923c;">
-              <rect width="16" height="20" x="4" y="2" rx="2"></rect>
-              <line x1="8" x2="16" y1="6" y2="6"></line>
-              <line x1="16" x2="16" y1="14" y2="18"></line>
-              <path d="M16 10h.01"></path>
-              <path d="M12 10h.01"></path>
-              <path d="M8 10h.01"></path>
-              <path d="M12 14h.01"></path>
-              <path d="M8 14h.01"></path>
-              <path d="M12 18h.01"></path>
-              <path d="M8 18h.01"></path>
-            </svg>
-            <p style="font-size: 16px; color: #9ca3af; margin: 0;">Press Calculate to see the analysis</p>
-          </div>
-        </div>
-        <div style="padding: 24px; display: none;" id="bs-calculator-results-content-wrapper">
-          <div id="bs-calculator-results-content"></div>
-        </div>
-      </div>
-    </div>
   `;
   
   // Insert panel at the top
@@ -907,14 +650,8 @@ function saveToggleStates() {
     hotel: hotelToggle ? hotelToggle.checked : false,
     search: searchToggle ? searchToggle.checked : false,
     information: informationToggle ? informationToggle.checked : false,
-    settings: settingsToggle ? settingsToggle.checked : false,
-    calculator: false
+    settings: settingsToggle ? settingsToggle.checked : false
   };
-  
-  const calculatorToggle = document.getElementById('bs-calculator-toggle');
-  if (calculatorToggle) {
-    toggleStates.calculator = calculatorToggle.checked;
-  }
   
   localStorage.setItem('bs-toggle-states', JSON.stringify(toggleStates));
 }
@@ -937,8 +674,7 @@ function loadToggleStates() {
     hotel: false,  // Hotel Search OFF by default
     search: false,  // Search OFF by default
     information: false,  // Information OFF by default
-    settings: false, // Settings OFF by default
-    calculator: false // Calculator OFF by default
+    settings: false // Settings OFF by default
   };
 }
 
@@ -983,12 +719,6 @@ function applyToggleStates(toggleStates) {
   if (settingsToggle && settingsSection) {
     settingsToggle.checked = toggleStates.settings;
     settingsSection.style.display = toggleStates.settings ? 'block' : 'none';
-  }
-  
-  // Apply calculator toggle state
-  if (calculatorToggle && calculatorSection) {
-    calculatorToggle.checked = toggleStates.calculator;
-    calculatorSection.style.display = toggleStates.calculator ? 'block' : 'none';
   }
 }
 
@@ -1232,26 +962,6 @@ function initializeEventListeners() {
     });
   } else {
     console.log('Settings toggle or section not found:', { settingsToggle, settingsSection });
-  }
-  
-  // Calculator toggle
-  const calculatorToggle = document.getElementById('bs-calculator-toggle');
-  const calculatorSection = document.getElementById('bs-calculator-section');
-  if (calculatorToggle && calculatorSection) {
-    calculatorToggle.addEventListener('change', () => {
-      if (calculatorToggle.checked) {
-        calculatorSection.style.display = 'block';
-        initializeCalculator();
-      } else {
-        calculatorSection.style.display = 'none';
-      }
-      saveToggleStates();
-    });
-    
-    // Initialize calculator if section is visible
-    if (calculatorSection.style.display !== 'none') {
-      initializeCalculator();
-    }
   }
   
   
@@ -1650,421 +1360,6 @@ function saveHotelDataToStorage(data) {
   } catch (error) {
     console.error('Error saving hotel data:', error);
   }
-}
-
-// Initialize Calculator
-function initializeCalculator() {
-  // Full loyalty programs list
-  const loyaltyPrograms = window.loyaltyPrograms || [
-    // Credit Card Programs
-    { name: 'Amex (Membership Rewards)', pointValue: 0.0195, category: 'credit' },
-    { name: 'Bilt (Rewards)', pointValue: 0.0210, category: 'credit' },
-    { name: 'Capital One (Venture Miles)', pointValue: 0.0200, category: 'credit' },
-    { name: 'Chase (Ultimate Rewards)', pointValue: 0.0193, category: 'credit' },
-    { name: 'Citi (ThankYou Points)', pointValue: 0.0215, category: 'credit' },
-    { name: 'Wells Fargo (Rewards)', pointValue: 0.0195, category: 'credit' },
-    
-    // Airlines
-    { name: 'Aer Lingus (Avios)', pointValue: 0.0373, category: 'airline' },
-    { name: 'Air Canada (Aeroplan)', pointValue: 0.0184, category: 'airline' },
-    { name: 'Air Europa (SUMA)', pointValue: 0.0130, category: 'airline' },
-    { name: 'Air France / KLM (Flying Blue)', pointValue: 0.0217, category: 'airline' },
-    { name: 'Alaska Airlines (Mileage Plan)', pointValue: 0.0210, category: 'airline' },
-    { name: 'American Airlines (AAdvantage)', pointValue: 0.0177, category: 'airline' },
-    { name: 'ANA (Mileage Club)', pointValue: 0.0285, category: 'airline' },
-    { name: 'Avianca (LifeMiles)', pointValue: 0.0285, category: 'airline' },
-    { name: 'British Airways (Avios)', pointValue: 0.0257, category: 'airline' },
-    { name: 'Cathay Pacific (Asia Miles)', pointValue: 0.0284, category: 'airline' },
-    { name: 'Copa Airlines (ConnectMiles)', pointValue: 0.0150, category: 'airline' },
-    { name: 'Delta (SkyMiles)', pointValue: 0.0134, category: 'airline' },
-    { name: 'Emirates (Skywards)', pointValue: 0.0155, category: 'airline' },
-    { name: 'Etihad (Guest)', pointValue: 0.0100, category: 'airline' },
-    { name: 'EVA Air (Infinity MileageLands)', pointValue: 0.0250, category: 'airline' },
-    { name: 'Hawaiian Airlines (Hawaiian Miles)', pointValue: 0.0209, category: 'airline' },
-    { name: 'Iberia (Avios)', pointValue: 0.0305, category: 'airline' },
-    { name: 'JetBlue (TrueBlue)', pointValue: 0.0124, category: 'airline' },
-    { name: 'Lufthansa (Miles & More) US', pointValue: 0.0320, category: 'airline' },
-    { name: 'Qatar Airways (Avios)', pointValue: 0.0096, category: 'airline' },
-    { name: 'Singapore Airlines (KrisFlyer)', pointValue: 0.0233, category: 'airline' },
-    { name: 'Southwest Airlines (Rapid Rewards)', pointValue: 0.0152, category: 'airline' },
-    { name: 'TAP Air Portugal (Miles&Go)', pointValue: 0.0180, category: 'airline' },
-    { name: 'Turkish Airlines (Miles & Smiles)', pointValue: 0.0110, category: 'airline' },
-    { name: 'United Airlines (MileagePlus)', pointValue: 0.0190, category: 'airline' },
-    { name: 'Virgin Atlantic (Flying Club)', pointValue: 0.0365, category: 'airline' },
-    { name: 'Virgin Australia (Velocity)', pointValue: 0.0210, category: 'airline' },
-    
-    // Hotels
-    { name: 'Accor (Live Limitless)', pointValue: 0.0200, category: 'hotel' },
-    { name: 'Choice (Privileges)', pointValue: 0.0060, category: 'hotel' },
-    { name: 'Hilton (Honors)', pointValue: 0.0059, category: 'hotel' },
-    { name: 'Hyatt (World of Hyatt)', pointValue: 0.0219, category: 'hotel' },
-    { name: 'IHG (One Rewards)', pointValue: 0.0068, category: 'hotel' },
-    { name: 'Marriott (Bonvoy)', pointValue: 0.0094, category: 'hotel' },
-    { name: 'Radisson (Rewards)', pointValue: 0.0120, category: 'hotel' },
-    { name: 'Wyndham (Rewards)', pointValue: 0.0120, category: 'hotel' }
-  ];
-  
-  // Populate program dropdown
-  const programSelect = document.getElementById('bs-calculator-program');
-  if (programSelect) {
-    programSelect.innerHTML = '';
-    const creditGroup = document.createElement('optgroup');
-    creditGroup.label = '💳 Credit Card Programs';
-    const airlineGroup = document.createElement('optgroup');
-    airlineGroup.label = '✈️ Airlines';
-    const hotelGroup = document.createElement('optgroup');
-    hotelGroup.label = '🏨 Hotels';
-    
-    loyaltyPrograms.forEach(program => {
-      const option = document.createElement('option');
-      option.value = program.name;
-      option.textContent = program.name;
-      option.dataset.pointValue = program.pointValue;
-      
-      if (program.category === 'credit') {
-        creditGroup.appendChild(option);
-      } else if (program.category === 'airline') {
-        airlineGroup.appendChild(option);
-      } else if (program.category === 'hotel') {
-        hotelGroup.appendChild(option);
-      }
-    });
-    
-    programSelect.appendChild(creditGroup);
-    programSelect.appendChild(airlineGroup);
-    programSelect.appendChild(hotelGroup);
-  }
-  
-  // Form submission handler
-  const form = document.getElementById('bs-calculator-form');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      calculateValue();
-    });
-  }
-  
-  // Program change handler to load history
-  if (programSelect) {
-    programSelect.addEventListener('change', () => {
-      loadPointsHistory(programSelect.value);
-    });
-    // Load history for initial selection
-    if (programSelect.value) {
-      loadPointsHistory(programSelect.value);
-    }
-  }
-  
-  // Reset button handler
-  const resetBtn = document.getElementById('bs-calculator-reset');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      if (form) form.reset();
-      const resultsDiv = document.getElementById('bs-calculator-results');
-      const placeholder = document.getElementById('bs-calculator-results-placeholder');
-      const contentWrapper = document.getElementById('bs-calculator-results-content-wrapper');
-      if (resultsDiv) resultsDiv.style.display = 'none';
-      if (placeholder) placeholder.style.display = 'flex';
-      if (contentWrapper) contentWrapper.style.display = 'none';
-    });
-  }
-}
-
-// Load points purchase history from Supabase
-async function loadPointsHistory(programName) {
-  const historyCards = document.getElementById('bs-calculator-history-cards');
-  const currentEl = document.getElementById('bs-calculator-current');
-  const avg6El = document.getElementById('bs-calculator-avg6');
-  const avg12El = document.getElementById('bs-calculator-avg12');
-  const avg24El = document.getElementById('bs-calculator-avg24');
-  
-  if (!historyCards || !currentEl || !avg6El || !avg12El || !avg24El) {
-    console.warn('Calculator history elements not found');
-    return;
-  }
-  
-  // Validate program parameter
-  if (!programName) {
-    console.log('No program name provided, hiding history cards');
-    historyCards.style.display = 'none';
-    return;
-  }
-  
-  try {
-    const supabaseUrl = 'https://saegzrncsjcsvgcjkniv.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhZWd6cm5jc2pjc3ZnY2prbml2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE3ODgxNDYsImV4cCI6MjA0NzM2NDE0Nn0.w1eHVcuvDUoqhcMCYenKKA9URAtG4YbW3j5GcDgvu3Y';
-    
-    console.log('Fetching points history for program:', programName);
-    
-    // Build query matching React hook: .eq('loyalty', program).order('start_date', { ascending: false })
-    const url = `${supabaseUrl}/rest/v1/points_history?loyalty=eq.${encodeURIComponent(programName)}&order=start_date.desc&select=*`;
-    
-    console.log('Supabase URL:', url);
-    
-    const response = await fetch(url, {
-      headers: {
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation'
-      }
-    });
-    
-    console.log('Supabase response status:', response.status, response.statusText);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Supabase query error:', response.status, errorText);
-      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-    }
-    
-    const data = await response.json();
-    
-    console.log('Points history data received:', data);
-    console.log('Number of records:', data?.length || 0);
-    
-    if (!data || data.length === 0) {
-      console.log('No data found for program:', programName);
-      historyCards.style.display = 'none';
-      return;
-    }
-    
-    // Transform data to match React hook format (for consistency)
-    const transformedData = data.map(item => ({
-      id: item.id,
-      loyalty: item.loyalty,
-      startDate: item.start_date,
-      endDate: item.end_date,
-      pricePerThousand: item.price_per_thousand,
-      bonus: item.bonus
-    }));
-    
-    console.log('Transformed data:', transformedData.slice(0, 3));
-    
-    // Calculate moving averages (matching React hook logic exactly)
-    const current = transformedData[0]?.pricePerThousand || null;
-    
-    const avg6 = transformedData.slice(0, 6).reduce((sum, item) => 
-      sum + (item.pricePerThousand || 0), 0) / Math.min(transformedData.length, 6);
-    
-    const avg12 = transformedData.slice(0, 12).reduce((sum, item) => 
-      sum + (item.pricePerThousand || 0), 0) / Math.min(transformedData.length, 12);
-    
-    const avg24 = transformedData.slice(0, 24).reduce((sum, item) => 
-      sum + (item.pricePerThousand || 0), 0) / Math.min(transformedData.length, 24);
-    
-    console.log('Calculated averages:', { current, avg6, avg12, avg24 });
-    
-    // Display the values
-    currentEl.textContent = current !== null ? `$${current.toFixed(2)}` : '-';
-    avg6El.textContent = avg6 > 0 ? `$${avg6.toFixed(2)}` : '-';
-    avg12El.textContent = avg12 > 0 ? `$${avg12.toFixed(2)}` : '-';
-    avg24El.textContent = avg24 > 0 ? `$${avg24.toFixed(2)}` : '-';
-    
-    historyCards.style.display = 'grid';
-    // Responsive grid: 2 columns on mobile, 4 on larger screens
-    if (window.innerWidth >= 640) {
-      historyCards.style.gridTemplateColumns = 'repeat(4, 1fr)';
-    } else {
-      historyCards.style.gridTemplateColumns = 'repeat(2, 1fr)';
-    }
-    
-    // Add resize listener to update grid on window resize (only once)
-    if (!historyCards.dataset.resizeListenerAdded) {
-      const updateGrid = () => {
-        if (historyCards.style.display === 'grid') {
-          if (window.innerWidth >= 640) {
-            historyCards.style.gridTemplateColumns = 'repeat(4, 1fr)';
-          } else {
-            historyCards.style.gridTemplateColumns = 'repeat(2, 1fr)';
-          }
-        }
-      };
-      window.addEventListener('resize', updateGrid);
-      historyCards.dataset.resizeListenerAdded = 'true';
-    }
-    
-    console.log('Successfully loaded and displayed points history');
-    
-  } catch (error) {
-    console.error('Error loading points history:', error);
-    console.error('Error details:', {
-      message: error.message,
-      stack: error.stack,
-      programName: programName
-    });
-    historyCards.style.display = 'none';
-  }
-}
-
-// Calculate value function
-function calculateValue() {
-  const programSelect = document.getElementById('bs-calculator-program');
-  const milesInput = document.getElementById('bs-calculator-miles');
-  const costPer1000Input = document.getElementById('bs-calculator-cost-per-1000');
-  const cashPriceInput = document.getElementById('bs-calculator-cash-price');
-  const taxesInput = document.getElementById('bs-calculator-taxes');
-  const multiplierInput = document.getElementById('bs-calculator-multiplier');
-  const resultsDiv = document.getElementById('bs-calculator-results');
-  const resultsContent = document.getElementById('bs-calculator-results-content');
-  
-  if (!programSelect || !milesInput || !resultsDiv || !resultsContent) return;
-  
-  const milesAmount = parseFloat(milesInput.value) || 0;
-  if (milesAmount <= 0) {
-    alert('Please enter a valid miles/points amount');
-    return;
-  }
-  
-  const selectedOption = programSelect.options[programSelect.selectedIndex];
-  const selectedProgramPointValue = parseFloat(selectedOption.dataset.pointValue) || 0.019;
-  const costPer1000Miles = parseFloat(costPer1000Input.value) || 0;
-  const cashPrice = parseFloat(cashPriceInput.value) || 0;
-  const taxesFees = parseFloat(taxesInput.value) || 0;
-  const milesMultiplier = parseFloat(multiplierInput.value) || 0;
-  
-  // Calculate points value based on cost or program value
-  const isZeroCostMiles = costPer1000Miles === 0;
-  const pointValueToUse = isZeroCostMiles ? selectedProgramPointValue : 
-    (costPer1000Miles ? costPer1000Miles / 1000 : selectedProgramPointValue);
-  
-  // Calculate the total cost in points
-  const pointsValue = isZeroCostMiles ? 0 : (milesAmount * pointValueToUse);
-  
-  // Calculate miles earned from cash price and taxes
-  const milesEarned = milesMultiplier > 0 ? cashPrice * milesMultiplier : 0;
-  const milesEarnedValue = milesEarned * selectedProgramPointValue;
-  
-  const milesEarnedFromTaxes = milesMultiplier > 0 ? taxesFees * milesMultiplier : 0;
-  const milesEarnedFromTaxesValue = milesEarnedFromTaxes * selectedProgramPointValue;
-  
-  // Calculate effective prices
-  const effectiveCashPrice = cashPrice - milesEarnedValue;
-  const effectivePointsPrice = pointsValue + taxesFees - milesEarnedFromTaxesValue;
-  
-  // Calculate value per point based on cash price saved
-  const cashPriceSaved = cashPrice > 0 ? cashPrice : pointsValue;
-  const valuePerPoint = milesAmount > 0 ? cashPriceSaved / milesAmount : pointValueToUse;
-  
-  // Calculate savings percentage
-  const totalSavings = effectiveCashPrice - effectivePointsPrice;
-  const savingsPercent = effectiveCashPrice > 0 ? 
-    (totalSavings / effectiveCashPrice) * 100 : 0;
-  
-  const isGoodValue = isZeroCostMiles || valuePerPoint >= pointValueToUse;
-  
-  // Generate recommendation
-  let recommendation = '';
-  if (isZeroCostMiles) {
-    recommendation = `Points have zero acquisition cost. Total value is $${pointsValue.toFixed(2)}.`;
-  } else if (cashPrice === 0 && taxesFees === 0) {
-    recommendation = `Points value calculation: ${(valuePerPoint * 100).toFixed(2)} cents per point, total value $${pointsValue.toFixed(2)}.`;
-  } else if (cashPrice > 0) {
-    const costBasis = costPer1000Miles
-      ? `your cost of ${(pointValueToUse * 100).toFixed(2)} cents per point`
-      : `the standard ${(selectedProgramPointValue * 100).toFixed(2)} cents per point`;
-    
-    if (milesMultiplier === 0) {
-      recommendation = `No points earning on cash purchase. You're getting ${(valuePerPoint * 100).toFixed(2)} cents per point value vs ${costBasis}.`;
-    } else if (valuePerPoint >= pointValueToUse * 1.5) {
-      recommendation = `Excellent redemption value! You're getting ${(valuePerPoint * 100).toFixed(2)} cents per point, well above ${costBasis}.`;
-    } else if (valuePerPoint >= pointValueToUse) {
-      recommendation = `Good redemption value. You're getting ${(valuePerPoint * 100).toFixed(2)} cents per point, above ${costBasis}.`;
-    } else {
-      recommendation = `Consider paying cash. You're only getting ${(valuePerPoint * 100).toFixed(2)} cents per point, below ${costBasis}.`;
-    }
-  } else {
-    const valueDescription = costPer1000Miles
-      ? `your cost of ${(pointValueToUse * 100).toFixed(2)} cents per point`
-      : `standard valuation of ${(selectedProgramPointValue * 100).toFixed(2)} cents per point`;
-    recommendation = `Using ${valueDescription}.`;
-  }
-  
-  // Build results HTML with modern styling
-  let html = '<div style="display: grid; gap: 16px;">';
-  
-  // Points Value
-  html += `<div style="padding: 16px; background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-    <div style="font-weight: 600; margin-bottom: 8px; color: #374151; font-size: 14px;">Points Value</div>
-    <div style="font-size: 28px; font-weight: 700; color: #2563eb; margin-bottom: 4px;">$${pointsValue.toFixed(2)}</div>
-    <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">${milesAmount.toLocaleString()} points × ${(pointValueToUse * 100).toFixed(2)}¢/point</div>
-  </div>`;
-  
-  // Purchase Cost (if applicable)
-  const purchaseCost = costPer1000Miles > 0 ? (milesAmount / 1000) * costPer1000Miles : 0;
-  if (purchaseCost > 0) {
-    html += `<div style="padding: 16px; background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-      <div style="font-weight: 600; margin-bottom: 8px; color: #374151; font-size: 14px;">Purchase Cost</div>
-      <div style="font-size: 22px; font-weight: 700; color: #f59e0b;">$${purchaseCost.toFixed(2)}</div>
-    </div>`;
-  }
-  
-  // Effective Points Price
-  html += `<div style="padding: 16px; background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-    <div style="font-weight: 600; margin-bottom: 8px; color: #374151; font-size: 14px;">Effective Points Price</div>
-    <div style="font-size: 28px; font-weight: 700; color: #111827; margin-bottom: 4px;">$${effectivePointsPrice.toFixed(2)}</div>
-    <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Points value + Taxes${milesEarnedFromTaxesValue > 0 ? ` - Miles earned from taxes ($${milesEarnedFromTaxesValue.toFixed(2)})` : ''}</div>
-  </div>`;
-  
-  // Miles Earned (if multiplier provided)
-  if (milesMultiplier > 0 && cashPrice > 0) {
-    html += `<div style="padding: 16px; background: linear-gradient(to right, #dbeafe, #e0f2fe); border-radius: 12px; border: 1px solid #93c5fd; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-      <div style="font-weight: 600; margin-bottom: 8px; color: #1e40af; font-size: 14px;">Miles Earned from Cash Purchase</div>
-      <div style="font-size: 22px; font-weight: 700; color: #1e40af; margin-bottom: 4px;">${milesEarned.toLocaleString()} miles ($${milesEarnedValue.toFixed(2)} value)</div>
-      <div style="font-size: 12px; color: #1e40af; margin-top: 4px; opacity: 0.8;">${cashPrice.toFixed(2)} × ${milesMultiplier}x multiplier</div>
-    </div>`;
-  }
-  
-  // Effective Cash Price (if cash price provided)
-  if (cashPrice > 0) {
-    html += `<div style="padding: 16px; background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-      <div style="font-weight: 600; margin-bottom: 8px; color: #374151; font-size: 14px;">Effective Cash Price</div>
-      <div style="font-size: 28px; font-weight: 700; color: #111827; margin-bottom: 4px;">$${effectiveCashPrice.toFixed(2)}</div>
-      <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Cash price${milesEarnedValue > 0 ? ` - Miles earned value ($${milesEarnedValue.toFixed(2)})` : ''}</div>
-    </div>`;
-  }
-  
-  // Savings/Value Comparison
-  if (cashPrice > 0) {
-    const isGoodDeal = totalSavings > 0;
-    html += `<div style="padding: 16px; background: ${isGoodDeal ? 'linear-gradient(to right, #dcfce7, #d1fae5)' : 'linear-gradient(to right, #fee2e2, #fecaca)'}; border-radius: 12px; border: 1px solid ${isGoodDeal ? '#4ade80' : '#f87171'}; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-      <div style="font-weight: 600; margin-bottom: 8px; color: ${isGoodDeal ? '#14532d' : '#991b1b'}; font-size: 14px;">
-        ${isGoodDeal ? 'Savings' : 'Additional Cost'}
-      </div>
-      <div style="font-size: 32px; font-weight: 700; color: ${isGoodDeal ? '#14532d' : '#991b1b'}; margin-bottom: 4px;">
-        ${isGoodDeal ? '+' : ''}$${Math.abs(totalSavings).toFixed(2)}
-      </div>
-      <div style="font-size: 14px; color: ${isGoodDeal ? '#14532d' : '#991b1b'}; margin-top: 4px; opacity: 0.9;">
-        ${Math.abs(savingsPercent).toFixed(1)}% ${isGoodDeal ? 'savings' : 'more expensive'} vs effective cash price
-      </div>
-    </div>`;
-    
-    html += `<div style="padding: 16px; background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-      <div style="font-weight: 600; margin-bottom: 8px; color: #374151; font-size: 14px;">Value per Point</div>
-      <div style="font-size: 22px; font-weight: 700; color: #2563eb; margin-bottom: 4px;">${(valuePerPoint * 100).toFixed(2)}¢</div>
-      <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Based on cash price</div>
-    </div>`;
-  }
-  
-  // Recommendation
-  html += `<div style="padding: 16px; background: ${isGoodValue ? 'linear-gradient(to right, #dcfce7, #d1fae5)' : 'linear-gradient(to right, #fef3c7, #fde68a)'}; border-radius: 12px; border: 1px solid ${isGoodValue ? '#4ade80' : '#fbbf24'}; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-    <div style="font-weight: 600; margin-bottom: 8px; color: ${isGoodValue ? '#14532d' : '#92400e'}; font-size: 14px;">Recommendation</div>
-    <div style="font-size: 14px; color: ${isGoodValue ? '#14532d' : '#92400e'}; line-height: 1.6;">${recommendation}</div>
-  </div>`;
-  
-  html += '</div>';
-  
-  const placeholder = document.getElementById('bs-calculator-results-placeholder');
-  const contentWrapper = document.getElementById('bs-calculator-results-content-wrapper');
-  
-  resultsContent.innerHTML = html;
-  
-  if (placeholder && contentWrapper) {
-    placeholder.style.display = 'none';
-    contentWrapper.style.display = 'block';
-  }
-  
-  resultsDiv.style.display = 'block';
 }
 
 // Save information data to localStorage
@@ -2937,13 +2232,52 @@ function initializeAirportAutocomplete() {
   initAutocomplete();
 }
 
-// Initialize extension
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', setupObserver);
-  } else {
-  setupObserver();
-}
+// Initialize extension with error handling
+(function() {
+  'use strict';
+  
+  try {
+    // Log extension version for debugging
+    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getManifest) {
+      const manifest = chrome.runtime.getManifest();
+      console.log(`[BS Extension] Version ${manifest.version} loading...`);
+    }
+    
+    // Initialize extension
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        try {
+          setupObserver();
+        } catch (error) {
+          console.error('[BS Extension] Error in DOMContentLoaded:', error);
+        }
+      });
+    } else {
+      try {
+        setupObserver();
+      } catch (error) {
+        console.error('[BS Extension] Error in setupObserver:', error);
+      }
+    }
 
-// Run injection immediately
-setupObserver();
+    // Run injection immediately (with error handling)
+    try {
+      setupObserver();
+    } catch (error) {
+      console.error('[BS Extension] Error in immediate setupObserver:', error);
+    }
+  } catch (error) {
+    console.error('[BS Extension] Critical initialization error:', error);
+    // Attempt graceful fallback
+    if (typeof setupObserver === 'function') {
+      setTimeout(() => {
+        try {
+          setupObserver();
+        } catch (e) {
+          console.error('[BS Extension] Fallback initialization failed:', e);
+        }
+      }, 1000);
+    }
+  }
+})();
 
