@@ -24,6 +24,8 @@
         "lib/casmData.js",
         "lib/baggageCosts.js",
         "lib/seatsAeroClient.js",
+        "lib/currencies.js",
+        "lib/currency-converter.js",
         "content.js",
         "flight-details-injector.js"
       ],
@@ -44,7 +46,8 @@
   "host_permissions": [
     "https://raw.githubusercontent.com/*",
     "https://saegzrncsjcsvgcjkniv.supabase.co/*",
-    "https://seats.aero/*"
+    "https://seats.aero/*",
+    "https://api.exchangerate-api.com/*"
   ],
   "web_accessible_resources": [
     {

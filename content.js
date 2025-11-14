@@ -74,6 +74,13 @@ function injectExtensionPanel() {
             </label>
           </div>
           <div class="bs-toggle-item">
+            <label class="bs-toggle-label" for="bs-calculation-toggle">Calculation</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-calculation-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-toggle-item">
             <label class="bs-toggle-label" for="bs-settings-toggle">Settings</label>
             <label class="bs-toggle-switch">
               <input type="checkbox" id="bs-settings-toggle">
@@ -607,6 +614,379 @@ function injectExtensionPanel() {
         </div>
       </div>
     </div>
+
+    <!-- Calculation Section -->
+    <div class="bs-section" id="bs-calculation-section" style="display: none;">
+      <div class="bs-section-header">
+        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <line x1="9" y1="3" x2="9" y2="21"/>
+          <line x1="15" y1="3" x2="15" y2="21"/>
+          <line x1="3" y1="9" x2="21" y2="9"/>
+          <line x1="3" y1="15" x2="21" y2="15"/>
+        </svg>
+        <span>Calculation</span>
+        <div class="bs-header-controls">
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-total-calculator-toggle">Total Calculator</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-total-calculator-toggle" checked>
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-rovemiles-toggle">Rovemiles</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-rovemiles-toggle" checked>
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Calculator Subsection -->
+      <div class="bs-calculation-subsection" id="bs-total-calculator-section">
+        <div class="bs-calculator-card">
+          <div class="bs-calculator-header bs-calculator-header-yellow">
+            <div class="bs-calculator-header-content">
+              <div class="bs-calculator-header-left">
+                <svg class="bs-calculator-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect width="16" height="20" x="4" y="2" rx="2"></rect>
+                  <line x1="8" x2="16" y1="6" y2="6"></line>
+                  <line x1="16" x2="16" y1="14" y2="18"></line>
+                  <path d="M16 10h.01"></path>
+                  <path d="M12 10h.01"></path>
+                  <path d="M8 10h.01"></path>
+                  <path d="M12 14h.01"></path>
+                  <path d="M8 14h.01"></path>
+                  <path d="M12 18h.01"></path>
+                  <path d="M8 18h.01"></path>
+                </svg>
+                <h2 class="bs-calculator-title">Total Value Calculator</h2>
+              </div>
+              <button class="bs-calculator-info-btn" type="button" aria-label="Show information">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="bs-calculator-body">
+            <form id="bs-total-calculator-form" class="bs-calculator-form">
+              <div class="bs-form-section">
+                <div class="bs-form-section-header">
+                  <svg class="bs-form-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+                    <line x1="2" x2="22" y1="10" y2="10"></line>
+                  </svg>
+                  <h3 class="bs-form-section-title">Loyalty Program</h3>
+                </div>
+                <div class="bs-form-program-wrapper">
+                  <div class="bs-form-program-select-wrapper">
+                    <select id="bs-calc-program" class="bs-form-program-select" required>
+                      <optgroup label="💳 Credit Card Programs"></optgroup>
+                      <optgroup label="✈️ Airlines"></optgroup>
+                      <optgroup label="🏨 Hotels"></optgroup>
+                    </select>
+                    <button type="button" class="bs-form-favorite-btn" title="Add to favorites">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="bs-form-historical-grid">
+                    <div class="bs-form-historical-card">
+                      <div class="bs-form-historical-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                          <polyline points="16 7 22 7 22 13"></polyline>
+                        </svg>
+                        <span class="bs-form-historical-label">Current</span>
+                      </div>
+                      <span class="bs-form-historical-value" id="bs-calc-historical-current">$-</span>
+                    </div>
+                    <div class="bs-form-historical-card">
+                      <span class="bs-form-historical-label">6-Month Avg</span>
+                      <span class="bs-form-historical-value" id="bs-calc-historical-6m">$-</span>
+                    </div>
+                    <div class="bs-form-historical-card">
+                      <span class="bs-form-historical-label">12-Month Avg</span>
+                      <span class="bs-form-historical-value" id="bs-calc-historical-12m">$-</span>
+                    </div>
+                    <div class="bs-form-historical-card">
+                      <span class="bs-form-historical-label">24-Month Avg</span>
+                      <span class="bs-form-historical-value" id="bs-calc-historical-24m">$-</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bs-form-section">
+                <div class="bs-form-section-header">
+                  <svg class="bs-form-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect width="16" height="20" x="4" y="2" rx="2"></rect>
+                    <line x1="8" x2="16" y1="6" y2="6"></line>
+                    <line x1="16" x2="16" y1="14" y2="18"></line>
+                    <path d="M16 10h.01"></path>
+                    <path d="M12 10h.01"></path>
+                    <path d="M8 10h.01"></path>
+                    <path d="M12 14h.01"></path>
+                    <path d="M8 14h.01"></path>
+                    <path d="M12 18h.01"></path>
+                    <path d="M8 18h.01"></path>
+                  </svg>
+                  <h3 class="bs-form-section-title">Calculation Parameters</h3>
+                </div>
+                <div class="bs-form-params-grid">
+                  <div class="bs-form-params-group">
+                    <div class="bs-form-params-card">
+                      <h4 class="bs-form-params-card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
+                        </svg>
+                        Points & Miles
+                      </h4>
+                      <div class="bs-form-params-fields">
+                        <div class="bs-form-group">
+                          <label for="bs-calc-miles">Points/Miles Amount <span class="bs-required">*</span></label>
+                          <input type="number" id="bs-calc-miles" min="0" placeholder="0" required class="bs-form-input-right">
+                        </div>
+                        <div class="bs-form-group">
+                          <label for="bs-calc-cost-per-1000">Cost per 1,000 Points ($)</label>
+                          <input type="number" id="bs-calc-cost-per-1000" step="0.01" min="0" placeholder="0.00" class="bs-form-input-right">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bs-form-params-group">
+                    <div class="bs-form-params-card">
+                      <h4 class="bs-form-params-card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <line x1="12" x2="12" y1="2" y2="22"></line>
+                          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Cash & Fees
+                      </h4>
+                      <div class="bs-form-params-fields">
+                        <div class="bs-form-group">
+                          <label for="bs-calc-cash-price">Cash Price ($)</label>
+                          <input type="number" id="bs-calc-cash-price" step="0.01" min="0" placeholder="0.00" class="bs-form-input-right">
+                        </div>
+                        <div class="bs-form-group">
+                          <label for="bs-calc-taxes-fees">Taxes & Fees ($)</label>
+                          <input type="number" id="bs-calc-taxes-fees" step="0.01" min="0" placeholder="0.00" class="bs-form-input-right">
+                        </div>
+                        <div class="bs-form-group">
+                          <label for="bs-calc-multiplier">Credit Card Multiplier</label>
+                          <input type="number" id="bs-calc-multiplier" step="0.1" min="0" placeholder="0.0" class="bs-form-input-right">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bs-form-actions">
+                <div class="bs-form-actions-center">
+                  <button type="button" id="bs-calc-reset" class="bs-btn-reset">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                      <path d="M3 3v5h5"></path>
+                    </svg>
+                    Reset Form
+                  </button>
+                </div>
+                <div class="bs-form-actions-buttons">
+                  <button type="button" class="bs-btn-currency">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="12" x2="12" y1="2" y2="22"></line>
+                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    Currency Converter
+                  </button>
+                  <button type="submit" class="bs-btn-calculate">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect width="16" height="20" x="4" y="2" rx="2"></rect>
+                      <line x1="8" x2="16" y1="6" y2="6"></line>
+                      <line x1="16" x2="16" y1="14" y2="18"></line>
+                      <path d="M16 10h.01"></path>
+                      <path d="M12 10h.01"></path>
+                      <path d="M8 10h.01"></path>
+                      <path d="M12 14h.01"></path>
+                      <path d="M8 14h.01"></path>
+                      <path d="M12 18h.01"></path>
+                      <path d="M8 18h.01"></path>
+                    </svg>
+                    Calculate Value
+                  </button>
+                </div>
+              </div>
+          </form>
+          <div id="bs-total-calculator-results" class="bs-calculator-results-card" style="display: none;">
+            <!-- Results will be populated here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Rovemiles Calculator Subsection -->
+      <div class="bs-calculation-subsection" id="bs-rovemiles-section">
+        <div class="bs-subsection-header">
+          <div class="bs-subsection-header-content">
+            <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <div>
+              <h3>Rovemiles Calculator</h3>
+              <p class="bs-subsection-description">Calculate total cashback value from Rovemiles bookings</p>
+            </div>
+          </div>
+        </div>
+        <div class="bs-calculator-content">
+          <form id="bs-rovemiles-form" class="bs-calculator-form">
+            <div class="bs-form-card bs-form-card-blue">
+              <div class="bs-form-card-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <span>Booking Information</span>
+              </div>
+              <div class="bs-form-row">
+                <div class="bs-form-group">
+                  <label for="bs-rove-total-cost">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                      <line x1="1" y1="10" x2="23" y2="10"/>
+                    </svg>
+                    Total Cost (USD) <span class="bs-required">*</span>
+                  </label>
+                  <div class="bs-input-wrapper">
+                    <span class="bs-input-prefix">$</span>
+                    <input type="text" id="bs-rove-total-cost" placeholder="211.64" required>
+                  </div>
+                </div>
+                <div class="bs-form-group">
+                  <label for="bs-rove-cash-price">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                      <line x1="1" y1="10" x2="23" y2="10"/>
+                    </svg>
+                    Cash Price (USD)
+                  </label>
+                  <div class="bs-input-wrapper">
+                    <span class="bs-input-prefix">$</span>
+                    <input type="text" id="bs-rove-cash-price" placeholder="350.00">
+                  </div>
+                  <div class="bs-input-hint">Optional: For indirect cost calculation</div>
+                </div>
+              </div>
+              <div class="bs-form-group">
+                <label for="bs-rove-miles">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  Rovemiles Earned Miles <span class="bs-required">*</span>
+                </label>
+                <div class="bs-input-wrapper">
+                  <input type="text" id="bs-rove-miles" placeholder="5293" required>
+                  <span class="bs-input-suffix">miles</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bs-form-card bs-form-card-purple">
+              <div class="bs-form-card-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                  <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+                <span>Credit Card Settings</span>
+              </div>
+              <div class="bs-form-row">
+                <div class="bs-form-group">
+                  <label for="bs-rove-program">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                      <line x1="1" y1="10" x2="23" y2="10"/>
+                    </svg>
+                    Credit Card Program
+                  </label>
+                  <select id="bs-rove-program"></select>
+                </div>
+                <div class="bs-form-group">
+                  <label for="bs-rove-multiplier">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    Credit Card Multiplier
+                  </label>
+                  <div class="bs-input-wrapper">
+                    <input type="text" id="bs-rove-multiplier" placeholder="1.0">
+                    <span class="bs-input-suffix">x</span>
+                  </div>
+                  <div class="bs-input-hint">Earning rate (e.g. 1.5x per $1)</div>
+                </div>
+              </div>
+              <div class="bs-form-group">
+                <label for="bs-rove-program-value">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"/>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                  Program Wert (USD)
+                </label>
+                <div class="bs-input-wrapper">
+                  <span class="bs-input-prefix">$</span>
+                  <input type="text" id="bs-rove-program-value" placeholder="0.0000">
+                </div>
+                <div class="bs-input-hint">Optional: Override program value</div>
+              </div>
+            </div>
+
+            <div class="bs-form-card bs-form-card-amber">
+              <div class="bs-form-card-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="1" x2="12" y2="23"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                <span>Valuation Settings</span>
+              </div>
+              <div class="bs-form-group">
+                <label for="bs-rove-cpm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                  </svg>
+                  Rove Miles CPM (USD) <span class="bs-required">*</span>
+                </label>
+                <div class="bs-input-wrapper">
+                  <span class="bs-input-prefix">$</span>
+                  <input type="text" id="bs-rove-cpm" placeholder="0.0177" required>
+                </div>
+                <div class="bs-input-hint">Cost per mile for Rove Miles and Credit Card points</div>
+              </div>
+            </div>
+
+            <div class="bs-form-actions">
+              <button type="button" id="bs-rove-reset" class="bs-btn-secondary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="1 4 1 10 7 10"/>
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                </svg>
+                Reset All Fields
+              </button>
+            </div>
+          </form>
+          <div id="bs-rovemiles-results" class="bs-rovemiles-results">
+            <!-- Results will be populated here -->
+          </div>
+        </div>
+      </div>
+    </div>
   `;
   
   // Insert panel at the top
@@ -634,6 +1014,8 @@ function injectExtensionPanel() {
     initializeInformationContent();
     // Initialize credit card multipliers
     initializeCreditCardMultipliers();
+    // Initialize calculation section
+    initializeCalculationSection();
   }, 100);
 }
 
@@ -643,6 +1025,7 @@ function saveToggleStates() {
   const hotelToggle = document.getElementById('bs-hotel-toggle');
   const searchToggle = document.getElementById('bs-search-toggle');
   const informationToggle = document.getElementById('bs-information-toggle');
+  const calculationToggle = document.getElementById('bs-calculation-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   
   const toggleStates = {
@@ -650,6 +1033,7 @@ function saveToggleStates() {
     hotel: hotelToggle ? hotelToggle.checked : false,
     search: searchToggle ? searchToggle.checked : false,
     information: informationToggle ? informationToggle.checked : false,
+    calculation: calculationToggle ? calculationToggle.checked : false,
     settings: settingsToggle ? settingsToggle.checked : false
   };
   
@@ -674,6 +1058,7 @@ function loadToggleStates() {
     hotel: false,  // Hotel Search OFF by default
     search: false,  // Search OFF by default
     information: false,  // Information OFF by default
+    calculation: false,  // Calculation OFF by default
     settings: false // Settings OFF by default
   };
 }
@@ -684,11 +1069,13 @@ function applyToggleStates(toggleStates) {
   const hotelToggle = document.getElementById('bs-hotel-toggle');
   const searchToggle = document.getElementById('bs-search-toggle');
   const informationToggle = document.getElementById('bs-information-toggle');
+  const calculationToggle = document.getElementById('bs-calculation-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   const flightSection = document.getElementById('bs-flight-section');
   const hotelSection = document.getElementById('bs-hotel-section');
   const searchSection = document.getElementById('bs-search-section');
   const informationSection = document.getElementById('bs-information-section');
+  const calculationSection = document.getElementById('bs-calculation-section');
   const settingsSection = document.getElementById('bs-settings-section');
   
   // Apply flight toggle state
@@ -713,6 +1100,12 @@ function applyToggleStates(toggleStates) {
   if (informationToggle && informationSection) {
     informationToggle.checked = toggleStates.information;
     informationSection.style.display = toggleStates.information ? 'block' : 'none';
+  }
+  
+  // Apply calculation toggle state
+  if (calculationToggle && calculationSection) {
+    calculationToggle.checked = toggleStates.calculation;
+    calculationSection.style.display = toggleStates.calculation ? 'block' : 'none';
   }
   
   // Apply settings toggle state
@@ -793,11 +1186,15 @@ function initializeEventListeners() {
   const informationSection = document.getElementById('bs-information-section');
   const settingsSection = document.getElementById('bs-settings-section');
   
+  const calculationToggle = document.getElementById('bs-calculation-toggle');
+  const calculationSection = document.getElementById('bs-calculation-section');
+  
   console.log('Toggle elements found:', {
     flightToggle: !!flightToggle,
     hotelToggle: !!hotelToggle,
     searchToggle: !!searchToggle,
     informationToggle: !!informationToggle,
+    calculationToggle: !!calculationToggle,
     settingsToggle: !!settingsToggle
   });
   
@@ -806,6 +1203,7 @@ function initializeEventListeners() {
     hotelSection: !!hotelSection,
     searchSection: !!searchSection,
     informationSection: !!informationSection,
+    calculationSection: !!calculationSection,
     settingsSection: !!settingsSection
   });
   
@@ -871,6 +1269,82 @@ function initializeEventListeners() {
     });
   } else {
     console.log('Information toggle or section not found:', { informationToggle, informationSection });
+  }
+
+  // Calculation section toggle (already defined above)
+  // Calculation section sub-toggles - completely independent
+  const totalCalculatorToggle = document.getElementById('bs-total-calculator-toggle');
+  const totalCalculatorSection = document.getElementById('bs-total-calculator-section');
+  const rovemilesToggle = document.getElementById('bs-rovemiles-toggle');
+  const rovemilesSection = document.getElementById('bs-rovemiles-section');
+
+  // Function to update calculation section visibility based on calculator toggles
+  function updateCalculationSectionVisibility() {
+    const calculationSection = document.getElementById('bs-calculation-section');
+    const calculationToggle = document.getElementById('bs-calculation-toggle');
+    if (calculationSection && calculationToggle) {
+      const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
+      const roveEnabled = rovemilesToggle && rovemilesToggle.checked;
+      // Show calculation section if either calculator is enabled
+      if (totalCalcEnabled || roveEnabled) {
+        calculationSection.style.display = 'block';
+        calculationToggle.checked = true;
+      } else {
+        // Only hide if both are disabled
+        calculationSection.style.display = 'none';
+        calculationToggle.checked = false;
+      }
+    }
+  }
+
+  // Total Calculator - completely independent
+  if (totalCalculatorToggle && totalCalculatorSection) {
+    const saved = localStorage.getItem('bs-total-calculator-enabled');
+    if (saved !== null) totalCalculatorToggle.checked = saved === 'true';
+    totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
+    totalCalculatorToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-total-calculator-enabled', totalCalculatorToggle.checked);
+      totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
+      // Update calculation section visibility
+      updateCalculationSectionVisibility();
+    });
+  }
+
+  // Rovemiles Calculator - completely independent
+  if (rovemilesToggle && rovemilesSection) {
+    const saved = localStorage.getItem('bs-rovemiles-enabled');
+    if (saved !== null) rovemilesToggle.checked = saved === 'true';
+    rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
+    rovemilesToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-rovemiles-enabled', rovemilesToggle.checked);
+      rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
+      // Update calculation section visibility
+      updateCalculationSectionVisibility();
+    });
+  }
+
+  // Initialize calculation section visibility on load
+  updateCalculationSectionVisibility();
+
+  // Main calculation toggle - should respect sub-toggles
+  if (calculationToggle && calculationSection) {
+    calculationToggle.addEventListener('change', () => {
+      if (calculationToggle.checked) {
+        calculationSection.style.display = 'block';
+      } else {
+        // Only hide if both sub-toggles are off
+        const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
+        const roveEnabled = rovemilesToggle && rovemilesToggle.checked;
+        if (!totalCalcEnabled && !roveEnabled) {
+          calculationSection.style.display = 'none';
+        } else {
+          // If at least one sub-toggle is on, keep section visible and re-check main toggle
+          calculationToggle.checked = true;
+          calculationSection.style.display = 'block';
+        }
+      }
+      saveToggleStates();
+    });
   }
 
   // Information section sub-toggles
@@ -2194,6 +2668,729 @@ function waitForFullLoad() {
       obs.observe(document.body, { childList: true, subtree: true });
     }, { once: true });
   });
+}
+
+// Initialize Calculation Section
+function initializeCalculationSection() {
+  // Populate program dropdowns
+  populateProgramDropdowns();
+  
+  // Initialize Total Calculator
+  initializeTotalCalculator();
+  
+  // Initialize Rovemiles Calculator
+  initializeRovemilesCalculator();
+}
+
+// Populate program dropdowns for calculators
+function populateProgramDropdowns() {
+  // Wait for loyalty programs to be available
+  if (!window.loyaltyPrograms) {
+    setTimeout(populateProgramDropdowns, 100);
+    return;
+  }
+
+  const calcProgramSelect = document.getElementById('bs-calc-program');
+  const roveProgramSelect = document.getElementById('bs-rove-program');
+
+  if (calcProgramSelect) {
+    const creditGroup = calcProgramSelect.querySelector('optgroup[label="💳 Credit Card Programs"]');
+    const airlineGroup = calcProgramSelect.querySelector('optgroup[label="✈️ Airlines"]');
+    const hotelGroup = calcProgramSelect.querySelector('optgroup[label="🏨 Hotels"]');
+
+    // Clear existing options first to prevent duplicates
+    if (creditGroup) creditGroup.innerHTML = '';
+    if (airlineGroup) airlineGroup.innerHTML = '';
+    if (hotelGroup) hotelGroup.innerHTML = '';
+
+    window.loyaltyPrograms.forEach(program => {
+      const option = document.createElement('option');
+      option.value = program.name;
+      option.textContent = `${program.name} (${(program.pointValue * 100).toFixed(2)}¢)`;
+
+      if (program.category === 'credit' && creditGroup) {
+        creditGroup.appendChild(option);
+      } else if (program.category === 'airline' && airlineGroup) {
+        airlineGroup.appendChild(option);
+      } else if (program.category === 'hotel' && hotelGroup) {
+        hotelGroup.appendChild(option);
+      }
+    });
+  }
+
+  if (roveProgramSelect) {
+    // Clear existing options first
+    roveProgramSelect.innerHTML = '';
+    
+    window.loyaltyPrograms.forEach(program => {
+      const option = document.createElement('option');
+      option.value = program.name;
+      option.textContent = `${program.name} (${program.pointValue.toFixed(4)} USD/mile)`;
+      roveProgramSelect.appendChild(option);
+    });
+  }
+}
+
+// Fetch historical data for a program from Supabase
+async function fetchHistoricalData(programName) {
+  try {
+    const supabaseUrl = 'https://saegzrncsjcsvgcjkniv.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhZWd6cm5jc2pjc3ZnY2prbml2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE3ODgxNDYsImV4cCI6MjA0NzM2NDE0Nn0.w1eHVcuvDUoqhcMCYenKKA9URAtG4YbW3j5GcDgvu3Y';
+    
+    if (!programName) {
+      return null;
+    }
+
+    // Fetch all entries for this program from points_history table
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/points_history?loyalty=eq.${encodeURIComponent(programName)}&order=start_date.desc`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      console.log('No historical data found in Supabase for', programName);
+      return null;
+    }
+
+    const data = await response.json();
+    if (!data || data.length === 0) {
+      return null;
+    }
+
+    // Sort by start_date (newest first) - already sorted by query, but ensure it
+    const sortedData = [...data].sort((a, b) => {
+      const dateA = new Date(a.start_date);
+      const dateB = new Date(b.start_date);
+      return dateB - dateA;
+    });
+
+    // Current is the most recent entry's price_per_thousand
+    const current = sortedData[0]?.price_per_thousand || null;
+
+    // Calculate moving averages
+    const avg6 = sortedData.slice(0, 6).reduce((sum, item) => 
+      sum + (item.price_per_thousand || 0), 0) / Math.min(sortedData.length, 6);
+    
+    const avg12 = sortedData.slice(0, 12).reduce((sum, item) => 
+      sum + (item.price_per_thousand || 0), 0) / Math.min(sortedData.length, 12);
+    
+    const avg24 = sortedData.slice(0, 24).reduce((sum, item) => 
+      sum + (item.price_per_thousand || 0), 0) / Math.min(sortedData.length, 24);
+
+    return {
+      current: current,
+      avg6m: isNaN(avg6) ? null : avg6,
+      avg12m: isNaN(avg12) ? null : avg12,
+      avg24m: isNaN(avg24) ? null : avg24
+    };
+  } catch (error) {
+    console.error('Error fetching historical data:', error);
+    return null;
+  }
+}
+
+// Update historical data display
+async function updateHistoricalData(programName) {
+  const currentEl = document.getElementById('bs-calc-historical-current');
+  const avg6mEl = document.getElementById('bs-calc-historical-6m');
+  const avg12mEl = document.getElementById('bs-calc-historical-12m');
+  const avg24mEl = document.getElementById('bs-calc-historical-24m');
+
+  // Reset to default
+  if (currentEl) currentEl.textContent = '$-';
+  if (avg6mEl) avg6mEl.textContent = '$-';
+  if (avg12mEl) avg12mEl.textContent = '$-';
+  if (avg24mEl) avg24mEl.textContent = '$-';
+
+  if (!programName) return;
+
+  const historicalData = await fetchHistoricalData(programName);
+  
+  if (historicalData) {
+    const formatValue = (value) => {
+      if (value === null || value === undefined) return '$-';
+      return `$${value.toFixed(2)}`;
+    };
+
+    if (currentEl && historicalData.current !== null) {
+      currentEl.textContent = formatValue(historicalData.current);
+    }
+    if (avg6mEl && historicalData.avg6m !== null) {
+      avg6mEl.textContent = formatValue(historicalData.avg6m);
+    }
+    if (avg12mEl && historicalData.avg12m !== null) {
+      avg12mEl.textContent = formatValue(historicalData.avg12m);
+    }
+    if (avg24mEl && historicalData.avg24m !== null) {
+      avg24mEl.textContent = formatValue(historicalData.avg24m);
+    }
+  }
+}
+
+// Initialize Total Calculator
+function initializeTotalCalculator() {
+  const form = document.getElementById('bs-total-calculator-form');
+  const resetBtn = document.getElementById('bs-calc-reset');
+  const currencyBtn = document.querySelector('.bs-btn-currency');
+  const programSelect = document.getElementById('bs-calc-program');
+
+  if (!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    calculateTotalValue();
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      const resultsDiv = document.getElementById('bs-total-calculator-results');
+      if (resultsDiv) resultsDiv.style.display = 'none';
+      // Reset historical data
+      updateHistoricalData('');
+    });
+  }
+
+  // Update historical data when program changes
+  if (programSelect) {
+    programSelect.addEventListener('change', (e) => {
+      updateHistoricalData(e.target.value);
+    });
+    
+    // Load initial historical data if program is already selected
+    if (programSelect.value) {
+      updateHistoricalData(programSelect.value);
+    }
+  }
+
+  // Initialize Currency Converter button
+  if (currencyBtn) {
+    currencyBtn.addEventListener('click', () => {
+      if (window.currencyConverter) {
+        window.currencyConverter.open();
+      } else if (window.initializeCurrencyConverter) {
+        window.initializeCurrencyConverter();
+        setTimeout(() => {
+          if (window.currencyConverter) {
+            window.currencyConverter.open();
+          }
+        }, 100);
+      }
+    });
+  }
+}
+
+// Calculate Total Value
+function calculateTotalValue() {
+  const programName = document.getElementById('bs-calc-program')?.value;
+  const milesAmount = parseFloat(document.getElementById('bs-calc-miles')?.value || 0);
+  const costPer1000 = parseFloat(document.getElementById('bs-calc-cost-per-1000')?.value || 0);
+  const cashPrice = parseFloat(document.getElementById('bs-calc-cash-price')?.value || 0);
+  const taxesFees = parseFloat(document.getElementById('bs-calc-taxes-fees')?.value || 0);
+  const multiplier = parseFloat(document.getElementById('bs-calc-multiplier')?.value || 0);
+
+  if (!programName || !milesAmount) {
+    showNotification('Please fill in required fields', 'error');
+    return;
+  }
+
+  const program = window.loyaltyPrograms?.find(p => p.name === programName);
+  const programPointValue = program ? program.pointValue : 0.019;
+
+  // Calculate points value
+  // If cost per 1000 is provided and > 0, use that as the actual purchase cost
+  // If cost per 1000 is 0 or not provided, set points value to 0
+  const pointsValue = costPer1000 > 0 
+    ? (milesAmount / 1000) * costPer1000 
+    : 0;
+
+  // Calculate cost to purchase points (same as pointsValue if costPer1000 is provided)
+  const purchaseCost = costPer1000 > 0 ? (milesAmount / 1000) * costPer1000 : 0;
+
+  // Calculate miles earned from cash purchase
+  const milesEarned = cashPrice * multiplier;
+  const milesEarnedValue = milesEarned * programPointValue;
+
+  // Calculate miles earned from taxes/fees
+  const milesEarnedFromTaxes = taxesFees * multiplier;
+  const milesEarnedFromTaxesValue = milesEarnedFromTaxes * programPointValue;
+
+  // Effective prices
+  const effectiveCashPrice = cashPrice - milesEarnedValue;
+  // If costPer1000 is provided, pointsValue already includes the purchase cost
+  // So we don't add purchaseCost again
+  const effectivePointsPrice = costPer1000 > 0 
+    ? pointsValue + taxesFees - milesEarnedFromTaxesValue
+    : pointsValue + taxesFees - milesEarnedFromTaxesValue + purchaseCost;
+
+  // Calculate value per point
+  // If cash price is provided, calculate based on cash price
+  // Otherwise, calculate based on total cost
+  const totalCost = costPer1000 > 0 
+    ? pointsValue + taxesFees
+    : pointsValue + taxesFees + purchaseCost;
+  const valuePerPoint = cashPrice > 0 ? (cashPrice / milesAmount) : (totalCost / milesAmount);
+
+  // Calculate savings
+  const savings = effectiveCashPrice - effectivePointsPrice;
+  const savingsPercent = effectiveCashPrice > 0 ? (savings / effectiveCashPrice) * 100 : 0;
+
+  // Determine if good value (value per point >= program point value)
+  const isGoodValue = valuePerPoint >= programPointValue;
+  const recommendation = isGoodValue 
+    ? `Good value! You're getting ${(valuePerPoint / programPointValue).toFixed(2)}x the program's typical value.`
+    : `Consider if this redemption provides sufficient value. You're getting ${(valuePerPoint / programPointValue).toFixed(2)}x the program's typical value.`;
+
+  // Display results
+  displayTotalCalculatorResults({
+    valuePerPoint,
+    savingsPercent,
+    savings,
+    effectiveCashPrice,
+    effectivePointsPrice,
+    pointsValue,
+    taxesFees,
+    purchaseCost,
+    cashPrice,
+    milesEarnedValue,
+    milesEarnedFromTaxesValue,
+    programPointValue,
+    isGoodValue,
+    recommendation,
+    costPer1000 // Pass costPer1000 to determine if purchase cost should be shown separately
+  });
+}
+
+// Display Total Calculator Results
+function displayTotalCalculatorResults(results) {
+  const resultsDiv = document.getElementById('bs-total-calculator-results');
+  if (!resultsDiv) return;
+
+  const formatNumber = (num) => {
+    return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  const savingsAmount = Math.abs(results.effectiveCashPrice - results.effectivePointsPrice);
+  const valueRatio = results.programPointValue > 0 ? (results.valuePerPoint / results.programPointValue) : 0;
+
+  resultsDiv.innerHTML = `
+    <div class="bs-calculator-card">
+      <div class="bs-calculator-header bs-calculator-header-orange">
+        <div class="bs-calculator-header-content">
+          <div class="bs-calculator-header-left">
+            <svg class="bs-calculator-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect width="16" height="20" x="4" y="2" rx="2"></rect>
+              <line x1="8" x2="16" y1="6" y2="6"></line>
+              <line x1="16" x2="16" y1="14" y2="18"></line>
+              <path d="M16 10h.01"></path>
+              <path d="M12 10h.01"></path>
+              <path d="M8 10h.01"></path>
+              <path d="M12 14h.01"></path>
+              <path d="M8 14h.01"></path>
+              <path d="M12 18h.01"></path>
+              <path d="M8 18h.01"></path>
+            </svg>
+            <h2 class="bs-calculator-title">Calculator Results</h2>
+          </div>
+          <button class="bs-calculator-info-btn" type="button" aria-label="Show information">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 16v-4"></path>
+              <path d="M12 8h.01"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="bs-calculator-body">
+        <div class="bs-calculator-results-content">
+          <!-- Total Savings Hero Section -->
+          <div class="bs-results-savings-hero">
+            <div class="bs-savings-hero-card ${results.savings >= 0 ? 'bs-savings-positive' : 'bs-savings-negative'}">
+              <div class="bs-savings-hero-icon">
+                ${results.savings >= 0 
+                  ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+                  : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+                }
+              </div>
+              <div class="bs-savings-hero-content">
+                <div class="bs-savings-hero-label">Total Savings</div>
+                <div class="bs-savings-hero-amount">$${formatNumber(Math.abs(results.savings))}</div>
+                <div class="bs-savings-hero-percentage ${results.savingsPercent >= 0 ? 'bs-percentage-positive' : 'bs-percentage-negative'}">
+                  ${results.savingsPercent >= 0 ? '+' : ''}${formatNumber(results.savingsPercent)}% savings
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Metrics Grid -->
+          <div class="bs-results-metrics-grid">
+            <div class="bs-metric-card">
+              <div class="bs-metric-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+                <span class="bs-metric-label">Value per Point</span>
+              </div>
+              <div class="bs-metric-value">$${formatNumber(results.valuePerPoint)}</div>
+              <div class="bs-metric-badge ${valueRatio >= 1 ? 'bs-badge-success' : 'bs-badge-warning'}">
+                ${valueRatio.toFixed(2)}x program value
+              </div>
+            </div>
+
+            <div class="bs-metric-card">
+              <div class="bs-metric-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <span class="bs-metric-label">Program Value</span>
+              </div>
+              <div class="bs-metric-value">$${formatNumber(results.programPointValue)}</div>
+              <div class="bs-metric-sub">per point</div>
+            </div>
+
+            <div class="bs-metric-card">
+              <div class="bs-metric-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                  <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+                <span class="bs-metric-label">Cash Price</span>
+              </div>
+              <div class="bs-metric-value">$${formatNumber(results.cashPrice)}</div>
+              <div class="bs-metric-sub">base price</div>
+            </div>
+
+            <div class="bs-metric-card">
+              <div class="bs-metric-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+                <span class="bs-metric-label">Points Value</span>
+              </div>
+              <div class="bs-metric-value">$${formatNumber(results.pointsValue)}</div>
+              <div class="bs-metric-sub">${results.costPer1000 > 0 ? 'purchase cost' : 'calculated value'}</div>
+            </div>
+          </div>
+
+      <div class="bs-price-comparison">
+        <div class="bs-comparison-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"/>
+            <line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/>
+            <line x1="3" y1="12" x2="3.01" y2="12"/>
+            <line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+          <span>Price Comparison</span>
+        </div>
+        <div class="bs-comparison-cards">
+          <div class="bs-price-card ${results.effectiveCashPrice <= results.effectivePointsPrice ? 'bs-best-value' : ''}">
+            <div class="bs-price-badge">${results.effectiveCashPrice <= results.effectivePointsPrice ? 'Best Value' : ''}</div>
+            <div class="bs-price-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                <line x1="1" y1="10" x2="23" y2="10"/>
+              </svg>
+              <span>Cash Price</span>
+            </div>
+            <div class="bs-price-details">
+              <div class="bs-price-line">
+                <span class="bs-price-line-label">Base Price</span>
+                <span class="bs-price-line-value">$${formatNumber(results.cashPrice)}</span>
+              </div>
+              ${results.milesEarnedValue > 0 ? `
+              <div class="bs-price-line bs-price-line-discount">
+                <span class="bs-price-line-label">Miles Earned Value</span>
+                <span class="bs-price-line-value">-$${formatNumber(results.milesEarnedValue)}</span>
+              </div>
+              ` : ''}
+              <div class="bs-price-total">
+                <span>Effective Total</span>
+                <span>$${formatNumber(results.effectiveCashPrice)}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bs-price-card ${results.effectiveCashPrice > results.effectivePointsPrice ? 'bs-best-value' : ''}">
+            <div class="bs-price-badge">${results.effectiveCashPrice > results.effectivePointsPrice ? 'Best Value' : ''}</div>
+            <div class="bs-price-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+              <span>Points Value</span>
+            </div>
+            <div class="bs-price-details">
+              <div class="bs-price-line">
+                <span class="bs-price-line-label">${results.costPer1000 > 0 ? 'Purchase Cost' : 'Points Value'}</span>
+                <span class="bs-price-line-value">$${formatNumber(results.pointsValue)}</span>
+              </div>
+              <div class="bs-price-line">
+                <span class="bs-price-line-label">Taxes & Fees</span>
+                <span class="bs-price-line-value">$${formatNumber(results.taxesFees)}</span>
+              </div>
+              ${results.milesEarnedFromTaxesValue > 0 ? `
+              <div class="bs-price-line bs-price-line-discount">
+                <span class="bs-price-line-label">Miles Earned Value</span>
+                <span class="bs-price-line-value">-$${formatNumber(results.milesEarnedFromTaxesValue)}</span>
+              </div>
+              ` : ''}
+              <div class="bs-price-total">
+                <span>Effective Total</span>
+                <span>$${formatNumber(results.effectivePointsPrice)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bs-recommendation ${results.isGoodValue ? 'bs-good-value' : 'bs-consider-value'}">
+        <div class="bs-recommendation-icon">
+          ${results.isGoodValue 
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+          }
+        </div>
+        <div class="bs-recommendation-content">
+          <div class="bs-recommendation-title">Recommendation</div>
+          <div class="bs-recommendation-text">${results.recommendation}</div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  resultsDiv.style.display = 'block';
+  resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Initialize Rovemiles Calculator
+function initializeRovemilesCalculator() {
+  const form = document.getElementById('bs-rovemiles-form');
+  const resetBtn = document.getElementById('bs-rove-reset');
+  const totalCostInput = document.getElementById('bs-rove-total-cost');
+  const cashPriceInput = document.getElementById('bs-rove-cash-price');
+  const milesInput = document.getElementById('bs-rove-miles');
+  const multiplierInput = document.getElementById('bs-rove-multiplier');
+  const cpmInput = document.getElementById('bs-rove-cpm');
+  const programSelect = document.getElementById('bs-rove-program');
+  const programValueInput = document.getElementById('bs-rove-program-value');
+
+  if (!form) return;
+
+  // Set default CPM
+  if (cpmInput && !cpmInput.value) {
+    cpmInput.value = '0.0177';
+  }
+
+  // Calculate on input change
+  const inputs = [totalCostInput, cashPriceInput, milesInput, multiplierInput, cpmInput, programSelect, programValueInput];
+  inputs.forEach(input => {
+    if (input) {
+      input.addEventListener('input', calculateRovemiles);
+      input.addEventListener('change', calculateRovemiles);
+    }
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      if (cpmInput) cpmInput.value = '0.0177';
+      const resultsDiv = document.getElementById('bs-rovemiles-results');
+      if (resultsDiv) resultsDiv.innerHTML = '';
+    });
+  }
+
+  // Initial calculation
+  calculateRovemiles();
+}
+
+// Calculate Rovemiles
+function calculateRovemiles() {
+  const totalCost = parseFloat(document.getElementById('bs-rove-total-cost')?.value?.replace(/[^\d.]/g, '') || 0);
+  const cashPrice = parseFloat(document.getElementById('bs-rove-cash-price')?.value?.replace(/[^\d.]/g, '') || 0);
+  const rovemilesMiles = parseFloat(document.getElementById('bs-rove-miles')?.value?.replace(/[^\d]/g, '') || 0);
+  const multiplier = parseFloat(document.getElementById('bs-rove-multiplier')?.value?.replace(/[^\d.]/g, '') || 0);
+  const roveMilesCPM = parseFloat(document.getElementById('bs-rove-cpm')?.value?.replace(/[^\d.]/g, '') || 0.0177);
+  const programName = document.getElementById('bs-rove-program')?.value;
+  const programValueOverride = document.getElementById('bs-rove-program-value')?.value?.replace(/[^\d.]/g, '');
+
+  if (!totalCost || !rovemilesMiles || !roveMilesCPM) {
+    return;
+  }
+
+  const program = window.loyaltyPrograms?.find(p => p.name === programName) || window.loyaltyPrograms?.[0];
+  const programValue = programValueOverride ? parseFloat(programValueOverride) : (program ? program.pointValue : 0.019);
+
+  // Calculate credit card points earned
+  const creditCardPoints = totalCost * multiplier;
+
+  // Calculate credit card cashback (using higher of program value or CPM)
+  const ccCashbackWithProgram = creditCardPoints * programValue;
+  const ccCashbackWithCPM = creditCardPoints * roveMilesCPM;
+  const creditCardCashback = Math.max(ccCashbackWithProgram, ccCashbackWithCPM);
+
+  // Calculate Rovemiles cashback
+  const rovemilesCashback = rovemilesMiles * roveMilesCPM;
+
+  // Total cashback
+  const totalCashback = creditCardCashback + rovemilesCashback;
+  const cashbackPercentage = totalCost > 0 ? (totalCashback / totalCost) * 100 : 0;
+
+  // Effective USD per 1,000 Rove miles
+  const effectiveUsdPerThousand = cashPrice > 0 ? ((totalCost - cashPrice) / rovemilesMiles) * 1000 : 0;
+
+  // Display results
+  displayRovemilesResults({
+    totalCashback,
+    cashbackPercentage,
+    creditCardCashback,
+    creditCardPoints,
+    rovemilesCashback,
+    rovemilesMiles,
+    effectiveUsdPerThousand,
+    usingCPM: ccCashbackWithCPM > ccCashbackWithProgram,
+    programName: program?.name || '',
+    programValue,
+    roveMilesCPM
+  });
+}
+
+// Display Rovemiles Results
+function displayRovemilesResults(results) {
+  const resultsDiv = document.getElementById('bs-rovemiles-results');
+  if (!resultsDiv) return;
+
+  const formatCurrency = (num) => {
+    return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  resultsDiv.innerHTML = `
+    <div class="bs-rovemiles-results-content">
+      <div class="bs-rovemiles-hero">
+        <div class="bs-rovemiles-total">
+          <div class="bs-rovemiles-total-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <div class="bs-rovemiles-total-content">
+            <div class="bs-rovemiles-total-label">Total Cashback Value</div>
+            <div class="bs-rovemiles-total-amount">$${formatCurrency(results.totalCashback)}</div>
+            <div class="bs-rovemiles-percentage">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+              ${formatCurrency(results.cashbackPercentage)}% Reward Rate
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bs-rovemiles-breakdown">
+        <div class="bs-breakdown-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"/>
+            <line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/>
+            <line x1="3" y1="12" x2="3.01" y2="12"/>
+            <line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+          <span>Cashback Breakdown</span>
+        </div>
+        
+        <div class="bs-rovemiles-cards-grid">
+          <div class="bs-rovemiles-card bs-rovemiles-card-purple">
+            <div class="bs-rovemiles-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                <line x1="1" y1="10" x2="23" y2="10"/>
+              </svg>
+              <span>Credit Card Cashback</span>
+            </div>
+            <div class="bs-rovemiles-amount">$${formatCurrency(results.creditCardCashback)}</div>
+            <div class="bs-rovemiles-details">
+              <div class="bs-rovemiles-detail-item">
+                <span class="bs-detail-label">Points Earned</span>
+                <span class="bs-detail-value">${results.creditCardPoints.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+              </div>
+              <div class="bs-rovemiles-detail-item">
+                <span class="bs-detail-label">Valuation Method</span>
+                <span class="bs-detail-value">${results.usingCPM ? 'CPM' : 'Program Value'}</span>
+              </div>
+            </div>
+            <div class="bs-rovemiles-note">
+              ${results.usingCPM 
+                ? `CPM @ $${results.roveMilesCPM.toFixed(4)}/Point (higher value)`
+                : `${results.programName} @ $${results.programValue.toFixed(4)}/Point`
+              }
+            </div>
+          </div>
+          
+          <div class="bs-rovemiles-card bs-rovemiles-card-blue">
+            <div class="bs-rovemiles-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>Rovemiles Cashback</span>
+            </div>
+            <div class="bs-rovemiles-amount">$${formatCurrency(results.rovemilesCashback)}</div>
+            <div class="bs-rovemiles-details">
+              <div class="bs-rovemiles-detail-item">
+                <span class="bs-detail-label">Miles Earned</span>
+                <span class="bs-detail-value">${results.rovemilesMiles.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+              </div>
+              <div class="bs-rovemiles-detail-item">
+                <span class="bs-detail-label">CPM Rate</span>
+                <span class="bs-detail-value">$${results.roveMilesCPM.toFixed(4)}</span>
+              </div>
+            </div>
+            <div class="bs-rovemiles-note">
+              @ $${results.roveMilesCPM.toFixed(4)}/Mile
+            </div>
+          </div>
+          
+          ${results.effectiveUsdPerThousand > 0 ? `
+          <div class="bs-rovemiles-card bs-rovemiles-card-gray">
+            <div class="bs-rovemiles-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              <span>USD per 1,000 Miles</span>
+            </div>
+            <div class="bs-rovemiles-amount">$${formatCurrency(results.effectiveUsdPerThousand)}</div>
+            <div class="bs-rovemiles-details">
+              <div class="bs-rovemiles-detail-item">
+                <span class="bs-detail-label">Calculation</span>
+                <span class="bs-detail-value">(Cost − Cash) ÷ Miles × 1,000</span>
+              </div>
+            </div>
+            <div class="bs-rovemiles-note">
+              Effective cost per 1,000 Rove miles
+            </div>
+          </div>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 // Initialize airport autocomplete
