@@ -3317,8 +3317,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
+  padding: 8px 0;
 }
 
 .transfer-partners-comparison .selected-cards-filter {
@@ -3378,23 +3379,27 @@
 .transfer-partners-comparison .credit-card-filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
   align-items: center;
 }
 
 .transfer-partners-comparison .filter-btn {
-  padding: 6px 12px;
-  border: 1px solid #e8eaed;
+  padding: 4px 10px;
+  border: 1px solid #dadce0;
   background: #ffffff;
   color: #5f6368;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 
+.transfer-partners-comparison .filter-btn:hover {
+  background: #f8f9fa;
+  border-color: #cbd5e1;
+}
 
 .transfer-partners-comparison .filter-btn.active {
   background: #1a73e8;
@@ -3403,30 +3408,72 @@
 }
 
 
-.transfer-partners-comparison .display-toggle {
+.transfer-partners-comparison .display-toggle-wrapper {
   display: flex;
-  gap: 4px;
-  background: #f8f9fa;
-  border-radius: 6px;
-  padding: 2px;
+  align-items: center;
+  gap: 8px;
+}
+
+.transfer-partners-comparison .display-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.transfer-partners-comparison .toggle-label-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: #5f6368;
+  transition: color 0.2s ease;
+}
+
+.transfer-partners-comparison .display-toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  appearance: none;
+  background: #cbd5e1;
+  border-radius: 12px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  flex-shrink: 0;
+}
+
+.transfer-partners-comparison .display-toggle-switch:checked {
+  background: #1a73e8;
+}
+
+.transfer-partners-comparison .display-toggle-switch::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.transfer-partners-comparison .display-toggle-switch:checked::before {
+  transform: translateX(20px);
+}
+
+.transfer-partners-comparison .display-toggle-switch:hover {
+  opacity: 0.8;
+}
+
+/* Legacy support - hide old toggle buttons */
+.transfer-partners-comparison .display-toggle {
+  display: none;
 }
 
 .transfer-partners-comparison .toggle-btn {
-  padding: 6px 12px;
-  border: none;
-  background: transparent;
-  color: #5f6368;
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-
-.transfer-partners-comparison .toggle-btn.active {
-  background: #1a73e8;
-  color: white;
+  display: none;
 }
 
 /* Selected Cards Toggle Styles */
@@ -3442,34 +3489,67 @@
   margin: 0 !important;
 }
 
-.selected-cards-comparison .display-toggle {
+.selected-cards-comparison .display-toggle-container {
   display: flex;
-  gap: 4px;
-  background: #f8f9fa;
-  border-radius: 6px;
-  padding: 2px;
+  align-items: center;
+  gap: 12px;
 }
 
-.selected-cards-comparison .toggle-btn {
-  padding: 8px 16px;
-  border: none;
-  background: transparent;
-  color: #5f6368;
+.selected-cards-comparison .display-toggle-container .toggle-label {
   font-size: 14px;
   font-weight: 500;
-  border-radius: 4px;
+  color: #5f6368;
+  user-select: none;
+}
+
+.selected-cards-comparison .display-toggle-container .bs-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.selected-cards-comparison .toggle-btn:hover {
-  background: #e8eaed;
-  color: #202124;
+.selected-cards-comparison .display-toggle-container .bs-toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-.selected-cards-comparison .toggle-btn.active {
-  background: #1a73e8;
-  color: white;
+.selected-cards-comparison .display-toggle-container .bs-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.selected-cards-comparison .display-toggle-container .bs-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.selected-cards-comparison .display-toggle-container .bs-toggle-switch input:checked + .bs-toggle-slider {
+  background-color: #1a73e8;
+}
+
+.selected-cards-comparison .display-toggle-container .bs-toggle-switch input:checked + .bs-toggle-slider:before {
+  transform: translateX(20px);
+}
+
+.selected-cards-comparison .display-toggle-container .bs-toggle-switch:hover .bs-toggle-slider {
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
 }
 
 /* Ensure ads column is visible */
@@ -3532,15 +3612,15 @@
 }
 
 .transfer-partners-comparison .comparison-table th {
-  padding: 4px 4px;
+  padding: 4px 3px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
   color: #000000 !important;
   text-align: center;
   border-right: 1px solid #e8eaed;
   white-space: nowrap;
-  min-width: 60px;
-  width: 80px;
+  min-width: 55px;
+  width: 70px;
   line-height: 1.2;
 }
 
@@ -3550,21 +3630,23 @@
 .transfer-partners-comparison .citi-col,
 .transfer-partners-comparison .capital-one-col,
 .transfer-partners-comparison .bilt-col,
-.transfer-partners-comparison .wells-fargo-col {
-  width: 80px !important;
-  min-width: 80px !important;
-  max-width: 80px !important;
+.transfer-partners-comparison .wells-fargo-col,
+.transfer-partners-comparison .rove-col {
+  width: 70px !important;
+  min-width: 70px !important;
+  max-width: 70px !important;
 }
 
 .transfer-partners-comparison .comparison-table td {
-  padding: 4px 4px;
+  padding: 4px 3px;
   border-right: 1px solid #e8eaed;
   border-bottom: 1px solid #e8eaed;
   text-align: center;
   vertical-align: middle;
-  min-width: 60px;
+  min-width: 55px;
   color: #000000 !important;
   line-height: 1.2;
+  font-size: 11px;
 }
 
 /* Make all credit card cells the same width */
@@ -3573,16 +3655,17 @@
 .transfer-partners-comparison .citi-cell,
 .transfer-partners-comparison .capital-one-cell,
 .transfer-partners-comparison .bilt-cell,
-.transfer-partners-comparison .wells-fargo-cell {
-  width: 80px !important;
-  min-width: 80px !important;
-  max-width: 80px !important;
+.transfer-partners-comparison .wells-fargo-cell,
+.transfer-partners-comparison .rove-cell {
+  width: 70px !important;
+  min-width: 70px !important;
+  max-width: 70px !important;
 }
 
 .transfer-partners-comparison .partner-name-header {
   text-align: left !important;
-  min-width: 150px;
-  font-size: 14px;
+  min-width: 140px;
+  font-size: 12px;
   font-weight: 600;
   color: #000000 !important;
 }
@@ -4522,7 +4605,7 @@
    ================================ */
 
 .bs-calculation-subsection {
-  margin-top: 24px;
+  margin-top: 32px;
   padding: 0;
   background: transparent;
   border-radius: 12px;
@@ -4568,8 +4651,8 @@
 .bs-calculator-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 24px;
+  gap: 32px;
+  padding: 32px;
   background: #ffffff;
   border-radius: 0 0 12px 12px;
   border: 1px solid #e0e0e0;
@@ -4582,13 +4665,29 @@
   gap: 20px;
 }
 
+/* Rovemiles Form Grid - 3 columns */
+.bs-rovemiles-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 1200px) {
+  .bs-rovemiles-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .bs-form-card {
-  padding: 20px;
+  padding: 24px;
   background: #ffffff;
   border-radius: 12px;
   border: 2px solid #f0f0f0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .bs-form-card:hover {
@@ -5354,7 +5453,7 @@
 
 /* Rovemiles Results - Modern Design */
 .bs-rovemiles-results {
-  margin-top: 24px;
+  margin-top: 32px;
   padding: 0;
   background: transparent;
   border-radius: 12px;
@@ -5365,128 +5464,114 @@
 .bs-rovemiles-results-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 0;
   background: #ffffff;
   border-radius: 12px;
   border: 1px solid #e0e0e0;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .bs-rovemiles-hero {
-  padding: 24px;
+  padding: 32px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.bs-rovemiles-total {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.bs-rovemiles-total-card {
+  text-align: center;
+  color: white;
 }
 
-.bs-rovemiles-total-icon {
-  width: 64px;
-  height: 64px;
-  flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
+.bs-rovemiles-total-header {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.bs-rovemiles-total-icon svg {
-  width: 36px;
-  height: 36px;
-  stroke: currentColor;
-  color: white;
-}
-
-.bs-rovemiles-total-content {
-  flex: 1;
-  color: white;
-}
-
-.bs-rovemiles-total-label {
-  font-size: 12px;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  opacity: 0.9;
-  margin-bottom: 8px;
+  opacity: 0.95;
+}
+
+.bs-rovemiles-total-header svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
 }
 
 .bs-rovemiles-total-amount {
-  font-size: 48px;
+  font-size: 56px;
   font-weight: 700;
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
+  color: white;
 }
 
-.bs-rovemiles-percentage {
+.bs-rovemiles-reward-rate {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   opacity: 0.95;
 }
 
-.bs-rovemiles-percentage svg {
-  width: 18px;
-  height: 18px;
+.bs-rovemiles-reward-rate svg {
+  width: 20px;
+  height: 20px;
   stroke: currentColor;
 }
 
 .bs-rovemiles-breakdown {
-  padding: 24px;
+  padding: 40px;
   background: #f9fafb;
 }
 
-.bs-breakdown-header {
+.bs-breakdown-title {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 2px solid #e5e7eb;
 }
 
-.bs-breakdown-header svg {
+.bs-breakdown-title svg {
   width: 20px;
   height: 20px;
   stroke: currentColor;
   color: #6b7280;
 }
 
-.bs-breakdown-header span {
-  font-size: 14px;
-  font-weight: 600;
+.bs-breakdown-title span {
+  font-size: 16px;
+  font-weight: 700;
   color: #374151;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.bs-rovemiles-cards-grid {
+.bs-rovemiles-breakdown-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
 }
 
-.bs-rovemiles-card {
-  padding: 20px;
+.bs-rovemiles-breakdown-card {
+  padding: 28px;
   background: white;
   border-radius: 12px;
   border: 2px solid #e5e7eb;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
 }
 
-.bs-rovemiles-card:hover {
+.bs-rovemiles-breakdown-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
@@ -5506,6 +5591,85 @@
   background: linear-gradient(to right, #f9fafb 0%, #ffffff 10%);
 }
 
+.bs-rovemiles-breakdown-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.bs-rovemiles-breakdown-card-header svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  color: #6b7280;
+}
+
+.bs-rovemiles-breakdown-card-header span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bs-rovemiles-breakdown-amount {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 20px;
+  line-height: 1;
+}
+
+.bs-rovemiles-breakdown-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.bs-rovemiles-breakdown-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.bs-detail-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.bs-detail-value {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.bs-breakdown-detail-label {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.bs-breakdown-detail-value {
+  font-size: 14px;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.bs-rovemiles-breakdown-note {
+  font-size: 12px;
+  color: #6b7280;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+  line-height: 1.5;
+  margin-top: auto;
+}
+
+/* Legacy support for old classes */
 .bs-rovemiles-card-header {
   display: flex;
   align-items: center;
@@ -5549,17 +5713,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
-}
-
-.bs-detail-label {
-  color: #6b7280;
-  font-weight: 500;
-}
-
-.bs-detail-value {
-  color: #1f2937;
-  font-weight: 600;
 }
 
 .bs-rovemiles-note {
@@ -6899,5 +7052,932 @@
   }
 }
 
+/* Hyatt Calculator Styles */
+.bs-hyatt-calculator {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 
+.bs-hyatt-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 24px;
+}
 
+.bs-hyatt-section:last-child {
+  margin-bottom: 0;
+}
+
+.bs-hyatt-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+.bs-hyatt-section-header svg {
+  width: 24px;
+  height: 24px;
+  color: #1a73e8;
+}
+
+.bs-hyatt-section-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #202124;
+  margin: 0;
+  flex: 1;
+}
+
+.bs-hyatt-form-card {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #e0e0e0;
+}
+
+.bs-hyatt-rate-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.bs-hyatt-rate-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5f6368;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bs-hyatt-rate-btn:hover {
+  background: #f8f9fa;
+  border-color: #1a73e8;
+}
+
+.bs-hyatt-rate-btn.active {
+  background: #1a73e8;
+  color: white;
+  border-color: #1a73e8;
+}
+
+.bs-hyatt-results-card {
+  background: #e8f0fe;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bs-hyatt-result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bs-hyatt-result-label {
+  font-size: 12px;
+  color: #5f6368;
+  font-weight: 500;
+}
+
+.bs-hyatt-result-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a73e8;
+}
+
+.bs-hyatt-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.bs-hyatt-result-card {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bs-hyatt-result-card .bs-hyatt-result-label {
+  font-size: 13px;
+  color: #5f6368;
+  font-weight: 500;
+}
+
+.bs-hyatt-result-card .bs-hyatt-result-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a73e8;
+}
+
+.bs-hyatt-result-note {
+  font-size: 12px;
+  color: #9aa0a6;
+}
+
+.bs-hyatt-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.bs-hyatt-input-row input {
+  flex: 1;
+}
+
+.bs-hyatt-input-row select {
+  width: 140px;
+}
+
+.bs-hyatt-toggle-chart {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5f6368;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bs-hyatt-toggle-chart:hover {
+  background: #e8eaed;
+  border-color: #1a73e8;
+}
+
+.bs-hyatt-toggle-chart svg {
+  width: 16px;
+  height: 16px;
+}
+
+.bs-hyatt-chart-container {
+  margin-top: 16px;
+}
+
+.bs-hyatt-chart-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #e3f2fd;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #1976d2;
+}
+
+.bs-hyatt-chart-info svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.bs-hyatt-chart-table {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.bs-hyatt-chart-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bs-hyatt-chart-table th {
+  background: #f8f9fa;
+  padding: 12px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5f6368;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.bs-hyatt-chart-table td {
+  padding: 12px;
+  font-size: 13px;
+  color: #202124;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.bs-hyatt-chart-table td:hover {
+  background: #e8f0fe;
+}
+
+.bs-hyatt-chart-table td.bs-hyatt-chart-selected {
+  background: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.bs-hyatt-chart-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Points History Styles */
+.bs-information-subsection {
+  margin-top: 24px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.bs-history-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bs-history-charging-calculator {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bs-history-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.bs-history-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.bs-history-section-header svg {
+  width: 24px;
+  height: 24px;
+  color: #7c3aed;
+}
+
+.bs-history-section-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #202124;
+  margin: 0;
+}
+
+.bs-history-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.bs-history-stat-card {
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.bs-history-stat-label {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bs-history-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+.bs-history-no-data {
+  padding: 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.bs-history-loading {
+  padding: 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.bs-history-loading::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #9333ea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
+}
+
+.bs-history-chart-container {
+  margin-top: 20px;
+}
+
+.bs-history-chart-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #ede9fe;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #7c3aed;
+}
+
+.bs-history-chart-info svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Hotel Benefits Styles */
+.bs-hotel-subsection {
+  margin-top: 24px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.bs-hotel-benefits-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bs-hotel-benefits-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bs-hotel-benefits-filter-bar {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.bs-hotel-benefits-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.bs-hotel-benefits-filter-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #202124;
+  margin: 0;
+}
+
+.bs-hotel-benefits-filter-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.bs-hotel-benefits-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bs-hotel-benefits-btn:hover {
+  background: #e5e7eb;
+}
+
+.bs-hotel-benefits-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.bs-hotel-benefits-search {
+  margin-bottom: 16px;
+}
+
+.bs-hotel-benefits-search .bs-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.bs-hotel-benefits-search .bs-input-wrapper svg {
+  position: absolute;
+  left: 12px;
+  width: 18px;
+  height: 18px;
+  color: #6b7280;
+}
+
+.bs-hotel-benefits-search input {
+  width: 100%;
+  padding: 12px 40px 12px 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.bs-hotel-benefits-search input:focus {
+  outline: none;
+  border-color: #9333ea;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+
+.bs-hotel-benefits-clear-search {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.bs-hotel-benefits-clear-search:hover {
+  color: #374151;
+}
+
+.bs-hotel-benefits-clear-search svg {
+  width: 16px;
+  height: 16px;
+}
+
+.bs-hotel-benefits-quick-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.bs-hotel-benefits-quick-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bs-hotel-benefits-quick-filter:hover {
+  background: #e5e7eb;
+}
+
+.bs-hotel-benefits-quick-filter.active {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.bs-hotel-benefits-filter-count {
+  padding: 2px 6px;
+  background: #dbeafe;
+  border: 1px solid #93c5fd;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.bs-hotel-benefits-status-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.bs-hotel-benefits-status-section h5 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #202124;
+  margin-bottom: 16px;
+}
+
+.bs-hotel-benefits-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.bs-hotel-benefits-status-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bs-hotel-benefits-status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bs-hotel-benefits-status-header label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.bs-hotel-benefits-favorite-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #9ca3af;
+  transition: color 0.2s ease;
+}
+
+.bs-hotel-benefits-favorite-btn:hover {
+  color: #fbbf24;
+}
+
+.bs-hotel-benefits-favorite-btn.active {
+  color: #fbbf24;
+}
+
+.bs-hotel-benefits-favorite-btn.active svg {
+  fill: #fbbf24;
+}
+
+.bs-hotel-benefits-favorite-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.bs-hotel-benefits-status-select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bs-hotel-benefits-status-select:focus {
+  outline: none;
+  border-color: #9333ea;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+
+.bs-hotel-benefits-validity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bs-hotel-benefits-validity label {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.bs-hotel-benefits-validity-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.bs-hotel-benefits-date-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.bs-hotel-benefits-date-input:focus {
+  outline: none;
+  border-color: #9333ea;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+
+.bs-hotel-benefits-clear-date {
+  padding: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #dc2626;
+  transition: color 0.2s ease;
+}
+
+.bs-hotel-benefits-clear-date:hover {
+  color: #991b1b;
+}
+
+.bs-hotel-benefits-validity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.bs-hotel-benefits-validity-date {
+  color: #6b7280;
+}
+
+.bs-hotel-benefits-validity-days {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.bs-hotel-benefits-validity-days.ok {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.bs-hotel-benefits-validity-days.warning {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.bs-hotel-benefits-validity-days.expired {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.bs-hotel-benefits-table-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.bs-hotel-benefits-legend {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.bs-hotel-benefits-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.bs-hotel-benefits-legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.bs-hotel-benefits-table-wrapper {
+  overflow-x: auto;
+}
+
+.bs-hotel-benefits-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bs-hotel-benefits-table thead {
+  background: #f9fafb;
+}
+
+.bs-hotel-benefits-table th {
+  padding: 12px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.bs-hotel-benefits-table th:first-child {
+  min-width: 200px;
+}
+
+.bs-hotel-benefits-table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.bs-hotel-benefits-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.bs-hotel-benefits-hotel-name {
+  padding: 16px;
+  vertical-align: top;
+}
+
+.bs-hotel-benefits-hotel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bs-hotel-benefits-hotel-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #202124;
+}
+
+.bs-hotel-benefits-validity-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 10px;
+}
+
+.bs-hotel-benefits-validity-date-small {
+  color: #6b7280;
+}
+
+.bs-hotel-benefits-validity-days-small {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.bs-hotel-benefits-validity-days-small.ok {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.bs-hotel-benefits-validity-days-small.warning {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.bs-hotel-benefits-validity-days-small.expired {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.bs-hotel-benefits-level-badge {
+  display: flex;
+  gap: 8px;
+  font-size: 10px;
+}
+
+.bs-hotel-benefits-level-badge span {
+  padding: 2px 6px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  color: #6b7280;
+}
+
+.bs-hotel-benefits-level-badge span:last-child {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.bs-hotel-benefits-level-cell {
+  padding: 16px;
+  vertical-align: top;
+  min-width: 200px;
+}
+
+.bs-hotel-benefits-level-cell.current {
+  background: #faf5ff;
+  border-left: 4px solid #a78bfa;
+}
+
+.bs-hotel-benefits-level-cell.minimum {
+  background: #f0fdf4;
+  border-left: 4px solid #4ade80;
+}
+
+.bs-hotel-benefits-level-cell.empty {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.bs-hotel-benefits-level-header {
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.bs-hotel-benefits-level-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bs-hotel-benefits-benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bs-hotel-benefits-benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.bs-hotel-benefits-benefit-item svg {
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  color: #6b7280;
+}
+
+.bs-hotel-benefits-no-results {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.bs-hotel-benefits-loading {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.bs-hotel-benefits-loading::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #9333ea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

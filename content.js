@@ -81,13 +81,6 @@ function injectExtensionPanel() {
             </label>
           </div>
           <div class="bs-toggle-item">
-            <label class="bs-toggle-label" for="bs-rovemiles-toggle">Rovemiles</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-rovemiles-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-          <div class="bs-toggle-item">
             <label class="bs-toggle-label" for="bs-settings-toggle">Settings</label>
             <label class="bs-toggle-switch">
               <input type="checkbox" id="bs-settings-toggle">
@@ -351,6 +344,13 @@ function injectExtensionPanel() {
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-hotel-benefits-toggle">Hotel Benefits</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-hotel-benefits-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
           <div class="bs-header-actions">
           <button class="bs-action-btn bs-action-save" id="bs-save-hotel" title="Save hotel data">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -431,6 +431,82 @@ function injectExtensionPanel() {
           Radisson
         </button>
       </div>
+
+      <!-- Hotel Benefits Subsection -->
+      <div class="bs-hotel-subsection" id="bs-hotel-benefits-section" style="display: none;">
+        <div class="bs-hotel-benefits-content">
+          <div class="bs-subsection-header">
+            <div class="bs-subsection-header-content">
+              <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              <div>
+                <h3>Hotel Benefits</h3>
+                <p class="bs-subsection-description">Compare hotel loyalty program benefits and status levels</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bs-hotel-benefits-container">
+            <!-- Filter Bar -->
+            <div class="bs-hotel-benefits-filter-bar">
+              <div class="bs-hotel-benefits-filter-header">
+                <h4>Hotel Benefits Management</h4>
+                <div class="bs-hotel-benefits-filter-actions">
+                  <button type="button" class="bs-hotel-benefits-btn" id="bs-hotel-benefits-favorites-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    <span>Show Favorites</span>
+                  </button>
+                  <button type="button" class="bs-hotel-benefits-btn" id="bs-hotel-benefits-status-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                    <span>Show Status</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Search Bar -->
+              <div class="bs-hotel-benefits-search">
+                <div class="bs-input-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                  </svg>
+                  <input type="text" id="bs-hotel-benefits-search" placeholder="Search benefits (e.g., 'suite', 'breakfast', 'lounge')...">
+                  <button type="button" class="bs-hotel-benefits-clear-search" id="bs-hotel-benefits-clear-search" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"/>
+                      <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quick Filter Buttons -->
+              <div class="bs-hotel-benefits-quick-filters" id="bs-hotel-benefits-quick-filters">
+                <!-- Quick filter buttons will be populated by JavaScript -->
+              </div>
+
+              <!-- Status Level Selectors (collapsible) -->
+              <div class="bs-hotel-benefits-status-section" id="bs-hotel-benefits-status-section" style="display: none;">
+                <h5>Set Current Status Levels</h5>
+                <div class="bs-hotel-benefits-status-grid" id="bs-hotel-benefits-status-grid">
+                  <!-- Status selectors will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Benefits Table -->
+            <div class="bs-hotel-benefits-table-container" id="bs-hotel-benefits-table-container">
+              <!-- Benefits table will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Search Section -->
@@ -504,6 +580,13 @@ function injectExtensionPanel() {
                 <span class="bs-toggle-slider"></span>
               </label>
             </div>
+            <div class="bs-auto-reload-toggle">
+              <label class="bs-toggle-label" for="bs-info-history-toggle">Points History</label>
+              <label class="bs-toggle-switch">
+                <input type="checkbox" id="bs-info-history-toggle">
+                <span class="bs-toggle-slider"></span>
+              </label>
+            </div>
             <div class="bs-header-actions">
               <button class="bs-action-btn bs-action-save" id="bs-save-information" title="Save information data">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -568,6 +651,57 @@ function injectExtensionPanel() {
                 </div>
               <div class="partners-content" id="partners-content">
                 <!-- Filtered transfer partners will be displayed here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Points History CPM Section -->
+          <div class="bs-information-subsection" id="bs-info-history-section" style="display: none;">
+            <div class="bs-history-content">
+              <div class="bs-subsection-header">
+                <div class="bs-subsection-header-content">
+                  <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
+                  </svg>
+                  <div>
+                    <h3>Points CPM History</h3>
+                    <p class="bs-subsection-description">Analyze cost per mile (CPM) for different loyalty programs over time</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Historical CPM Data -->
+                <div class="bs-history-section">
+                  <div class="bs-history-section-header">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                      <polyline points="17 6 23 6 23 12"/>
+                    </svg>
+                    <h4>Historical CPM Data</h4>
+                  </div>
+                  <div class="bs-hyatt-form-card">
+                    <div class="bs-form-group">
+                      <label for="bs-history-program">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                          <path d="M2 17l10 5 10-5"/>
+                          <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                        Loyalty Program
+                      </label>
+                      <select id="bs-history-program">
+                        <option value="">Select a program...</option>
+                      </select>
+                    </div>
+                    <div class="bs-history-stats-grid" id="bs-history-stats-grid">
+                      <!-- Historical stats will be displayed here -->
+                    </div>
+                    <div class="bs-history-chart-container" id="bs-history-chart-container">
+                      <!-- Chart will be displayed here -->
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -645,6 +779,27 @@ function injectExtensionPanel() {
             <label class="bs-toggle-label" for="bs-total-calculator-toggle">Total Calculator</label>
             <label class="bs-toggle-switch">
               <input type="checkbox" id="bs-total-calculator-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-rovemiles-toggle">Rovemiles</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-rovemiles-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-hyatt-calculator-toggle">Hyatt Calculator</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-hyatt-calculator-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-hilton-calculator-toggle">Hilton Calculator</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-hilton-calculator-toggle">
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
@@ -834,19 +989,12 @@ function injectExtensionPanel() {
           <div id="bs-total-calculator-results" class="bs-calculator-results-card" style="display: none;">
             <!-- Results will be populated here -->
           </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Rovemiles Section -->
-    <div class="bs-section" id="bs-rovemiles-section" style="display: none;">
-      <div class="bs-section-header">
-        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-          <circle cx="12" cy="10" r="3"/>
-        </svg>
-        <span>Rovemiles</span>
-      </div>
+      <!-- Rovemiles Subsection -->
+      <div class="bs-calculation-subsection" id="bs-rovemiles-section" style="display: none;">
       <div class="bs-calculator-content">
         <div class="bs-subsection-header">
           <div class="bs-subsection-header-content">
@@ -860,144 +1008,620 @@ function injectExtensionPanel() {
             </div>
           </div>
         </div>
-        <form id="bs-rovemiles-form" class="bs-calculator-form">
-          <div class="bs-form-card bs-form-card-blue">
-            <div class="bs-form-card-header">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              <span>Booking Information</span>
-            </div>
-            <div class="bs-form-row">
-              <div class="bs-form-group">
-                <label for="bs-rove-total-cost">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                    <line x1="1" y1="10" x2="23" y2="10"/>
-                  </svg>
-                  Total Cost (USD) <span class="bs-required">*</span>
-                </label>
-                <div class="bs-input-wrapper">
-                  <span class="bs-input-prefix">$</span>
-                  <input type="text" id="bs-rove-total-cost" placeholder="211.64" required>
-                </div>
-              </div>
-              <div class="bs-form-group">
-                <label for="bs-rove-cash-price">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                    <line x1="1" y1="10" x2="23" y2="10"/>
-                  </svg>
-                  Cash Price (USD)
-                </label>
-                <div class="bs-input-wrapper">
-                  <span class="bs-input-prefix">$</span>
-                  <input type="text" id="bs-rove-cash-price" placeholder="350.00">
-                </div>
-                <div class="bs-input-hint">Optional: For indirect cost calculation</div>
-              </div>
-            </div>
-            <div class="bs-form-group">
-              <label for="bs-rove-miles">
+          <form id="bs-rovemiles-form" class="bs-calculator-form">
+            <div class="bs-rovemiles-form-grid">
+              <!-- Booking Information -->
+            <div class="bs-form-card bs-form-card-blue">
+              <div class="bs-form-card-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
                 </svg>
-                Rovemiles Earned Miles <span class="bs-required">*</span>
-              </label>
-              <div class="bs-input-wrapper">
-                <input type="text" id="bs-rove-miles" placeholder="5293" required>
-                <span class="bs-input-suffix">miles</span>
+                <span>Booking Information</span>
               </div>
-            </div>
-          </div>
-
-          <div class="bs-form-card bs-form-card-purple">
-            <div class="bs-form-card-header">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                <line x1="1" y1="10" x2="23" y2="10"/>
-              </svg>
-              <span>Credit Card Settings</span>
-            </div>
-            <div class="bs-form-row">
-              <div class="bs-form-group">
-                <label for="bs-rove-program">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                    <line x1="1" y1="10" x2="23" y2="10"/>
-                  </svg>
-                  Credit Card Program
-                </label>
-                <select id="bs-rove-program"></select>
+                <div class="bs-form-group">
+                  <label for="bs-rove-total-cost">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                      <line x1="1" y1="10" x2="23" y2="10"/>
+                    </svg>
+                    Total Cost (USD) <span class="bs-required">*</span>
+                  </label>
+                  <div class="bs-input-wrapper">
+                    <span class="bs-input-prefix">$</span>
+                    <input type="text" id="bs-rove-total-cost" placeholder="800.00" required>
+                  </div>
+                </div>
+                <div class="bs-form-group">
+                  <label for="bs-rove-cash-price">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                      <line x1="1" y1="10" x2="23" y2="10"/>
+                    </svg>
+                    Cash Price (USD)
+                  </label>
+                  <div class="bs-input-wrapper">
+                    <span class="bs-input-prefix">$</span>
+                    <input type="text" id="bs-rove-cash-price" placeholder="350.00">
+                  </div>
+                  <div class="bs-input-hint">Optional: For indirect cost calculation</div>
               </div>
               <div class="bs-form-group">
-                <label for="bs-rove-multiplier">
+                <label for="bs-rove-miles">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
                   </svg>
-                  Credit Card Multiplier
+                    Rovemiles Earned <span class="bs-required">*</span>
                 </label>
                 <div class="bs-input-wrapper">
-                  <input type="text" id="bs-rove-multiplier" placeholder="1.0">
-                  <span class="bs-input-suffix">x</span>
+                    <input type="text" id="bs-rove-miles" placeholder="28000" required>
+                  <span class="bs-input-suffix">miles</span>
                 </div>
-                <div class="bs-input-hint">Earning rate (e.g. 1.5x per $1)</div>
               </div>
             </div>
-            <div class="bs-form-group">
-              <label for="bs-rove-program-value">
+
+              <!-- Credit Card Settings -->
+            <div class="bs-form-card bs-form-card-purple">
+              <div class="bs-form-card-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                  <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+                <span>Credit Card Settings</span>
+              </div>
+                <div class="bs-form-group">
+                  <label for="bs-rove-program">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                      <line x1="1" y1="10" x2="23" y2="10"/>
+                    </svg>
+                    Credit Card Program
+                  </label>
+                  <select id="bs-rove-program"></select>
+                </div>
+                <div class="bs-form-group">
+                  <label for="bs-rove-multiplier">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    Credit Card Multiplier
+                  </label>
+                  <div class="bs-input-wrapper">
+                    <input type="text" id="bs-rove-multiplier" placeholder="1.0">
+                    <span class="bs-input-suffix">x</span>
+                  </div>
+                  <div class="bs-input-hint">Earning rate per $1 spent</div>
+              </div>
+              <div class="bs-form-group">
+                <label for="bs-rove-program-value">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"/>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                    Program Value (USD)
+                </label>
+                <div class="bs-input-wrapper">
+                  <span class="bs-input-prefix">$</span>
+                  <input type="text" id="bs-rove-program-value" placeholder="0.0000">
+                </div>
+                <div class="bs-input-hint">Optional: Override program value</div>
+              </div>
+            </div>
+
+              <!-- Valuation Settings -->
+            <div class="bs-form-card bs-form-card-amber">
+              <div class="bs-form-card-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <line x1="12" y1="1" x2="12" y2="23"/>
                   <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                 </svg>
-                Program Wert (USD)
-              </label>
-              <div class="bs-input-wrapper">
-                <span class="bs-input-prefix">$</span>
-                <input type="text" id="bs-rove-program-value" placeholder="0.0000">
+                <span>Valuation Settings</span>
               </div>
-              <div class="bs-input-hint">Optional: Override program value</div>
+              <div class="bs-form-group">
+                <label for="bs-rove-cpm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                  </svg>
+                  Rove Miles CPM (USD) <span class="bs-required">*</span>
+                </label>
+                <div class="bs-input-wrapper">
+                  <span class="bs-input-prefix">$</span>
+                    <input type="text" id="bs-rove-cpm" placeholder="0.0195" required>
+                </div>
+                  <div class="bs-input-hint">Cost per mile for Rove Miles</div>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div class="bs-form-card bs-form-card-amber">
-            <div class="bs-form-card-header">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="1" x2="12" y2="23"/>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-              </svg>
-              <span>Valuation Settings</span>
-            </div>
-            <div class="bs-form-group">
-              <label for="bs-rove-cpm">
+            <div class="bs-form-actions">
+              <button type="button" id="bs-rove-reset" class="bs-btn-secondary">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 6v6l4 2"/>
+                  <polyline points="1 4 1 10 7 10"/>
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
                 </svg>
-                Rove Miles CPM (USD) <span class="bs-required">*</span>
-              </label>
-              <div class="bs-input-wrapper">
-                <span class="bs-input-prefix">$</span>
-                <input type="text" id="bs-rove-cpm" placeholder="0.0177" required>
+                Reset All Fields
+              </button>
+            </div>
+          </form>
+          <div id="bs-rovemiles-results" class="bs-rovemiles-results">
+            <!-- Results will be populated here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Hyatt Calculator Subsection -->
+      <div class="bs-calculation-subsection" id="bs-hyatt-calculator-section" style="display: none;">
+        <div class="bs-calculator-content">
+          <div class="bs-subsection-header">
+            <div class="bs-subsection-header-content">
+              <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              <div>
+                <h3>Hyatt Points Calculator</h3>
+                <p class="bs-subsection-description">Calculate World of Hyatt points earning, value, and redemption</p>
               </div>
-              <div class="bs-input-hint">Cost per mile for Rove Miles and Credit Card points</div>
             </div>
           </div>
 
-          <div class="bs-form-actions">
-            <button type="button" id="bs-rove-reset" class="bs-btn-secondary">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="1 4 1 10 7 10"/>
-                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-              </svg>
-              Reset All Fields
-            </button>
+          <div class="bs-hyatt-calculator">
+            <!-- Points Earning Calculator -->
+            <div class="bs-hyatt-section">
+              <div class="bs-hyatt-section-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect width="16" height="20" x="4" y="2" rx="2"/>
+                  <line x1="8" x2="16" y1="6" y2="6"/>
+                </svg>
+                <h4>Points Earning Calculator</h4>
+              </div>
+              <div class="bs-hyatt-form-card">
+                <div class="bs-form-row">
+                  <div class="bs-form-group">
+                    <label for="bs-hyatt-base-cost">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                      </svg>
+                      Hotel Base Cost (USD) <span class="bs-required">*</span>
+                    </label>
+                    <div class="bs-input-wrapper">
+                      <span class="bs-input-prefix">$</span>
+                      <input type="number" id="bs-hyatt-base-cost" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                  </div>
+                  <div class="bs-form-group">
+                    <label for="bs-hyatt-taxes-fees">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                      </svg>
+                      Taxes & Fees (USD)
+                    </label>
+                    <div class="bs-input-wrapper">
+                      <span class="bs-input-prefix">$</span>
+                      <input type="number" id="bs-hyatt-taxes-fees" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                  </div>
+                </div>
+                <div class="bs-form-row">
+                  <div class="bs-form-group">
+                    <label for="bs-hyatt-elite-status">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                      </svg>
+                      World of Hyatt Status
+                    </label>
+                    <select id="bs-hyatt-elite-status">
+                      <option value="0">Member (No Bonus)</option>
+                      <option value="0.10">Discoverist (10% bonus)</option>
+                      <option value="0.20">Explorist (20% bonus)</option>
+                      <option value="0.30">Globalist (30% bonus)</option>
+                    </select>
+                  </div>
+                  <div class="bs-form-group">
+                    <label for="bs-hyatt-credit-card">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10"/>
+                      </svg>
+                      Hyatt Credit Card
+                    </label>
+                    <select id="bs-hyatt-credit-card">
+                      <option value="0">No Hyatt Credit Card</option>
+                      <option value="4">Personal - World of Hyatt Card (4X points)</option>
+                      <option value="4">Business - World of Hyatt Card (4X points)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="bs-hyatt-results-card">
+                  <div class="bs-hyatt-result-item">
+                    <span class="bs-hyatt-result-label">Total Points Earned</span>
+                    <span class="bs-hyatt-result-value" id="bs-hyatt-earned-points">0 Points</span>
+                  </div>
+                  <div class="bs-hyatt-result-item">
+                    <span class="bs-hyatt-result-label">Value</span>
+                    <span class="bs-hyatt-result-value" id="bs-hyatt-earned-value">$0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Points Value Calculator -->
+            <div class="bs-hyatt-section">
+              <div class="bs-hyatt-section-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                  <polyline points="17 6 23 6 23 12"/>
+                </svg>
+                <h4>Points Value Calculator</h4>
+              </div>
+              <div class="bs-hyatt-form-card">
+                <div class="bs-form-row">
+                  <div class="bs-form-group">
+                    <label for="bs-hyatt-category">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                      </svg>
+                      Hotel Category
+                    </label>
+                    <select id="bs-hyatt-category">
+                      <option value="1">Category 1</option>
+                      <option value="2">Category 2</option>
+                      <option value="3">Category 3</option>
+                      <option value="4">Category 4</option>
+                      <option value="5">Category 5</option>
+                      <option value="6">Category 6</option>
+                      <option value="7">Category 7</option>
+                      <option value="8">Category 8</option>
+                    </select>
+                  </div>
+                  <div class="bs-form-group">
+                    <label for="bs-hyatt-rate-type">Award Availability</label>
+                    <div class="bs-hyatt-rate-buttons">
+                      <button type="button" class="bs-hyatt-rate-btn" data-rate="offPeak">Off-Peak</button>
+                      <button type="button" class="bs-hyatt-rate-btn active" data-rate="standard">Standard</button>
+                      <button type="button" class="bs-hyatt-rate-btn" data-rate="peak">Peak</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="bs-form-group">
+                  <label for="bs-hyatt-points">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                    </svg>
+                    Number of Points
+                  </label>
+                  <input type="number" id="bs-hyatt-points" min="0" step="1000" placeholder="0">
+                </div>
+                <div class="bs-hyatt-results-grid">
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Points Value</span>
+                    <span class="bs-hyatt-result-value" id="bs-hyatt-points-value">$0.00</span>
+                    <span class="bs-hyatt-result-note" id="bs-hyatt-cents-per-point">0.00¢ per point</span>
+                  </div>
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Free Nights</span>
+                    <span class="bs-hyatt-result-value" id="bs-hyatt-free-nights">0 night(s)</span>
+                    <span class="bs-hyatt-result-note" id="bs-hyatt-category-note">Category 1 (Standard)</span>
+                  </div>
+                  <div class="bs-hyatt-result-card" id="bs-hyatt-cashback-card" style="display: none;">
+                    <span class="bs-hyatt-result-label">Cashback Equivalent</span>
+                    <span class="bs-hyatt-result-value" id="bs-hyatt-cashback-percent">0.00%</span>
+                    <span class="bs-hyatt-result-note" id="bs-hyatt-cashback-note">for $0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Redemption Value Calculator -->
+            <div class="bs-hyatt-section">
+              <div class="bs-hyatt-section-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="1" x2="12" y2="23"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                <h4>Redemption Value Calculator</h4>
+              </div>
+              <div class="bs-hyatt-form-card">
+                <div class="bs-form-row">
+                  <div class="bs-form-group">
+                    <label for="bs-hyatt-redemption-points">Cost In Points</label>
+                    <div class="bs-hyatt-input-row">
+                      <input type="number" id="bs-hyatt-redemption-points" min="0" step="1000" placeholder="0">
+                      <select id="bs-hyatt-stay-time-points">
+                        <option value="stay">Entire Stay</option>
+                        <option value="day">Per Day</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="bs-form-group">
+                    <label for="bs-hyatt-cash-cost">Cost In Cash</label>
+                    <div class="bs-hyatt-input-row">
+                      <div class="bs-input-wrapper">
+                        <span class="bs-input-prefix">$</span>
+                        <input type="number" id="bs-hyatt-cash-cost" step="0.01" min="0" placeholder="0.00">
+                      </div>
+                      <select id="bs-hyatt-stay-time-cash">
+                        <option value="stay">Entire Stay</option>
+                        <option value="day">Per Day</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="bs-form-group">
+                  <label for="bs-hyatt-total-days">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                      <line x1="16" x2="16" y1="2" y2="6"/>
+                      <line x1="8" x2="8" y1="2" y2="6"/>
+                      <line x1="3" x2="21" y1="10" y2="10"/>
+                    </svg>
+                    Total Days
+                  </label>
+                  <div class="bs-input-wrapper">
+                    <input type="number" id="bs-hyatt-total-days" min="1" step="1" value="1" placeholder="1">
+                    <span class="bs-input-suffix">Days</span>
+                  </div>
+                </div>
+                <div class="bs-hyatt-results-grid">
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Points Value</span>
+                    <span class="bs-hyatt-result-value" id="bs-hyatt-redemption-value">0.00¢ per point</span>
+                    <span class="bs-hyatt-result-note" id="bs-hyatt-redemption-note">$0.0000 per point</span>
+                  </div>
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Future Booking Value</span>
+                    <span class="bs-hyatt-result-value" id="bs-hyatt-future-value">$0.00</span>
+                    <span class="bs-hyatt-result-note">Based on earned points from stay</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
-        </form>
-        <div id="bs-rovemiles-results" class="bs-rovemiles-results">
-          <!-- Results will be populated here -->
+        </div>
+      </div>
+
+      <!-- Hilton Calculator Subsection -->
+      <div class="bs-calculation-subsection" id="bs-hilton-calculator-section" style="display: none;">
+        <div class="bs-calculator-content">
+          <div class="bs-subsection-header">
+            <div class="bs-subsection-header-content">
+              <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              <div>
+                <h3>Hilton Points Calculator</h3>
+                <p class="bs-subsection-description">Calculate Hilton Honors points earning, value, and redemption</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bs-hyatt-calculator">
+            <!-- Points Earning Calculator -->
+            <div class="bs-hyatt-section">
+              <div class="bs-hyatt-section-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                  <polyline points="17 6 23 6 23 12"/>
+                </svg>
+                <h4>Points Earning Calculator</h4>
+              </div>
+              <div class="bs-hyatt-form-card">
+                <div class="bs-form-row">
+                  <div class="bs-form-group">
+                    <label for="bs-hilton-base-cost">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                      </svg>
+                      Hotel Base Cost (USD) <span class="bs-required">*</span>
+                    </label>
+                    <div class="bs-input-wrapper">
+                      <span class="bs-input-prefix">$</span>
+                      <input type="number" id="bs-hilton-base-cost" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                  </div>
+                  <div class="bs-form-group">
+                    <label for="bs-hilton-taxes-fees">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                      </svg>
+                      Taxes & Fees (USD)
+                    </label>
+                    <div class="bs-input-wrapper">
+                      <span class="bs-input-prefix">$</span>
+                      <input type="number" id="bs-hilton-taxes-fees" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                  </div>
+                </div>
+                <div class="bs-form-row">
+                  <div class="bs-form-group">
+                    <label for="bs-hilton-brand">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                      </svg>
+                      Hilton Brand
+                    </label>
+                    <select id="bs-hilton-brand">
+                      <option value="10">All Brands (10X)</option>
+                      <option value="5">Tru / Home2 (5X)</option>
+                    </select>
+                  </div>
+                  <div class="bs-form-group">
+                    <label for="bs-hilton-credit-card">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10"/>
+                      </svg>
+                      Hilton Credit Card
+                    </label>
+                    <select id="bs-hilton-credit-card">
+                      <option value="0">No Hilton Credit Card</option>
+                      <option value="7">7X - Hilton Card</option>
+                      <option value="12">12X - Hilton Surpass</option>
+                      <option value="12">12X - Hilton Business Card</option>
+                      <option value="14">14X - Hilton Aspire</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="bs-form-group">
+                  <label for="bs-hilton-elite-status">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    Hilton Honors Status
+                  </label>
+                  <select id="bs-hilton-elite-status">
+                    <option value="0">No Status (No Bonus)</option>
+                    <option value="0.20">Hilton Silver (20% bonus)</option>
+                    <option value="0.80">Hilton Gold (80% bonus)</option>
+                    <option value="1">Hilton Diamond (100% bonus)</option>
+                  </select>
+                </div>
+                <div class="bs-hyatt-results-card">
+                  <div class="bs-hyatt-result-item">
+                    <span class="bs-hyatt-result-label">Total Points Earned</span>
+                    <span class="bs-hyatt-result-value" id="bs-hilton-total-points">0 Points</span>
+                  </div>
+                  <div class="bs-hyatt-result-item">
+                    <span class="bs-hyatt-result-label">Value</span>
+                    <span class="bs-hyatt-result-value" id="bs-hilton-points-value">$0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Points Breakdown -->
+            <div class="bs-hyatt-section">
+              <div class="bs-hyatt-section-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                </svg>
+                <h4>Points Breakdown</h4>
+              </div>
+              <div class="bs-hyatt-form-card">
+                <div class="bs-hyatt-results-grid">
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Base Points</span>
+                    <span class="bs-hyatt-result-value" id="bs-hilton-base-points">0 points</span>
+                    <span class="bs-hyatt-result-note" id="bs-hilton-base-note">10X points per dollar</span>
+                  </div>
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Elite Status Bonus</span>
+                    <span class="bs-hyatt-result-value" id="bs-hilton-elite-bonus">0 points</span>
+                    <span class="bs-hyatt-result-note" id="bs-hilton-elite-note">No elite status bonus</span>
+                  </div>
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Credit Card Points</span>
+                    <span class="bs-hyatt-result-value" id="bs-hilton-card-points">0 points</span>
+                    <span class="bs-hyatt-result-note" id="bs-hilton-card-note">No Hilton credit card</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Points Value Calculator -->
+            <div class="bs-hyatt-section">
+              <div class="bs-hyatt-section-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                  <polyline points="17 6 23 6 23 12"/>
+                </svg>
+                <h4>Points Value Calculator</h4>
+              </div>
+              <div class="bs-hyatt-form-card">
+                <div class="bs-hyatt-results-grid">
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Standard Hilton Value</span>
+                    <span class="bs-hyatt-result-value">0.59¢ per point</span>
+                    <span class="bs-hyatt-result-note">Average Hilton Honors point value</span>
+                  </div>
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Your Points Value</span>
+                    <span class="bs-hyatt-result-value" id="bs-hilton-your-value">$0.00</span>
+                    <span class="bs-hyatt-result-note">Based on total points earned</span>
+                  </div>
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Points Earned</span>
+                    <span class="bs-hyatt-result-value" id="bs-hilton-earned-display">0</span>
+                    <span class="bs-hyatt-result-note">From this stay</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Redemption Value Calculator -->
+            <div class="bs-hyatt-section">
+              <div class="bs-hyatt-section-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="1" x2="12" y2="23"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                <h4>Redemption Value Calculator</h4>
+              </div>
+              <div class="bs-hyatt-form-card">
+                <div class="bs-form-row">
+                  <div class="bs-form-group">
+                    <label for="bs-hilton-redemption-points">Cost In Points</label>
+                    <div class="bs-hyatt-input-row">
+                      <input type="number" id="bs-hilton-redemption-points" min="0" step="1000" placeholder="0">
+                      <select id="bs-hilton-stay-time-points">
+                        <option value="stay">Entire Stay</option>
+                        <option value="day">Per Day</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="bs-form-group">
+                    <label for="bs-hilton-cash-cost">Cost In Cash</label>
+                    <div class="bs-hyatt-input-row">
+                      <div class="bs-input-wrapper">
+                        <span class="bs-input-prefix">$</span>
+                        <input type="number" id="bs-hilton-cash-cost" step="0.01" min="0" placeholder="0.00">
+                      </div>
+                      <select id="bs-hilton-stay-time-cash">
+                        <option value="stay">Entire Stay</option>
+                        <option value="day">Per Day</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="bs-form-group">
+                  <label for="bs-hilton-total-days">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                      <line x1="16" x2="16" y1="2" y2="6"/>
+                      <line x1="8" x2="8" y1="2" y2="6"/>
+                      <line x1="3" x2="21" y1="10" y2="10"/>
+                    </svg>
+                    Total Days
+                  </label>
+                  <div class="bs-input-wrapper">
+                    <input type="number" id="bs-hilton-total-days" min="1" step="1" value="1" placeholder="1">
+                    <span class="bs-input-suffix">Days</span>
+                  </div>
+                </div>
+                <div class="bs-hyatt-results-grid">
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Points Value</span>
+                    <span class="bs-hyatt-result-value" id="bs-hilton-redemption-value">0.00¢ per point</span>
+                    <span class="bs-hyatt-result-note" id="bs-hilton-redemption-note">$0.0000 per point</span>
+                  </div>
+                  <div class="bs-hyatt-result-card">
+                    <span class="bs-hyatt-result-label">Future Booking Value</span>
+                    <span class="bs-hyatt-result-value" id="bs-hilton-future-value">$0.00</span>
+                    <span class="bs-hyatt-result-note">Based on earned points from stay</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
@@ -1122,15 +1746,73 @@ function applyToggleStates(toggleStates) {
   }
   
   // Apply calculation toggle state
+  // Also check for total calculator, rovemiles, hyatt calculator, and hilton calculator toggles
+  const totalCalculatorToggle = document.getElementById('bs-total-calculator-toggle');
+  const totalCalculatorSection = document.getElementById('bs-total-calculator-section');
+  const hyattCalculatorToggle = document.getElementById('bs-hyatt-calculator-toggle');
+  const hyattCalculatorSection = document.getElementById('bs-hyatt-calculator-section');
+  const hiltonCalculatorToggle = document.getElementById('bs-hilton-calculator-toggle');
+  const hiltonCalculatorSection = document.getElementById('bs-hilton-calculator-section');
+  const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
+  const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
+  const hyattEnabled = hyattCalculatorToggle && hyattCalculatorToggle.checked;
+  const hiltonEnabled = hiltonCalculatorToggle && hiltonCalculatorToggle.checked;
+  
   if (calculationToggle && calculationSection) {
     calculationToggle.checked = toggleStates.calculation;
-    calculationSection.style.display = toggleStates.calculation ? 'block' : 'none';
+    // Show calculation section if calculation toggle is on OR any sub-calculator is on
+    if (toggleStates.calculation || totalCalcEnabled || rovemilesEnabled || hyattEnabled || hiltonEnabled) {
+      calculationSection.style.display = 'block';
+    } else {
+      calculationSection.style.display = 'none';
+    }
   }
   
-  // Apply rovemiles toggle state
+  // Apply total calculator toggle state (within calculation section)
+  if (totalCalculatorToggle && totalCalculatorSection) {
+    const saved = localStorage.getItem('bs-total-calculator-enabled');
+    if (saved !== null) totalCalculatorToggle.checked = saved === 'true';
+    // Only show total calculator if calculation section is visible
+    if (calculationSection && calculationSection.style.display !== 'none') {
+      totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
+    } else {
+      totalCalculatorSection.style.display = 'none';
+    }
+  }
+  
+  // Apply rovemiles toggle state (within calculation section)
   if (rovemilesToggle && rovemilesSection) {
     rovemilesToggle.checked = toggleStates.rovemiles;
-    rovemilesSection.style.display = toggleStates.rovemiles ? 'block' : 'none';
+    // Only show rovemiles if calculation section is visible
+    if (calculationSection && calculationSection.style.display !== 'none') {
+      rovemilesSection.style.display = toggleStates.rovemiles ? '' : 'none';
+    } else {
+      rovemilesSection.style.display = 'none';
+    }
+  }
+
+  // Apply hyatt calculator toggle state (within calculation section)
+  if (hyattCalculatorToggle && hyattCalculatorSection) {
+    const saved = localStorage.getItem('bs-hyatt-calculator-enabled');
+    if (saved !== null) hyattCalculatorToggle.checked = saved === 'true';
+    // Only show hyatt calculator if calculation section is visible
+    if (calculationSection && calculationSection.style.display !== 'none') {
+      hyattCalculatorSection.style.display = hyattCalculatorToggle.checked ? '' : 'none';
+    } else {
+      hyattCalculatorSection.style.display = 'none';
+    }
+  }
+
+  // Apply hilton calculator toggle state (within calculation section)
+  if (hiltonCalculatorToggle && hiltonCalculatorSection) {
+    const saved = localStorage.getItem('bs-hilton-calculator-enabled');
+    if (saved !== null) hiltonCalculatorToggle.checked = saved === 'true';
+    // Only show hilton calculator if calculation section is visible
+    if (calculationSection && calculationSection.style.display !== 'none') {
+      hiltonCalculatorSection.style.display = hiltonCalculatorToggle.checked ? '' : 'none';
+    } else {
+      hiltonCalculatorSection.style.display = 'none';
+    }
   }
   
   // Apply settings toggle state
@@ -1182,6 +1864,26 @@ function initializeEventListeners() {
       localStorage.setItem('bs-hotel-external-links-enabled', hotelLinksToggle.checked);
       hotelLinksContainer.style.display = hotelLinksToggle.checked ? '' : 'none';
     });
+  }
+
+  // Hotel Benefits Toggle
+  const hotelBenefitsToggle = document.getElementById('bs-hotel-benefits-toggle');
+  const hotelBenefitsSection = document.getElementById('bs-hotel-benefits-section');
+  if (hotelBenefitsToggle && hotelBenefitsSection) {
+    const savedHotelBenefits = localStorage.getItem('bs-hotel-benefits-enabled');
+    if (savedHotelBenefits !== null) hotelBenefitsToggle.checked = savedHotelBenefits === 'true';
+    hotelBenefitsSection.style.display = hotelBenefitsToggle.checked ? '' : 'none';
+    hotelBenefitsToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-hotel-benefits-enabled', hotelBenefitsToggle.checked);
+      hotelBenefitsSection.style.display = hotelBenefitsToggle.checked ? '' : 'none';
+      if (hotelBenefitsToggle.checked) {
+        initializeHotelBenefits();
+      }
+    });
+    // Initialize if already enabled
+    if (hotelBenefitsToggle.checked) {
+      initializeHotelBenefits();
+    }
   }
   
   // Hotel auto-reload setup
@@ -1300,6 +2002,10 @@ function initializeEventListeners() {
   const totalCalculatorToggle = document.getElementById('bs-total-calculator-toggle');
   const totalCalculatorSection = document.getElementById('bs-total-calculator-section');
 
+  // Rovemiles section toggle - works within Calculation section
+  const rovemilesToggle = document.getElementById('bs-rovemiles-toggle');
+  const rovemilesSection = document.getElementById('bs-rovemiles-section');
+
   // Total Calculator - works independently, but needs calculation section to be visible
   if (totalCalculatorToggle && totalCalculatorSection) {
     const saved = localStorage.getItem('bs-total-calculator-enabled');
@@ -1320,17 +2026,126 @@ function initializeEventListeners() {
       }
       
       // Update calculation section visibility
+      const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
+      const hyattEnabled = document.getElementById('bs-hyatt-calculator-toggle')?.checked;
       if (calculationSection && calculationToggle) {
-        if (calculationToggle.checked || totalCalculatorToggle.checked) {
+        if (calculationToggle.checked || totalCalculatorToggle.checked || rovemilesEnabled || hyattEnabled) {
+          calculationSection.style.display = 'block';
+    } else {
+          calculationSection.style.display = 'none';
+        }
+      }
+    });
+      }
+      
+  // Rovemiles - works within Calculation section, similar to Total Calculator
+  if (rovemilesToggle && rovemilesSection) {
+    const saved = localStorage.getItem('bs-rovemiles-enabled');
+    if (saved !== null) rovemilesToggle.checked = saved === 'true';
+    
+    // Set initial visibility
+    rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
+    
+    rovemilesToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-rovemiles-enabled', rovemilesToggle.checked);
+      
+      // Show/hide rovemiles section based on its own toggle
+      rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
+      
+      // If rovemiles is enabled, ensure calculation section is visible
+      if (rovemilesToggle.checked && calculationSection) {
+        calculationSection.style.display = 'block';
+      }
+      
+      // Update calculation section visibility
+      const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
+      const hyattEnabled = document.getElementById('bs-hyatt-calculator-toggle')?.checked;
+      if (calculationSection && calculationToggle) {
+        if (calculationToggle.checked || totalCalcEnabled || rovemilesToggle.checked || hyattEnabled) {
           calculationSection.style.display = 'block';
         } else {
           calculationSection.style.display = 'none';
         }
       }
+      saveToggleStates();
     });
   }
 
-  // Main calculation toggle - works with Total Calculator
+  // Hyatt Calculator - works within Calculation section, similar to Total Calculator and Rovemiles
+  const hyattCalculatorToggle = document.getElementById('bs-hyatt-calculator-toggle');
+  const hyattCalculatorSection = document.getElementById('bs-hyatt-calculator-section');
+  
+  if (hyattCalculatorToggle && hyattCalculatorSection) {
+    const saved = localStorage.getItem('bs-hyatt-calculator-enabled');
+    if (saved !== null) hyattCalculatorToggle.checked = saved === 'true';
+    
+    // Set initial visibility
+    hyattCalculatorSection.style.display = hyattCalculatorToggle.checked ? '' : 'none';
+    
+    hyattCalculatorToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-hyatt-calculator-enabled', hyattCalculatorToggle.checked);
+      
+      // Show/hide hyatt calculator section based on its own toggle
+      hyattCalculatorSection.style.display = hyattCalculatorToggle.checked ? '' : 'none';
+      
+      // If hyatt calculator is enabled, ensure calculation section is visible
+      if (hyattCalculatorToggle.checked && calculationSection) {
+        calculationSection.style.display = 'block';
+      }
+      
+      // Update calculation section visibility
+      const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
+      const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
+      const hiltonEnabled = document.getElementById('bs-hilton-calculator-toggle')?.checked;
+      if (calculationSection && calculationToggle) {
+        if (calculationToggle.checked || totalCalcEnabled || rovemilesEnabled || hyattCalculatorToggle.checked || hiltonEnabled) {
+          calculationSection.style.display = 'block';
+        } else {
+          calculationSection.style.display = 'none';
+        }
+      }
+      saveToggleStates();
+    });
+  }
+
+  // Hilton Calculator - works within Calculation section, similar to Total Calculator, Rovemiles, and Hyatt Calculator
+  const hiltonCalculatorToggle = document.getElementById('bs-hilton-calculator-toggle');
+  const hiltonCalculatorSection = document.getElementById('bs-hilton-calculator-section');
+  
+  if (hiltonCalculatorToggle && hiltonCalculatorSection) {
+    const saved = localStorage.getItem('bs-hilton-calculator-enabled');
+    if (saved !== null) hiltonCalculatorToggle.checked = saved === 'true';
+    
+    // Set initial visibility
+    hiltonCalculatorSection.style.display = hiltonCalculatorToggle.checked ? '' : 'none';
+    
+    hiltonCalculatorToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-hilton-calculator-enabled', hiltonCalculatorToggle.checked);
+      
+      // Show/hide hilton calculator section based on its own toggle
+      hiltonCalculatorSection.style.display = hiltonCalculatorToggle.checked ? '' : 'none';
+      
+      // If hilton calculator is enabled, ensure calculation section is visible
+      if (hiltonCalculatorToggle.checked && calculationSection) {
+        calculationSection.style.display = 'block';
+      }
+      
+      // Update calculation section visibility
+      const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
+      const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
+      const hyattEnabled = hyattCalculatorToggle && hyattCalculatorToggle.checked;
+      if (calculationSection && calculationToggle) {
+        if (calculationToggle.checked || totalCalcEnabled || rovemilesEnabled || hyattEnabled || hiltonCalculatorToggle.checked) {
+          calculationSection.style.display = 'block';
+        } else {
+          calculationSection.style.display = 'none';
+        }
+      }
+      saveToggleStates();
+    });
+  }
+      
+  // Main calculation toggle - works with Total Calculator, Rovemiles, Hyatt Calculator, and Hilton Calculator
   if (calculationToggle && calculationSection) {
     // Load saved state
     const savedCalcState = localStorage.getItem('bs-calculation-enabled');
@@ -1338,13 +2153,28 @@ function initializeEventListeners() {
       calculationToggle.checked = savedCalcState === 'true';
     }
     
-    // Set initial visibility - show if calculation toggle is on OR total calculator is on
+    // Set initial visibility - show if calculation toggle is on OR any sub-calculator is on
     const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
-    if (calculationToggle.checked || totalCalcEnabled) {
+    const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
+    const hyattEnabled = hyattCalculatorToggle && hyattCalculatorToggle.checked;
+    const hiltonEnabled = hiltonCalculatorToggle && hiltonCalculatorToggle.checked;
+    if (calculationToggle.checked || totalCalcEnabled || rovemilesEnabled || hyattEnabled || hiltonEnabled) {
       calculationSection.style.display = 'block';
       // Ensure total calculator visibility matches its toggle
       if (totalCalculatorToggle && totalCalculatorSection) {
         totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
+      }
+      // Ensure rovemiles visibility matches its toggle
+      if (rovemilesToggle && rovemilesSection) {
+        rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
+      }
+      // Ensure hyatt calculator visibility matches its toggle
+      if (hyattCalculatorToggle && hyattCalculatorSection) {
+        hyattCalculatorSection.style.display = hyattCalculatorToggle.checked ? '' : 'none';
+      }
+      // Ensure hilton calculator visibility matches its toggle
+      if (hiltonCalculatorToggle && hiltonCalculatorSection) {
+        hiltonCalculatorSection.style.display = hiltonCalculatorToggle.checked ? '' : 'none';
       }
     } else {
       calculationSection.style.display = 'none';
@@ -1360,39 +2190,33 @@ function initializeEventListeners() {
         if (totalCalculatorToggle && totalCalculatorSection) {
           totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
         }
+        // Ensure rovemiles visibility matches its toggle
+        if (rovemilesToggle && rovemilesSection) {
+          rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
+        }
+        // Ensure hyatt calculator visibility matches its toggle
+        if (hyattCalculatorToggle && hyattCalculatorSection) {
+          hyattCalculatorSection.style.display = hyattCalculatorToggle.checked ? '' : 'none';
+        }
+        // Ensure hilton calculator visibility matches its toggle
+        if (hiltonCalculatorToggle && hiltonCalculatorSection) {
+          hiltonCalculatorSection.style.display = hiltonCalculatorToggle.checked ? '' : 'none';
+        }
       } else {
-        // Check if total calculator is enabled
+        // Check if any sub-calculator is enabled
         const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
+        const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
+        const hyattEnabled = hyattCalculatorToggle && hyattCalculatorToggle.checked;
+        const hiltonEnabled = hiltonCalculatorToggle && hiltonCalculatorToggle.checked;
         
-        if (totalCalcEnabled) {
-          // If total calculator is on, keep section visible
+        if (totalCalcEnabled || rovemilesEnabled || hyattEnabled || hiltonEnabled) {
+          // If any sub-calculator is on, keep section visible
           calculationSection.style.display = 'block';
         } else {
-          // Only hide if total calculator is also off
+          // Only hide if all sub-calculators are also off
           calculationSection.style.display = 'none';
         }
       }
-      saveToggleStates();
-    });
-  }
-
-  // Rovemiles section toggle - completely independent main section
-  const rovemilesToggle = document.getElementById('bs-rovemiles-toggle');
-  const rovemilesSection = document.getElementById('bs-rovemiles-section');
-  
-  if (rovemilesToggle && rovemilesSection) {
-    // Load saved state
-    const savedRovemilesState = localStorage.getItem('bs-rovemiles-enabled');
-    if (savedRovemilesState !== null) {
-      rovemilesToggle.checked = savedRovemilesState === 'true';
-    }
-    
-    // Set initial visibility
-    rovemilesSection.style.display = rovemilesToggle.checked ? 'block' : 'none';
-    
-    rovemilesToggle.addEventListener('change', () => {
-      localStorage.setItem('bs-rovemiles-enabled', rovemilesToggle.checked);
-      rovemilesSection.style.display = rovemilesToggle.checked ? 'block' : 'none';
       saveToggleStates();
     });
   }
@@ -1402,9 +2226,11 @@ function initializeEventListeners() {
   const infoPartnersToggle = document.getElementById('bs-info-partners-toggle');
   const infoSelectedToggle = document.getElementById('bs-info-selected-toggle');
   const infoPointsToggle = document.getElementById('bs-info-points-toggle');
+  const infoHistoryToggle = document.getElementById('bs-info-history-toggle');
   const infoCardsPanel = document.getElementById('bs-info-cards-panel');
   const infoPartnersPanel = document.getElementById('available-transfer-partners');
   const infoSelectedPanel = document.getElementById('selected-cards-comparison');
+  const infoHistoryPanel = document.getElementById('bs-info-history-section');
   const infoPointsPanel = document.getElementById('bs-points-tracker-panel');
 
   if (infoCardsToggle && infoCardsPanel) {
@@ -1742,6 +2568,29 @@ function initializeEventListeners() {
         console.log('My Credit Cards section toggled');
       }
     });
+  }
+
+  // Points History toggle
+  if (infoHistoryToggle && infoHistoryPanel) {
+    const saved = localStorage.getItem('bs-info-history-enabled');
+    if (saved !== null) infoHistoryToggle.checked = saved === 'true';
+    
+    infoHistoryPanel.style.display = infoHistoryToggle.checked ? '' : 'none';
+    
+    infoHistoryToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-info-history-enabled', infoHistoryToggle.checked);
+      infoHistoryPanel.style.display = infoHistoryToggle.checked ? '' : 'none';
+      
+      if (infoHistoryToggle.checked) {
+        // Initialize Points History when enabled
+        initializePointsHistory();
+      }
+    });
+    
+    // Initialize if already enabled
+    if (infoHistoryToggle.checked) {
+      initializePointsHistory();
+    }
   }
 }
 
@@ -2874,6 +3723,12 @@ function initializeCalculationSection() {
   
   // Initialize Rovemiles Calculator
   initializeRovemilesCalculator();
+  
+  // Initialize Hyatt Calculator
+  initializeHyattCalculator();
+  
+  // Initialize Hilton Calculator
+  initializeHiltonCalculator();
 }
 
 // Populate program dropdowns for calculators
@@ -3475,28 +4330,28 @@ function displayRovemilesResults(results) {
 
   resultsDiv.innerHTML = `
     <div class="bs-rovemiles-results-content">
+      <!-- Hero Section: Total Cashback -->
       <div class="bs-rovemiles-hero">
-        <div class="bs-rovemiles-total">
-          <div class="bs-rovemiles-total-icon">
+        <div class="bs-rovemiles-total-card">
+          <div class="bs-rovemiles-total-header">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
             </svg>
+            <span>Total Cashback Value</span>
           </div>
-          <div class="bs-rovemiles-total-content">
-            <div class="bs-rovemiles-total-label">Total Cashback Value</div>
             <div class="bs-rovemiles-total-amount">$${formatCurrency(results.totalCashback)}</div>
-            <div class="bs-rovemiles-percentage">
+          <div class="bs-rovemiles-reward-rate">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
               </svg>
-              ${formatCurrency(results.cashbackPercentage)}% Reward Rate
-            </div>
+            <span>${formatCurrency(results.cashbackPercentage)}% Reward Rate</span>
           </div>
         </div>
       </div>
       
+      <!-- Breakdown Section -->
       <div class="bs-rovemiles-breakdown">
-        <div class="bs-breakdown-header">
+        <div class="bs-breakdown-title">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="8" y1="6" x2="21" y2="6"/>
             <line x1="8" y1="12" x2="21" y2="12"/>
@@ -3508,27 +4363,28 @@ function displayRovemilesResults(results) {
           <span>Cashback Breakdown</span>
         </div>
         
-        <div class="bs-rovemiles-cards-grid">
-          <div class="bs-rovemiles-card bs-rovemiles-card-purple">
-            <div class="bs-rovemiles-card-header">
+        <div class="bs-rovemiles-breakdown-grid">
+          <!-- Credit Card Cashback Card -->
+          <div class="bs-rovemiles-breakdown-card">
+            <div class="bs-rovemiles-breakdown-card-header">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
                 <line x1="1" y1="10" x2="23" y2="10"/>
               </svg>
               <span>Credit Card Cashback</span>
             </div>
-            <div class="bs-rovemiles-amount">$${formatCurrency(results.creditCardCashback)}</div>
-            <div class="bs-rovemiles-details">
-              <div class="bs-rovemiles-detail-item">
-                <span class="bs-detail-label">Points Earned</span>
-                <span class="bs-detail-value">${results.creditCardPoints.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+            <div class="bs-rovemiles-breakdown-amount">$${formatCurrency(results.creditCardCashback)}</div>
+            <div class="bs-rovemiles-breakdown-details">
+              <div class="bs-rovemiles-breakdown-detail">
+                <span class="bs-breakdown-detail-label">Points Earned</span>
+                <span class="bs-breakdown-detail-value">${results.creditCardPoints.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
               </div>
-              <div class="bs-rovemiles-detail-item">
-                <span class="bs-detail-label">Valuation Method</span>
-                <span class="bs-detail-value">${results.usingCPM ? 'CPM' : 'Program Value'}</span>
+              <div class="bs-rovemiles-breakdown-detail">
+                <span class="bs-breakdown-detail-label">Valuation Method</span>
+                <span class="bs-breakdown-detail-value">${results.usingCPM ? 'CPM' : 'Program Value'}</span>
               </div>
             </div>
-            <div class="bs-rovemiles-note">
+            <div class="bs-rovemiles-breakdown-note">
               ${results.usingCPM 
                 ? `CPM @ $${results.roveMilesCPM.toFixed(4)}/Point (higher value)`
                 : `${results.programName} @ $${results.programValue.toFixed(4)}/Point`
@@ -3536,48 +4392,50 @@ function displayRovemilesResults(results) {
             </div>
           </div>
           
-          <div class="bs-rovemiles-card bs-rovemiles-card-blue">
-            <div class="bs-rovemiles-card-header">
+          <!-- Rovemiles Cashback Card -->
+          <div class="bs-rovemiles-breakdown-card">
+            <div class="bs-rovemiles-breakdown-card-header">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                 <circle cx="12" cy="10" r="3"/>
               </svg>
               <span>Rovemiles Cashback</span>
             </div>
-            <div class="bs-rovemiles-amount">$${formatCurrency(results.rovemilesCashback)}</div>
-            <div class="bs-rovemiles-details">
-              <div class="bs-rovemiles-detail-item">
-                <span class="bs-detail-label">Miles Earned</span>
-                <span class="bs-detail-value">${results.rovemilesMiles.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+            <div class="bs-rovemiles-breakdown-amount">$${formatCurrency(results.rovemilesCashback)}</div>
+            <div class="bs-rovemiles-breakdown-details">
+              <div class="bs-rovemiles-breakdown-detail">
+                <span class="bs-breakdown-detail-label">Miles Earned</span>
+                <span class="bs-breakdown-detail-value">${results.rovemilesMiles.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
               </div>
-              <div class="bs-rovemiles-detail-item">
-                <span class="bs-detail-label">CPM Rate</span>
-                <span class="bs-detail-value">$${results.roveMilesCPM.toFixed(4)}</span>
+              <div class="bs-rovemiles-breakdown-detail">
+                <span class="bs-breakdown-detail-label">CPM Rate</span>
+                <span class="bs-breakdown-detail-value">$${results.roveMilesCPM.toFixed(4)}</span>
               </div>
             </div>
-            <div class="bs-rovemiles-note">
+            <div class="bs-rovemiles-breakdown-note">
               @ $${results.roveMilesCPM.toFixed(4)}/Mile
             </div>
           </div>
           
           ${results.effectiveUsdPerThousand > 0 ? `
-          <div class="bs-rovemiles-card bs-rovemiles-card-gray">
-            <div class="bs-rovemiles-card-header">
+          <!-- Effective Cost Card -->
+          <div class="bs-rovemiles-breakdown-card">
+            <div class="bs-rovemiles-breakdown-card-header">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="12" y1="1" x2="12" y2="23"/>
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
               </svg>
-              <span>USD per 1,000 Miles</span>
+              <span>Effective Cost per 1,000 Rove Miles</span>
             </div>
-            <div class="bs-rovemiles-amount">$${formatCurrency(results.effectiveUsdPerThousand)}</div>
-            <div class="bs-rovemiles-details">
-              <div class="bs-rovemiles-detail-item">
-                <span class="bs-detail-label">Calculation</span>
-                <span class="bs-detail-value">(Cost − Cash) ÷ Miles × 1,000</span>
+            <div class="bs-rovemiles-breakdown-amount">$${formatCurrency(results.effectiveUsdPerThousand)}</div>
+            <div class="bs-rovemiles-breakdown-details">
+              <div class="bs-rovemiles-breakdown-detail">
+                <span class="bs-breakdown-detail-label">USD per 1,000 Miles</span>
+                <span class="bs-breakdown-detail-value">$${formatCurrency(results.effectiveUsdPerThousand)}</span>
               </div>
             </div>
-            <div class="bs-rovemiles-note">
-              Effective cost per 1,000 Rove miles
+            <div class="bs-rovemiles-breakdown-note">
+              Calculation: (Cost − Cash) ÷ Miles × 1,000
             </div>
           </div>
           ` : ''}
@@ -3621,6 +4479,1304 @@ function initializeAirportAutocomplete() {
 
   // Start initialization
   initAutocomplete();
+}
+
+// Initialize Hyatt Calculator
+function initializeHyattCalculator() {
+  // Hyatt categories data
+  const categories = [
+    { level: 1, standard: 5000, offPeak: 3500, peak: 6500 },
+    { level: 2, standard: 8000, offPeak: 6500, peak: 9500 },
+    { level: 3, standard: 12000, offPeak: 9000, peak: 15000 },
+    { level: 4, standard: 15000, offPeak: 12000, peak: 18000 },
+    { level: 5, standard: 20000, offPeak: 17000, peak: 23000 },
+    { level: 6, standard: 25000, offPeak: 21000, peak: 29000 },
+    { level: 7, standard: 30000, offPeak: 25000, peak: 35000 },
+    { level: 8, standard: 40000, offPeak: 35000, peak: 45000 }
+  ];
+
+  const pointValue = 0.0219; // $0.0219 per point
+
+  // Get all input elements
+  const baseCostInput = document.getElementById('bs-hyatt-base-cost');
+  const taxesFeesInput = document.getElementById('bs-hyatt-taxes-fees');
+  const eliteStatusSelect = document.getElementById('bs-hyatt-elite-status');
+  const creditCardSelect = document.getElementById('bs-hyatt-credit-card');
+  const categorySelect = document.getElementById('bs-hyatt-category');
+  const rateTypeButtons = document.querySelectorAll('.bs-hyatt-rate-btn');
+  const pointsInput = document.getElementById('bs-hyatt-points');
+  const redemptionPointsInput = document.getElementById('bs-hyatt-redemption-points');
+  const cashCostInput = document.getElementById('bs-hyatt-cash-cost');
+  const stayTimePointsSelect = document.getElementById('bs-hyatt-stay-time-points');
+  const stayTimeCashSelect = document.getElementById('bs-hyatt-stay-time-cash');
+  const totalDaysInput = document.getElementById('bs-hyatt-total-days');
+  if (!baseCostInput) return;
+
+  // Calculate earned points
+  function calculateEarnedPoints() {
+    const baseCost = parseFloat(baseCostInput.value) || 0;
+    const taxesFees = parseFloat(taxesFeesInput.value) || 0;
+    const eliteStatus = parseFloat(eliteStatusSelect.value) || 0;
+    const creditCard = parseFloat(creditCardSelect.value) || 0;
+
+    const basePoints = baseCost * 5;
+    const bonusPoints = basePoints * eliteStatus;
+    const cardPoints = (baseCost + taxesFees) * creditCard;
+
+    return Math.floor(basePoints + bonusPoints + cardPoints);
+  }
+
+  // Update earned points display
+  function updateEarnedPoints() {
+    const earnedPoints = calculateEarnedPoints();
+    const earnedValue = earnedPoints * pointValue;
+
+    const earnedPointsEl = document.getElementById('bs-hyatt-earned-points');
+    const earnedValueEl = document.getElementById('bs-hyatt-earned-value');
+
+    if (earnedPointsEl) {
+      earnedPointsEl.textContent = `${earnedPoints.toLocaleString()} Points`;
+    }
+    if (earnedValueEl) {
+      earnedValueEl.textContent = `$${earnedValue.toFixed(2)}`;
+    }
+
+    // Auto-fill points if earned points > 0
+    if (earnedPoints > 0 && pointsInput) {
+      pointsInput.value = earnedPoints;
+      updatePointsValue();
+    }
+  }
+
+  // Update points value calculator
+  function updatePointsValue() {
+    const points = parseFloat(pointsInput.value) || 0;
+    const category = parseInt(categorySelect.value) || 1;
+    const rateType = document.querySelector('.bs-hyatt-rate-btn.active')?.dataset.rate || 'standard';
+    
+    const categoryData = categories[category - 1];
+    const pointsPerNight = categoryData[rateType];
+    const pointsValue = points * pointValue;
+    const freeNights = pointsPerNight > 0 ? (points / pointsPerNight).toFixed(1) : '0';
+    
+    const rateTypeLabel = rateType === 'offPeak' ? 'Off-Peak' : rateType === 'standard' ? 'Standard' : 'Peak';
+
+    const pointsValueEl = document.getElementById('bs-hyatt-points-value');
+    const centsPerPointEl = document.getElementById('bs-hyatt-cents-per-point');
+    const freeNightsEl = document.getElementById('bs-hyatt-free-nights');
+    const categoryNoteEl = document.getElementById('bs-hyatt-category-note');
+
+    if (pointsValueEl) pointsValueEl.textContent = `$${pointsValue.toFixed(2)}`;
+    if (centsPerPointEl) centsPerPointEl.textContent = `${(pointValue * 100).toFixed(2)}¢ per point`;
+    if (freeNightsEl) freeNightsEl.textContent = `${freeNights} night(s)`;
+    if (categoryNoteEl) categoryNoteEl.textContent = `Category ${category} (${rateTypeLabel})`;
+
+    // Update cashback if base cost is provided
+    const baseCost = parseFloat(baseCostInput.value) || 0;
+    const taxesFees = parseFloat(taxesFeesInput.value) || 0;
+    const totalCost = baseCost + taxesFees;
+
+    const cashbackCard = document.getElementById('bs-hyatt-cashback-card');
+    if (totalCost > 0 && cashbackCard) {
+      const cashbackPercent = (pointsValue / totalCost) * 100;
+      const cashbackPercentEl = document.getElementById('bs-hyatt-cashback-percent');
+      const cashbackNoteEl = document.getElementById('bs-hyatt-cashback-note');
+
+      if (cashbackPercentEl) cashbackPercentEl.textContent = `${cashbackPercent.toFixed(2)}%`;
+      if (cashbackNoteEl) cashbackNoteEl.textContent = `for $${totalCost.toFixed(2)}`;
+      cashbackCard.style.display = 'block';
+    } else if (cashbackCard) {
+      cashbackCard.style.display = 'none';
+    }
+  }
+
+  // Update redemption value calculator
+  function updateRedemptionValue() {
+    const redemptionPoints = parseFloat(redemptionPointsInput.value) || 0;
+    const cashCost = parseFloat(cashCostInput.value) || 0;
+    const totalDays = parseFloat(totalDaysInput.value) || 1;
+    const stayTimePoints = stayTimePointsSelect.value;
+    const stayTimeCash = stayTimeCashSelect.value;
+
+    let totalPointsCost = redemptionPoints;
+    if (stayTimePoints === 'day') {
+      totalPointsCost = redemptionPoints * totalDays;
+    }
+
+    let totalCashCost = cashCost;
+    if (stayTimeCash === 'day') {
+      totalCashCost = cashCost * totalDays;
+    }
+
+    const centsPerPoint = totalPointsCost > 0 ? (totalCashCost / totalPointsCost) * 100 : 0;
+    const dollarsPerPoint = centsPerPoint / 100;
+
+    const earnedPoints = calculateEarnedPoints();
+    const futureValue = (centsPerPoint / 100) * earnedPoints;
+
+    const redemptionValueEl = document.getElementById('bs-hyatt-redemption-value');
+    const redemptionNoteEl = document.getElementById('bs-hyatt-redemption-note');
+    const futureValueEl = document.getElementById('bs-hyatt-future-value');
+
+    if (redemptionValueEl) {
+      redemptionValueEl.textContent = centsPerPoint > 0 ? `${centsPerPoint.toFixed(2)}¢ per point` : '0.00¢ per point';
+    }
+    if (redemptionNoteEl) {
+      redemptionNoteEl.textContent = centsPerPoint > 0 ? `$${dollarsPerPoint.toFixed(4)} per point` : 'No value';
+    }
+    if (futureValueEl) {
+      futureValueEl.textContent = `$${futureValue > 0 ? futureValue.toFixed(2) : '0.00'}`;
+    }
+  }
+
+
+  // Event listeners
+  [baseCostInput, taxesFeesInput, eliteStatusSelect, creditCardSelect].forEach(el => {
+    if (el) {
+      el.addEventListener('input', updateEarnedPoints);
+      el.addEventListener('change', updateEarnedPoints);
+    }
+  });
+
+  if (categorySelect) {
+    categorySelect.addEventListener('change', () => {
+      updatePointsValue();
+    });
+  }
+
+  rateTypeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      rateTypeButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      updatePointsValue();
+    });
+  });
+
+  if (pointsInput) {
+    pointsInput.addEventListener('input', updatePointsValue);
+  }
+
+  [redemptionPointsInput, cashCostInput, stayTimePointsSelect, stayTimeCashSelect, totalDaysInput].forEach(el => {
+    if (el) {
+      el.addEventListener('input', updateRedemptionValue);
+      el.addEventListener('change', updateRedemptionValue);
+    }
+  });
+
+  // Initial calculations
+  updateEarnedPoints();
+  updatePointsValue();
+  updateRedemptionValue();
+}
+
+// Initialize Hilton Calculator
+function initializeHiltonCalculator() {
+  const pointValue = 0.0059; // $0.0059 per point (0.59¢ per point)
+
+  // Get all input elements
+  const baseCostInput = document.getElementById('bs-hilton-base-cost');
+  const taxesFeesInput = document.getElementById('bs-hilton-taxes-fees');
+  const brandSelect = document.getElementById('bs-hilton-brand');
+  const creditCardSelect = document.getElementById('bs-hilton-credit-card');
+  const eliteStatusSelect = document.getElementById('bs-hilton-elite-status');
+  const redemptionPointsInput = document.getElementById('bs-hilton-redemption-points');
+  const cashCostInput = document.getElementById('bs-hilton-cash-cost');
+  const stayTimePointsSelect = document.getElementById('bs-hilton-stay-time-points');
+  const stayTimeCashSelect = document.getElementById('bs-hilton-stay-time-cash');
+  const totalDaysInput = document.getElementById('bs-hilton-total-days');
+  if (!baseCostInput) return;
+
+  // Credit card status mapping (card value -> status index)
+  const cardStatusMap = {
+    7: 0,   // Hilton Card -> No Status
+    12: 1,  // Hilton Surpass/Business -> Silver
+    14: 2   // Hilton Aspire -> Gold
+  };
+
+  // Calculate total points
+  function calculateTotalPoints() {
+    const baseCost = parseFloat(baseCostInput.value) || 0;
+    const taxesFees = parseFloat(taxesFeesInput.value) || 0;
+    const brand = parseInt(brandSelect.value) || 10;
+    const creditCard = parseInt(creditCardSelect.value) || 0;
+    const eliteStatus = parseFloat(eliteStatusSelect.value) || 0;
+
+    // Base points from hotel stay (10x or 5x depending on brand)
+    const basePoints = baseCost * brand;
+    
+    // Elite status bonus
+    const eliteBonus = basePoints * eliteStatus;
+    
+    // Credit card points (on both base cost and taxes)
+    const totalSpend = baseCost + taxesFees;
+    const cardPoints = totalSpend * creditCard;
+    
+    // Total points
+    const total = Math.floor(basePoints + eliteBonus + cardPoints);
+
+    return {
+      total,
+      basePoints: Math.floor(basePoints),
+      eliteBonus: Math.floor(eliteBonus),
+      cardPoints: Math.floor(cardPoints),
+      brand,
+      eliteStatus
+    };
+  }
+
+  // Update points display
+  function updatePointsDisplay() {
+    const result = calculateTotalPoints();
+    const pointsValue = result.total * pointValue;
+
+    const totalPointsEl = document.getElementById('bs-hilton-total-points');
+    const pointsValueEl = document.getElementById('bs-hilton-points-value');
+    const yourValueEl = document.getElementById('bs-hilton-your-value');
+    const earnedDisplayEl = document.getElementById('bs-hilton-earned-display');
+    const basePointsEl = document.getElementById('bs-hilton-base-points');
+    const baseNoteEl = document.getElementById('bs-hilton-base-note');
+    const eliteBonusEl = document.getElementById('bs-hilton-elite-bonus');
+    const eliteNoteEl = document.getElementById('bs-hilton-elite-note');
+    const cardPointsEl = document.getElementById('bs-hilton-card-points');
+    const cardNoteEl = document.getElementById('bs-hilton-card-note');
+
+    if (totalPointsEl) totalPointsEl.textContent = `${result.total.toLocaleString()} Points`;
+    if (pointsValueEl) pointsValueEl.textContent = `$${pointsValue.toFixed(2)}`;
+    if (yourValueEl) yourValueEl.textContent = `$${pointsValue.toFixed(2)}`;
+    if (earnedDisplayEl) earnedDisplayEl.textContent = result.total.toLocaleString();
+
+    if (basePointsEl) basePointsEl.textContent = `${result.basePoints.toLocaleString()} points`;
+    if (baseNoteEl) baseNoteEl.textContent = `${result.brand}X points per dollar on base cost`;
+
+    if (eliteBonusEl) eliteBonusEl.textContent = `${result.eliteBonus.toLocaleString()} points`;
+    if (eliteNoteEl) {
+      if (result.eliteStatus > 0) {
+        eliteNoteEl.textContent = `${(result.eliteStatus * 100).toFixed(0)}% bonus on base points`;
+      } else {
+        eliteNoteEl.textContent = 'No elite status bonus';
+      }
+    }
+
+    if (cardPointsEl) cardPointsEl.textContent = `${result.cardPoints.toLocaleString()} points`;
+    if (cardNoteEl) {
+      const creditCard = parseInt(creditCardSelect.value) || 0;
+      if (creditCard > 0) {
+        cardNoteEl.textContent = `${creditCard}X points per dollar on total spend`;
+      } else {
+        cardNoteEl.textContent = 'No Hilton credit card';
+      }
+    }
+  }
+
+  // Update redemption value calculator
+  function updateRedemptionValue() {
+    const redemptionPoints = parseFloat(redemptionPointsInput.value) || 0;
+    const cashCost = parseFloat(cashCostInput.value) || 0;
+    const totalDays = parseFloat(totalDaysInput.value) || 1;
+    const stayTimePoints = stayTimePointsSelect.value;
+    const stayTimeCash = stayTimeCashSelect.value;
+
+    let totalPointsCost = redemptionPoints;
+    if (stayTimePoints === 'day') {
+      totalPointsCost = redemptionPoints * totalDays;
+    }
+
+    let totalCashCost = cashCost;
+    if (stayTimeCash === 'day') {
+      totalCashCost = cashCost * totalDays;
+    }
+
+    const centsPerPoint = totalPointsCost > 0 ? (totalCashCost / totalPointsCost) * 100 : 0;
+    const dollarsPerPoint = centsPerPoint / 100;
+
+    const result = calculateTotalPoints();
+    const futureValue = (centsPerPoint / 100) * result.total;
+
+    const redemptionValueEl = document.getElementById('bs-hilton-redemption-value');
+    const redemptionNoteEl = document.getElementById('bs-hilton-redemption-note');
+    const futureValueEl = document.getElementById('bs-hilton-future-value');
+
+    if (redemptionValueEl) {
+      redemptionValueEl.textContent = centsPerPoint > 0 ? `${centsPerPoint.toFixed(2)}¢ per point` : '0.00¢ per point';
+    }
+    if (redemptionNoteEl) {
+      redemptionNoteEl.textContent = centsPerPoint > 0 ? `$${dollarsPerPoint.toFixed(4)} per point` : 'No value';
+    }
+    if (futureValueEl) {
+      futureValueEl.textContent = `$${futureValue > 0 ? futureValue.toFixed(2) : '0.00'}`;
+    }
+  }
+
+  // Update elite status when card changes
+  function updateEliteStatusFromCard() {
+    const creditCard = parseInt(creditCardSelect.value) || 0;
+    const cardStatusIndex = cardStatusMap[creditCard];
+    
+    if (cardStatusIndex !== undefined) {
+      const statusOptions = [
+        { value: 0, label: 'No Status' },
+        { value: 0.20, label: 'Hilton Silver' },
+        { value: 0.80, label: 'Hilton Gold' },
+        { value: 1, label: 'Hilton Diamond' }
+      ];
+      
+      const cardStatusValue = statusOptions[cardStatusIndex].value;
+      const currentStatusValue = parseFloat(eliteStatusSelect.value) || 0;
+      
+      // Only update if card status is higher than current selection
+      if (cardStatusValue > currentStatusValue) {
+        eliteStatusSelect.value = cardStatusValue;
+      }
+    }
+  }
+
+  // Event listeners
+  [baseCostInput, taxesFeesInput, brandSelect, creditCardSelect, eliteStatusSelect].forEach(el => {
+    if (el) {
+      el.addEventListener('input', () => {
+        updatePointsDisplay();
+        updateRedemptionValue();
+      });
+      el.addEventListener('change', () => {
+        updatePointsDisplay();
+        updateRedemptionValue();
+      });
+    }
+  });
+
+  // Special handling for credit card change to update elite status
+  if (creditCardSelect) {
+    creditCardSelect.addEventListener('change', () => {
+      updateEliteStatusFromCard();
+      updatePointsDisplay();
+      updateRedemptionValue();
+    });
+  }
+
+  [redemptionPointsInput, cashCostInput, stayTimePointsSelect, stayTimeCashSelect, totalDaysInput].forEach(el => {
+    if (el) {
+      el.addEventListener('input', updateRedemptionValue);
+      el.addEventListener('change', updateRedemptionValue);
+    }
+  });
+
+  // Initial calculations
+  updatePointsDisplay();
+  updateRedemptionValue();
+}
+
+// Hotel Programs Data
+const HOTEL_PROGRAMS = [
+  {
+    id: 'accor',
+    name: 'Accor',
+    currentLevel: 1,
+    totalLevels: 5,
+    levels: [
+      { level: 1, name: 'Classic', color: 'bg-gray-100 text-gray-800', benefits: ['Member rate', 'Free WiFi', 'Exclusive offers', 'Partner benefits', 'Car rental services'] },
+      { level: 2, name: 'Silver\n(10 N)', color: 'bg-gray-300 text-gray-800', benefits: ['24% Bonus Points', 'Welcome drink', 'Priority Welcome', 'Late Check-Out', '13% off airport lounges'] },
+      { level: 3, name: 'Gold\n(30 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['48% Bonus Points', 'Guaranteed room availability', 'Room upgrade', 'Early Check-In or Late Check-Out', '14% off airport lounges'] },
+      { level: 4, name: 'Platinum\n(60 N)', color: 'bg-gray-400 text-white', benefits: ['76% Bonus Points', 'Suite Night Upgrade', 'Lounge access', 'Premium Wi-Fi', '15% off airport lounges', 'Early Check-In', 'Late Check-Out'] },
+      { level: 5, name: 'Diamond\n(10,4k€)', color: 'bg-blue-500 text-white', benefits: ['100% Bonus Points', 'Free breakfast on weekends', 'Dining & Spa Rewards', 'Free Gold Status'] }
+    ]
+  },
+  {
+    id: 'choice',
+    name: 'Choice',
+    currentLevel: 1,
+    totalLevels: 4,
+    levels: [
+      { level: 1, name: 'Member', color: 'bg-gray-100 text-gray-800', benefits: ['Points earning', 'Member rates', 'Mobile check-in', 'Points toward free N', 'No blackout dates'] },
+      { level: 2, name: 'Gold\n(10 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['10% Bonus Points', 'Late Check-Out', 'Preferred rooms', 'Welcome gift'] },
+      { level: 3, name: 'Platinum\n(20 N)', color: 'bg-gray-400 text-white', benefits: ['25% Bonus Points', 'Room upgrade', 'Late Check-Out 4pm', 'Welcome amenity'] },
+      { level: 4, name: 'Diamond\n(40 N)', color: 'bg-blue-500 text-white', benefits: ['50% Bonus Points', 'Suite upgrade', 'Late Check-Out 6pm', 'Executive lounge', 'Guaranteed availability', 'Free breakfast'] }
+    ]
+  },
+  {
+    id: 'hilton',
+    name: 'Hilton',
+    currentLevel: 1,
+    totalLevels: 4,
+    levels: [
+      { level: 1, name: 'Member', color: 'bg-gray-100 text-gray-800', benefits: ['Guaranteed Hilton Honors Discount rate', 'Points toward free N', 'No resort fees on reward stays', 'Digital Check-in', 'Digital Key', 'Free WiFi', 'Fifth N free on reward stays', 'Member rates', 'Points earning'] },
+      { level: 2, name: 'Silver\n(10 N)', color: 'bg-gray-300 text-gray-800', benefits: ['20% Bonus Points', 'Free bottled water', 'Elite Rollover Nights', 'All-Inclusive Spa Discount', 'Exclusive Hilton Honors Experiences'] },
+      { level: 3, name: 'Gold\n(40 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['80% Bonus Points', 'Space-available room upgrade', 'Daily Food and Beverage Credit or Continental Breakfast', 'Milestone Bonuses'] },
+      { level: 4, name: 'Diamond\n(60 N)', color: 'bg-blue-500 text-white', benefits: ['100% Bonus Points', 'Suite upgrade', 'Executive lounge access', 'Diamond status extension', 'Premium WiFi', '48-hour room guarantee', 'Elite status gifting'] }
+    ]
+  },
+  {
+    id: 'hyatt',
+    name: 'Hyatt',
+    currentLevel: 1,
+    totalLevels: 4,
+    levels: [
+      { level: 1, name: 'Member', color: 'bg-gray-100 text-gray-800', benefits: ['5 points per dollar spent', 'Free WiFi', 'Waived resort fees on award stays', 'Points earning', 'Member rates'] },
+      { level: 2, name: 'Discoverist\n(10 N)', color: 'bg-green-200 text-green-800', benefits: ['10% Bonus Points', 'Premium WiFi', 'Late Check-Out 2pm', 'Preferred room upgrade', 'Elite check-in', 'Complimentary bottled water'] },
+      { level: 3, name: 'Explorist\n(30 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['20% Bonus Points', 'Upgrade to best room excluding suites', '72 hours guaranteed availability', 'Category 1-4 free night certificate', '4 Club Access Awards'] },
+      { level: 4, name: 'Globalist\n(60 N)', color: 'bg-purple-500 text-white', benefits: ['30% Bonus Points', 'Suite upgrade included', 'Late Check-Out 4pm', 'Club lounge access or free breakfast', '5 Suite Upgrade Awards', 'Category 1-7 free night certificate', '3 Guest of Honor Awards', 'Globalist concierge', '48 hours guaranteed availability'] }
+    ]
+  },
+  {
+    id: 'ihg',
+    name: 'IHG',
+    currentLevel: 1,
+    totalLevels: 5,
+    levels: [
+      { level: 1, name: 'Club Member', color: 'bg-gray-100 text-gray-800', benefits: ['Earn Points toward Reward Nights and More', 'No Blackout Dates for Reward Nights', 'Member Rates', 'Member Promotions', 'Free WiFi', 'Late Check-Out 2PM (subject to availability)'] },
+      { level: 2, name: 'Silver Elite\n(10 N)', color: 'bg-gray-300 text-gray-800', benefits: ['20% Bonus Points', 'Points Don\'t Expire'] },
+      { level: 3, name: 'Gold Elite\n(20 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['40% Bonus Points', 'Rollover Nights for Next Year\'s Status', 'Start Earning Milestone Rewards'] },
+      { level: 4, name: 'Platinum Elite\n(40 N)', color: 'bg-gray-400 text-white', benefits: ['60% Bonus Points', 'Guaranteed Room Availability (72 hrs)', 'Complimentary Upgrade', 'Welcome Amenity at Check-In (Points or drink/snack)', 'Early Check-In', 'Reward Night Discounts', 'Hertz Gold Plus Rewards Five Star Status'] },
+      { level: 5, name: 'Diamond Elite\n(70 N)', color: 'bg-blue-500 text-white', benefits: ['100% Bonus Points', 'Dedicated Diamond Support', 'Welcome Amenity at Check-In (Free breakfast, points or drink/snack)', 'Hertz President\'s Circle Status'] }
+    ]
+  },
+  {
+    id: 'marriott',
+    name: 'Marriott',
+    currentLevel: 1,
+    totalLevels: 6,
+    levels: [
+      { level: 1, name: 'Member', color: 'bg-gray-100 text-gray-800', benefits: ['Points earning', 'Member rates', 'Free WiFi', 'Mobile check-in', 'Mobile key', 'No blackout dates'] },
+      { level: 2, name: 'Silver Elite\n(10 N)', color: 'bg-gray-300 text-gray-800', benefits: ['10% Bonus Points', 'Late Check-Out 2pm', 'Preferred rooms', 'Priority support'] },
+      { level: 3, name: 'Gold Elite\n(25 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['25% Bonus Points', 'Room upgrade', 'Late Check-Out 4pm', 'Enhanced WiFi', 'Welcome gift'] },
+      { level: 4, name: 'Platinum Elite\n(50 N)', color: 'bg-gray-400 text-white', benefits: ['50% Bonus Points', 'Suite upgrade', 'Club lounge access', 'Free breakfast'] },
+      { level: 5, name: 'Titanium Elite\n(75 N)', color: 'bg-gray-600 text-white', benefits: ['75% Bonus Points', 'Enhanced suite upgrade', '48h upgrade guarantee'] },
+      { level: 6, name: 'Ambassador Elite\n(100 N)', color: 'bg-purple-600 text-white', benefits: ['100% Bonus Points', 'Guaranteed suite upgrade', 'Late Check-Out anytime', 'Personal ambassador'] }
+    ]
+  },
+  {
+    id: 'wyndham',
+    name: 'Wyndham',
+    currentLevel: 1,
+    totalLevels: 4,
+    levels: [
+      { level: 1, name: 'Blue', color: 'bg-blue-100 text-blue-800', benefits: ['Points earning', 'Member rates', 'Free WiFi', 'Points toward free N', 'No blackout dates', 'Member promotions'] },
+      { level: 2, name: 'Gold\n(5 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['10% Bonus Points', 'Late Check-Out 2pm', 'Preferred rooms', 'Bonus points promotions'] },
+      { level: 3, name: 'Platinum\n(15 N)', color: 'bg-gray-400 text-white', benefits: ['15% Bonus Points', 'Room upgrade', 'Late Check-Out 4pm', 'Welcome amenity', 'Guaranteed availability', 'Early Check-In', 'Caesars Rewards status match', 'Avis/Budget car rental upgrade'] },
+      { level: 4, name: 'Diamond\n(40 N)', color: 'bg-blue-500 text-white', benefits: ['30% Bonus Points', 'Late Check-Out 6pm', 'VIP treatment', 'Exclusive offers', 'Free Gold Status', 'Points bonus', 'Suite upgrade'] }
+    ]
+  },
+  {
+    id: 'radisson',
+    name: 'Radisson',
+    currentLevel: 1,
+    totalLevels: 3,
+    levels: [
+      { level: 1, name: 'Club', color: 'bg-gray-100 text-gray-800', benefits: ['Points earning', 'Member rates', 'Free WiFi', 'Points toward free N', 'No blackout dates', 'Member promotions', 'Mobile check-in'] },
+      { level: 2, name: 'Premium\n(15 N)', color: 'bg-gray-300 text-gray-800', benefits: ['15% bonus points', 'Late Check-Out 2pm', 'Preferred rooms', 'Welcome gift'] },
+      { level: 3, name: 'VIP\n(30 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['25% bonus points', 'Suite upgrade', 'Late Check-Out 4pm', 'Welcome amenity', 'Guaranteed availability', 'Early Check-In', 'Club lounge access', 'Free breakfast'] }
+    ]
+  }
+];
+
+// Supabase Hotel Status Levels Service
+const HotelStatusLevelsService = {
+  supabaseUrl: window.config?.api?.supabase?.url || 'https://saegzrncsjcsvgcjkniv.supabase.co',
+  supabaseKey: window.config?.api?.supabase?.key || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhZWd6cm5jc2pjc3ZnY2prbml2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE3ODgxNDYsImV4cCI6MjA0NzM2NDE0Nn0.w1eHVcuvDUoqhcMCYenKKA9URAtG4YbW3j5GcDgvu3Y',
+  cache: new Map(),
+  lastFetch: null,
+  cacheTTL: 5 * 60 * 1000, // 5 minutes
+
+  // Fetch all hotel status levels from Supabase
+  async fetchAll() {
+    try {
+      const url = `${this.supabaseUrl}/rest/v1/hotel_status_levels?select=*&is_active=eq.true&order=program_name.asc`;
+      
+      let data = [];
+      
+      // Try using httpClient first (with background fetch support)
+      if (window.httpClient) {
+        try {
+          data = await window.httpClient.request(url, {
+            useBackground: true,
+            cache: false, // Always fetch fresh data
+            headers: {
+              'apikey': this.supabaseKey,
+              'Authorization': `Bearer ${this.supabaseKey}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=representation'
+            }
+          }) || [];
+        } catch (httpError) {
+          console.warn('httpClient request failed, trying direct fetch:', httpError);
+          // Fallback to direct fetch
+          const response = await fetch(url, {
+            headers: {
+              'apikey': this.supabaseKey,
+              'Authorization': `Bearer ${this.supabaseKey}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=representation'
+            }
+          });
+          
+          if (response.ok) {
+            data = await response.json() || [];
+          }
+        }
+      } else {
+        // Direct fetch if httpClient is not available
+        const response = await fetch(url, {
+          headers: {
+            'apikey': this.supabaseKey,
+            'Authorization': `Bearer ${this.supabaseKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          }
+        });
+        
+        if (response.ok) {
+          data = await response.json() || [];
+        }
+      }
+
+      // Ensure data is an array
+      if (!Array.isArray(data)) {
+        data = data ? [data] : [];
+      }
+
+      // Update cache
+      this.cache.clear();
+      data.forEach(item => {
+        this.cache.set(item.program_id, item);
+      });
+      this.lastFetch = Date.now();
+
+      return data;
+    } catch (error) {
+      console.error('Error fetching hotel status levels from Supabase:', error);
+      return [];
+    }
+  },
+
+  // Get hotel status level by program ID
+  async getByProgramId(programId) {
+    // Check cache first
+    if (this.cache.has(programId)) {
+      return this.cache.get(programId);
+    }
+
+    // If cache is stale or empty, fetch all
+    if (!this.lastFetch || (Date.now() - this.lastFetch) > this.cacheTTL) {
+      await this.fetchAll();
+    }
+
+    return this.cache.get(programId) || null;
+  },
+
+  // Update or create hotel status level
+  async upsert(programId, programName, currentLevel, levelName, validUntil) {
+    try {
+      const existing = await this.getByProgramId(programId);
+      
+      const payload = {
+        program_id: programId,
+        program_name: programName,
+        current_level: currentLevel,
+        level_name: levelName || null,
+        valid_until: validUntil || null,
+        is_active: true
+      };
+
+      let url, method;
+      if (existing) {
+        // Update existing record
+        url = `${this.supabaseUrl}/rest/v1/hotel_status_levels?program_id=eq.${encodeURIComponent(programId)}`;
+        method = 'PATCH';
+      } else {
+        // Create new record
+        url = `${this.supabaseUrl}/rest/v1/hotel_status_levels`;
+        method = 'POST';
+      }
+
+      // Try using httpClient first (with background fetch support)
+      let response, result;
+      
+      if (window.httpClient && window.httpClient.backgroundFetch) {
+        try {
+          const responseData = await window.httpClient.backgroundFetch(url, {
+            method: method,
+            headers: {
+              'apikey': this.supabaseKey,
+              'Authorization': `Bearer ${this.supabaseKey}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=representation'
+            },
+            body: JSON.stringify(payload)
+          });
+          
+          result = Array.isArray(responseData) ? responseData[0] : responseData;
+        } catch (httpError) {
+          console.warn('httpClient request failed, trying direct fetch:', httpError);
+          // Fallback to direct fetch
+          response = await fetch(url, {
+            method: method,
+            headers: {
+              'apikey': this.supabaseKey,
+              'Authorization': `Bearer ${this.supabaseKey}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=representation'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            throw new Error(`Supabase request failed: ${response.status} ${response.statusText}`);
+          }
+
+          result = await response.json();
+        }
+      } else {
+        // Direct fetch if httpClient is not available
+        response = await fetch(url, {
+          method: method,
+          headers: {
+            'apikey': this.supabaseKey,
+            'Authorization': `Bearer ${this.supabaseKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Supabase request failed: ${response.status} ${response.statusText}`);
+        }
+
+        result = await response.json();
+      }
+
+      const updatedItem = Array.isArray(result) ? result[0] : result;
+      
+      // Update cache
+      if (updatedItem) {
+        this.cache.set(programId, updatedItem);
+      }
+      
+      return updatedItem;
+    } catch (error) {
+      console.error('Error upserting hotel status level to Supabase:', error);
+      throw error;
+    }
+  },
+
+  // Delete hotel status level (set is_active to false)
+  async delete(programId) {
+    try {
+      const url = `${this.supabaseUrl}/rest/v1/hotel_status_levels?program_id=eq.${encodeURIComponent(programId)}`;
+      
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'apikey': this.supabaseKey,
+          'Authorization': `Bearer ${this.supabaseKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({ is_active: false })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Supabase request failed: ${response.status} ${response.statusText}`);
+      }
+
+      // Remove from cache
+      this.cache.delete(programId);
+      
+      return true;
+    } catch (error) {
+      console.error('Error deleting hotel status level from Supabase:', error);
+      throw error;
+    }
+  }
+};
+
+// Initialize Hotel Benefits
+function initializeHotelBenefits() {
+  const benefitsSection = document.getElementById('bs-hotel-benefits-section');
+  if (!benefitsSection) return;
+
+  // Get current level for a hotel program from Supabase
+  async function getCurrentLevel(hotelId) {
+    try {
+      const data = await HotelStatusLevelsService.getByProgramId(hotelId);
+      return data?.current_level || 1;
+    } catch (error) {
+      console.error('Error getting current level:', error);
+      return 1;
+    }
+  }
+
+  // Get validity date for a hotel program from Supabase
+  async function getValidityDate(hotelId) {
+    try {
+      const data = await HotelStatusLevelsService.getByProgramId(hotelId);
+      return data?.valid_until || null;
+    } catch (error) {
+      console.error('Error getting validity date:', error);
+      return null;
+    }
+  }
+
+  // Update status level in Supabase
+  async function updateStatus(hotelId, newLevel) {
+    try {
+      const program = HOTEL_PROGRAMS.find(p => p.id === hotelId);
+      if (!program) {
+        console.error('Program not found:', hotelId);
+        return;
+      }
+
+      const levelData = program.levels.find(l => l.level === newLevel);
+      const levelName = levelData?.name || `Level ${newLevel}`;
+
+      await HotelStatusLevelsService.upsert(
+        hotelId,
+        program.name,
+        newLevel,
+        levelName,
+        null
+      );
+
+      // Update local state
+      const hotel = hotelStatuses.find(h => h.id === hotelId);
+      if (hotel) hotel.currentLevel = newLevel;
+
+      await renderBenefitsTable();
+      await renderStatusSelectors();
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  }
+
+  // Update validity date in Supabase
+  async function updateValidityDate(hotelId, newDate) {
+    try {
+      const program = HOTEL_PROGRAMS.find(p => p.id === hotelId);
+      if (!program) {
+        console.error('Program not found:', hotelId);
+        return;
+      }
+
+      const existing = await HotelStatusLevelsService.getByProgramId(hotelId);
+      const currentLevel = existing?.current_level || 1;
+      const levelData = program.levels.find(l => l.level === currentLevel);
+      const levelName = levelData?.name || `Level ${currentLevel}`;
+
+      await HotelStatusLevelsService.upsert(
+        hotelId,
+        program.name,
+        currentLevel,
+        levelName,
+        newDate || null
+      );
+
+      await renderBenefitsTable();
+    } catch (error) {
+      console.error('Error updating validity date:', error);
+    }
+  }
+
+  // Initialize hotel programs with levels from Supabase
+  let hotelStatuses = [];
+  let isLoading = false;
+
+  // Load hotel statuses from Supabase
+  async function loadHotelStatuses() {
+    if (isLoading) return;
+    isLoading = true;
+
+    try {
+      // Fetch all hotel status levels from Supabase
+      await HotelStatusLevelsService.fetchAll();
+
+      // Initialize hotel programs with Supabase data
+      hotelStatuses = await Promise.all(HOTEL_PROGRAMS.map(async (program) => {
+        const supabaseData = await HotelStatusLevelsService.getByProgramId(program.id);
+        return {
+          ...program,
+          currentLevel: supabaseData?.current_level || 1
+        };
+      }));
+
+      // Re-render everything with fresh data
+      renderQuickFilters();
+      await renderBenefitsTable();
+      if (isStatusSectionExpanded) {
+        await renderStatusSelectors();
+      }
+    } catch (error) {
+      console.error('Error loading hotel statuses:', error);
+      // Fallback to default levels if Supabase fails
+      hotelStatuses = HOTEL_PROGRAMS.map(program => ({
+        ...program,
+        currentLevel: 1
+      }));
+      renderQuickFilters();
+      renderBenefitsTable().catch(err => console.error('Error rendering benefits table:', err));
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  // State
+  let showOnlyFavorites = false;
+  let searchTerm = '';
+  let selectedFilters = [];
+  let isStatusSectionExpanded = false;
+  let favoritePrograms = JSON.parse(localStorage.getItem('favoriteHotelPrograms') || '[]');
+
+  // Get benefit icon
+  function getBenefitIcon(benefit) {
+    const benefitLower = benefit.toLowerCase();
+    if (benefitLower.includes('points') || benefitLower.includes('bonus')) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+    }
+    if (benefitLower.includes('upgrade') || benefitLower.includes('room')) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>';
+    }
+    if (benefitLower.includes('lounge') || benefitLower.includes('club')) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+    }
+    if (benefitLower.includes('wifi')) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>';
+    }
+    if (benefitLower.includes('check-out') || benefitLower.includes('check-in')) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+    }
+    if (benefitLower.includes('breakfast') || benefitLower.includes('amenity')) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3z"/></svg>';
+    }
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+  }
+
+  // Get minimum level for benefit
+  function getMinimumLevelForBenefit(benefitName) {
+    const results = [];
+    hotelStatuses.forEach(hotel => {
+      let minLevel = Infinity;
+      let minLevelName = '';
+      let minLevelColor = '';
+      
+      hotel.levels.forEach(level => {
+        const hasBenefit = level.benefits.some(benefit => {
+          const benefitLower = benefit.toLowerCase();
+          const searchLower = benefitName.toLowerCase();
+          const regex = new RegExp(`\\b${searchLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+          return regex.test(benefitLower);
+        });
+        
+        if (hasBenefit && level.level < minLevel) {
+          minLevel = level.level;
+          minLevelName = level.name;
+          minLevelColor = level.color;
+        }
+      });
+      
+      if (minLevel !== Infinity) {
+        results.push({
+          hotelName: hotel.name,
+          level: minLevel,
+          levelName: minLevelName,
+          color: minLevelColor
+        });
+      }
+    });
+    
+    return results.sort((a, b) => a.level - b.level);
+  }
+
+  // Format date DD/MM/YY
+  function formatDateDDMMYY(isoDate) {
+    if (!isoDate) return '';
+    const parts = isoDate.split('-');
+    if (parts.length !== 3) return '';
+    const [year, month, day] = parts;
+    const yy = year.slice(2);
+    return `${day}/${month}/${yy}`;
+  }
+
+  // Get days remaining
+  function getDaysRemaining(isoDate) {
+    if (!isoDate) return 0;
+    const today = new Date();
+    const validUntil = new Date(isoDate);
+    const diffTime = validUntil.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+
+  // Format current level
+  function formatCurrentLevel(hotel) {
+    const percentage = Math.round((hotel.currentLevel / hotel.totalLevels) * 100);
+    return {
+      levelText: `${hotel.currentLevel}/${hotel.totalLevels}`,
+      percentage
+    };
+  }
+
+  // Toggle favorite
+  function toggleFavorite(hotelId) {
+    if (favoritePrograms.includes(hotelId)) {
+      favoritePrograms = favoritePrograms.filter(id => id !== hotelId);
+    } else {
+      favoritePrograms.push(hotelId);
+    }
+    localStorage.setItem('favoriteHotelPrograms', JSON.stringify(favoritePrograms));
+    renderBenefitsTable().catch(err => console.error('Error rendering benefits table:', err));
+    renderStatusSelectors().catch(err => console.error('Error rendering status selectors:', err));
+  }
+
+  // Filter programs
+  function filterPrograms() {
+    return hotelStatuses.filter(hotel => {
+      if (showOnlyFavorites && !favoritePrograms.includes(hotel.id)) {
+        return false;
+      }
+      
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase();
+        const hasMatchingBenefit = hotel.levels.some(level => 
+          level.benefits.some(benefit => {
+            const benefitLower = benefit.toLowerCase();
+            const regex = new RegExp(`\\b${searchLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+            return regex.test(benefitLower);
+          })
+        );
+        if (!hasMatchingBenefit) return false;
+      }
+      
+      if (selectedFilters.length > 0) {
+        const allFiltersPresent = selectedFilters.every(filter => {
+          const filterLower = filter.toLowerCase();
+          return hotel.levels.some(level => 
+            level.benefits.some(benefit => {
+              const benefitLower = benefit.toLowerCase();
+              const regex = new RegExp(`\\b${filterLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+              return regex.test(benefitLower);
+            })
+          );
+        });
+        return allFiltersPresent;
+      }
+      
+      return true;
+    });
+  }
+
+  // Render quick filter buttons
+  function renderQuickFilters() {
+    const container = document.getElementById('bs-hotel-benefits-quick-filters');
+    if (!container) return;
+
+    const quickFilters = [
+      { name: 'Breakfast', icon: '🍽️' },
+      { name: 'Suite', icon: '🏨' },
+      { name: 'Lounge', icon: '👥' },
+      { name: 'Upgrade', icon: '⬆️' },
+      { name: 'WiFi', icon: '📶' },
+      { name: 'Early Check-In', icon: '⏰' },
+      { name: 'Late Check-Out', icon: '⏰' }
+    ];
+
+    container.innerHTML = quickFilters.map(filter => {
+      const minLevels = getMinimumLevelForBenefit(filter.name);
+      const programsWithStatus = minLevels.filter(result => {
+        const hotel = hotelStatuses.find(h => h.name === result.hotelName);
+        return hotel && hotel.currentLevel >= result.level;
+      });
+
+      return `
+        <button type="button" class="bs-hotel-benefits-quick-filter ${selectedFilters.includes(filter.name) ? 'active' : ''}" 
+                data-filter="${filter.name}">
+          <span>${filter.icon} ${filter.name}</span>
+          <span class="bs-hotel-benefits-filter-count">${programsWithStatus.length}/${minLevels.length}</span>
+        </button>
+      `;
+    }).join('');
+
+    // Add event listeners
+    container.querySelectorAll('.bs-hotel-benefits-quick-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filterName = btn.dataset.filter;
+        if (selectedFilters.includes(filterName)) {
+          selectedFilters = selectedFilters.filter(f => f !== filterName);
+        } else {
+          selectedFilters.push(filterName);
+        }
+        renderQuickFilters();
+        renderBenefitsTable().catch(err => console.error('Error rendering benefits table:', err));
+      });
+    });
+  }
+
+  // Render status selectors (async to load validity dates from Supabase)
+  async function renderStatusSelectors() {
+    const container = document.getElementById('bs-hotel-benefits-status-grid');
+    if (!container) return;
+
+    // Show loading state
+    container.innerHTML = '<div class="bs-hotel-benefits-loading">Loading status levels...</div>';
+
+    // Load all validity dates from Supabase
+    const validityData = await Promise.all(
+      hotelStatuses.map(async (hotel) => {
+        const validityDate = await getValidityDate(hotel.id);
+        return { hotelId: hotel.id, validityDate };
+      })
+    );
+
+    const validityMap = new Map(validityData.map(item => [item.hotelId, item.validityDate]));
+
+    container.innerHTML = hotelStatuses.map(hotel => {
+      const isFavorite = favoritePrograms.includes(hotel.id);
+      const validityDate = validityMap.get(hotel.id) || null;
+      const validity = validityDate ? formatDateDDMMYY(validityDate) : '';
+      const daysRemaining = validityDate ? getDaysRemaining(validityDate) : null;
+      const isExpired = daysRemaining !== null && daysRemaining < 0;
+
+      return `
+        <div class="bs-hotel-benefits-status-item">
+          <div class="bs-hotel-benefits-status-header">
+            <label>${hotel.name}</label>
+            <button type="button" class="bs-hotel-benefits-favorite-btn ${isFavorite ? 'active' : ''}" 
+                    data-hotel-id="${hotel.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            </button>
+          </div>
+          <select class="bs-hotel-benefits-status-select" data-hotel-id="${hotel.id}">
+            ${hotel.levels.map(level => 
+              `<option value="${level.level}" ${hotel.currentLevel === level.level ? 'selected' : ''}>${level.name}</option>`
+            ).join('')}
+          </select>
+          <div class="bs-hotel-benefits-validity">
+            <label>Valid until</label>
+            <div class="bs-hotel-benefits-validity-input">
+              <input type="date" class="bs-hotel-benefits-date-input" data-hotel-id="${hotel.id}" 
+                     value="${validityDate || ''}" min="2020-01-01" max="2030-12-31">
+              ${validityDate ? `
+                <button type="button" class="bs-hotel-benefits-clear-date" data-hotel-id="${hotel.id}">✕</button>
+              ` : ''}
+            </div>
+            ${validityDate && daysRemaining !== null ? `
+              <div class="bs-hotel-benefits-validity-info">
+                <span class="bs-hotel-benefits-validity-date">${validity}</span>
+                <span class="bs-hotel-benefits-validity-days ${isExpired ? 'expired' : daysRemaining <= 30 ? 'warning' : 'ok'}">
+                  ${isExpired ? `Expired ${Math.abs(daysRemaining)}d ago` : `${daysRemaining}d left`}
+                </span>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Add event listeners
+    container.querySelectorAll('.bs-hotel-benefits-status-select').forEach(select => {
+      select.addEventListener('change', (e) => {
+        const hotelId = e.target.dataset.hotelId;
+        const newLevel = parseInt(e.target.value);
+        updateStatus(hotelId, newLevel);
+        // Update local state
+        const hotel = hotelStatuses.find(h => h.id === hotelId);
+        if (hotel) hotel.currentLevel = newLevel;
+      });
+    });
+
+    container.querySelectorAll('.bs-hotel-benefits-date-input').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const hotelId = e.target.dataset.hotelId;
+        updateValidityDate(hotelId, e.target.value);
+      });
+    });
+
+    container.querySelectorAll('.bs-hotel-benefits-clear-date').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const hotelId = e.target.dataset.hotelId;
+        updateValidityDate(hotelId, '');
+      });
+    });
+
+    container.querySelectorAll('.bs-hotel-benefits-favorite-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const hotelId = e.target.closest('.bs-hotel-benefits-favorite-btn').dataset.hotelId;
+        toggleFavorite(hotelId);
+      });
+    });
+  }
+
+  // Render benefits table (async to load validity dates from Supabase)
+  async function renderBenefitsTable() {
+    const container = document.getElementById('bs-hotel-benefits-table-container');
+    if (!container) return;
+
+    const filteredPrograms = filterPrograms();
+    
+    // Get all unique levels
+    const allLevels = Array.from(new Set(hotelStatuses.flatMap(h => h.levels.map(l => l.level)))).sort((a, b) => a - b);
+
+    if (filteredPrograms.length === 0) {
+      container.innerHTML = '<div class="bs-hotel-benefits-no-results">No programs match your filters.</div>';
+      return;
+    }
+
+    // Show loading state
+    container.innerHTML = '<div class="bs-hotel-benefits-loading">Loading benefits data...</div>';
+
+    // Load all validity dates from Supabase
+    const validityData = await Promise.all(
+      filteredPrograms.map(async (hotel) => {
+        const validityDate = await getValidityDate(hotel.id);
+        return { hotelId: hotel.id, validityDate };
+      })
+    );
+
+    const validityMap = new Map(validityData.map(item => [item.hotelId, item.validityDate]));
+
+    container.innerHTML = `
+      <div class="bs-hotel-benefits-legend">
+        <div class="bs-hotel-benefits-legend-item">
+          <div class="bs-hotel-benefits-legend-color" style="background: #a78bfa;"></div>
+          <span>My Level</span>
+        </div>
+        <div class="bs-hotel-benefits-legend-item">
+          <div class="bs-hotel-benefits-legend-color" style="background: #4ade80;"></div>
+          <span>Minimum Level for Selected Benefit(s)</span>
+        </div>
+      </div>
+      <div class="bs-hotel-benefits-table-wrapper">
+        <table class="bs-hotel-benefits-table">
+          <thead>
+            <tr>
+              <th>Hotelchain</th>
+              ${allLevels.map(level => `<th>Level ${level}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${filteredPrograms.map(hotel => {
+              const validityDate = validityMap.get(hotel.id) || null;
+              const validity = validityDate ? formatDateDDMMYY(validityDate) : '';
+              const daysRemaining = validityDate ? getDaysRemaining(validityDate) : null;
+              const isExpired = daysRemaining !== null && daysRemaining < 0;
+              const levelInfo = formatCurrentLevel(hotel);
+              const isFavorite = favoritePrograms.includes(hotel.id);
+
+              // Get highest required level for search/filters
+              let highestRequiredLevel = null;
+              const searchTerms = selectedFilters.length > 0 ? selectedFilters : (searchTerm ? [searchTerm] : []);
+              for (const term of searchTerms) {
+                if (!term) continue;
+                const minLevels = getMinimumLevelForBenefit(term);
+                const hotelMinLevel = minLevels.find(result => result.hotelName === hotel.name);
+                if (hotelMinLevel && (highestRequiredLevel === null || hotelMinLevel.level > highestRequiredLevel)) {
+                  highestRequiredLevel = hotelMinLevel.level;
+                }
+              }
+
+              return `
+                <tr>
+                  <td class="bs-hotel-benefits-hotel-name">
+                    <div class="bs-hotel-benefits-hotel-header">
+                      <div>
+                        <div class="bs-hotel-benefits-hotel-title">${hotel.name}${isFavorite ? ' ⭐' : ''}</div>
+                        ${validityDate ? `
+                          <div class="bs-hotel-benefits-validity-badge">
+                            <span class="bs-hotel-benefits-validity-date-small">${validity}</span>
+                            <span class="bs-hotel-benefits-validity-days-small ${isExpired ? 'expired' : daysRemaining <= 30 ? 'warning' : 'ok'}">
+                              ${isExpired ? `Expired ${Math.abs(daysRemaining)}d ago` : `${daysRemaining}d left`}
+                            </span>
+                          </div>
+                        ` : ''}
+                        <div class="bs-hotel-benefits-level-badge">
+                          <span>Level ${levelInfo.levelText}</span>
+                          <span>${levelInfo.percentage}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  ${allLevels.map(level => {
+                    const levelData = hotel.levels.find(l => l.level === level);
+                    const isCurrentLevel = hotel.currentLevel === level;
+                    const isMinimumLevel = highestRequiredLevel !== null && highestRequiredLevel === level;
+
+                    if (!levelData) {
+                      return '<td class="bs-hotel-benefits-empty">N/A</td>';
+                    }
+
+                    return `
+                      <td class="bs-hotel-benefits-level-cell ${isCurrentLevel ? 'current' : ''} ${isMinimumLevel ? 'minimum' : ''}">
+                        <div class="bs-hotel-benefits-level-header">
+                          <span class="bs-hotel-benefits-level-badge ${levelData.color}">${levelData.name.replace('\n', ' ')}</span>
+                        </div>
+                        <div class="bs-hotel-benefits-benefits-list">
+                          ${levelData.benefits.map(benefit => `
+                            <div class="bs-hotel-benefits-benefit-item">
+                              ${getBenefitIcon(benefit)}
+                              <span>${benefit}</span>
+                            </div>
+                          `).join('')}
+                        </div>
+                      </td>
+                    `;
+                  }).join('')}
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  // Event listeners
+  const searchInput = document.getElementById('bs-hotel-benefits-search');
+  const clearSearchBtn = document.getElementById('bs-hotel-benefits-clear-search');
+  const favoritesBtn = document.getElementById('bs-hotel-benefits-favorites-btn');
+  const statusBtn = document.getElementById('bs-hotel-benefits-status-btn');
+  const statusSection = document.getElementById('bs-hotel-benefits-status-section');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      if (searchTerm) {
+        clearSearchBtn.style.display = 'block';
+      } else {
+        clearSearchBtn.style.display = 'none';
+      }
+      renderBenefitsTable().catch(err => console.error('Error rendering benefits table:', err));
+    });
+  }
+
+  if (clearSearchBtn) {
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchTerm = '';
+      clearSearchBtn.style.display = 'none';
+      renderBenefitsTable().catch(err => console.error('Error rendering benefits table:', err));
+    });
+  }
+
+  if (favoritesBtn) {
+    favoritesBtn.addEventListener('click', () => {
+      showOnlyFavorites = !showOnlyFavorites;
+      favoritesBtn.querySelector('span').textContent = showOnlyFavorites ? 'Show All' : 'Show Favorites';
+      renderBenefitsTable().catch(err => console.error('Error rendering benefits table:', err));
+    });
+  }
+
+  if (statusBtn && statusSection) {
+    statusBtn.addEventListener('click', () => {
+      isStatusSectionExpanded = !isStatusSectionExpanded;
+      statusSection.style.display = isStatusSectionExpanded ? 'block' : 'none';
+      statusBtn.querySelector('span').textContent = isStatusSectionExpanded ? 'Hide Status' : 'Show Status';
+      if (isStatusSectionExpanded) {
+        renderStatusSelectors().catch(err => console.error('Error rendering status selectors:', err));
+      }
+    });
+  }
+
+  // Initial render - load data from Supabase first
+  loadHotelStatuses();
 }
 
 // Initialize extension with error handling
@@ -3671,4 +5827,89 @@ function initializeAirportAutocomplete() {
     }
   }
 })();
+
+// Initialize Points History
+function initializePointsHistory() {
+  const programSelect = document.getElementById('bs-history-program');
+  const statsGrid = document.getElementById('bs-history-stats-grid');
+  const chartContainer = document.getElementById('bs-history-chart-container');
+
+  if (!programSelect) return;
+
+  // Update historical data display
+  async function updateHistoricalData() {
+    const programName = programSelect.value;
+    if (!programName) {
+      if (statsGrid) statsGrid.innerHTML = '';
+      if (chartContainer) chartContainer.innerHTML = '';
+      return;
+    }
+
+    // Show loading state
+    if (statsGrid) {
+      statsGrid.innerHTML = '<div class="bs-history-loading">Loading historical data...</div>';
+    }
+    if (chartContainer) {
+      chartContainer.innerHTML = '<div class="bs-history-loading">Loading chart data...</div>';
+    }
+
+    const historicalData = await fetchHistoricalData(programName);
+    if (!historicalData) {
+      if (statsGrid) {
+        statsGrid.innerHTML = '<div class="bs-history-no-data">No historical data available for this program.</div>';
+      }
+      if (chartContainer) chartContainer.innerHTML = '';
+      return;
+    }
+
+    // Display stats
+    if (statsGrid) {
+      statsGrid.innerHTML = `
+        <div class="bs-history-stat-card">
+          <span class="bs-history-stat-label">Current</span>
+          <span class="bs-history-stat-value">$${historicalData.current?.toFixed(2) || 'N/A'}</span>
+        </div>
+        <div class="bs-history-stat-card">
+          <span class="bs-history-stat-label">6-Month Avg</span>
+          <span class="bs-history-stat-value">$${historicalData.avg6m?.toFixed(2) || 'N/A'}</span>
+        </div>
+        <div class="bs-history-stat-card">
+          <span class="bs-history-stat-label">12-Month Avg</span>
+          <span class="bs-history-stat-value">$${historicalData.avg12m?.toFixed(2) || 'N/A'}</span>
+        </div>
+        <div class="bs-history-stat-card">
+          <span class="bs-history-stat-label">24-Month Avg</span>
+          <span class="bs-history-stat-value">$${historicalData.avg24m?.toFixed(2) || 'N/A'}</span>
+        </div>
+      `;
+    }
+
+    // Chart container - leave empty for now
+    if (chartContainer) {
+      chartContainer.innerHTML = '';
+    }
+  }
+
+  // Populate program dropdown
+  function populateProgramDropdown() {
+    if (!programSelect || !window.loyaltyPrograms) return;
+    
+    programSelect.innerHTML = '<option value="">Select a program...</option>';
+    window.loyaltyPrograms.forEach(program => {
+      const option = document.createElement('option');
+      option.value = program.name;
+      option.textContent = program.name;
+      programSelect.appendChild(option);
+    });
+  }
+
+  // Event listeners
+  if (programSelect) {
+    programSelect.addEventListener('change', updateHistoricalData);
+  }
+
+  // Initial setup
+  populateProgramDropdown();
+  updateHistoricalData();
+}
 
