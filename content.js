@@ -81,6 +81,13 @@ function injectExtensionPanel() {
             </label>
           </div>
           <div class="bs-toggle-item">
+            <label class="bs-toggle-label" for="bs-rovemiles-toggle">Rovemiles</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-rovemiles-toggle">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
+          <div class="bs-toggle-item">
             <label class="bs-toggle-label" for="bs-settings-toggle">Settings</label>
             <label class="bs-toggle-switch">
               <input type="checkbox" id="bs-settings-toggle">
@@ -490,6 +497,13 @@ function injectExtensionPanel() {
                 <span class="bs-toggle-slider"></span>
               </label>
             </div>
+            <div class="bs-auto-reload-toggle">
+              <label class="bs-toggle-label" for="bs-info-points-toggle">Points Tracker</label>
+              <label class="bs-toggle-switch">
+                <input type="checkbox" id="bs-info-points-toggle" checked>
+                <span class="bs-toggle-slider"></span>
+              </label>
+            </div>
             <div class="bs-header-actions">
               <button class="bs-action-btn bs-action-save" id="bs-save-information" title="Save information data">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -630,14 +644,7 @@ function injectExtensionPanel() {
           <div class="bs-auto-reload-toggle">
             <label class="bs-toggle-label" for="bs-total-calculator-toggle">Total Calculator</label>
             <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-total-calculator-toggle" checked>
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-          <div class="bs-auto-reload-toggle">
-            <label class="bs-toggle-label" for="bs-rovemiles-toggle">Rovemiles</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-rovemiles-toggle" checked>
+              <input type="checkbox" id="bs-total-calculator-toggle">
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
@@ -829,9 +836,18 @@ function injectExtensionPanel() {
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Rovemiles Calculator Subsection -->
-      <div class="bs-calculation-subsection" id="bs-rovemiles-section">
+    <!-- Rovemiles Section -->
+    <div class="bs-section" id="bs-rovemiles-section" style="display: none;">
+      <div class="bs-section-header">
+        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <span>Rovemiles</span>
+      </div>
+      <div class="bs-calculator-content">
         <div class="bs-subsection-header">
           <div class="bs-subsection-header-content">
             <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -844,146 +860,144 @@ function injectExtensionPanel() {
             </div>
           </div>
         </div>
-        <div class="bs-calculator-content">
-          <form id="bs-rovemiles-form" class="bs-calculator-form">
-            <div class="bs-form-card bs-form-card-blue">
-              <div class="bs-form-card-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                  <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-                <span>Booking Information</span>
-              </div>
-              <div class="bs-form-row">
-                <div class="bs-form-group">
-                  <label for="bs-rove-total-cost">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                      <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
-                    Total Cost (USD) <span class="bs-required">*</span>
-                  </label>
-                  <div class="bs-input-wrapper">
-                    <span class="bs-input-prefix">$</span>
-                    <input type="text" id="bs-rove-total-cost" placeholder="211.64" required>
-                  </div>
-                </div>
-                <div class="bs-form-group">
-                  <label for="bs-rove-cash-price">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                      <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
-                    Cash Price (USD)
-                  </label>
-                  <div class="bs-input-wrapper">
-                    <span class="bs-input-prefix">$</span>
-                    <input type="text" id="bs-rove-cash-price" placeholder="350.00">
-                  </div>
-                  <div class="bs-input-hint">Optional: For indirect cost calculation</div>
-                </div>
-              </div>
-              <div class="bs-form-group">
-                <label for="bs-rove-miles">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  Rovemiles Earned Miles <span class="bs-required">*</span>
-                </label>
-                <div class="bs-input-wrapper">
-                  <input type="text" id="bs-rove-miles" placeholder="5293" required>
-                  <span class="bs-input-suffix">miles</span>
-                </div>
-              </div>
+        <form id="bs-rovemiles-form" class="bs-calculator-form">
+          <div class="bs-form-card bs-form-card-blue">
+            <div class="bs-form-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <span>Booking Information</span>
             </div>
-
-            <div class="bs-form-card bs-form-card-purple">
-              <div class="bs-form-card-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                  <line x1="1" y1="10" x2="23" y2="10"/>
-                </svg>
-                <span>Credit Card Settings</span>
-              </div>
-              <div class="bs-form-row">
-                <div class="bs-form-group">
-                  <label for="bs-rove-program">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                      <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
-                    Credit Card Program
-                  </label>
-                  <select id="bs-rove-program"></select>
-                </div>
-                <div class="bs-form-group">
-                  <label for="bs-rove-multiplier">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                    </svg>
-                    Credit Card Multiplier
-                  </label>
-                  <div class="bs-input-wrapper">
-                    <input type="text" id="bs-rove-multiplier" placeholder="1.0">
-                    <span class="bs-input-suffix">x</span>
-                  </div>
-                  <div class="bs-input-hint">Earning rate (e.g. 1.5x per $1)</div>
-                </div>
-              </div>
+            <div class="bs-form-row">
               <div class="bs-form-group">
-                <label for="bs-rove-program-value">
+                <label for="bs-rove-total-cost">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="12" y1="1" x2="12" y2="23"/>
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
                   </svg>
-                  Program Wert (USD)
+                  Total Cost (USD) <span class="bs-required">*</span>
                 </label>
                 <div class="bs-input-wrapper">
                   <span class="bs-input-prefix">$</span>
-                  <input type="text" id="bs-rove-program-value" placeholder="0.0000">
+                  <input type="text" id="bs-rove-total-cost" placeholder="211.64" required>
                 </div>
-                <div class="bs-input-hint">Optional: Override program value</div>
+              </div>
+              <div class="bs-form-group">
+                <label for="bs-rove-cash-price">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
+                  </svg>
+                  Cash Price (USD)
+                </label>
+                <div class="bs-input-wrapper">
+                  <span class="bs-input-prefix">$</span>
+                  <input type="text" id="bs-rove-cash-price" placeholder="350.00">
+                </div>
+                <div class="bs-input-hint">Optional: For indirect cost calculation</div>
               </div>
             </div>
+            <div class="bs-form-group">
+              <label for="bs-rove-miles">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Rovemiles Earned Miles <span class="bs-required">*</span>
+              </label>
+              <div class="bs-input-wrapper">
+                <input type="text" id="bs-rove-miles" placeholder="5293" required>
+                <span class="bs-input-suffix">miles</span>
+              </div>
+            </div>
+          </div>
 
-            <div class="bs-form-card bs-form-card-amber">
-              <div class="bs-form-card-header">
+          <div class="bs-form-card bs-form-card-purple">
+            <div class="bs-form-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                <line x1="1" y1="10" x2="23" y2="10"/>
+              </svg>
+              <span>Credit Card Settings</span>
+            </div>
+            <div class="bs-form-row">
+              <div class="bs-form-group">
+                <label for="bs-rove-program">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
+                  </svg>
+                  Credit Card Program
+                </label>
+                <select id="bs-rove-program"></select>
+              </div>
+              <div class="bs-form-group">
+                <label for="bs-rove-multiplier">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                  Credit Card Multiplier
+                </label>
+                <div class="bs-input-wrapper">
+                  <input type="text" id="bs-rove-multiplier" placeholder="1.0">
+                  <span class="bs-input-suffix">x</span>
+                </div>
+                <div class="bs-input-hint">Earning rate (e.g. 1.5x per $1)</div>
+              </div>
+            </div>
+            <div class="bs-form-group">
+              <label for="bs-rove-program-value">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <line x1="12" y1="1" x2="12" y2="23"/>
                   <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                 </svg>
-                <span>Valuation Settings</span>
+                Program Wert (USD)
+              </label>
+              <div class="bs-input-wrapper">
+                <span class="bs-input-prefix">$</span>
+                <input type="text" id="bs-rove-program-value" placeholder="0.0000">
               </div>
-              <div class="bs-form-group">
-                <label for="bs-rove-cpm">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 6v6l4 2"/>
-                  </svg>
-                  Rove Miles CPM (USD) <span class="bs-required">*</span>
-                </label>
-                <div class="bs-input-wrapper">
-                  <span class="bs-input-prefix">$</span>
-                  <input type="text" id="bs-rove-cpm" placeholder="0.0177" required>
-                </div>
-                <div class="bs-input-hint">Cost per mile for Rove Miles and Credit Card points</div>
-              </div>
+              <div class="bs-input-hint">Optional: Override program value</div>
             </div>
-
-            <div class="bs-form-actions">
-              <button type="button" id="bs-rove-reset" class="bs-btn-secondary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="1 4 1 10 7 10"/>
-                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-                </svg>
-                Reset All Fields
-              </button>
-            </div>
-          </form>
-          <div id="bs-rovemiles-results" class="bs-rovemiles-results">
-            <!-- Results will be populated here -->
           </div>
+
+          <div class="bs-form-card bs-form-card-amber">
+            <div class="bs-form-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              <span>Valuation Settings</span>
+            </div>
+            <div class="bs-form-group">
+              <label for="bs-rove-cpm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+                Rove Miles CPM (USD) <span class="bs-required">*</span>
+              </label>
+              <div class="bs-input-wrapper">
+                <span class="bs-input-prefix">$</span>
+                <input type="text" id="bs-rove-cpm" placeholder="0.0177" required>
+              </div>
+              <div class="bs-input-hint">Cost per mile for Rove Miles and Credit Card points</div>
+            </div>
+          </div>
+
+          <div class="bs-form-actions">
+            <button type="button" id="bs-rove-reset" class="bs-btn-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="1 4 1 10 7 10"/>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+              </svg>
+              Reset All Fields
+            </button>
+          </div>
+        </form>
+        <div id="bs-rovemiles-results" class="bs-rovemiles-results">
+          <!-- Results will be populated here -->
         </div>
       </div>
     </div>
@@ -1026,6 +1040,7 @@ function saveToggleStates() {
   const searchToggle = document.getElementById('bs-search-toggle');
   const informationToggle = document.getElementById('bs-information-toggle');
   const calculationToggle = document.getElementById('bs-calculation-toggle');
+  const rovemilesToggle = document.getElementById('bs-rovemiles-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   
   const toggleStates = {
@@ -1034,6 +1049,7 @@ function saveToggleStates() {
     search: searchToggle ? searchToggle.checked : false,
     information: informationToggle ? informationToggle.checked : false,
     calculation: calculationToggle ? calculationToggle.checked : false,
+    rovemiles: rovemilesToggle ? rovemilesToggle.checked : false,
     settings: settingsToggle ? settingsToggle.checked : false
   };
   
@@ -1059,6 +1075,7 @@ function loadToggleStates() {
     search: false,  // Search OFF by default
     information: false,  // Information OFF by default
     calculation: false,  // Calculation OFF by default
+    rovemiles: false,  // Rovemiles OFF by default
     settings: false // Settings OFF by default
   };
 }
@@ -1070,12 +1087,14 @@ function applyToggleStates(toggleStates) {
   const searchToggle = document.getElementById('bs-search-toggle');
   const informationToggle = document.getElementById('bs-information-toggle');
   const calculationToggle = document.getElementById('bs-calculation-toggle');
+  const rovemilesToggle = document.getElementById('bs-rovemiles-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   const flightSection = document.getElementById('bs-flight-section');
   const hotelSection = document.getElementById('bs-hotel-section');
   const searchSection = document.getElementById('bs-search-section');
   const informationSection = document.getElementById('bs-information-section');
   const calculationSection = document.getElementById('bs-calculation-section');
+  const rovemilesSection = document.getElementById('bs-rovemiles-section');
   const settingsSection = document.getElementById('bs-settings-section');
   
   // Apply flight toggle state
@@ -1106,6 +1125,12 @@ function applyToggleStates(toggleStates) {
   if (calculationToggle && calculationSection) {
     calculationToggle.checked = toggleStates.calculation;
     calculationSection.style.display = toggleStates.calculation ? 'block' : 'none';
+  }
+  
+  // Apply rovemiles toggle state
+  if (rovemilesToggle && rovemilesSection) {
+    rovemilesToggle.checked = toggleStates.rovemiles;
+    rovemilesSection.style.display = toggleStates.rovemiles ? 'block' : 'none';
   }
   
   // Apply settings toggle state
@@ -1271,78 +1296,103 @@ function initializeEventListeners() {
     console.log('Information toggle or section not found:', { informationToggle, informationSection });
   }
 
-  // Calculation section toggle (already defined above)
-  // Calculation section sub-toggles - completely independent
+  // Calculation section toggle - Total Calculator sub-toggle
   const totalCalculatorToggle = document.getElementById('bs-total-calculator-toggle');
   const totalCalculatorSection = document.getElementById('bs-total-calculator-section');
-  const rovemilesToggle = document.getElementById('bs-rovemiles-toggle');
-  const rovemilesSection = document.getElementById('bs-rovemiles-section');
 
-  // Function to update calculation section visibility based on calculator toggles
-  function updateCalculationSectionVisibility() {
-    const calculationSection = document.getElementById('bs-calculation-section');
-    const calculationToggle = document.getElementById('bs-calculation-toggle');
-    if (calculationSection && calculationToggle) {
-      const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
-      const roveEnabled = rovemilesToggle && rovemilesToggle.checked;
-      // Show calculation section if either calculator is enabled
-      if (totalCalcEnabled || roveEnabled) {
-        calculationSection.style.display = 'block';
-        calculationToggle.checked = true;
-      } else {
-        // Only hide if both are disabled
-        calculationSection.style.display = 'none';
-        calculationToggle.checked = false;
-      }
-    }
-  }
-
-  // Total Calculator - completely independent
+  // Total Calculator - works independently, but needs calculation section to be visible
   if (totalCalculatorToggle && totalCalculatorSection) {
     const saved = localStorage.getItem('bs-total-calculator-enabled');
     if (saved !== null) totalCalculatorToggle.checked = saved === 'true';
+    
+    // Set initial visibility
     totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
+    
     totalCalculatorToggle.addEventListener('change', () => {
       localStorage.setItem('bs-total-calculator-enabled', totalCalculatorToggle.checked);
+      
+      // Show/hide total calculator section based on its own toggle
       totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
-      // Update calculation section visibility
-      updateCalculationSectionVisibility();
-    });
-  }
-
-  // Rovemiles Calculator - completely independent
-  if (rovemilesToggle && rovemilesSection) {
-    const saved = localStorage.getItem('bs-rovemiles-enabled');
-    if (saved !== null) rovemilesToggle.checked = saved === 'true';
-    rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
-    rovemilesToggle.addEventListener('change', () => {
-      localStorage.setItem('bs-rovemiles-enabled', rovemilesToggle.checked);
-      rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
-      // Update calculation section visibility
-      updateCalculationSectionVisibility();
-    });
-  }
-
-  // Initialize calculation section visibility on load
-  updateCalculationSectionVisibility();
-
-  // Main calculation toggle - should respect sub-toggles
-  if (calculationToggle && calculationSection) {
-    calculationToggle.addEventListener('change', () => {
-      if (calculationToggle.checked) {
+      
+      // If total calculator is enabled, ensure calculation section is visible
+      if (totalCalculatorToggle.checked && calculationSection) {
         calculationSection.style.display = 'block';
-      } else {
-        // Only hide if both sub-toggles are off
-        const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
-        const roveEnabled = rovemilesToggle && rovemilesToggle.checked;
-        if (!totalCalcEnabled && !roveEnabled) {
-          calculationSection.style.display = 'none';
-        } else {
-          // If at least one sub-toggle is on, keep section visible and re-check main toggle
-          calculationToggle.checked = true;
+      }
+      
+      // Update calculation section visibility
+      if (calculationSection && calculationToggle) {
+        if (calculationToggle.checked || totalCalculatorToggle.checked) {
           calculationSection.style.display = 'block';
+        } else {
+          calculationSection.style.display = 'none';
         }
       }
+    });
+  }
+
+  // Main calculation toggle - works with Total Calculator
+  if (calculationToggle && calculationSection) {
+    // Load saved state
+    const savedCalcState = localStorage.getItem('bs-calculation-enabled');
+    if (savedCalcState !== null) {
+      calculationToggle.checked = savedCalcState === 'true';
+    }
+    
+    // Set initial visibility - show if calculation toggle is on OR total calculator is on
+    const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
+    if (calculationToggle.checked || totalCalcEnabled) {
+      calculationSection.style.display = 'block';
+      // Ensure total calculator visibility matches its toggle
+      if (totalCalculatorToggle && totalCalculatorSection) {
+        totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
+      }
+    } else {
+      calculationSection.style.display = 'none';
+    }
+    
+    calculationToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-calculation-enabled', calculationToggle.checked);
+      
+      if (calculationToggle.checked) {
+        // Show calculation section
+        calculationSection.style.display = 'block';
+        // Ensure total calculator visibility matches its toggle
+        if (totalCalculatorToggle && totalCalculatorSection) {
+          totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
+        }
+      } else {
+        // Check if total calculator is enabled
+        const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
+        
+        if (totalCalcEnabled) {
+          // If total calculator is on, keep section visible
+          calculationSection.style.display = 'block';
+        } else {
+          // Only hide if total calculator is also off
+          calculationSection.style.display = 'none';
+        }
+      }
+      saveToggleStates();
+    });
+  }
+
+  // Rovemiles section toggle - completely independent main section
+  const rovemilesToggle = document.getElementById('bs-rovemiles-toggle');
+  const rovemilesSection = document.getElementById('bs-rovemiles-section');
+  
+  if (rovemilesToggle && rovemilesSection) {
+    // Load saved state
+    const savedRovemilesState = localStorage.getItem('bs-rovemiles-enabled');
+    if (savedRovemilesState !== null) {
+      rovemilesToggle.checked = savedRovemilesState === 'true';
+    }
+    
+    // Set initial visibility
+    rovemilesSection.style.display = rovemilesToggle.checked ? 'block' : 'none';
+    
+    rovemilesToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-rovemiles-enabled', rovemilesToggle.checked);
+      rovemilesSection.style.display = rovemilesToggle.checked ? 'block' : 'none';
       saveToggleStates();
     });
   }
@@ -1351,9 +1401,11 @@ function initializeEventListeners() {
   const infoCardsToggle = document.getElementById('bs-info-cards-toggle');
   const infoPartnersToggle = document.getElementById('bs-info-partners-toggle');
   const infoSelectedToggle = document.getElementById('bs-info-selected-toggle');
+  const infoPointsToggle = document.getElementById('bs-info-points-toggle');
   const infoCardsPanel = document.getElementById('bs-info-cards-panel');
   const infoPartnersPanel = document.getElementById('available-transfer-partners');
   const infoSelectedPanel = document.getElementById('selected-cards-comparison');
+  const infoPointsPanel = document.getElementById('bs-points-tracker-panel');
 
   if (infoCardsToggle && infoCardsPanel) {
     const saved = localStorage.getItem('bs-info-cards-enabled');
@@ -1382,6 +1434,136 @@ function initializeEventListeners() {
     infoSelectedToggle.addEventListener('change', () => {
       localStorage.setItem('bs-info-selected-enabled', infoSelectedToggle.checked);
       infoSelectedPanel.style.display = infoSelectedToggle.checked ? '' : 'none';
+    });
+  }
+
+  if (infoPointsToggle) {
+    const saved = localStorage.getItem('bs-info-points-enabled');
+    if (saved !== null) infoPointsToggle.checked = saved === 'true';
+    
+    // Function to handle panel visibility and initialization
+    const updatePointsPanelVisibility = () => {
+      let panel = document.getElementById('bs-points-tracker-panel');
+      
+      if (!panel) {
+        // Panel doesn't exist, try to create it
+        if (window.pointsTrackerUI) {
+          window.pointsTrackerUI.init();
+          // Wait a bit for panel to be created
+          setTimeout(() => {
+            panel = document.getElementById('bs-points-tracker-panel');
+            if (panel) {
+              panel.style.display = infoPointsToggle.checked ? '' : 'none';
+            }
+          }, 200);
+        } else {
+          // UI not initialized yet, wait and try again
+          setTimeout(() => {
+            if (window.pointsTrackerUI) {
+              window.pointsTrackerUI.init();
+              setTimeout(() => {
+                panel = document.getElementById('bs-points-tracker-panel');
+                if (panel) {
+                  panel.style.display = infoPointsToggle.checked ? '' : 'none';
+                }
+              }, 200);
+            }
+          }, 500);
+        }
+      } else {
+        // Panel exists, just update visibility
+        panel.style.display = infoPointsToggle.checked ? '' : 'none';
+      }
+    };
+    
+    // Set initial visibility after a short delay to ensure UI is ready
+    setTimeout(() => {
+      updatePointsPanelVisibility();
+    }, 500);
+    
+    // Also try after longer delays
+    setTimeout(() => {
+      updatePointsPanelVisibility();
+    }, 1500);
+    setTimeout(() => {
+      updatePointsPanelVisibility();
+    }, 3000);
+    
+    infoPointsToggle.addEventListener('change', () => {
+      console.log('Points Tracker toggle changed to:', infoPointsToggle.checked);
+      localStorage.setItem('bs-info-points-enabled', infoPointsToggle.checked);
+      
+      // Force initialization if panel doesn't exist and toggle is checked
+      if (infoPointsToggle.checked) {
+        let panel = document.getElementById('bs-points-tracker-panel');
+        console.log('Toggle is ON, panel exists:', !!panel);
+        
+        if (!panel) {
+          console.log('Panel does not exist, forcing initialization...');
+          // Panel doesn't exist, force initialization
+          if (window.pointsTrackerUI) {
+            console.log('pointsTrackerUI exists, calling init()...');
+            window.pointsTrackerUI.init();
+            // Wait a bit and check again
+            setTimeout(() => {
+              panel = document.getElementById('bs-points-tracker-panel');
+              console.log('After init, panel exists:', !!panel);
+              if (panel) {
+                panel.style.display = '';
+                panel.style.visibility = 'visible';
+                console.log('Panel made visible');
+              } else {
+                console.error('Panel still does not exist after init!');
+              }
+            }, 500);
+          } else {
+            console.log('pointsTrackerUI does not exist, waiting...');
+            // Wait for UI to be available
+            let checkCount = 0;
+            const checkUI = setInterval(() => {
+              checkCount++;
+              if (window.pointsTrackerUI) {
+                console.log(`pointsTrackerUI found after ${checkCount} attempts, calling init()...`);
+                clearInterval(checkUI);
+                window.pointsTrackerUI.init();
+                // Check again after init
+                setTimeout(() => {
+                  panel = document.getElementById('bs-points-tracker-panel');
+                  console.log('After delayed init, panel exists:', !!panel);
+                  if (panel) {
+                    panel.style.display = '';
+                    panel.style.visibility = 'visible';
+                    console.log('Panel made visible');
+                  } else {
+                    console.error('Panel still does not exist after delayed init!');
+                  }
+                }, 500);
+              } else if (checkCount > 50) {
+                console.error('pointsTrackerUI not found after 50 attempts, giving up');
+                clearInterval(checkUI);
+              }
+            }, 100);
+          }
+        } else {
+          // Panel exists, just show it
+          console.log('Panel exists, making it visible...');
+          panel.style.display = '';
+          panel.style.visibility = 'visible';
+          console.log('Panel visibility set');
+        }
+      } else {
+        // Toggle is off, hide panel
+        console.log('Toggle is OFF, hiding panel...');
+        const panel = document.getElementById('bs-points-tracker-panel');
+        if (panel) {
+          panel.style.display = 'none';
+          panel.style.visibility = 'hidden';
+          console.log('Panel hidden');
+        }
+      }
+      
+      // Also call the update function
+      updatePointsPanelVisibility();
     });
   }
 
@@ -2191,15 +2373,16 @@ function initializeCASMCalculator() {
     // Calculate CASM-based cost (convert cents to dollars)
     const casmCost = (casm * distance) / 100;
 
-    // Calculate baggage expected cost
-    const expectedBagCostPerBag = window.getExpectedBagCostPerBag ? window.getExpectedBagCostPerBag(region) : 7.75;
-    const bagExpectedCostTotal = bags * expectedBagCostPerBag;
+    // Calculate baggage expected cost (only if bags >= 1)
+    const bagExpectedCostTotal = bags >= 1 
+      ? bags * (window.getExpectedBagCostPerBag ? window.getExpectedBagCostPerBag(region) : 7.75)
+      : 0;
 
-    // Total operating cost = CASM + baggage
+    // Total operating cost = CASM + baggage (only if bags >= 1)
     const totalOperatingCost = casmCost + bagExpectedCostTotal;
 
-    // Bag revenue if bag fee provided
-    const bagRevenue = bags * bagFee;
+    // Bag revenue if bag fee provided and bags >= 1
+    const bagRevenue = (bags >= 1 && bagFee > 0) ? bags * bagFee : 0;
 
     // Calculate margin (including bag revenue if provided)
     const totalRevenue = cashPrice + bagRevenue;
@@ -2209,13 +2392,24 @@ function initializeCASMCalculator() {
     // Update display
     const costEl = document.getElementById('bs-casm-cost');
     const bagCostEl = document.getElementById('bs-casm-bag-cost');
+    const bagCostContainer = bagCostEl?.closest('.bs-casm-result');
     const totalCostEl = document.getElementById('bs-casm-total-cost');
     const cashEl = document.getElementById('bs-casm-cash-display');
     const marginEl = document.getElementById('bs-casm-margin');
     const marginPctEl = document.getElementById('bs-casm-margin-pct');
 
     if (costEl) costEl.textContent = `$${casmCost.toFixed(2)}`;
-    if (bagCostEl) bagCostEl.textContent = `$${bagExpectedCostTotal.toFixed(2)}`;
+    
+    // Only show bag cost if bags >= 1
+    if (bagCostEl) {
+      if (bags >= 1) {
+        bagCostEl.textContent = `$${bagExpectedCostTotal.toFixed(2)}`;
+        if (bagCostContainer) bagCostContainer.style.display = '';
+      } else {
+        if (bagCostContainer) bagCostContainer.style.display = 'none';
+      }
+    }
+    
     if (totalCostEl) totalCostEl.textContent = `$${totalOperatingCost.toFixed(2)}`;
     if (cashEl) cashEl.textContent = cashPrice > 0 ? `$${cashPrice.toFixed(2)}` : '—';
 
