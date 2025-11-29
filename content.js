@@ -580,13 +580,6 @@ function injectExtensionPanel() {
                 <span class="bs-toggle-slider"></span>
               </label>
             </div>
-            <div class="bs-auto-reload-toggle">
-              <label class="bs-toggle-label" for="bs-info-history-toggle">Points History</label>
-              <label class="bs-toggle-switch">
-                <input type="checkbox" id="bs-info-history-toggle">
-                <span class="bs-toggle-slider"></span>
-              </label>
-            </div>
             <div class="bs-header-actions">
               <button class="bs-action-btn bs-action-save" id="bs-save-information" title="Save information data">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -655,112 +648,10 @@ function injectExtensionPanel() {
             </div>
           </div>
 
-          <!-- Points History CPM Section -->
-          <div class="bs-information-subsection" id="bs-info-history-section" style="display: none;">
-            <div class="bs-history-content">
-              <div class="bs-subsection-header">
-                <div class="bs-subsection-header-content">
-                  <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                    <line x1="1" y1="10" x2="23" y2="10"/>
-                  </svg>
-                  <div>
-                    <h3>Points CPM History</h3>
-                    <p class="bs-subsection-description">Analyze cost per mile (CPM) for different loyalty programs over time</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Historical CPM Data -->
-                <div class="bs-history-section">
-                  <div class="bs-history-section-header">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                      <polyline points="17 6 23 6 23 12"/>
-                    </svg>
-                    <h4>Historical CPM Data</h4>
-                  </div>
-                  <div class="bs-hyatt-form-card">
-                    <div class="bs-form-group">
-                      <label for="bs-history-program">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                          <path d="M2 17l10 5 10-5"/>
-                          <path d="M2 12l10 5 10-5"/>
-                        </svg>
-                        Loyalty Program
-                      </label>
-                      <select id="bs-history-program">
-                        <option value="">Select a program...</option>
-                      </select>
-                    </div>
-                    <div class="bs-history-stats-grid" id="bs-history-stats-grid">
-                      <!-- Historical stats will be displayed here -->
-                    </div>
-                    <div class="bs-history-chart-container" id="bs-history-chart-container">
-                      <!-- Chart will be displayed here -->
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
 
-    </div>
-    
-    <!-- Settings Section -->
-    <div class="bs-section" id="bs-settings-section" style="display: none;">
-      <div class="bs-section-header">
-        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
-        </svg>
-        <span>Settings</span>
-      </div>
-      
-      <div class="bs-settings-content">
-        <div class="bs-settings-compact">
-        <div class="bs-settings-item">
-          <label>Language</label>
-          <select id="bs-flight-language">
-            <option value="en">English</option>
-            <option value="de">Deutsch</option>
-            <option value="fr">Français</option>
-            <option value="es">Español</option>
-            <option value="it">Italiano</option>
-            <option value="pl">Polski</option>
-        </select>
-        </div>
-        <div class="bs-settings-item">
-          <label>Currency</label>
-          <select id="bs-flight-currency">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-            <option value="CHF">CHF</option>
-            <option value="PLN">PLN</option>
-          </select>
-        </div>
-        <div class="bs-settings-item">
-          <label>Location</label>
-          <select id="bs-flight-location">
-            <option value="US">United States</option>
-            <option value="DE">Germany</option>
-            <option value="GB">United Kingdom</option>
-            <option value="FR">France</option>
-            <option value="AT">Austria</option>
-            <option value="CH">Switzerland</option>
-            <option value="PL">Poland</option>
-          </select>
-        </div>
-        <div class="bs-settings-item bs-settings-link">
-          <a href="https://www.benefitsystems.io/" target="_blank" class="bs-link">Benefit Systems</a>
-        </div>
-        </div>
-      </div>
     </div>
 
     <!-- Calculation Section -->
@@ -1625,6 +1516,58 @@ function injectExtensionPanel() {
         </div>
       </div>
     </div>
+
+    <!-- Settings Section -->
+    <div class="bs-section" id="bs-settings-section" style="display: none;">
+      <div class="bs-section-header">
+        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+        </svg>
+        <span>Settings</span>
+      </div>
+      
+      <div class="bs-settings-content">
+        <div class="bs-settings-compact">
+        <div class="bs-settings-item">
+          <label>Language</label>
+          <select id="bs-flight-language">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="pl">Polski</option>
+        </select>
+        </div>
+        <div class="bs-settings-item">
+          <label>Currency</label>
+          <select id="bs-flight-currency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="CHF">CHF</option>
+            <option value="PLN">PLN</option>
+          </select>
+        </div>
+        <div class="bs-settings-item">
+          <label>Location</label>
+          <select id="bs-flight-location">
+            <option value="US">United States</option>
+            <option value="DE">Germany</option>
+            <option value="GB">United Kingdom</option>
+            <option value="FR">France</option>
+            <option value="AT">Austria</option>
+            <option value="CH">Switzerland</option>
+            <option value="PL">Poland</option>
+          </select>
+        </div>
+        <div class="bs-settings-item bs-settings-link">
+          <a href="https://www.benefitsystems.io/" target="_blank" class="bs-link">Benefit Systems</a>
+        </div>
+        </div>
+      </div>
+    </div>
   `;
   
   // Insert panel at the top
@@ -2226,11 +2169,9 @@ function initializeEventListeners() {
   const infoPartnersToggle = document.getElementById('bs-info-partners-toggle');
   const infoSelectedToggle = document.getElementById('bs-info-selected-toggle');
   const infoPointsToggle = document.getElementById('bs-info-points-toggle');
-  const infoHistoryToggle = document.getElementById('bs-info-history-toggle');
   const infoCardsPanel = document.getElementById('bs-info-cards-panel');
   const infoPartnersPanel = document.getElementById('available-transfer-partners');
   const infoSelectedPanel = document.getElementById('selected-cards-comparison');
-  const infoHistoryPanel = document.getElementById('bs-info-history-section');
   const infoPointsPanel = document.getElementById('bs-points-tracker-panel');
 
   if (infoCardsToggle && infoCardsPanel) {
@@ -2570,28 +2511,6 @@ function initializeEventListeners() {
     });
   }
 
-  // Points History toggle
-  if (infoHistoryToggle && infoHistoryPanel) {
-    const saved = localStorage.getItem('bs-info-history-enabled');
-    if (saved !== null) infoHistoryToggle.checked = saved === 'true';
-    
-    infoHistoryPanel.style.display = infoHistoryToggle.checked ? '' : 'none';
-    
-    infoHistoryToggle.addEventListener('change', () => {
-      localStorage.setItem('bs-info-history-enabled', infoHistoryToggle.checked);
-      infoHistoryPanel.style.display = infoHistoryToggle.checked ? '' : 'none';
-      
-      if (infoHistoryToggle.checked) {
-        // Initialize Points History when enabled
-        initializePointsHistory();
-      }
-    });
-    
-    // Initialize if already enabled
-    if (infoHistoryToggle.checked) {
-      initializePointsHistory();
-    }
-  }
 }
 
 // Handle flight button clicks
@@ -2877,6 +2796,13 @@ function saveInformationData() {
     };
     localStorage.setItem('bs-information-data', JSON.stringify(informationData));
     
+    // Also save to cache service
+    if (window.cacheService) {
+      const oneYearTTL = 365 * 24 * 60 * 60 * 1000;
+      window.cacheService.set('selectedCards', selectedCards, oneYearTTL);
+      console.log('Selected cards saved to cache:', selectedCards);
+    }
+    
     // Show success feedback
     showFeedback('Information data saved successfully!', 'success');
     console.log('Information data saved:', informationData);
@@ -2890,6 +2816,12 @@ function saveInformationData() {
 function clearInformationData() {
   try {
     localStorage.removeItem('bs-information-data');
+    
+    // Also clear from cache service
+    if (window.cacheService) {
+      window.cacheService.delete('selectedCards');
+      console.log('Selected cards cleared from cache');
+    }
     
     // Clear selected cards
     if (window.selectedCards) {
@@ -5827,89 +5759,4 @@ function initializeHotelBenefits() {
     }
   }
 })();
-
-// Initialize Points History
-function initializePointsHistory() {
-  const programSelect = document.getElementById('bs-history-program');
-  const statsGrid = document.getElementById('bs-history-stats-grid');
-  const chartContainer = document.getElementById('bs-history-chart-container');
-
-  if (!programSelect) return;
-
-  // Update historical data display
-  async function updateHistoricalData() {
-    const programName = programSelect.value;
-    if (!programName) {
-      if (statsGrid) statsGrid.innerHTML = '';
-      if (chartContainer) chartContainer.innerHTML = '';
-      return;
-    }
-
-    // Show loading state
-    if (statsGrid) {
-      statsGrid.innerHTML = '<div class="bs-history-loading">Loading historical data...</div>';
-    }
-    if (chartContainer) {
-      chartContainer.innerHTML = '<div class="bs-history-loading">Loading chart data...</div>';
-    }
-
-    const historicalData = await fetchHistoricalData(programName);
-    if (!historicalData) {
-      if (statsGrid) {
-        statsGrid.innerHTML = '<div class="bs-history-no-data">No historical data available for this program.</div>';
-      }
-      if (chartContainer) chartContainer.innerHTML = '';
-      return;
-    }
-
-    // Display stats
-    if (statsGrid) {
-      statsGrid.innerHTML = `
-        <div class="bs-history-stat-card">
-          <span class="bs-history-stat-label">Current</span>
-          <span class="bs-history-stat-value">$${historicalData.current?.toFixed(2) || 'N/A'}</span>
-        </div>
-        <div class="bs-history-stat-card">
-          <span class="bs-history-stat-label">6-Month Avg</span>
-          <span class="bs-history-stat-value">$${historicalData.avg6m?.toFixed(2) || 'N/A'}</span>
-        </div>
-        <div class="bs-history-stat-card">
-          <span class="bs-history-stat-label">12-Month Avg</span>
-          <span class="bs-history-stat-value">$${historicalData.avg12m?.toFixed(2) || 'N/A'}</span>
-        </div>
-        <div class="bs-history-stat-card">
-          <span class="bs-history-stat-label">24-Month Avg</span>
-          <span class="bs-history-stat-value">$${historicalData.avg24m?.toFixed(2) || 'N/A'}</span>
-        </div>
-      `;
-    }
-
-    // Chart container - leave empty for now
-    if (chartContainer) {
-      chartContainer.innerHTML = '';
-    }
-  }
-
-  // Populate program dropdown
-  function populateProgramDropdown() {
-    if (!programSelect || !window.loyaltyPrograms) return;
-    
-    programSelect.innerHTML = '<option value="">Select a program...</option>';
-    window.loyaltyPrograms.forEach(program => {
-      const option = document.createElement('option');
-      option.value = program.name;
-      option.textContent = program.name;
-      programSelect.appendChild(option);
-    });
-  }
-
-  // Event listeners
-  if (programSelect) {
-    programSelect.addEventListener('change', updateHistoricalData);
-  }
-
-  // Initial setup
-  populateProgramDropdown();
-  updateHistoricalData();
-}
 

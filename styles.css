@@ -7297,7 +7297,7 @@
   border-bottom: none;
 }
 
-/* Points History Styles */
+/* Information Subsection Styles */
 .bs-information-subsection {
   margin-top: 24px;
   padding: 20px;
@@ -7414,6 +7414,7 @@
 .bs-history-chart-container {
   margin-top: 20px;
 }
+
 
 .bs-history-chart-info {
   display: flex;
