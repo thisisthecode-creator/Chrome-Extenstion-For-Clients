@@ -644,9 +644,9 @@ async function fetchSeatsData({ isNonstop }) {
         destination: to,
         startDate: depart,
         endDate: depart,
-        take: 10,
+        take: 100,
         onlyDirect: !!isNonstop,
-        includeFiltered: false,
+        includeFiltered: true,
         orderBy: 'lowest_mileage'
       })
     }
@@ -665,9 +665,9 @@ async function fetchSeatsData({ isNonstop }) {
           destination: to,
           startDate: depart,
           endDate: depart,
-          take: 20,
+          take: 100,
           onlyDirect: false,
-          includeFiltered: false,
+          includeFiltered: true,
           orderBy: 'lowest_mileage'
         })
       }
@@ -691,9 +691,9 @@ async function fetchSeatsData({ isNonstop }) {
             destination: to,
             startDate: start,
             endDate: end,
-            take: 30,
+            take: 100,
             onlyDirect: false,
-            includeFiltered: false,
+            includeFiltered: true,
             orderBy: 'lowest_mileage'
           })
         }
@@ -784,11 +784,40 @@ async function triggerGlobalPanelUpdate() {
     const directData = await fetchSeatsData({ isNonstop: true })
     const connectingData = await fetchSeatsData({ isNonstop: false })
     
-    // Use the data that has results
-    if (directData && directData.data && directData.data.length > 0) {
-      lastSeatsSearch = directData
-    } else if (connectingData && connectingData.data && connectingData.data.length > 0) {
-      lastSeatsSearch = connectingData
+    // Combine both datasets to show all available flights (direct + 1 stop)
+    // Always prefer connecting data as it includes both direct and connecting flights
+    let combinedData = null
+    
+    // Use connecting data as primary source (includes both direct and connecting)
+    if (connectingData && connectingData.data && connectingData.data.length > 0) {
+      combinedData = { ...connectingData, data: [...connectingData.data] }
+      
+      // If we also have direct data, merge unique entries
+      if (directData && directData.data && directData.data.length > 0) {
+        const connectingIds = new Set(combinedData.data.map(av => av.Id))
+        const additionalDirectFlights = directData.data.filter(av => !connectingIds.has(av.Id))
+        combinedData.data.push(...additionalDirectFlights)
+      }
+    } else if (directData && directData.data && directData.data.length > 0) {
+      // Fallback to direct data only if no connecting data
+      combinedData = { ...directData, data: [...directData.data] }
+    }
+    
+    // Sort by lowest mileage across all cabin classes to show best options first
+    if (combinedData && combinedData.data && combinedData.data.length > 0) {
+      combinedData.data.sort((a, b) => {
+        const getMinMiles = (av) => {
+          const miles = [
+            av.FMileageCostRaw || av.FDirectMileageCostRaw,
+            av.JMileageCostRaw || av.JDirectMileageCostRaw,
+            av.WMileageCostRaw || av.WDirectMileageCostRaw,
+            av.YMileageCostRaw || av.YDirectMileageCostRaw
+          ].filter(m => m && m > 0)
+          return miles.length > 0 ? Math.min(...miles) : Infinity
+        }
+        return getMinMiles(a) - getMinMiles(b)
+      })
+      lastSeatsSearch = combinedData
     }
     
     // Create the standalone award analysis section (and ensure any old global panel is removed)
@@ -826,27 +855,60 @@ function createStandaloneAwardSection() {
   const awardSection = document.createElement('div')
   awardSection.id = 'bs-standalone-award-section'
       awardSection.style.cssText = `
-        background: #f8f9fa;
-        border: 2px solid #000000;
-        border-radius: 12px;
-        padding: 24px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border: 2px solid transparent;
+        border-radius: 20px;
+        padding: 28px;
         margin: 24px 0;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-        font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
+        font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
         overflow: hidden;
         position: relative;
         z-index: 5;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       `
+      
+      // Add gradient border effect with hover
+      const gradientBorder = document.createElement('div')
+      gradientBorder.style.cssText = `
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        padding: 2px;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 50%, rgba(0, 0, 0, 0.1) 100%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+        z-index: -1;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      `
+      awardSection.appendChild(gradientBorder)
+      
+      // Add hover effect
+      awardSection.addEventListener('mouseenter', () => {
+        awardSection.style.boxShadow = '0 12px 40px rgba(26, 115, 232, 0.15), 0 6px 20px rgba(26, 115, 232, 0.1), 0 0 0 1px rgba(26, 115, 232, 0.2)'
+        awardSection.style.transform = 'translateY(-2px)'
+        gradientBorder.style.background = 'linear-gradient(135deg, rgba(26, 115, 232, 0.3) 0%, rgba(26, 115, 232, 0.15) 50%, rgba(26, 115, 232, 0.3) 100%)'
+      })
+      
+      awardSection.addEventListener('mouseleave', () => {
+        awardSection.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06)'
+        awardSection.style.transform = 'translateY(0)'
+        gradientBorder.style.background = 'linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 50%, rgba(0, 0, 0, 0.1) 100%)'
+      })
   
   // Create header
   const header = document.createElement('div')
-  header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #000000;'
+  header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid rgba(0, 0, 0, 0.06);'
   header.innerHTML = `
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div style="font-size:24px;">🏆</div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div style="font-size:28px;filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));">🏆</div>
       <div>
-        <h2 style="margin:0;font-size:20px;font-weight:600;color:#1a1a1a;">Award Flight Analysis</h2>
-        <p style="margin:4px 0 0 0;font-size:14px;color:#666;">Compare miles programs and booking classes</p>
+        <h2 style="margin:0;font-size:22px;font-weight:600;color:#1a1a1a;letter-spacing:-0.01em;">Award Flight Analysis</h2>
+        <p style="margin:6px 0 0 0;font-size:14px;color:#666;line-height:1.5;">Compare miles programs and booking classes</p>
       </div>
     </div>
   `
@@ -854,46 +916,62 @@ function createStandaloneAwardSection() {
   
   // Create controls
   const controls = document.createElement('div')
-  controls.style.cssText = 'display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap;'
+  controls.style.cssText = 'display:flex;gap:24px;margin-bottom:24px;flex-wrap:wrap;align-items:flex-end;'
   controls.innerHTML = `
-    <div style="display:flex;align-items:center;gap:8px;">
-      <label style="font-size:14px;color:#333;font-weight:500;">Cash Price:</label>
-      <input type="number" id="bs-standalone-cash-price" placeholder="500" step="0.01" style="
-        border:1px solid #ddd;
-        padding:8px 12px;
-        border-radius:6px;
-        width:100px;
-        font-size:14px;
-      ">
-      <span style="font-size:14px;color:#666;">USD</span>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <label style="font-size:13px;color:#1a1a1a;font-weight:500;margin-left:2px;">Cash Price</label>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <input type="number" id="bs-standalone-cash-price" placeholder="500" step="0.01" style="
+          border:1.5px solid #e0e0e0;
+          padding:12px 16px;
+          border-radius:12px;
+          width:120px;
+          font-size:14px;
+          background:#ffffff;
+          color:#1a1a1a;
+          transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);
+        ">
+        <span style="font-size:14px;color:#666;font-weight:500;">USD</span>
+      </div>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <label style="font-size:14px;color:#333;font-weight:500;">Miles Value:</label>
-      <input type="number" id="bs-standalone-miles-value" placeholder="" step="0.1" autocomplete="off" name="bs-standalone-miles-value" inputmode="decimal" value="" style="
-        border:1px solid #ddd;
-        padding:8px 12px;
-        border-radius:6px;
-        width:100px;
-        font-size:14px;
-      ">
-      <span style="font-size:14px;color:#666;">USD per 1000 miles</span>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <label style="font-size:13px;color:#1a1a1a;font-weight:500;margin-left:2px;">Miles Value</label>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <input type="number" id="bs-standalone-miles-value" placeholder="" step="0.1" autocomplete="off" name="bs-standalone-miles-value" inputmode="decimal" value="" style="
+          border:1.5px solid #e0e0e0;
+          padding:12px 16px;
+          border-radius:12px;
+          width:120px;
+          font-size:14px;
+          background:#ffffff;
+          color:#1a1a1a;
+          transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);
+        ">
+        <span style="font-size:14px;color:#666;font-weight:500;">USD per 1000 miles</span>
+      </div>
     </div>
   `
   awardSection.appendChild(controls)
   
   // Create booking class filters dropdown
   const filters = document.createElement('div')
-  filters.style.cssText = 'background:#ffffff;border:1px solid #000000;border-radius:8px;padding:16px;margin-bottom:20px;'
+  filters.style.cssText = 'background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border:1px solid rgba(0, 0, 0, 0.06);border-radius:16px;padding:20px;margin-bottom:24px;box-shadow:0 2px 6px rgba(0, 0, 0, 0.04);'
   filters.innerHTML = `
-    <div style="display:flex;align-items:center;gap:12px;">
-      <label style="font-size:14px;color:#333;font-weight:500;">Filter by Booking Class:</label>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <label style="font-size:13px;color:#1a1a1a;font-weight:500;margin-left:2px;">Filter by Booking Class</label>
       <select id="bs-standalone-cabin-filter" style="
-        border:1px solid #ddd;
-        padding:8px 12px;
-        border-radius:6px;
+        border:1.5px solid #e0e0e0;
+        padding:12px 16px;
+        border-radius:12px;
         font-size:14px;
-        min-width:200px;
+        min-width:220px;
         cursor:pointer;
+        background:#ffffff;
+        color:#1a1a1a;
+        transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);
       ">
         <option value="all" selected>All Booking Classes</option>
         <option value="economy">Economy Only (Y)</option>
@@ -908,8 +986,29 @@ function createStandaloneAwardSection() {
   // Create results container
   const resultsContainer = document.createElement('div')
   resultsContainer.id = 'bs-standalone-award-results'
-  resultsContainer.style.cssText = 'margin-top:16px;'
+  resultsContainer.style.cssText = 'margin-top:20px;'
   awardSection.appendChild(resultsContainer)
+  
+  // Add CSS for input focus states
+  const style = document.createElement('style')
+  style.textContent = `
+    #bs-standalone-award-section input:focus,
+    #bs-standalone-award-section select:focus {
+      outline: none;
+      border-color: #1a73e8 !important;
+      box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+      transform: translateY(-1px);
+    }
+    #bs-standalone-award-section input:hover,
+    #bs-standalone-award-section select:hover {
+      border-color: #1a73e8 !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+    }
+    #bs-standalone-award-section [style*="display:grid"]:hover {
+      background: rgba(26, 115, 232, 0.02) !important;
+    }
+  `
+  document.head.appendChild(style)
 
   // Hard reset any miles value inputs to ensure empty default
   try {
@@ -951,6 +1050,9 @@ function createStandaloneAwardSection() {
   // Add filter event listener
   if (cabinFilter) {
     cabinFilter.addEventListener('change', updateStandaloneResults)
+    
+    // Sync cabin filter with Flight Search cabin selection (bidirectional)
+    setupCabinSync()
   }
   
   // Do not set a default for miles value; leave empty to use Supabase market CPM
@@ -966,13 +1068,81 @@ function createStandaloneAwardSection() {
   updateStandaloneResults()
 }
 
+// Setup bidirectional cabin synchronization between Flight Search and Award Flight Analysis
+function setupCabinSync() {
+  const flightCabinSelect = document.getElementById('bs-flight-cabin')
+  const awardCabinFilter = document.getElementById('bs-standalone-cabin-filter')
+  
+  if (!flightCabinSelect || !awardCabinFilter) return
+  
+  // Map Flight Search cabin values to Award Filter values
+  const flightToAwardMap = {
+    'economy': 'economy',
+    'business': 'business',
+    'first': 'first',
+    'premium_economy': 'premium-economy'
+  }
+  
+  // Map Award Filter values to Flight Search cabin values
+  const awardToFlightMap = {
+    'economy': 'economy',
+    'premium-economy': 'premium_economy',
+    'business': 'business',
+    'first': 'first',
+    'all': 'economy' // Default to economy if "all" is selected
+  }
+  
+  let isSyncing = false // Prevent infinite loops
+  
+  // Sync from Flight Search to Award Filter
+  function syncFlightToAward() {
+    if (isSyncing) return
+    isSyncing = true
+    
+    const flightValue = flightCabinSelect.value
+    const awardValue = flightToAwardMap[flightValue] || 'all'
+    
+    if (awardCabinFilter.value !== awardValue) {
+      awardCabinFilter.value = awardValue
+      awardCabinFilter.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+    
+    isSyncing = false
+  }
+  
+  // Sync from Award Filter to Flight Search
+  function syncAwardToFlight() {
+    if (isSyncing) return
+    isSyncing = true
+    
+    const awardValue = awardCabinFilter.value
+    const flightValue = awardToFlightMap[awardValue] || 'economy'
+    
+    if (flightCabinSelect.value !== flightValue) {
+      flightCabinSelect.value = flightValue
+      flightCabinSelect.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+    
+    isSyncing = false
+  }
+  
+  // Add event listeners
+  flightCabinSelect.addEventListener('change', syncFlightToAward)
+  awardCabinFilter.addEventListener('change', syncAwardToFlight)
+  
+  // Initial sync from Flight Search to Award Filter
+  setTimeout(() => {
+    syncFlightToAward()
+  }, 100)
+}
+
 // Update standalone award results
 function updateStandaloneAwardResults() {
   const resultsContainer = document.getElementById('bs-standalone-award-results')
   if (!resultsContainer) return
   
   if (!lastSeatsSearch || !lastSeatsSearch.data || lastSeatsSearch.data.length === 0) {
-    resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;color:#666;font-style:italic;">No award data available. Please check your flight details and try again.</div>'
+    resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;color:#666;font-style:italic;background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border-radius:16px;border:1px solid rgba(0, 0, 0, 0.06);">No award data available. Please check your flight details and try again.</div>'
     return
   }
   
@@ -985,7 +1155,7 @@ function updateStandaloneAwardResults() {
     : null
   
   if (!cashPriceUSD) {
-    resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;color:#666;font-style:italic;">Please enter a cash price to see award analysis</div>'
+    resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;color:#666;font-style:italic;background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border-radius:16px;border:1px solid rgba(0, 0, 0, 0.06);">Please enter a cash price to see award analysis</div>'
     return
   }
   
@@ -1113,9 +1283,9 @@ function updateStandaloneAwardResults() {
 
   // Render in sorted order
   programEntries.forEach(({ av, filteredCabins, programPointValue, taxesCurrency, taxesUSD }) => {
-    html += `<div style="background:#fff;border:1px solid #000000;border-radius:10px;overflow:hidden;">`
-    html += `<div style="padding:14px 16px;background:#f8f9fa;border-bottom:1px solid #000000;">`
-    html += `<h3 style="margin:0;font-size:16px;font-weight:600;color:#333;">${av.Source}</h3>`
+    html += `<div style="background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border:1px solid rgba(0, 0, 0, 0.06);border-radius:16px;overflow:hidden;margin-bottom:16px;box-shadow:0 2px 6px rgba(0, 0, 0, 0.04);transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">`
+    html += `<div style="padding:16px 20px;background:linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);border-bottom:1px solid rgba(0, 0, 0, 0.06);">`
+    html += `<h3 style="margin:0;font-size:18px;font-weight:600;color:#1a1a1a;letter-spacing:-0.01em;">${av.Source}</h3>`
     html += `</div>`
     html += `<div>`
 
@@ -1131,7 +1301,7 @@ function updateStandaloneAwardResults() {
       const isGoodDeal = savingsPct > 0
       const cabinName = c.key === 'J' ? 'Business' : c.key === 'F' ? 'First' : c.key === 'W' ? 'Premium Economy' : 'Economy'
 
-          html += `<div style="display:grid;grid-template-columns:40px 120px 1fr 150px 170px 170px;align-items:center;column-gap:16px;padding:10px 12px;border-top:1px solid #000000;">`
+          html += `<div style="display:grid;grid-template-columns:40px 120px 1fr 150px 170px 170px;align-items:center;column-gap:16px;padding:14px 16px;border-top:1px solid rgba(0, 0, 0, 0.06);transition:background 0.2s ease;">`
       // col1 code
       html += `<div style=\"color:#333;font-weight:600;min-width:110px;font-size:13px;\">${c.key}</div>`
       // col2 cabin
@@ -1162,7 +1332,7 @@ function updateStandaloneAwardResults() {
       // col3 miles + taxes
       html += `<div style=\"color:#333;font-weight:600;min-width:110px;font-size:13px;white-space:nowrap;\">${formatMilesDots(c.miles)} miles + $${cabinTaxesUSD.toFixed(2)} taxes</div>`
       // col4 Total pill
-      html += `<div style=\"min-width:150px;text-align:left;\"><span style=\"font-size:13px;font-weight:600;background:#fff;color:#333;min-width:110px;\">Total: $${total.toFixed(2)}</span></div>`
+      html += `<div style=\"min-width:150px;text-align:left;\"><span style=\"font-size:14px;font-weight:600;background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);color:#1a1a1a;padding:6px 12px;border-radius:12px;border:1.5px solid rgba(0, 0, 0, 0.08);box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);display:inline-block;\">Total: $${total.toFixed(2)}</span></div>`
       if (effectiveCpmCents !== null && isFinite(effectiveCpmCents)) {
         const marketPerThousand = (window.__marketCpmBySource && typeof window.__marketCpmBySource[av.Source] === 'number') ? window.__marketCpmBySource[av.Source] : null
         const avgCpm = (typeof marketPerThousand === 'number') ? (marketPerThousand / 10) : programAvgCpmCents // convert USD per 1000 to cents per mile
@@ -1172,12 +1342,12 @@ function updateStandaloneAwardResults() {
         const ratio = avgCpm > 0 ? (effectiveCpmCents / avgCpm) : null
         const ratioDisplay = (ratio && isFinite(ratio)) ? `${(Math.round(ratio * 10) / 10).toString().replace(/\.0$/, '')}x` : ''
         // col5 CPM pill + indicator
-        html += `<div style=\"min-width:170px;display:flex;flex-direction:column;align-items:center;\"><span style=\"font-size:13px;font-weight:700;padding:4px 10px;border-radius:14px;background:${isBetterCpm ? '#e8f5e9' : '#fdecea'};color:#000;border:2px solid ${isBetterCpm ? '#4caf50' : '#f44336'};width:120px;text-align:center;box-sizing:border-box;\">${effectiveCpmCents.toFixed(1)}¢${ratioDisplay ? ` - <span style='font-weight:700;color:#000;opacity:0.6;'>${ratioDisplay}</span>` : ''}</span><div style=\"margin-top:8px;width:120px;\">${createSavingsBar(cpmBetterPct)}</div></div>`
+        html += `<div style=\"min-width:170px;display:flex;flex-direction:column;align-items:center;\"><span style=\"font-size:13px;font-weight:700;padding:6px 12px;border-radius:12px;background:${isBetterCpm ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' : 'linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%)'};color:#000;border:1.5px solid ${isBetterCpm ? '#4caf50' : '#f44336'};width:120px;text-align:center;box-sizing:border-box;box-shadow:0 2px 4px rgba(0, 0, 0, 0.06);\">${effectiveCpmCents.toFixed(1)}¢${ratioDisplay ? ` - <span style='font-weight:700;color:#000;opacity:0.6;'>${ratioDisplay}</span>` : ''}</span><div style=\"margin-top:8px;width:120px;\">${createSavingsBar(cpmBetterPct)}</div></div>`
       } else {
         html += `<div></div>`
       }
       // col6 savings pill + indicator + caption
-      html += `<div style=\"min-width:140px;display:flex;flex-direction:column;align-items:center;\"><span style=\"font-size:13px;font-weight:700;padding:4px 10px;border-radius:14px;background:${isGoodDeal ? '#e8f5e9' : '#fdecea'};color:#000;border:2px solid ${isGoodDeal ? '#4caf50' : '#f44336'};width:120px;text-align:center;box-sizing:border-box;\">${isGoodDeal ? 'Save' : 'More'} ${Math.abs(savingsPct).toFixed(0)}%</span><div style=\"margin-top:8px;width:120px;\">${createSavingsBar(Math.max(0, savingsPct))}</div></div>`
+      html += `<div style=\"min-width:140px;display:flex;flex-direction:column;align-items:center;\"><span style=\"font-size:13px;font-weight:700;padding:6px 12px;border-radius:12px;background:${isGoodDeal ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' : 'linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%)'};color:#000;border:1.5px solid ${isGoodDeal ? '#4caf50' : '#f44336'};width:120px;text-align:center;box-sizing:border-box;box-shadow:0 2px 4px rgba(0, 0, 0, 0.06);\">${isGoodDeal ? 'Save' : 'More'} ${Math.abs(savingsPct).toFixed(0)}%</span><div style=\"margin-top:8px;width:120px;\">${createSavingsBar(Math.max(0, savingsPct))}</div></div>`
       
       html += `</div>`
     })
@@ -1197,8 +1367,8 @@ function createSavingsBar(savingsPct) {
   const position = (normalizedSavings / maxSavings) * 100
 
   return `
-    <div style="position: relative; height: 6px; width: 100%; background: linear-gradient(to right, #f44336 0%, #ffc107 50%, #4caf50 100%); border-radius: 3px; margin: 4px 0;">
-      <div style="position: absolute; top: 6px; left: ${position}%; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 8px solid #000000; transform: translateX(-50%);"></div>
+    <div style="position: relative; height: 8px; width: 100%; background: linear-gradient(to right, #f44336 0%, #ffc107 50%, #4caf50 100%); border-radius: 4px; margin: 4px 0; box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);">
+      <div style="position: absolute; top: 8px; left: ${position}%; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 8px solid #1a73e8; transform: translateX(-50%); filter: drop-shadow(0 2px 4px rgba(26, 115, 232, 0.3));"></div>
     </div>
   `
 }

@@ -273,7 +273,7 @@ function injectExtensionPanel() {
 
             <div class="bs-casm-field">
               <label>Check-In Bags</label>
-              <input type="number" id="bs-casm-bags" placeholder="0" min="0" value="1" />
+              <input type="number" id="bs-casm-bags" placeholder="0" min="0" value="0" />
             </div>
 
             <div class="bs-casm-field">
@@ -648,9 +648,9 @@ function injectExtensionPanel() {
             </div>
           </div>
 
-        </div>
-      </div>
-    </div>
+                  </div>
+                </div>
+              </div>
 
     </div>
 
@@ -1564,7 +1564,7 @@ function injectExtensionPanel() {
         </div>
         <div class="bs-settings-item bs-settings-link">
           <a href="https://www.benefitsystems.io/" target="_blank" class="bs-link">Benefit Systems</a>
-        </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2632,6 +2632,62 @@ function setupFlightInputAutoReload() {
       console.log('Restored auto-reload state:', autoReloadToggle.checked);
     }
   }
+
+  // Sync Flight Search Cabin to Award Flight Analysis Filter
+  syncCabinToAwardFilter();
+}
+
+// Sync Flight Search Cabin selection to Award Flight Analysis Filter
+function syncCabinToAwardFilter() {
+  const flightCabinSelect = document.getElementById('bs-flight-cabin');
+  if (!flightCabinSelect) return;
+
+  // Function to update the award filter
+  function updateAwardFilter() {
+    const cabinValue = flightCabinSelect.value;
+    const awardFilter = document.getElementById('bs-standalone-cabin-filter');
+    
+    if (awardFilter) {
+      // Map flight search cabin values to award filter values
+      // Flight search has: economy, business, first
+      // Award filter has: all, economy, premium-economy, business, first
+      const cabinMapping = {
+        'economy': 'economy',
+        'business': 'business',
+        'first': 'first'
+      };
+      
+      const mappedValue = cabinMapping[cabinValue] || 'all';
+      if (awardFilter.value !== mappedValue) {
+        awardFilter.value = mappedValue;
+        // Trigger change event to update results
+        awardFilter.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+  }
+
+  // Add event listener for cabin changes
+  flightCabinSelect.addEventListener('change', updateAwardFilter);
+  
+  // Also sync on initial load if award filter exists
+  // Use a small delay to ensure award section is created
+  setTimeout(() => {
+    updateAwardFilter();
+  }, 500);
+  
+  // Also sync when award section is created (using periodic check)
+  const checkInterval = setInterval(() => {
+    const awardFilter = document.getElementById('bs-standalone-cabin-filter');
+    if (awardFilter) {
+      updateAwardFilter();
+      clearInterval(checkInterval);
+    }
+  }, 1000);
+  
+  // Stop checking after 10 seconds
+  setTimeout(() => {
+    clearInterval(checkInterval);
+  }, 10000);
 }
 
 // Auto-reload Google Flights with current input data
@@ -3431,7 +3487,7 @@ function generateFlightUrl(service, data) {
   const returnTimestamp = ret ? Math.floor(new Date(ret).getTime() / 1000) : departTimestamp;
   
   const urls = {
-    'google-flights': `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+${cabin}+class+nonstop&hl=${language}&curr=${currency}&gl=${location}+tfu=EgYIAxAAGAA`,
+    'google-flights': `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+${cabin}+class&hl=${language}&curr=${currency}&gl=${location}+tfu=EgYIAxAAGAA`,
     
     'points-yeah': `https://www.pointsyeah.com/search?cabins=${pointsYeahCabin}&cabin=${pointsYeahCabin}&banks=Amex%2CCapital+One%2CChase&airlineProgram=AM%2CAC%2CKL%2CAS%2CAV%2CDL%2CEK%2CEY%2CAY%2CB6%2CQF%2CSQ%2CTK%2CUA%2CVS%2CVA&tripType=${ret ? '2' : '1'}&adults=${adults}&children=0&departure=${from}&arrival=${to}&departDate=${depart}&departDateSec=${depart}&returnDate=${ret || depart}&returnDateSec=${ret || depart}&multiday=false&stops=0`,
     
