@@ -111,7 +111,7 @@ function injectExtensionPanel() {
           <div class="bs-auto-reload-toggle">
             <label class="bs-toggle-label" for="bs-auto-reload-toggle">Auto-reload</label>
             <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-auto-reload-toggle" checked>
+              <input type="checkbox" id="bs-auto-reload-toggle">
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
@@ -1782,6 +1782,8 @@ function initializeEventListeners() {
     const saved = localStorage.getItem('bs-external-links-enabled');
     if (saved !== null) {
       linksToggle.checked = saved === 'true';
+    } else {
+      linksToggle.checked = false;
     }
     linksContainer.style.display = linksToggle.checked ? '' : 'none';
     linksToggle.addEventListener('change', () => {
@@ -1801,7 +1803,11 @@ function initializeEventListeners() {
   const hotelLinksContainer = document.getElementById('bs-hotel-external-links');
   if (hotelLinksToggle && hotelLinksContainer) {
     const savedHotelLinks = localStorage.getItem('bs-hotel-external-links-enabled');
-    if (savedHotelLinks !== null) hotelLinksToggle.checked = savedHotelLinks === 'true';
+    if (savedHotelLinks !== null) {
+      hotelLinksToggle.checked = savedHotelLinks === 'true';
+    } else {
+      hotelLinksToggle.checked = false;
+    }
     hotelLinksContainer.style.display = hotelLinksToggle.checked ? '' : 'none';
     hotelLinksToggle.addEventListener('change', () => {
       localStorage.setItem('bs-hotel-external-links-enabled', hotelLinksToggle.checked);
@@ -2630,6 +2636,9 @@ function setupFlightInputAutoReload() {
     if (savedState !== null) {
       autoReloadToggle.checked = savedState === 'true';
       console.log('Restored auto-reload state:', autoReloadToggle.checked);
+    } else {
+      autoReloadToggle.checked = false;
+      console.log('Auto-reload defaulting to off');
     }
   }
 
@@ -2759,7 +2768,11 @@ function setupHotelInputAutoReload() {
       }
     });
     const saved = localStorage.getItem('bs-hotel-auto-reload-enabled');
-    if (saved !== null) autoToggle.checked = saved === 'true';
+    if (saved !== null) {
+      autoToggle.checked = saved === 'true';
+    } else {
+      autoToggle.checked = false;
+    }
   }
 }
 

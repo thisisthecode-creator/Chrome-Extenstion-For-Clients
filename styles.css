@@ -6927,6 +6927,47 @@
 .points-tracker-actions {
   display: flex;
   gap: 8px;
+  align-items: center;
+}
+
+.points-view-toggle {
+  display: flex;
+  gap: 4px;
+  background: #f8f9fa;
+  padding: 4px;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+.points-view-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #5f6368;
+  transition: all 0.2s ease;
+}
+
+.points-view-btn:hover {
+  background: rgba(26, 115, 232, 0.1);
+  color: #1a73e8;
+}
+
+.points-view-btn.active {
+  background: #1a73e8;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(26, 115, 232, 0.2);
+}
+
+.points-view-btn svg {
+  width: 16px;
+  height: 16px;
 }
 
 .points-tracker-stats {
@@ -7060,16 +7101,22 @@
   color: #ea4335;
 }
 
-.points-tracker-table-container {
-  overflow-x: auto;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
+/* Cards Container */
+.points-tracker-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
+/* Simple Table View */
 .points-tracker-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .points-tracker-table thead {
@@ -7078,7 +7125,7 @@
 }
 
 .points-tracker-table th {
-  padding: 12px 8px;
+  padding: 12px 16px;
   text-align: left;
   font-weight: 600;
   color: #202124;
@@ -7087,7 +7134,7 @@
 }
 
 .points-tracker-table td {
-  padding: 12px 8px;
+  padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
   color: #5f6368;
 }
@@ -7098,11 +7145,401 @@
 
 .points-tracker-table tbody tr.points-row-expired {
   background: #fce8e6;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .points-tracker-table tbody tr.points-row-warning {
   background: #fef7e0;
+}
+
+.points-tracker-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Program Groups */
+.points-program-group {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.points-program-group:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.points-program-group-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid #e0e0e0;
+  transition: background 0.2s ease;
+}
+
+.points-program-group-header:hover {
+  background: linear-gradient(135deg, #f0f0f0 0%, #f8f9fa 100%);
+}
+
+.points-program-group-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.points-group-toggle {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.points-group-toggle:hover {
+  background: rgba(26, 115, 232, 0.1);
+}
+
+.points-group-toggle[aria-expanded="false"] .points-group-chevron {
+  transform: rotate(-90deg);
+}
+
+.points-group-chevron {
+  width: 18px;
+  height: 18px;
+  color: #5f6368;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.points-group-toggle:hover .points-group-chevron {
+  color: #1a73e8;
+}
+
+.points-program-name-large {
+  font-size: 18px;
+  font-weight: 600;
+  color: #202124;
+  flex: 1;
+}
+
+.points-program-badge {
+  background: #1a73e8;
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.points-program-group-summary {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.points-summary-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.points-summary-label {
+  font-size: 13px;
+  color: #5f6368;
+  font-weight: 500;
+}
+
+.points-summary-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #202124;
+}
+
+.points-summary-value.points-highlight {
+  color: #1a73e8;
+  font-size: 16px;
+}
+
+.points-warning-badge .points-summary-value {
+  color: #f9ab00;
+}
+
+.points-error-badge .points-summary-value {
+  color: #ea4335;
+}
+
+.points-program-group-content {
+  padding: 16px;
+  background: #ffffff;
+}
+
+.points-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* Entry Cards */
+.points-entry-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.points-entry-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  border-color: #1a73e8;
+}
+
+.points-entry-card.points-card-expired {
+  border-color: #ea4335;
+  background: linear-gradient(135deg, #fce8e6 0%, #ffffff 100%);
+}
+
+.points-entry-card.points-card-warning {
+  border-color: #f9ab00;
+  background: linear-gradient(135deg, #fef7e0 0%, #ffffff 100%);
+}
+
+.points-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.points-card-amount {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.points-card-amount-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #202124;
+  line-height: 1;
+}
+
+.points-card-amount-label {
+  font-size: 12px;
+  color: #5f6368;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.points-card-status {
+  font-size: 20px;
+}
+
+.points-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.points-card-value {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: linear-gradient(135deg, #e8f0fe 0%, #f0f7ff 100%);
+  border-radius: 6px;
+}
+
+.points-card-value-label {
+  font-size: 13px;
+  color: #5f6368;
+  font-weight: 500;
+}
+
+.points-card-value-amount {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a73e8;
+}
+
+.points-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.points-card-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.points-card-detail-label {
+  color: #5f6368;
+  font-weight: 500;
+}
+
+.points-card-detail-value {
+  color: #202124;
+  font-weight: 600;
+}
+
+.points-card-detail-value.points-expired {
+  color: #ea4335;
+}
+
+.points-card-detail-value.points-expiring-soon {
+  color: #f9ab00;
+}
+
+.points-card-notes {
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #5f6368;
+  font-style: italic;
+}
+
+.points-card-notes-label {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.points-card-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+  justify-content: flex-end;
+}
+
+.points-card-action-btn {
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex: 1;
+  max-width: 80px;
+}
+
+.points-card-action-btn:hover {
+  background: #f8f9fa;
+  border-color: #1a73e8;
+  transform: scale(1.05);
+}
+
+.points-card-action-btn svg {
+  width: 16px;
+  height: 16px;
+  color: #5f6368;
+  transition: color 0.2s ease;
+}
+
+.points-card-action-btn:hover svg {
+  color: #1a73e8;
+}
+
+.points-delete-btn:hover {
+  border-color: #ea4335;
+  background: #fce8e6;
+}
+
+.points-delete-btn:hover svg {
+  color: #ea4335;
+}
+
+/* Diagram View Styles */
+.points-tracker-diagram-container {
+  padding: 20px 0;
+}
+
+.points-diagram-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.points-diagram-section {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.points-diagram-title {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #202124;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+/* Donut Chart */
+.points-donut-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.points-donut-svg {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+}
+
+.points-chart-segment {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.points-chart-segment:hover {
+  opacity: 0.85;
+  filter: brightness(1.1);
+}
+
+.points-donut-center-text-large {
+  font-size: 28px;
+  font-weight: 700;
+  fill: #202124;
+}
+
+.points-donut-center-text-small {
+  font-size: 14px;
+  font-weight: 500;
+  fill: #5f6368;
+}
+
+.points-chart-label-group {
+  pointer-events: none;
+}
+
+.points-chart-label {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.points-chart-label-value {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .points-program-name {
@@ -7199,6 +7636,9 @@
   padding: 40px 20px;
   color: #5f6368;
   font-style: italic;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px dashed #e0e0e0;
 }
 
 /* Modal Styles */
@@ -7313,13 +7753,49 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .points-tracker-table {
-    font-size: 12px;
+  .points-cards-grid {
+    grid-template-columns: 1fr;
   }
   
-  .points-tracker-table th,
-  .points-tracker-table td {
-    padding: 8px 4px;
+  .points-program-group-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .points-card-amount-value {
+    font-size: 20px;
+  }
+  
+  .points-bar-chart {
+    flex-direction: column;
+    height: auto;
+    gap: 16px;
+  }
+  
+  .points-bar-chart-item {
+    width: 100%;
+    min-height: 120px;
+  }
+  
+  .points-bar-chart-bar-container {
+    height: 200px;
+  }
+  
+  .points-programs-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .points-view-toggle {
+    flex-direction: column;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+  
+  .points-view-btn {
+    width: 100%;
+    justify-content: center;
   }
   
   .points-tracker-stats {
