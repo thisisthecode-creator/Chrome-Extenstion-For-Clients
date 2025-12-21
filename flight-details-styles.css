@@ -42,10 +42,10 @@ span[jsname="S3Zlrc"].Xm6fzc.g2sH3c {
   font-size: 12px;
   font-weight: 500;
   color: rgb(0, 0, 0);
-  background: rgb(255, 255, 255);
+  background: transparent;
   border-radius: 0px;
-  margin: -13px 1px 0px -120px;
-  border: 1px solid rgb(255, 255, 255);
+  margin: -13px 1px 0px -44px;
+  border: 1px solid transparent;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px;
   max-width: 50%;
   position: relative;
@@ -203,7 +203,7 @@ span[jsname="S3Zlrc"].Xm6fzc.g2sH3c {
 
 /* Additional positioning adjustments for better left alignment */
 .injected-flight-details {
-  margin-left: -30px !important;
+  margin-left: -44px !important;
   margin-right: 20px !important;
   padding-left: 16px !important;
   padding-right: 16px !important;
@@ -227,7 +227,7 @@ span[jsname="S3Zlrc"].Xm6fzc.g2sH3c {
 
 /* Ensure flight details are always left-aligned in their containers */
 .injected-flight-details {
-  margin-left: -30px !important;
+  margin-left: -44px !important;
   margin-right: 20px !important;
   padding-left: 16px !important;
   padding-right: 16px !important;
@@ -273,4 +273,22 @@ span[jsname="S3Zlrc"].Xm6fzc.g2sH3c {
 /* Ensure our content stays at the bottom of the flight listing */
 .injected-flight-details {
   margin-top: auto;
+}
+
+/* Light green background for .yR1fYc elements containing nonstop flights */
+.yR1fYc.bs-nonstop-flight {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%) !important;
+  border-color: #c8e6c9 !important;
+}
+
+/* Yellow background for .yR1fYc elements containing flights with 1 stop */
+.yR1fYc.bs-stops-flight {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%) !important;
+  border-color: #ffc107 !important;
+}
+
+/* Red background for .yR1fYc elements containing flights with 2+ stops */
+.yR1fYc.bs-multiple-stops-flight {
+  background: linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%) !important;
+  border-color: #f44336 !important;
 }

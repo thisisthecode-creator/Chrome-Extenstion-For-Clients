@@ -1754,14 +1754,42 @@ function extractFlightInfo(flightElement) {
     }
   }
   
-  // Look for airline names in text content
-  const airlineNames = ['LOT', 'Lufthansa', 'American Airlines', 'Delta', 'United', 'British Airways', 'Air France', 'KLM', 'Swiss', 'Austrian', 'SAS', 'Finnair', 'Iberia', 'Vueling', 'Ryanair', 'Wizz Air', 'EasyJet', 'Eurowings', 'Air Berlin', 'Germanwings']
+  // Look for airline names in specific structure first (sSHqwe tPgKwe ogfYpf)
+  const airlineContainer = flightElement.querySelector('.sSHqwe.tPgKwe.ogfYpf')
+  if (airlineContainer) {
+    const airlineSpans = airlineContainer.querySelectorAll('span')
+    for (const span of airlineSpans) {
+      const spanText = span.textContent.trim()
+      if (spanText && spanText.length > 0 && !spanText.match(/^\s*$/)) {
+        // Check if it's a known airline name
+        const airlineNames = ['LOT', 'Lufthansa', 'American Airlines', 'Delta', 'United', 'British Airways', 'Air France', 'KLM', 'Swiss', 'Austrian', 'SAS', 'Finnair', 'Iberia', 'Vueling', 'Ryanair', 'Wizz Air', 'EasyJet', 'Eurowings', 'Air Berlin', 'Germanwings']
+        for (const airlineName of airlineNames) {
+          if (spanText.includes(airlineName) || airlineName.includes(spanText)) {
+            flightInfo.airline = airlineName
+            console.log("Extracted airline name from structure:", flightInfo.airline)
+            break
+          }
+        }
+        // If no match found but text exists, use it as airline name
+        if (!flightInfo.airline && spanText.length > 1 && spanText.length < 50) {
+          flightInfo.airline = spanText
+          console.log("Using span text as airline name:", flightInfo.airline)
+        }
+        if (flightInfo.airline) break
+      }
+    }
+  }
   
-  for (const airlineName of airlineNames) {
-    if (cleanedText.includes(airlineName)) {
-      flightInfo.airline = airlineName
-      console.log("Extracted airline name from text:", flightInfo.airline)
-      break
+  // Fallback: Look for airline names in text content
+  if (!flightInfo.airline) {
+    const airlineNames = ['LOT', 'Lufthansa', 'American Airlines', 'Delta', 'United', 'British Airways', 'Air France', 'KLM', 'Swiss', 'Austrian', 'SAS', 'Finnair', 'Iberia', 'Vueling', 'Ryanair', 'Wizz Air', 'EasyJet', 'Eurowings', 'Air Berlin', 'Germanwings']
+    
+    for (const airlineName of airlineNames) {
+      if (cleanedText.includes(airlineName)) {
+        flightInfo.airline = airlineName
+        console.log("Extracted airline name from text:", flightInfo.airline)
+        break
+      }
     }
   }
 
@@ -1841,6 +1869,9 @@ function createFlightDetailsElement(flightInfo, flightElement) {
     }
   }
   
+  // Check if flight is nonstop (for marking parent .yR1fYc element)
+  const isNonstop = flightInfo.stops === 'Nonstop'
+  
   detailsContainer.style.cssText = `
     display: flex;
     flex-direction: column;
@@ -1850,10 +1881,10 @@ function createFlightDetailsElement(flightInfo, flightElement) {
     font-size: 12px;
     font-weight: 500;
     color: rgb(0, 0, 0);
-    background: rgb(255, 255, 255);
+    background: transparent;
     border-radius: 0px;
-    margin: -13px 1px 0px -120px;
-    border: 1px solid rgb(255, 255, 255);
+    margin: -13px 1px 0px -44px;
+    border: 1px solid transparent;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px;
     max-width: 50%;
     position: relative;
@@ -1862,6 +1893,48 @@ function createFlightDetailsElement(flightInfo, flightElement) {
     align-self: flex-start;
     text-align: left;
   `
+  
+  // Helper function to mark .yR1fYc element with a class
+  function markYr1fYcElement(className) {
+    if (flightElement) {
+      // Check if flightElement itself is .yR1fYc
+      if (flightElement.classList && flightElement.classList.contains('yR1fYc')) {
+        flightElement.classList.add(className)
+      } else {
+        // Find parent .yR1fYc element
+        let parent = flightElement.parentElement
+        let attempts = 0
+        while (parent && attempts < 10) {
+          if (parent.classList && parent.classList.contains('yR1fYc')) {
+            parent.classList.add(className)
+            break
+          }
+          parent = parent.parentElement
+          attempts++
+        }
+      }
+    }
+  }
+  
+  // Add class for nonstop flights for additional styling
+  if (isNonstop) {
+    detailsContainer.classList.add('nonstop-flight')
+    // Mark .yR1fYc element for green background
+    markYr1fYcElement('bs-nonstop-flight')
+  } else if (flightInfo.stops && flightInfo.stops !== 'Nonstop') {
+    // Check number of stops
+    const stopsMatch = flightInfo.stops.match(/(\d+)\s*stop/i)
+    if (stopsMatch) {
+      const stopCount = parseInt(stopsMatch[1])
+      if (stopCount >= 2) {
+        // Mark .yR1fYc element for red background (2+ stops)
+        markYr1fYcElement('bs-multiple-stops-flight')
+      } else if (stopCount === 1) {
+        // Mark .yR1fYc element for yellow background (1 stop)
+        markYr1fYcElement('bs-stops-flight')
+      }
+    }
+  }
 
   // Create first row for flight details
   const flightDetailsRow = document.createElement("div")
@@ -1877,16 +1950,19 @@ function createFlightDetailsElement(flightInfo, flightElement) {
   if (flightInfo.aircraft) {
     const aircraftElement = document.createElement("span")
     aircraftElement.style.cssText = `
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 2px;
-      font-weight: 500;
-      color: #666666;
+      padding: 2px 6px;
+      background: rgb(255, 255, 255);
+      border-radius: 4px;
+      font-weight: 600;
+      color: rgb(0, 0, 0);
       font-size: 11px;
-      padding: 1px 3px;
-      background: #f5f5f5;
-      border-radius: 3px;
-      border: 1px solid #e0e0e0;
+      white-space: nowrap;
+      border: 1px solid rgba(255, 193, 7, 0.25);
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px;
+      transition: 0.2s;
     `
     aircraftElement.innerHTML = `✈️ ${flightInfo.aircraft}`
     flightDetailsRow.appendChild(aircraftElement)
@@ -1896,16 +1972,19 @@ function createFlightDetailsElement(flightInfo, flightElement) {
   if (flightInfo.airlineCode && flightInfo.flightNumber) {
     const airlineElement = document.createElement("span")
     airlineElement.style.cssText = `
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 2px;
-      font-weight: 500;
-      color: #666666;
+      padding: 2px 6px;
+      background: rgb(255, 255, 255);
+      border-radius: 4px;
+      font-weight: 600;
+      color: rgb(0, 0, 0);
       font-size: 11px;
-      padding: 1px 3px;
-      background: #f5f5f5;
-      border-radius: 3px;
-      border: 1px solid #e0e0e0;
+      white-space: nowrap;
+      border: 1px solid rgba(255, 193, 7, 0.25);
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px;
+      transition: 0.2s;
     `
     airlineElement.innerHTML = `🏢 ${flightInfo.airlineCode} ${flightInfo.flightNumber}`
     flightDetailsRow.appendChild(airlineElement)
@@ -1918,13 +1997,16 @@ function createFlightDetailsElement(flightInfo, flightElement) {
       display: inline-flex;
       align-items: center;
       gap: 2px;
-      font-weight: 500;
-      color: #666666;
+      padding: 2px 6px;
+      background: rgb(255, 255, 255);
+      border-radius: 4px;
+      font-weight: 600;
+      color: rgb(0, 0, 0);
       font-size: 11px;
-      padding: 1px 3px;
-      background: #f5f5f5;
-      border-radius: 3px;
-      border: 1px solid #e0e0e0;
+      white-space: nowrap;
+      border: 1px solid rgba(255, 193, 7, 0.25);
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px;
+      transition: 0.2s;
     `
     timeElement.innerHTML = `⏱️ ${flightInfo.travelTime}`
     flightDetailsRow.appendChild(timeElement)
@@ -1935,23 +2017,21 @@ function createFlightDetailsElement(flightInfo, flightElement) {
     const legroomCmFormatted = formatLegroomWithCm(flightInfo.legroom)
     if (legroomCmFormatted) {
       const legroomElement = document.createElement("span")
-      const backgroundColor = getLegroomColor(legroomCm)
-      const textColor = getLegroomTextColor(legroomCm)
       
       legroomElement.style.cssText = `
         display: inline-flex;
         align-items: center;
         gap: 2px;
         padding: 2px 6px;
-        background: ${backgroundColor};
+        background: rgb(255, 255, 255);
         border-radius: 4px;
         font-weight: 600;
-        color: ${textColor};
+        color: rgb(0, 0, 0);
         font-size: 11px;
         white-space: nowrap;
-        border: 1px solid ${textColor}20;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        transition: all 0.2s ease;
+        border: 1px solid rgba(255, 193, 7, 0.25);
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px;
+        transition: 0.2s;
       `
       legroomElement.innerHTML = `🪑 ${legroomCmFormatted}`
       flightDetailsRow.appendChild(legroomElement)
@@ -1961,21 +2041,20 @@ function createFlightDetailsElement(flightInfo, flightElement) {
   // Add stops and travel time information
   if (flightInfo.stops) {
     const stopsElement = document.createElement("span")
-    const isNonstop = flightInfo.stops === 'Nonstop'
     stopsElement.style.cssText = `
       display: inline-flex;
       align-items: center;
       gap: 2px;
       padding: 2px 6px;
-      background: ${isNonstop ? 'linear-gradient(135deg, #d5f4e6 0%, #c8e6c9 100%)' : 'linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%)'};
+      background: rgb(255, 255, 255);
       border-radius: 4px;
       font-weight: 600;
-      color: ${isNonstop ? '#2d5a27' : '#8b6914'};
+      color: rgb(0, 0, 0);
       font-size: 11px;
       white-space: nowrap;
-      border: 1px solid ${isNonstop ? '#4caf50' : '#ffc107'}40;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 193, 7, 0.25);
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px;
+      transition: 0.2s;
     `
     stopsElement.innerHTML = `✈️ ${flightInfo.stops}`
     flightDetailsRow.appendChild(stopsElement)
@@ -2181,7 +2260,7 @@ function createFlightDetailsElement(flightInfo, flightElement) {
           window.open(fareViewerUrl, '_blank')
         }
       }},
-      { text: "WTC", action: () => {
+      { text: "Where?", action: () => {
         const fromInput = document.getElementById('bs-flight-from')
         const toInput = document.getElementById('bs-flight-to')
         
