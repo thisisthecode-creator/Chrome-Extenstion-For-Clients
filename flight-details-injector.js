@@ -2002,7 +2002,7 @@ function createFlightDetailsElement(flightInfo, flightElement) {
     `
     
     // Create individual link buttons
-    // Order links per request: Seats.Aero, AwardTool, PointsYeah, PY Seats, SA Seats, FareClass, FareViewer
+    // Order links per request: Seats.Aero, AwardTool, PointsYeah, PY Seats, SA Seats, FareClass, FareViewer, WTC
     const links = [
       { text: "Seats.Aero", action: () => {
         const fromInput = document.getElementById('bs-flight-from')
@@ -2179,6 +2179,53 @@ function createFlightDetailsElement(flightInfo, flightElement) {
 
           const fareViewerUrl = `https://seats.aero/fares?from=${fromCode}&to=${toCode}&date=${departInput.value}&carriers=${flightInfo.airlineCode}&currency=USD&stops=0`
           window.open(fareViewerUrl, '_blank')
+        }
+      }},
+      { text: "WTC", action: () => {
+        const fromInput = document.getElementById('bs-flight-from')
+        const toInput = document.getElementById('bs-flight-to')
+        
+        if (fromInput && toInput) {
+          let fromCode = ''
+          let toCode = ''
+          
+          if (fromInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(fromInput.dataset.airportData)
+              fromCode = airport.iata || fromInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            fromCode = fromInput.value?.trim()?.toUpperCase() || ''
+          }
+          
+          if (toInput.dataset.airportData) {
+            try {
+              const airport = JSON.parse(toInput.dataset.airportData)
+              toCode = airport.iata || toInput.value?.trim()?.toUpperCase() || ''
+            } catch (e) {
+              toCode = toInput.value?.trim()?.toUpperCase() || ''
+            }
+          } else {
+            toCode = toInput.value?.trim()?.toUpperCase() || ''
+          }
+
+          // Get airline code from flightInfo, default to empty if not available
+          const airlineCode = (flightInfo.airlineCode || '').toUpperCase() || ''
+          
+          // Get cash price from either input field
+          const cashPriceInput = document.getElementById('bs-cash-price-input')
+          const standaloneCashPriceInput = document.getElementById('bs-standalone-cash-price')
+          const cashPrice = parseFloat(cashPriceInput?.value || standaloneCashPriceInput?.value || '0')
+          
+          // Build the route parameter: {airline}:Y:{departure}-{arrival}:{airline}:{price}:USD
+          // Format: OS:Y:WAW-VIE:OS:100:USD
+          const route = `${airlineCode}:Y:${fromCode}-${toCode}:${airlineCode}:${Math.round(cashPrice)}:USD`
+          const encodedRoute = encodeURIComponent(route)
+          const wtcUrl = `https://wheretocredit.com/de/calculator#route=${encodedRoute}`
+          
+          window.open(wtcUrl, '_blank')
         }
       }}
     ]
