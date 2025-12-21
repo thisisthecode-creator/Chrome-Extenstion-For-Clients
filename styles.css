@@ -3361,16 +3361,15 @@
 }
 
 .comparison-table-container {
-  overflow-x: auto;
-  max-height: 400px;
-  overflow-y: auto;
+  overflow: visible;
+  max-height: none;
 }
 
 .comparison-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  min-width: 800px;
+  table-layout: fixed;
 }
 
 .comparison-table thead {
@@ -3381,15 +3380,38 @@
 }
 
 .comparison-table th {
-  padding: 2px 2px;
+  padding: 4px 2px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
   color: #000000 !important;
   text-align: center;
   border-right: 1px solid #e8eaed;
   white-space: nowrap;
-  min-width: 35px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   line-height: 1.1;
+}
+
+.comparison-table .card-name-header {
+  width: 15%;
+}
+
+.comparison-table .airfare-col,
+.comparison-table .hotels-col,
+.comparison-table .travel-col,
+.comparison-table .rental-col,
+.comparison-table .restaurants-col,
+.comparison-table .ads-col,
+.comparison-table .other-col {
+  width: 8%;
+}
+
+.comparison-table .annual-fee-col {
+  width: 10%;
+}
+
+.comparison-table .renewal-date-col {
+  width: 10%;
 }
 
 /* Sortable header styles */
@@ -3835,23 +3857,34 @@
 
 /* Selected Cards - Larger font sizes for better readability */
 .selected-cards-comparison .comparison-table th {
-  font-size: 16px !important;
-  padding: 6px 4px !important;
+  font-size: 11px !important;
+  padding: 4px 2px !important;
 }
 
 .selected-cards-comparison .comparison-table td {
-  font-size: 16px !important;
-  padding: 6px 4px !important;
+  font-size: 11px !important;
+  padding: 4px 2px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .selected-cards-comparison .multiplier-value {
-  font-size: 16px !important;
+  font-size: 11px !important;
   font-weight: 700 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .selected-cards-comparison .card-name {
-  font-size: 14px !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
 }
 
 .selected-cards-comparison .card-program {
@@ -3860,8 +3893,26 @@
 }
 
 .selected-cards-comparison .sort-button {
-  font-size: 16px !important;
-  padding: 6px 8px !important;
+  font-size: 11px !important;
+  padding: 2px 4px !important;
+}
+
+.selected-cards-comparison .card-name-cell {
+  max-width: 0;
+  overflow: hidden;
+}
+
+.selected-cards-comparison .card-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.selected-cards-comparison .card-details {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
 }
 
 .transfer-partners-comparison .comparison-table-container {
