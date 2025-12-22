@@ -3184,11 +3184,17 @@ function initializeCASMCalculator() {
     });
   }
 
-  if (regionSelect) {
-    regionSelect.addEventListener('change', calculateCASM);
-  }
+    if (regionSelect) {
+      regionSelect.addEventListener('change', calculateCASM);
+    }
 
-  if (bagsInput) {
+    // Listen to flight cabin dropdown changes
+    const flightCabinSelect = document.getElementById('bs-flight-cabin');
+    if (flightCabinSelect) {
+      flightCabinSelect.addEventListener('change', calculateCASM);
+    }
+
+    if (bagsInput) {
     bagsInput.addEventListener('input', calculateCASM);
     bagsInput.addEventListener('change', calculateCASM);
   }
@@ -3208,6 +3214,13 @@ function initializeCASMCalculator() {
     const region = regionSelect?.value || 'Europe';
     const bags = Math.max(0, parseFloat(bagsInput?.value) || 0);
     const bagFee = parseFloat(bagFeeInput?.value) || 0;
+    
+    // Get cabin from flight search dropdown
+    const flightCabinSelect = document.getElementById('bs-flight-cabin');
+    const flightCabin = flightCabinSelect?.value || 'economy';
+    
+    // Apply 4x multiplier for business or first class
+    const multiplier = (flightCabin === 'business' || flightCabin === 'first') ? 4 : 1;
 
     if (!distance || !airline) {
       resultsDiv.style.display = 'none';
@@ -3220,16 +3233,19 @@ function initializeCASMCalculator() {
       return;
     }
 
-    // Calculate CASM-based cost (convert cents to dollars)
-    const casmCost = (casm * distance) / 100;
+    // Calculate base CASM-based cost (convert cents to dollars) without multiplier
+    const baseCasmCost = (casm * distance) / 100;
+    
+    // Apply multiplier to get total CASM cost
+    const casmCostWithMultiplier = baseCasmCost * multiplier;
 
     // Calculate baggage expected cost (only if bags >= 1)
     const bagExpectedCostTotal = bags >= 1 
       ? bags * (window.getExpectedBagCostPerBag ? window.getExpectedBagCostPerBag(region) : 7.75)
       : 0;
 
-    // Total operating cost = CASM + baggage (only if bags >= 1)
-    const totalOperatingCost = casmCost + bagExpectedCostTotal;
+    // Total operating cost = (CASM * multiplier) + baggage (only if bags >= 1)
+    const totalOperatingCost = casmCostWithMultiplier + bagExpectedCostTotal;
 
     // Bag revenue if bag fee provided and bags >= 1
     const bagRevenue = (bags >= 1 && bagFee > 0) ? bags * bagFee : 0;
@@ -3248,7 +3264,8 @@ function initializeCASMCalculator() {
     const marginEl = document.getElementById('bs-casm-margin');
     const marginPctEl = document.getElementById('bs-casm-margin-pct');
 
-    if (costEl) costEl.textContent = `$${casmCost.toFixed(2)}`;
+    // Show base CASM cost (without multiplier)
+    if (costEl) costEl.textContent = `$${baseCasmCost.toFixed(2)}`;
     
     // Only show bag cost if bags >= 1
     if (bagCostEl) {
