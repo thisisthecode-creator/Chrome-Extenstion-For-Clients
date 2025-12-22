@@ -3194,6 +3194,13 @@ function initializeCASMCalculator() {
       flightCabinSelect.addEventListener('change', calculateCASM);
     }
 
+    // Listen to return date changes for round trip distance calculation
+    const returnDateInput = document.getElementById('bs-flight-return');
+    if (returnDateInput) {
+      returnDateInput.addEventListener('change', calculateCASM);
+      returnDateInput.addEventListener('input', calculateCASM);
+    }
+
     if (bagsInput) {
     bagsInput.addEventListener('input', calculateCASM);
     bagsInput.addEventListener('change', calculateCASM);
@@ -3219,6 +3226,13 @@ function initializeCASMCalculator() {
     const flightCabinSelect = document.getElementById('bs-flight-cabin');
     const flightCabin = flightCabinSelect?.value || 'economy';
     
+    // Check if return date is set (round trip)
+    const returnDateInput = document.getElementById('bs-flight-return');
+    const isRoundTrip = returnDateInput && returnDateInput.value && returnDateInput.value.trim() !== '';
+    
+    // Double distance for round trip
+    const effectiveDistance = isRoundTrip ? distance * 2 : distance;
+    
     // Apply 4x multiplier for business or first class
     const multiplier = (flightCabin === 'business' || flightCabin === 'first') ? 4 : 1;
 
@@ -3234,7 +3248,8 @@ function initializeCASMCalculator() {
     }
 
     // Calculate base CASM-based cost (convert cents to dollars) without multiplier
-    const baseCasmCost = (casm * distance) / 100;
+    // Use effective distance (doubled for round trip)
+    const baseCasmCost = (casm * effectiveDistance) / 100;
     
     // Apply multiplier to get total CASM cost
     const casmCostWithMultiplier = baseCasmCost * multiplier;
@@ -3264,8 +3279,8 @@ function initializeCASMCalculator() {
     const marginEl = document.getElementById('bs-casm-margin');
     const marginPctEl = document.getElementById('bs-casm-margin-pct');
 
-    // Show base CASM cost (without multiplier)
-    if (costEl) costEl.textContent = `$${baseCasmCost.toFixed(2)}`;
+    // Show CASM cost with multiplier applied (x4 for business/first, x8 for round trip + business/first)
+    if (costEl) costEl.textContent = `$${casmCostWithMultiplier.toFixed(2)}`;
     
     // Only show bag cost if bags >= 1
     if (bagCostEl) {
