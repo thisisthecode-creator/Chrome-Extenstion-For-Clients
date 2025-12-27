@@ -5812,6 +5812,37 @@ function initializeHotelBenefits() {
   loadHotelStatuses();
 }
 
+// Wait for page to be fully loaded before initializing
+function waitForPageFullyLoaded() {
+  return new Promise((resolve) => {
+    // If page is already fully loaded
+    if (document.readyState === 'complete') {
+      // Wait a bit more for dynamic content to render
+      setTimeout(() => {
+        resolve();
+      }, 500);
+      return;
+    }
+
+    // Wait for window load event (all resources loaded)
+    if (document.readyState === 'loading') {
+      window.addEventListener('load', () => {
+        // Additional wait for dynamic content
+        setTimeout(() => {
+          resolve();
+        }, 500);
+      }, { once: true });
+    } else {
+      // Interactive state - wait for load event
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          resolve();
+        }, 500);
+      }, { once: true });
+    }
+  });
+}
+
 // Initialize extension with error handling
 (function() {
   'use strict';
@@ -5823,29 +5854,33 @@ function initializeHotelBenefits() {
       console.log(`[BS Extension] Version ${manifest.version} loading...`);
     }
     
-    // Initialize extension
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        try {
-          setupObserver();
-        } catch (error) {
-          console.error('[BS Extension] Error in DOMContentLoaded:', error);
-        }
-      });
-    } else {
+    // Wait for page to be fully loaded before initializing
+    waitForPageFullyLoaded().then(() => {
+      console.log('[BS Extension] Page fully loaded, initializing extension...');
       try {
         setupObserver();
       } catch (error) {
         console.error('[BS Extension] Error in setupObserver:', error);
+        // Fallback: try again after a delay
+        setTimeout(() => {
+          try {
+            setupObserver();
+          } catch (e) {
+            console.error('[BS Extension] Fallback initialization failed:', e);
+          }
+        }, 1000);
       }
-    }
-
-    // Run injection immediately (with error handling)
-    try {
-      setupObserver();
-    } catch (error) {
-      console.error('[BS Extension] Error in immediate setupObserver:', error);
-    }
+    }).catch((error) => {
+      console.error('[BS Extension] Error waiting for page load:', error);
+      // Fallback: try to initialize anyway after a delay
+      setTimeout(() => {
+        try {
+          setupObserver();
+        } catch (e) {
+          console.error('[BS Extension] Fallback initialization failed:', e);
+        }
+      }, 2000);
+    });
   } catch (error) {
     console.error('[BS Extension] Critical initialization error:', error);
     // Attempt graceful fallback
@@ -5856,7 +5891,7 @@ function initializeHotelBenefits() {
         } catch (e) {
           console.error('[BS Extension] Fallback initialization failed:', e);
         }
-      }, 1000);
+      }, 2000);
     }
   }
 })();

@@ -53,7 +53,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
 
       // Only allow requests to approved domains
-      const allowedDomains = ['seats.aero', 'raw.githubusercontent.com', 'saegzrncsjcsvgcjkniv.supabase.co'];
+      const allowedDomains = ['seats.aero', 'raw.githubusercontent.com', 'saegzrncsjcsvgcjkniv.supabase.co', 'api-shop.miles-and-more.com'];
       const urlObj = new URL(url);
       if (!allowedDomains.some(domain => urlObj.hostname.includes(domain))) {
         console.warn('[BS Extension] Blocked request to unauthorized domain:', urlObj.hostname);
@@ -76,6 +76,59 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           sendResponse({ ok, status, body });
         } catch (err) {
           console.error('[BS Extension] Fetch error:', err);
+          sendResponse({ ok: false, status: 0, error: String(err) });
+        }
+      })();
+      return true; // Keep channel open for async response
+    }
+
+    if (message.type === 'lufthansaFetch') {
+      const { url, method = 'GET', headers = {}, body } = message;
+      
+      if (!url || typeof url !== 'string') {
+        sendResponse({ ok: false, status: 0, error: 'Invalid URL' });
+        return false;
+      }
+
+      // Validate Lufthansa API URL
+      const urlObj = new URL(url);
+      if (!urlObj.hostname.includes('api-shop.miles-and-more.com')) {
+        console.warn('[BS Extension] Blocked Lufthansa request to unauthorized domain:', urlObj.hostname);
+        sendResponse({ ok: false, status: 0, error: 'Unauthorized domain' });
+        return false;
+      }
+
+      (async () => {
+        try {
+          const fetchOptions = {
+            method,
+            headers: {
+              'Accept': 'application/json',
+              ...headers
+            }
+          };
+
+          if (body) {
+            if (headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+              fetchOptions.body = body;
+            } else {
+              fetchOptions.body = typeof body === 'string' ? body : JSON.stringify(body);
+            }
+          }
+
+          const res = await fetch(url, fetchOptions);
+          const ok = res.ok;
+          const status = res.status;
+          const text = await res.text();
+          let responseBody;
+          try {
+            responseBody = JSON.parse(text);
+          } catch (_) {
+            responseBody = text;
+          }
+          sendResponse({ ok, status, body: responseBody });
+        } catch (err) {
+          console.error('[BS Extension] Lufthansa fetch error:', err);
           sendResponse({ ok: false, status: 0, error: String(err) });
         }
       })();

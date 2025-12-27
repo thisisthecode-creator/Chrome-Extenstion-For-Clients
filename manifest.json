@@ -32,6 +32,7 @@
         "lib/casmData.js",
         "lib/baggageCosts.js",
         "lib/seatsAeroClient.js",
+        "lib/lufthansaClient.js",
         "lib/currencies.js",
         "lib/currency-converter.js",
         "content.js",
@@ -55,7 +56,8 @@
     "https://raw.githubusercontent.com/*",
     "https://saegzrncsjcsvgcjkniv.supabase.co/*",
     "https://seats.aero/*",
-    "https://api.exchangerate-api.com/*"
+    "https://api.exchangerate-api.com/*",
+    "https://api-shop.miles-and-more.com/*"
   ],
   "web_accessible_resources": [
     {

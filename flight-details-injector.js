@@ -1188,7 +1188,7 @@ function updateStandaloneAwardResults() {
   }
   // else 'all' - all filters remain true
   
-  let html = '<div style="display:flex;flex-direction:column;gap:20px;">'
+  let html = ''
 
   // First pass: prepare programs with computed totals for sorting
   const programEntries = []
@@ -1281,14 +1281,9 @@ function updateStandaloneAwardResults() {
   // Sort programs by their lowest total ascending
   programEntries.sort((a, b) => a.minTotal - b.minTotal)
 
-  // Render in sorted order
+  // Collect all program/cabin combinations for grid display
+  const allCombinations = []
   programEntries.forEach(({ av, filteredCabins, programPointValue, taxesCurrency, taxesUSD }) => {
-    html += `<div style="background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border:1px solid rgba(0, 0, 0, 0.06);border-radius:16px;overflow:hidden;margin-bottom:16px;box-shadow:0 2px 6px rgba(0, 0, 0, 0.04);transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">`
-    html += `<div style="padding:16px 20px;background:linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);border-bottom:1px solid rgba(0, 0, 0, 0.06);">`
-    html += `<h3 style="margin:0;font-size:18px;font-weight:600;color:#1a1a1a;letter-spacing:-0.01em;">${av.Source}</h3>`
-    html += `</div>`
-    html += `<div>`
-
     filteredCabins.forEach(c => {
       // Use individual cabin taxes if available, otherwise fall back to program-level taxes
       const cabinTaxesMinor = typeof c.taxes === 'number' ? c.taxes : (parseInt(c.taxes, 10) || 0)
@@ -1301,12 +1296,6 @@ function updateStandaloneAwardResults() {
       const isGoodDeal = savingsPct > 0
       const cabinName = c.key === 'J' ? 'Business' : c.key === 'F' ? 'First' : c.key === 'W' ? 'Premium Economy' : 'Economy'
 
-          html += `<div style="display:grid;grid-template-columns:40px 120px 1fr 150px 170px 170px;align-items:center;column-gap:16px;padding:14px 16px;border-top:1px solid rgba(0, 0, 0, 0.06);transition:background 0.2s ease;">`
-      // col1 code
-      html += `<div style=\"color:#333;font-weight:600;min-width:110px;font-size:13px;\">${c.key}</div>`
-      // col2 cabin
-      html += `<div style=\"color:#333;font-weight:600;min-width:110px;font-size:13px;\">${cabinName}</div>`
-      // middle values
       const effectiveCpmCents = c.miles > 0 ? (((cashPriceUSD - cabinTaxesUSD) / c.miles) * 100) : null
       const programAvgCpmCents = (function(){
         // Prefer market CPM if present in cache or static getter
@@ -1329,34 +1318,201 @@ function updateStandaloneAwardResults() {
         // fallback to loyalty average if market not available
         return (window.getProgramPointValueBySource ? window.getProgramPointValueBySource(av.Source) : 0.019) * 100
       })()
-      // col3 miles + taxes
-      html += `<div style=\"color:#333;font-weight:600;min-width:110px;font-size:13px;white-space:nowrap;\">${formatMilesDots(c.miles)} miles + $${cabinTaxesUSD.toFixed(2)} taxes</div>`
-      // col4 Total pill
-      html += `<div style=\"min-width:150px;text-align:left;\"><span style=\"font-size:14px;font-weight:600;background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);color:#1a1a1a;padding:6px 12px;border-radius:12px;border:1.5px solid rgba(0, 0, 0, 0.08);box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);display:inline-block;\">Total: $${total.toFixed(2)}</span></div>`
+      
+      let cpmDisplay = ''
+      let ratioDisplay = ''
+      let cpmBetterPct = 0
+      let isBetterCpm = false
       if (effectiveCpmCents !== null && isFinite(effectiveCpmCents)) {
         const marketPerThousand = (window.__marketCpmBySource && typeof window.__marketCpmBySource[av.Source] === 'number') ? window.__marketCpmBySource[av.Source] : null
-        const avgCpm = (typeof marketPerThousand === 'number') ? (marketPerThousand / 10) : programAvgCpmCents // convert USD per 1000 to cents per mile
-        const avgDisplay = avgCpm.toFixed(1)
-        const isBetterCpm = effectiveCpmCents >= avgCpm
-        const cpmBetterPct = avgCpm > 0 ? Math.max(0, Math.min(100, ((effectiveCpmCents - avgCpm) / avgCpm) * 100)) : 0
+        const avgCpm = (typeof marketPerThousand === 'number') ? (marketPerThousand / 10) : programAvgCpmCents
+        isBetterCpm = effectiveCpmCents >= avgCpm
+        cpmBetterPct = avgCpm > 0 ? Math.max(0, Math.min(100, ((effectiveCpmCents - avgCpm) / avgCpm) * 100)) : 0
         const ratio = avgCpm > 0 ? (effectiveCpmCents / avgCpm) : null
-        const ratioDisplay = (ratio && isFinite(ratio)) ? `${(Math.round(ratio * 10) / 10).toString().replace(/\.0$/, '')}x` : ''
-        // col5 CPM pill + indicator
-        html += `<div style=\"min-width:170px;display:flex;flex-direction:column;align-items:center;\"><span style=\"font-size:13px;font-weight:700;padding:6px 12px;border-radius:12px;background:${isBetterCpm ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' : 'linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%)'};color:#000;border:1.5px solid ${isBetterCpm ? '#4caf50' : '#f44336'};width:120px;text-align:center;box-sizing:border-box;box-shadow:0 2px 4px rgba(0, 0, 0, 0.06);\">${effectiveCpmCents.toFixed(1)}¢${ratioDisplay ? ` - <span style='font-weight:700;color:#000;opacity:0.6;'>${ratioDisplay}</span>` : ''}</span><div style=\"margin-top:8px;width:120px;\">${createSavingsBar(cpmBetterPct)}</div></div>`
-      } else {
-        html += `<div></div>`
+        ratioDisplay = (ratio && isFinite(ratio)) ? `${(Math.round(ratio * 10) / 10).toString().replace(/\.0$/, '')}x` : ''
+        cpmDisplay = `${effectiveCpmCents.toFixed(1)}¢${ratioDisplay ? ` - ${ratioDisplay}` : ''}`
       }
-      // col6 savings pill + indicator + caption
-      html += `<div style=\"min-width:140px;display:flex;flex-direction:column;align-items:center;\"><span style=\"font-size:13px;font-weight:700;padding:6px 12px;border-radius:12px;background:${isGoodDeal ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' : 'linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%)'};color:#000;border:1.5px solid ${isGoodDeal ? '#4caf50' : '#f44336'};width:120px;text-align:center;box-sizing:border-box;box-shadow:0 2px 4px rgba(0, 0, 0, 0.06);\">${isGoodDeal ? 'Save' : 'More'} ${Math.abs(savingsPct).toFixed(0)}%</span><div style=\"margin-top:8px;width:120px;\">${createSavingsBar(Math.max(0, savingsPct))}</div></div>`
       
-      html += `</div>`
+      allCombinations.push({
+        program: av.Source,
+        class: c.key,
+        cabin: cabinName,
+        cabinKey: c.key, // Keep original key for grouping
+        miles: c.miles,
+        taxes: cabinTaxesUSD,
+        total: total,
+        savingsPct: savingsPct,
+        isGoodDeal: isGoodDeal,
+        cpmDisplay: cpmDisplay,
+        cpmBetterPct: cpmBetterPct,
+        isBetterCpm: isBetterCpm,
+        effectiveCpmCents: effectiveCpmCents
+      })
     })
-    
-    html += `</div>` // Close rows
-    html += `</div>` // Close program card
   })
   
-  html += '</div>'
+  // Group by cabin class if "all" is selected
+  let groupedCombinations = {}
+  if (filterValue === 'all') {
+    // Group by cabin class: F (First), J (Business), W (Premium Economy), Y (Economy)
+    allCombinations.forEach(combo => {
+      const cabinKey = combo.cabinKey
+      if (!groupedCombinations[cabinKey]) {
+        groupedCombinations[cabinKey] = []
+      }
+      groupedCombinations[cabinKey].push(combo)
+    })
+    
+    // Sort each group by total cost
+    Object.keys(groupedCombinations).forEach(key => {
+      groupedCombinations[key].sort((a, b) => a.total - b.total)
+    })
+      } else {
+    // If not "all", just use all combinations as-is
+    groupedCombinations = { 'all': allCombinations }
+  }
+
+  // Render in 3-column grid with modern design
+  html += `<style>
+    .bs-award-grid-card {
+      cursor: pointer;
+    }
+    .bs-award-grid-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+    }
+  </style>`
+  
+  // Function to render a grid of combinations
+  const renderCombinationsGrid = (combinations, cabinClassLabel = null) => {
+    if (combinations.length === 0) return ''
+    
+    let gridHtml = ''
+    
+    // Add section header if cabin class label is provided
+    if (cabinClassLabel) {
+      gridHtml += `<div style="margin-bottom:16px;margin-top:24px;">`
+      gridHtml += `<h3 style="font-size:18px;font-weight:700;color:#1a1a1a;margin:0 0 16px 0;padding-bottom:8px;border-bottom:2px solid #e9ecef;">${cabinClassLabel}</h3>`
+      gridHtml += `</div>`
+    }
+    
+    gridHtml += `<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;padding:0;">`
+    
+    combinations.forEach(combo => {
+      // Determine card background based on deal quality
+      const cardBg = combo.isGoodDeal 
+        ? 'linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%)'
+        : 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)'
+      const cardBorder = combo.isGoodDeal
+        ? '1px solid #c8e6c9'
+        : '1px solid #e9ecef'
+      
+      gridHtml += `<div class="bs-award-grid-card" style="background:${cardBg};border:${cardBorder};border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0, 0, 0, 0.08);transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;">`
+    
+      // Best value badge for top deals
+      if (combo.isGoodDeal && combo.savingsPct > 30) {
+        gridHtml += `<div style="position:absolute;top:12px;right:12px;background:linear-gradient(135deg, #10b981 0%, #059669 100%);color:white;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(16, 185, 129, 0.3);">Best Value</div>`
+      }
+      
+      // Program name - plain text (no links)
+      const programName = combo.program.toLowerCase()
+      const programNameHtml = programName
+    
+    gridHtml += `<div style="font-size:16px;font-weight:700;color:#1a1a1a;text-transform:capitalize;letter-spacing:-0.01em;margin-bottom:4px;padding-bottom:8px;border-bottom:1px solid rgba(0, 0, 0, 0.08);">${programNameHtml}</div>`
+      
+      // Class and Cabin in a row
+      gridHtml += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">`
+      // Class badge
+      gridHtml += `<span style="background:linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);color:#1976d2;padding:6px 12px;border-radius:10px;font-size:14px;font-weight:700;border:1.5px solid #90caf9;box-shadow:0 2px 4px rgba(25, 118, 210, 0.15);display:inline-flex;align-items:center;">${combo.class}</span>`
+      // Cabin
+      gridHtml += `<span style="font-size:14px;color:#5f6368;font-weight:600;padding:6px 0;">${combo.cabin}</span>`
+      gridHtml += `</div>`
+      
+      // Miles + taxes with modern pill badges - always in one row
+      gridHtml += `<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:nowrap;overflow-x:auto;">`
+      // Miles badge
+      gridHtml += `<span style="background:linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);color:#1a73e8;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:700;border:1.5px solid #8ab4f8;box-shadow:0 2px 4px rgba(26, 115, 232, 0.12);display:inline-flex;align-items:center;gap:3px;white-space:nowrap;flex-shrink:0;">`
+      gridHtml += `<span style="font-size:10px;opacity:0.8;flex-shrink:0;">✈️</span>`
+      gridHtml += `<span style="white-space:nowrap;">${formatMilesDots(combo.miles)} miles</span>`
+      gridHtml += `</span>`
+      // Plus sign
+      gridHtml += `<span style="color:#9ca3af;font-weight:600;font-size:12px;padding:0 2px;flex-shrink:0;white-space:nowrap;">+</span>`
+      // Taxes badge
+      gridHtml += `<span style="background:linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);color:#dc2626;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:700;border:1.5px solid #fca5a5;box-shadow:0 2px 4px rgba(220, 38, 38, 0.12);display:inline-flex;align-items:center;gap:3px;white-space:nowrap;flex-shrink:0;">`
+      gridHtml += `<span style="font-size:10px;opacity:0.8;flex-shrink:0;">💰</span>`
+      gridHtml += `<span style="white-space:nowrap;">$${combo.taxes.toFixed(2)} taxes</span>`
+      gridHtml += `</span>`
+      gridHtml += `</div>`
+      
+      // Total, CPM, and Savings in one row (3 columns)
+      gridHtml += `<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin-bottom:8px;">`
+      
+      // Column 1: Total
+      gridHtml += `<div style="display:flex;flex-direction:column;align-items:center;">`
+      gridHtml += `<span style="font-size:13px;font-weight:700;padding:6px 12px;border-radius:12px;background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);color:#1a1a1a;border:1.5px solid rgba(0, 0, 0, 0.08);box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);display:inline-block;text-align:center;box-sizing:border-box;width:100%;">Total: $${combo.total.toFixed(2)}</span>`
+      gridHtml += `</div>`
+      
+      // Column 2: CPM with indicator
+      if (combo.cpmDisplay && combo.effectiveCpmCents !== null) {
+        const cpmParts = combo.cpmDisplay.split(' - ')
+        const cpmValue = cpmParts[0]
+        const cpmRatio = cpmParts[1] || ''
+        const cpmBg = combo.isBetterCpm 
+          ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)'
+          : 'linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%)'
+        const cpmBorder = combo.isBetterCpm ? '#4caf50' : '#f44336'
+        
+        gridHtml += `<div style="display:flex;flex-direction:column;align-items:center;">`
+        gridHtml += `<span style="font-size:13px;font-weight:700;padding:6px 12px;border-radius:12px;background:${cpmBg};color:#000;border:1.5px solid ${cpmBorder};box-shadow:0 2px 4px rgba(0, 0, 0, 0.06);text-align:center;box-sizing:border-box;width:100%;">${cpmValue}${cpmRatio ? ` - <span style='font-weight:700;color:#000;opacity:0.6;'>${cpmRatio}</span>` : ''}</span>`
+        gridHtml += `<div style="margin-top:8px;width:100%;">${createSavingsBar(combo.cpmBetterPct)}</div>`
+        gridHtml += `</div>`
+      } else {
+        gridHtml += `<div></div>`
+      }
+      
+      // Column 3: Savings with indicator
+      const savingsBg = combo.isGoodDeal
+        ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)'
+        : 'linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%)'
+      const savingsColor = combo.isGoodDeal ? '#000' : '#000'
+      const savingsBorder = combo.isGoodDeal ? '#4caf50' : '#f44336'
+      
+      gridHtml += `<div style="display:flex;flex-direction:column;align-items:center;">`
+      gridHtml += `<span style="font-size:13px;font-weight:700;padding:6px 12px;border-radius:12px;background:${savingsBg};color:${savingsColor};border:1.5px solid ${savingsBorder};box-shadow:0 2px 4px rgba(0, 0, 0, 0.06);text-align:center;box-sizing:border-box;width:100%;">${combo.isGoodDeal ? 'Save' : 'More'} ${Math.abs(combo.savingsPct).toFixed(0)}%</span>`
+      gridHtml += `<div style="margin-top:8px;width:100%;">${createSavingsBar(Math.max(0, combo.savingsPct))}</div>`
+      gridHtml += `</div>`
+      
+      gridHtml += `</div>`
+      
+      gridHtml += `</div>`
+    })
+    
+    gridHtml += `</div>`
+    return gridHtml
+  }
+  
+  // Render grouped by cabin class if "all" is selected, otherwise render all together
+  if (filterValue === 'all') {
+    // Define cabin class order and labels
+    const cabinClassOrder = ['F', 'J', 'W', 'Y']
+    const cabinClassLabels = {
+      'F': 'First Class',
+      'J': 'Business Class',
+      'W': 'Premium Economy',
+      'Y': 'Economy Class'
+    }
+    
+    // Render each cabin class group
+    cabinClassOrder.forEach(cabinKey => {
+      if (groupedCombinations[cabinKey] && groupedCombinations[cabinKey].length > 0) {
+        html += renderCombinationsGrid(groupedCombinations[cabinKey], cabinClassLabels[cabinKey])
+      }
+    })
+  } else {
+    // Render all combinations together (single group)
+    html += renderCombinationsGrid(groupedCombinations['all'] || [], null)
+  }
+  
   resultsContainer.innerHTML = html
 }
 
@@ -1371,6 +1527,146 @@ function createSavingsBar(savingsPct) {
       <div style="position: absolute; top: 8px; left: ${position}%; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 8px solid #1a73e8; transform: translateX(-50%); filter: drop-shadow(0 2px 4px rgba(26, 115, 232, 0.3));"></div>
     </div>
   `
+}
+
+// Call Lufthansa API and display results
+// paramsOrUrl can be either a URL string or a params object
+async function callLufthansaAPI(paramsOrUrl, combo) {
+  if (!window.lufthansaClient) {
+    console.error('Lufthansa client not available')
+    alert('Lufthansa API client not loaded. Please refresh the page.')
+    return
+  }
+
+  // Parse parameters if it's a URL
+  let params, displayParams
+  if (typeof paramsOrUrl === 'string') {
+    // It's a URL - parse it
+    params = window.lufthansaClient.parseMilesAndMoreUrl(paramsOrUrl)
+    displayParams = params
+  } else {
+    // It's already a params object
+    params = paramsOrUrl
+    displayParams = params
+  }
+
+  // Create a modal to show loading and results
+  const modalId = `lufthansa-api-modal-${Date.now()}`
+  const modal = document.createElement('div')
+  modal.id = modalId
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  `
+
+  const modalContent = document.createElement('div')
+  modalContent.style.cssText = `
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+  `
+
+  const searchInfo = typeof paramsOrUrl === 'string' 
+    ? `Parsing URL: ${paramsOrUrl.substring(0, 80)}...`
+    : `Searching for flights: ${params.origin || 'N/A'} → ${params.destination || 'N/A'} on ${params.departureDate || 'N/A'}...`
+
+  modalContent.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #1a1a1a;">Lufthansa Miles & More API Results</h2>
+      <button id="${modalId}-close" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">&times;</button>
+    </div>
+    <div id="${modalId}-content" style="color: #666;">
+      <p>${searchInfo}</p>
+      <div style="text-align: center; padding: 20px;">
+        <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #1a73e8; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+      </div>
+    </div>
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  `
+
+  modal.appendChild(modalContent)
+  document.body.appendChild(modal)
+
+  // Close button handler
+  document.getElementById(`${modalId}-close`).addEventListener('click', () => {
+    document.body.removeChild(modal)
+  })
+
+  // Close on outside click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      document.body.removeChild(modal)
+    }
+  })
+
+  try {
+    const contentDiv = document.getElementById(`${modalId}-content`)
+    
+    // Call the API (it can accept either URL string or params object)
+    const results = await window.lufthansaClient.searchAwardFlights(paramsOrUrl)
+    
+    // Display results
+    let resultsHtml = `
+      <div style="margin-bottom: 16px; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+        <strong>Search Parameters:</strong><br>
+        ${typeof paramsOrUrl === 'string' ? `<strong>URL:</strong> ${paramsOrUrl}<br><br>` : ''}
+        Origin: ${displayParams.origin || 'N/A'}<br>
+        Destination: ${displayParams.destination || 'N/A'}<br>
+        Departure: ${displayParams.departureDate || 'N/A'}<br>
+        ${displayParams.returnDate ? `Return: ${displayParams.returnDate}<br>` : ''}
+        Cabin: ${displayParams.cabinClass || 'N/A'}<br>
+        Passengers: ${displayParams.adults || 1} adult(s)
+      </div>
+      <div style="margin-top: 20px;">
+        <h3 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 700;">API Response:</h3>
+        <pre style="background: #f8f9fa; padding: 12px; border-radius: 8px; overflow-x: auto; font-size: 12px; max-height: 400px; overflow-y: auto;">${JSON.stringify(results, null, 2)}</pre>
+      </div>
+      <div style="margin-top: 16px; padding: 12px; background: #e8f0fe; border-radius: 8px; border-left: 4px solid #1a73e8;">
+        <strong>Note:</strong> This is the raw API response. The Lufthansa API may require authentication (OAuth token) to work properly. 
+        If you see an error, the API may require client credentials or user authentication.
+      </div>
+    `
+    
+    contentDiv.innerHTML = resultsHtml
+  } catch (error) {
+    const contentDiv = document.getElementById(`${modalId}-content`)
+    contentDiv.innerHTML = `
+      <div style="padding: 20px; background: #fee2e2; border-radius: 8px; border-left: 4px solid #dc2626;">
+        <h3 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 700; color: #dc2626;">API Error</h3>
+        <p style="margin: 0 0 8px 0; color: #991b1b;"><strong>Error:</strong> ${error.message}</p>
+        <p style="margin: 0; font-size: 14px; color: #991b1b;">
+          The Lufthansa API may require:
+          <ul style="margin: 8px 0 0 20px; padding: 0;">
+            <li>OAuth authentication (client credentials)</li>
+            <li>User authentication (logged-in session)</li>
+            <li>Specific request format or headers</li>
+          </ul>
+          <br>
+          <strong>Tip:</strong> Click the link normally (without Ctrl/Cmd) to open the Lufthansa website directly.
+        </p>
+      </div>
+    `
+    console.error('Lufthansa API error:', error)
+  }
 }
 
 // Debounce utility function
@@ -1942,8 +2238,9 @@ function createFlightDetailsElement(flightInfo, flightElement) {
     display: flex;
     align-items: center;
     gap: 6px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     white-space: nowrap;
+    overflow-x: auto;
   `
 
   // Aircraft info
@@ -2058,19 +2355,12 @@ function createFlightDetailsElement(flightInfo, flightElement) {
     `
     stopsElement.innerHTML = `✈️ ${flightInfo.stops}`
     flightDetailsRow.appendChild(stopsElement)
-
-      // Note: Seats.aero data is now only shown in the global Flight Search section
   }
 
   // Add the flight details row to the container
   detailsContainer.appendChild(flightDetailsRow)
   
-  // Trigger global panel update when flight details are added
-  setTimeout(() => {
-    triggerGlobalPanelUpdate()
-  }, 1000) // Small delay to ensure DOM is ready
-
-  // Add links in a second row
+  // Create second row for links under "Aircraft"
   if (flightInfo.airlineCode && flightInfo.flightNumber) {
     const linksRow = document.createElement("div")
     linksRow.style.cssText = `
@@ -2078,10 +2368,11 @@ function createFlightDetailsElement(flightInfo, flightElement) {
       gap: 8px;
       align-items: center;
       margin-top: 4px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
     `
     
-    // Create individual link buttons
-    // Order links per request: Seats.Aero, AwardTool, PointsYeah, PY Seats, SA Seats, FareClass, FareViewer, WTC
+    // Order links per request: Seats.Aero, AwardTool, PointsYeah, PY Seats, SA Seats, FareClass, FareViewer, Where?
     const links = [
       { text: "Seats.Aero", action: () => {
         const fromInput = document.getElementById('bs-flight-from')
@@ -2155,9 +2446,8 @@ function createFlightDetailsElement(flightInfo, flightElement) {
             toCode = toInput.value?.trim()?.toUpperCase() || ''
           }
 
-          // Check if it's round-trip or one-way
           const isRoundTrip = returnInput && returnInput.value && returnInput.value.trim() !== ''
-          const tripType = isRoundTrip ? '2' : '1' // 2 = round-trip, 1 = one-way
+            const tripType = isRoundTrip ? '2' : '1'
           
           let pointsYeahUrl = `https://www.pointsyeah.com/search?cabins=Economy&cabin=Economy&banks=Amex%2CCapital+One%2CChase&airlineProgram=AM%2CAC%2CKL%2CAS%2CAV%2CDL%2CEK%2CEY%2CAY%2CB6%2CQF%2CSQ%2CTK%2CUA%2CVS%2CVA&tripType=${tripType}&adults=1&children=0&departure=${fromCode}&arrival=${toCode}&departDate=${departInput.value}&departDateSec=${departInput.value}&stops=0`
           
@@ -2290,16 +2580,12 @@ function createFlightDetailsElement(flightInfo, flightElement) {
             toCode = toInput.value?.trim()?.toUpperCase() || ''
           }
 
-          // Get airline code from flightInfo, default to empty if not available
           const airlineCode = (flightInfo.airlineCode || '').toUpperCase() || ''
           
-          // Get cash price from either input field
           const cashPriceInput = document.getElementById('bs-cash-price-input')
           const standaloneCashPriceInput = document.getElementById('bs-standalone-cash-price')
           const cashPrice = parseFloat(cashPriceInput?.value || standaloneCashPriceInput?.value || '0')
           
-          // Build the route parameter: {airline}:Y:{departure}-{arrival}:{airline}:{price}:USD
-          // Format: OS:Y:WAW-VIE:OS:100:USD
           const route = `${airlineCode}:Y:${fromCode}-${toCode}:${airlineCode}:${Math.round(cashPrice)}:USD`
           const encodedRoute = encodeURIComponent(route)
           const wtcUrl = `https://wheretocredit.com/de/calculator#route=${encodedRoute}`
@@ -2309,7 +2595,7 @@ function createFlightDetailsElement(flightInfo, flightElement) {
       }}
     ]
     
-    // Create individual link buttons
+      // Create individual link buttons and add to the same row
     links.forEach(link => {
       const linkButton = document.createElement("button")
       linkButton.textContent = link.text
@@ -2346,8 +2632,16 @@ function createFlightDetailsElement(flightInfo, flightElement) {
       linksRow.appendChild(linkButton)
     })
     
+    // Add the links row to the container (second row, under Aircraft)
     detailsContainer.appendChild(linksRow)
   }
+
+  // Note: Seats.aero data is now only shown in the global Flight Search section
+  
+  // Trigger global panel update when flight details are added
+  setTimeout(() => {
+    triggerGlobalPanelUpdate()
+  }, 1000) // Small delay to ensure DOM is ready
 
   return detailsContainer
 }
@@ -2540,8 +2834,8 @@ function debouncedInjection(delay = 300) {
 
 // Function to check if page is ready for injection
 function isPageReady() {
-  // Check if document is ready
-  if (document.readyState === 'loading') {
+  // Check if document is fully loaded (complete state)
+  if (document.readyState !== 'complete') {
     return false
   }
   
@@ -2550,10 +2844,21 @@ function isPageReady() {
     return false
   }
   
+  // Check if body exists
+  if (!document.body) {
+    return false
+  }
+  
   // Check if flight results container exists
   const hasFlightResults = document.querySelector('li.pIav2d, .yR1fYc, .mxvQLc, .MX5RWe.sSHqwe.y52p7d, .L5Okte.y52p7d')
   if (!hasFlightResults) {
     // Wait a bit more for dynamic content
+    return false
+  }
+  
+  // Additional check: ensure main container is present
+  const mainContainer = document.querySelector('.XwbuFf, .gws-flights-results__result-list, main, [role="main"]')
+  if (!mainContainer) {
     return false
   }
   
@@ -2649,7 +2954,7 @@ function ensureVisibility() {
     // Wait for page to be ready
     function waitForReady() {
       if (isPageReady()) {
-        console.log("[BS Extension] Page ready, starting injection")
+        console.log("[BS Extension] Page fully loaded and ready, starting injection")
         injectFlightDetails()
       } else {
         // Retry after a delay
@@ -2657,22 +2962,47 @@ function ensureVisibility() {
       }
     }
     
-    // Start the injection when ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(waitForReady, 300)
-      })
-    } else {
-      setTimeout(waitForReady, 300)
+    // Wait for page to be fully loaded before starting
+    function waitForPageFullyLoaded() {
+      return new Promise((resolve) => {
+        // If page is already fully loaded
+        if (document.readyState === 'complete') {
+          // Wait a bit more for dynamic content to render
+          setTimeout(() => {
+            resolve();
+          }, 500);
+          return;
+        }
+
+        // Wait for window load event (all resources loaded)
+        if (document.readyState === 'loading') {
+    window.addEventListener('load', () => {
+            // Additional wait for dynamic content
+      setTimeout(() => {
+              resolve();
+            }, 500);
+          }, { once: true });
+        } else {
+          // Interactive state - wait for load event
+          window.addEventListener('load', () => {
+            setTimeout(() => {
+              resolve();
+            }, 500);
+          }, { once: true });
+        }
+      });
     }
     
-    // Also run when page fully loads
-    window.addEventListener('load', () => {
+    // Start the injection only after page is fully loaded
+    waitForPageFullyLoaded().then(() => {
+      console.log("[BS Extension] Page fully loaded, checking readiness...")
+      waitForReady()
+    }).catch((error) => {
+      console.error("[BS Extension] Error waiting for page load:", error)
+      // Fallback: try anyway after a delay
       setTimeout(() => {
-        if (!isInjecting) {
-          injectFlightDetails()
-        }
-      }, 1000)
+        waitForReady()
+      }, 2000)
     })
     
     // Handle URL changes (SPA navigation)
