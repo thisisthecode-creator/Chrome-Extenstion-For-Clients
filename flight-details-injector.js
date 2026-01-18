@@ -907,8 +907,8 @@ function createStandaloneAwardSection() {
     <div style="display:flex;align-items:center;gap:16px;">
       <div style="font-size:28px;filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));">🏆</div>
       <div>
-        <h2 style="margin:0;font-size:22px;font-weight:600;color:#1a1a1a;letter-spacing:-0.01em;">Award Flight Analysis</h2>
-        <p style="margin:6px 0 0 0;font-size:14px;color:#666;line-height:1.5;">Compare miles programs and booking classes</p>
+        <h2 style="margin:0;font-size:22px;font-weight:600;color:#000000;letter-spacing:-0.01em;">Award Flight Analysis</h2>
+        <p style="margin:6px 0 0 0;font-size:14px;color:#000000;line-height:1.5;">Compare miles programs and booking classes</p>
       </div>
     </div>
   `
@@ -919,7 +919,7 @@ function createStandaloneAwardSection() {
   controls.style.cssText = 'display:flex;gap:24px;margin-bottom:24px;flex-wrap:wrap;align-items:flex-end;'
   controls.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:8px;">
-      <label style="font-size:13px;color:#1a1a1a;font-weight:500;margin-left:2px;">Cash Price</label>
+      <label style="font-size:13px;color:#000000;font-weight:500;margin-left:2px;">Cash Price</label>
       <div style="display:flex;align-items:center;gap:8px;">
         <input type="number" id="bs-standalone-cash-price" placeholder="500" step="0.01" style="
           border:1.5px solid #e0e0e0;
@@ -928,28 +928,28 @@ function createStandaloneAwardSection() {
           width:120px;
           font-size:14px;
           background:#ffffff;
-          color:#1a1a1a;
+          color:#000000;
           transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);
         ">
-        <span style="font-size:14px;color:#666;font-weight:500;">USD</span>
+        <span style="font-size:14px;color:#000000;font-weight:500;">USD</span>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:8px;">
-      <label style="font-size:13px;color:#1a1a1a;font-weight:500;margin-left:2px;">Miles Value</label>
+      <label style="font-size:13px;color:#000000;font-weight:500;margin-left:2px;">Miles Value</label>
       <div style="display:flex;align-items:center;gap:8px;">
-        <input type="number" id="bs-standalone-miles-value" placeholder="" step="0.1" autocomplete="off" name="bs-standalone-miles-value" inputmode="decimal" value="" style="
+        <input type="number" id="bs-standalone-miles-value" placeholder="" step="0.1" autocomplete="off" name="bs-standalone-miles-value" inputmode="decimal" value="12" style="
           border:1.5px solid #e0e0e0;
           padding:12px 16px;
           border-radius:12px;
           width:120px;
           font-size:14px;
           background:#ffffff;
-          color:#1a1a1a;
+          color:#000000;
           transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);
         ">
-        <span style="font-size:14px;color:#666;font-weight:500;">USD per 1000 miles</span>
+        <span style="font-size:14px;color:#000000;font-weight:500;">USD per 1000 miles</span>
       </div>
     </div>
   `
@@ -960,7 +960,7 @@ function createStandaloneAwardSection() {
   filters.style.cssText = 'background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border:1px solid rgba(0, 0, 0, 0.06);border-radius:16px;padding:20px;margin-bottom:24px;box-shadow:0 2px 6px rgba(0, 0, 0, 0.04);'
   filters.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:12px;">
-      <label style="font-size:13px;color:#1a1a1a;font-weight:500;margin-left:2px;">Filter by Booking Class</label>
+      <label style="font-size:13px;color:#000000;font-weight:500;margin-left:2px;">Filter by Booking Class</label>
       <select id="bs-standalone-cabin-filter" style="
         border:1.5px solid #e0e0e0;
         padding:12px 16px;
@@ -969,7 +969,7 @@ function createStandaloneAwardSection() {
         min-width:220px;
         cursor:pointer;
         background:#ffffff;
-        color:#1a1a1a;
+        color:#000000;
         transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);
       ">
@@ -1010,12 +1010,12 @@ function createStandaloneAwardSection() {
   `
   document.head.appendChild(style)
 
-  // Hard reset any miles value inputs to ensure empty default
+  // Clear any stored miles value to use default of 12
   try {
     localStorage.removeItem('bs-standalone-miles-value')
     localStorage.removeItem('bs-miles-value-input')
     const legacyMiles = document.getElementById('bs-miles-value-input')
-    if (legacyMiles) { legacyMiles.value = ''; legacyMiles.defaultValue = ''; }
+    if (legacyMiles) { legacyMiles.value = '12'; legacyMiles.defaultValue = '12'; }
   } catch (_) {}
   
   // Insert after target element
@@ -1026,9 +1026,12 @@ function createStandaloneAwardSection() {
   const milesValueInput = document.getElementById('bs-standalone-miles-value')
   const cabinFilter = document.getElementById('bs-standalone-cabin-filter')
   
-  // Ensure the Miles Value input starts empty so defaults come from Supabase
-  if (milesValueInput && milesValueInput.value) {
-    milesValueInput.value = ''
+  // Set default Miles Value to 12 if empty
+  if (milesValueInput) {
+    if (!milesValueInput.value || milesValueInput.value === '' || milesValueInput.value === null) {
+      milesValueInput.value = '12'
+      milesValueInput.defaultValue = '12'
+    }
   }
   
   function updateStandaloneResults() {
@@ -1041,8 +1044,11 @@ function createStandaloneAwardSection() {
   }
   
   if (milesValueInput) {
-    // Force-clear any browser autofill/defaults so the field starts empty
-    try { milesValueInput.value = ''; milesValueInput.defaultValue = ''; } catch(_) {}
+    // Ensure default value is set to 12 if empty
+    if (!milesValueInput.value || milesValueInput.value === '') {
+      milesValueInput.value = '12'
+      milesValueInput.defaultValue = '12'
+    }
     milesValueInput.addEventListener('input', debounce(updateStandaloneResults, 300))
     milesValueInput.addEventListener('change', updateStandaloneResults)
   }
@@ -1137,12 +1143,17 @@ function setupCabinSync() {
 }
 
 // Update standalone award results
+// Store sort state for award tables
+if (!window.__awardTableSortState) {
+  window.__awardTableSortState = {}
+}
+
 function updateStandaloneAwardResults() {
   const resultsContainer = document.getElementById('bs-standalone-award-results')
   if (!resultsContainer) return
   
   if (!lastSeatsSearch || !lastSeatsSearch.data || lastSeatsSearch.data.length === 0) {
-    resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;color:#666;font-style:italic;background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border-radius:16px;border:1px solid rgba(0, 0, 0, 0.06);">No award data available. Please check your flight details and try again.</div>'
+    resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;color:#000000;font-style:italic;background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border-radius:16px;border:1px solid rgba(0, 0, 0, 0.06);">No award data available. Please check your flight details and try again.</div>'
     return
   }
   
@@ -1155,7 +1166,7 @@ function updateStandaloneAwardResults() {
     : null
   
   if (!cashPriceUSD) {
-    resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;color:#666;font-style:italic;background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border-radius:16px;border:1px solid rgba(0, 0, 0, 0.06);">Please enter a cash price to see award analysis</div>'
+    resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;color:#000000;font-style:italic;background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border-radius:16px;border:1px solid rgba(0, 0, 0, 0.06);">Please enter a cash price to see award analysis</div>'
     return
   }
   
@@ -1372,87 +1383,203 @@ function updateStandaloneAwardResults() {
     groupedCombinations = { 'all': allCombinations }
   }
 
-  // Render in 3-column grid with modern design
+  // Render in table view with auto-width columns
   html += `<style>
-    .bs-award-grid-card {
-      cursor: pointer;
+    .bs-award-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
-    .bs-award-grid-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+    .bs-award-table thead {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    .bs-award-table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 700;
+      color: #000000;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #dee2e6;
+      white-space: nowrap;
+      position: relative;
+      user-select: none;
+    }
+    .bs-award-table th.sortable {
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .bs-award-table th.sortable:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    .bs-award-table th.sortable::after {
+      content: ' ↕';
+      opacity: 0.3;
+      font-size: 12px;
+      margin-left: 4px;
+    }
+    .bs-award-table th.sortable.sort-asc::after {
+      content: ' ↑';
+      opacity: 1;
+      color: #000000;
+    }
+    .bs-award-table th.sortable.sort-desc::after {
+      content: ' ↓';
+      opacity: 1;
+      color: #000000;
+    }
+    .bs-award-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e9ecef;
+      font-size: 14px;
+      vertical-align: middle;
+      color: #000000;
+    }
+    .bs-award-table tbody tr {
+      transition: background-color 0.2s ease;
+    }
+    .bs-award-table tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+    .bs-award-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .bs-award-table .bs-good-deal {
+      background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+    }
+    .bs-award-table .bs-bad-deal {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     }
   </style>`
   
-  // Function to render a grid of combinations
-  const renderCombinationsGrid = (combinations, cabinClassLabel = null) => {
+  // Function to render a table of combinations
+  const renderCombinationsTable = (combinations, cabinClassLabel = null, sortColumn = null, sortDirection = 'asc', filterValue = 'all', tableKey = null) => {
     if (combinations.length === 0) return ''
     
-    let gridHtml = ''
+    // Sort combinations - default to miles ascending if no sortColumn specified
+    let sortedCombinations = [...combinations]
+    const effectiveSortColumn = sortColumn || 'miles'
+    const effectiveSortDirection = sortColumn ? sortDirection : 'asc'
+    
+    if (effectiveSortColumn) {
+      sortedCombinations.sort((a, b) => {
+        let aVal, bVal
+        
+        switch(effectiveSortColumn) {
+          case 'program':
+            aVal = a.program.toLowerCase()
+            bVal = b.program.toLowerCase()
+            break
+          case 'class':
+            aVal = a.class
+            bVal = b.class
+            break
+          case 'cabin':
+            aVal = a.cabin
+            bVal = b.cabin
+            break
+          case 'miles':
+            aVal = a.miles
+            bVal = b.miles
+            break
+          case 'taxes':
+            aVal = a.taxes
+            bVal = b.taxes
+            break
+          case 'total':
+            aVal = a.total
+            bVal = b.total
+            break
+          case 'cpm':
+            aVal = a.effectiveCpmCents !== null ? a.effectiveCpmCents : -Infinity
+            bVal = b.effectiveCpmCents !== null ? b.effectiveCpmCents : -Infinity
+            break
+          case 'savings':
+            aVal = a.savingsPct
+            bVal = b.savingsPct
+            break
+          default:
+            return 0
+        }
+        
+        // Handle string comparison
+        if (typeof aVal === 'string' && typeof bVal === 'string') {
+          return effectiveSortDirection === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal)
+        }
+        
+        // Handle number comparison
+        if (aVal < bVal) return effectiveSortDirection === 'asc' ? -1 : 1
+        if (aVal > bVal) return effectiveSortDirection === 'asc' ? 1 : -1
+        return 0
+      })
+    }
+    
+    let tableHtml = ''
     
     // Add section header if cabin class label is provided
     if (cabinClassLabel) {
-      gridHtml += `<div style="margin-bottom:16px;margin-top:24px;">`
-      gridHtml += `<h3 style="font-size:18px;font-weight:700;color:#1a1a1a;margin:0 0 16px 0;padding-bottom:8px;border-bottom:2px solid #e9ecef;">${cabinClassLabel}</h3>`
-      gridHtml += `</div>`
+      tableHtml += `<div style="margin-bottom:16px;margin-top:24px;">`
+      tableHtml += `<h3 style="font-size:18px;font-weight:700;color:#000000;margin:0 0 16px 0;padding-bottom:8px;border-bottom:2px solid #e9ecef;">${cabinClassLabel}</h3>`
+      tableHtml += `</div>`
     }
     
-    gridHtml += `<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;padding:0;">`
-    
-    combinations.forEach(combo => {
-      // Determine card background based on deal quality
-      const cardBg = combo.isGoodDeal 
-        ? 'linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%)'
-        : 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)'
-      const cardBorder = combo.isGoodDeal
-        ? '1px solid #c8e6c9'
-        : '1px solid #e9ecef'
-      
-      gridHtml += `<div class="bs-award-grid-card" style="background:${cardBg};border:${cardBorder};border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0, 0, 0, 0.08);transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;">`
-    
-      // Best value badge for top deals
-      if (combo.isGoodDeal && combo.savingsPct > 30) {
-        gridHtml += `<div style="position:absolute;top:12px;right:12px;background:linear-gradient(135deg, #10b981 0%, #059669 100%);color:white;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;box-shadow:0 2px 6px rgba(16, 185, 129, 0.3);">Best Value</div>`
+    const sortClass = (col) => {
+      const activeColumn = sortColumn || 'miles'
+      const activeDirection = sortColumn ? sortDirection : 'asc'
+      if (activeColumn === col) {
+        return `sortable sort-${activeDirection}`
       }
-      
-      // Program name - plain text (no links)
-      const programName = combo.program.toLowerCase()
-      const programNameHtml = programName
+      return 'sortable'
+    }
     
-    gridHtml += `<div style="font-size:16px;font-weight:700;color:#1a1a1a;text-transform:capitalize;letter-spacing:-0.01em;margin-bottom:4px;padding-bottom:8px;border-bottom:1px solid rgba(0, 0, 0, 0.08);">${programNameHtml}</div>`
+    // Use provided tableKey or generate one
+    const finalTableKey = tableKey || (cabinClassLabel ? `${filterValue}_${cabinClassLabel.replace(/\s+/g, '_')}` : filterValue || 'default')
+    
+    tableHtml += `<table class="bs-award-table" data-table-key="${finalTableKey}">`
+    tableHtml += `<thead>`
+    tableHtml += `<tr>`
+    tableHtml += `<th class="${sortClass('program')}" data-sort="program" style="width: auto;">Program</th>`
+    tableHtml += `<th class="${sortClass('class')}" data-sort="class" style="width: auto;">Class</th>`
+    tableHtml += `<th class="${sortClass('cabin')}" data-sort="cabin" style="width: auto;">Cabin</th>`
+    tableHtml += `<th class="${sortClass('miles')}" data-sort="miles" style="width: auto;">Miles</th>`
+    tableHtml += `<th class="${sortClass('taxes')}" data-sort="taxes" style="width: auto;">Taxes</th>`
+    tableHtml += `<th class="${sortClass('total')}" data-sort="total" style="width: auto;">Total</th>`
+    tableHtml += `<th class="${sortClass('cpm')}" data-sort="cpm" style="width: auto;">CPM</th>`
+    tableHtml += `<th class="${sortClass('savings')}" data-sort="savings" style="width: auto;">Savings</th>`
+    tableHtml += `</tr>`
+    tableHtml += `</thead>`
+    tableHtml += `<tbody>`
+    
+    sortedCombinations.forEach(combo => {
+      const rowClass = combo.isGoodDeal ? 'bs-good-deal' : 'bs-bad-deal'
+      const programName = combo.program.toLowerCase()
       
-      // Class and Cabin in a row
-      gridHtml += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">`
-      // Class badge
-      gridHtml += `<span style="background:linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);color:#1976d2;padding:6px 12px;border-radius:10px;font-size:14px;font-weight:700;border:1.5px solid #90caf9;box-shadow:0 2px 4px rgba(25, 118, 210, 0.15);display:inline-flex;align-items:center;">${combo.class}</span>`
+      tableHtml += `<tr class="${rowClass}">`
+      
+      // Program
+      tableHtml += `<td style="font-weight: 700; text-transform: capitalize;">${programName}</td>`
+      
+      // Class
+      tableHtml += `<td><span style="background:linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);color:#000000;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid #90caf9;display:inline-block;">${combo.class}</span></td>`
+      
       // Cabin
-      gridHtml += `<span style="font-size:14px;color:#5f6368;font-weight:600;padding:6px 0;">${combo.cabin}</span>`
-      gridHtml += `</div>`
+      tableHtml += `<td style="color:#000000;font-weight:600;">${combo.cabin}</td>`
       
-      // Miles + taxes with modern pill badges - always in one row
-      gridHtml += `<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:nowrap;overflow-x:auto;">`
-      // Miles badge
-      gridHtml += `<span style="background:linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);color:#1a73e8;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:700;border:1.5px solid #8ab4f8;box-shadow:0 2px 4px rgba(26, 115, 232, 0.12);display:inline-flex;align-items:center;gap:3px;white-space:nowrap;flex-shrink:0;">`
-      gridHtml += `<span style="font-size:10px;opacity:0.8;flex-shrink:0;">✈️</span>`
-      gridHtml += `<span style="white-space:nowrap;">${formatMilesDots(combo.miles)} miles</span>`
-      gridHtml += `</span>`
-      // Plus sign
-      gridHtml += `<span style="color:#9ca3af;font-weight:600;font-size:12px;padding:0 2px;flex-shrink:0;white-space:nowrap;">+</span>`
-      // Taxes badge
-      gridHtml += `<span style="background:linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);color:#dc2626;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:700;border:1.5px solid #fca5a5;box-shadow:0 2px 4px rgba(220, 38, 38, 0.12);display:inline-flex;align-items:center;gap:3px;white-space:nowrap;flex-shrink:0;">`
-      gridHtml += `<span style="font-size:10px;opacity:0.8;flex-shrink:0;">💰</span>`
-      gridHtml += `<span style="white-space:nowrap;">$${combo.taxes.toFixed(2)} taxes</span>`
-      gridHtml += `</span>`
-      gridHtml += `</div>`
+      // Miles
+      tableHtml += `<td><span style="background:linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);color:#000000;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid #8ab4f8;display:inline-block;">✈️ ${formatMilesDots(combo.miles)}</span></td>`
       
-      // Total, CPM, and Savings in one row (3 columns)
-      gridHtml += `<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin-bottom:8px;">`
+      // Taxes
+      tableHtml += `<td><span style="background:linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);color:#000000;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid #fca5a5;display:inline-block;">💰 $${combo.taxes.toFixed(2)}</span></td>`
       
-      // Column 1: Total
-      gridHtml += `<div style="display:flex;flex-direction:column;align-items:center;">`
-      gridHtml += `<span style="font-size:13px;font-weight:700;padding:6px 12px;border-radius:12px;background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);color:#1a1a1a;border:1.5px solid rgba(0, 0, 0, 0.08);box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);display:inline-block;text-align:center;box-sizing:border-box;width:100%;">Total: $${combo.total.toFixed(2)}</span>`
-      gridHtml += `</div>`
+      // Total
+      tableHtml += `<td style="font-weight: 700; color: #000000;">$${combo.total.toFixed(2)}</td>`
       
-      // Column 2: CPM with indicator
+      // CPM
       if (combo.cpmDisplay && combo.effectiveCpmCents !== null) {
         const cpmParts = combo.cpmDisplay.split(' - ')
         const cpmValue = cpmParts[0]
@@ -1461,35 +1588,29 @@ function updateStandaloneAwardResults() {
           ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)'
           : 'linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%)'
         const cpmBorder = combo.isBetterCpm ? '#4caf50' : '#f44336'
-        
-        gridHtml += `<div style="display:flex;flex-direction:column;align-items:center;">`
-        gridHtml += `<span style="font-size:13px;font-weight:700;padding:6px 12px;border-radius:12px;background:${cpmBg};color:#000;border:1.5px solid ${cpmBorder};box-shadow:0 2px 4px rgba(0, 0, 0, 0.06);text-align:center;box-sizing:border-box;width:100%;">${cpmValue}${cpmRatio ? ` - <span style='font-weight:700;color:#000;opacity:0.6;'>${cpmRatio}</span>` : ''}</span>`
-        gridHtml += `<div style="margin-top:8px;width:100%;">${createSavingsBar(combo.cpmBetterPct)}</div>`
-        gridHtml += `</div>`
+        tableHtml += `<td><span style="background:${cpmBg};color:#000;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid ${cpmBorder};display:inline-block;">${cpmValue}${cpmRatio ? ` - ${cpmRatio}` : ''}</span></td>`
       } else {
-        gridHtml += `<div></div>`
+        tableHtml += `<td style="color: #000000;">—</td>`
       }
       
-      // Column 3: Savings with indicator
+      // Savings
       const savingsBg = combo.isGoodDeal
         ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)'
         : 'linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%)'
-      const savingsColor = combo.isGoodDeal ? '#000' : '#000'
       const savingsBorder = combo.isGoodDeal ? '#4caf50' : '#f44336'
+      tableHtml += `<td><span style="background:${savingsBg};color:#000;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid ${savingsBorder};display:inline-block;">${combo.isGoodDeal ? 'Save' : 'More'} ${Math.abs(combo.savingsPct).toFixed(0)}%</span></td>`
       
-      gridHtml += `<div style="display:flex;flex-direction:column;align-items:center;">`
-      gridHtml += `<span style="font-size:13px;font-weight:700;padding:6px 12px;border-radius:12px;background:${savingsBg};color:${savingsColor};border:1.5px solid ${savingsBorder};box-shadow:0 2px 4px rgba(0, 0, 0, 0.06);text-align:center;box-sizing:border-box;width:100%;">${combo.isGoodDeal ? 'Save' : 'More'} ${Math.abs(combo.savingsPct).toFixed(0)}%</span>`
-      gridHtml += `<div style="margin-top:8px;width:100%;">${createSavingsBar(Math.max(0, combo.savingsPct))}</div>`
-      gridHtml += `</div>`
-      
-      gridHtml += `</div>`
-      
-      gridHtml += `</div>`
+      tableHtml += `</tr>`
     })
     
-    gridHtml += `</div>`
-    return gridHtml
+    tableHtml += `</tbody>`
+    tableHtml += `</table>`
+    return tableHtml
   }
+  
+  // Get sort state for this table (use filterValue as key to separate sort states per filter)
+  const sortKey = filterValue === 'all' ? 'all' : filterValue
+  const currentSort = window.__awardTableSortState[sortKey] || { column: 'miles', direction: 'asc' }
   
   // Render grouped by cabin class if "all" is selected, otherwise render all together
   if (filterValue === 'all') {
@@ -1502,18 +1623,54 @@ function updateStandaloneAwardResults() {
       'Y': 'Economy Class'
     }
     
-    // Render each cabin class group
+    // Render each cabin class group with sort state
     cabinClassOrder.forEach(cabinKey => {
       if (groupedCombinations[cabinKey] && groupedCombinations[cabinKey].length > 0) {
-        html += renderCombinationsGrid(groupedCombinations[cabinKey], cabinClassLabels[cabinKey])
+        const cabinLabel = cabinClassLabels[cabinKey]
+        const tableKey = `${filterValue}_${cabinLabel.replace(/\s+/g, '_')}`
+        const tableSort = window.__awardTableSortState[tableKey] || { column: 'miles', direction: 'asc' }
+        html += renderCombinationsTable(groupedCombinations[cabinKey], cabinLabel, tableSort.column, tableSort.direction, filterValue, tableKey)
       }
     })
   } else {
     // Render all combinations together (single group)
-    html += renderCombinationsGrid(groupedCombinations['all'] || [], null)
+    const singleTableKey = filterValue || 'default'
+    html += renderCombinationsTable(groupedCombinations['all'] || [], null, currentSort.column, currentSort.direction, filterValue, singleTableKey)
   }
   
   resultsContainer.innerHTML = html
+  
+  // Add event listeners for sortable headers
+  setTimeout(() => {
+    const tables = resultsContainer.querySelectorAll('.bs-award-table')
+    tables.forEach(table => {
+      const headers = table.querySelectorAll('th.sortable')
+      headers.forEach(header => {
+        header.addEventListener('click', function() {
+          const sortColumn = this.getAttribute('data-sort')
+          const tableKey = this.closest('table').getAttribute('data-table-key') || 'default'
+          
+          // Get current sort state for this table
+          const currentTableSort = window.__awardTableSortState[tableKey] || { column: 'miles', direction: 'asc' }
+          
+          // Determine new sort direction
+          let newDirection = 'asc'
+          if (currentTableSort.column === sortColumn && currentTableSort.direction === 'asc') {
+            newDirection = 'desc'
+          }
+          
+          // Update sort state
+          window.__awardTableSortState[tableKey] = {
+            column: sortColumn,
+            direction: newDirection
+          }
+          
+          // Re-render the results
+          updateStandaloneAwardResults()
+        })
+      })
+    })
+  }, 0)
 }
 
 // Create savings bar indicator

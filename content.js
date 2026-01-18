@@ -38,11 +38,11 @@ function injectExtensionPanel() {
   
   // Create panel HTML structure
   panel.innerHTML = `
-    <!-- Benefit Systems Logo with Section Toggles -->
+    <!-- Icon Logo with Section Toggles -->
     <div class="bs-logo-container" id="bs-logo-container">
       <div class="bs-logo-header">
         <a href="https://tools.benefitsystems.io" target="_blank" class="bs-logo-link">
-          <img src="https://saegzrncsjcsvgcjkniv.supabase.co/storage/v1/object/sign/Logo/BenefitSystems.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZWM2ZTk3Zi03YjQ2LTQ0ODMtODNjMS00ZDQwODU5N2MyOTgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL0JlbmVmaXRTeXN0ZW1zLnBuZyIsImlhdCI6MTc1OTc5MDg1MSwiZXhwIjoxNzY4NDMwODUxfQ.wRo7pPjUbmM-Rzo0fXGUChNcgwpM_aTnMjlz4IB5RHk" alt="Benefit Systems" class="bs-logo" />
+          <img src="${chrome.runtime.getURL('icon128.png')}" alt="Extension Icon" class="bs-logo" />
         </a>
         <div class="bs-section-toggles">
           <div class="bs-toggle-item">
@@ -3383,7 +3383,6 @@ function restoreFlightData() {
     if (adultsInput) adultsInput.value = savedData.adults;
   }
   
-  
   if (savedData.language) {
     const languageInput = document.getElementById('bs-flight-language');
     if (languageInput) languageInput.value = savedData.language;
@@ -3531,8 +3530,11 @@ function generateFlightUrl(service, data) {
   const departTimestamp = Math.floor(new Date(depart).getTime() / 1000);
   const returnTimestamp = ret ? Math.floor(new Date(ret).getTime() / 1000) : departTimestamp;
   
+  // Build Google Flights URL
+  const googleFlightsUrl = `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+${cabin}+class&hl=${language}&curr=${currency}&gl=${location}&tfu=EgYIAxAAGAA`;
+  
   const urls = {
-    'google-flights': `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+${cabin}+class&hl=${language}&curr=${currency}&gl=${location}+tfu=EgYIAxAAGAA`,
+    'google-flights': googleFlightsUrl,
     
     'points-yeah': `https://www.pointsyeah.com/search?cabins=${pointsYeahCabin}&cabin=${pointsYeahCabin}&banks=Amex%2CCapital+One%2CChase&airlineProgram=AM%2CAC%2CKL%2CAS%2CAV%2CDL%2CEK%2CEY%2CAY%2CB6%2CQF%2CSQ%2CTK%2CUA%2CVS%2CVA&tripType=${ret ? '2' : '1'}&adults=${adults}&children=0&departure=${from}&arrival=${to}&departDate=${depart}&departDateSec=${depart}&returnDate=${ret || depart}&returnDateSec=${ret || depart}&multiday=false&stops=0`,
     

@@ -4328,7 +4328,7 @@
   margin-bottom: 6px;
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: #000000;
 }
 
 .bs-award-controls .bs-input-group input {
@@ -4362,7 +4362,7 @@
 
 .bs-award-placeholder {
   text-align: center;
-  color: #666;
+  color: #000000;
   font-style: italic;
 }
 
@@ -4395,7 +4395,7 @@
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: #000000;
 }
 
 .bs-award-booking-classes {
