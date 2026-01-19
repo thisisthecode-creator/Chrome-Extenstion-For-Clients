@@ -239,80 +239,81 @@ function injectExtensionPanel() {
       </div>
 
       <!-- CASM Calculator Section -->
-      <div class="bs-casm-calculator" id="bs-casm-calculator" style="display: none;">
-        <!-- Input Row -->
-        <div class="bs-casm-row">
-          <div class="bs-casm-inputs">
-            <div class="bs-casm-field">
-              <label>Distance</label>
-              <input type="number" id="bs-casm-distance" placeholder="Auto" step="0.1" min="0" />
-            </div>
-            
-            <div class="bs-casm-field">
-              <label>Airline</label>
-              <select id="bs-casm-airline">
-                <option value="">Select</option>
-              </select>
-            </div>
-            
-            <div class="bs-casm-field">
-              <label>Cash</label>
-              <input type="number" id="bs-casm-cash-price" placeholder="Price" step="0.01" min="0" />
-            </div>
+      <div class="bs-section" id="bs-casm-calculator" style="display: none;">
+        <div class="bs-section-header">
+          <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-3.14 3.14-8.24 0-11.38a3.37 3.37 0 0 0-2.61-.94A3.37 3.37 0 0 0 6.13 3H2v4.13a3.37 3.37 0 0 0 .94 2.61c3.14 3.14 8.24 3.14 11.38 0a3.37 3.37 0 0 0 .94-2.61V9"/>
+          </svg>
+          <span>CASM Calculator</span>
+        </div>
+        
+        <!-- Input Controls - all in one row -->
+        <div class="bs-inputs-grid">
+          <div class="bs-input-group">
+            <label>Distance</label>
+            <input type="number" id="bs-casm-distance" placeholder="Auto" step="0.1" min="0" />
+          </div>
+          
+          <div class="bs-input-group">
+            <label>Airline</label>
+            <select id="bs-casm-airline">
+              <option value="">Select</option>
+            </select>
+          </div>
+          
+          <div class="bs-input-group">
+            <label>Cash</label>
+            <input type="number" id="bs-casm-cash-price" placeholder="Price" step="0.01" min="0" />
+          </div>
 
-            <div class="bs-casm-field">
-              <label>Region</label>
-              <select id="bs-casm-region">
-                <option value="North America">North America</option>
-                <option value="Europe" selected>Europe</option>
-                <option value="Asia–Pacific">Asia–Pacific</option>
-                <option value="Latin America">Latin America</option>
-                <option value="Middle East & Africa">Middle East & Africa</option>
-              </select>
-            </div>
+          <div class="bs-input-group">
+            <label>Region</label>
+            <select id="bs-casm-region">
+              <option value="North America">North America</option>
+              <option value="Europe" selected>Europe</option>
+              <option value="Asia–Pacific">Asia–Pacific</option>
+              <option value="Latin America">Latin America</option>
+              <option value="Middle East & Africa">Middle East & Africa</option>
+            </select>
+          </div>
 
-            <div class="bs-casm-field">
-              <label>Check-In Bags</label>
-              <input type="number" id="bs-casm-bags" placeholder="0" min="0" value="0" />
-            </div>
+          <div class="bs-input-group">
+            <label>Check-In Bags</label>
+            <input type="number" id="bs-casm-bags" placeholder="0" min="0" value="0" />
+          </div>
 
-            <div class="bs-casm-field">
-              <label>Bag Fee</label>
-              <input type="number" id="bs-casm-bag-fee" placeholder="0" step="0.01" min="0" />
-            </div>
+          <div class="bs-input-group">
+            <label>Bag Fee</label>
+            <input type="number" id="bs-casm-bag-fee" placeholder="0" step="0.01" min="0" />
           </div>
         </div>
 
         <!-- Results Row -->
-        <div class="bs-casm-row bs-casm-results-row" id="bs-casm-results" style="display: none;">
-          <div class="bs-casm-results">
-            <div class="bs-casm-result">
-              <span class="bs-casm-result-label">CASM Cost</span>
-              <span class="bs-casm-result-value" id="bs-casm-cost">$0.00</span>
+        <div class="bs-casm-results-row" id="bs-casm-results" style="display: none;">
+          <div class="bs-casm-results-grid">
+            <div class="bs-casm-result-item">
+              <div class="bs-casm-result-label">CASM Cost</div>
+              <div class="bs-casm-result-value" id="bs-casm-cost"></div>
             </div>
-            <div class="bs-casm-result">
-              <span class="bs-casm-result-label">Cash</span>
-              <span class="bs-casm-result-value" id="bs-casm-cash-display">—</span>
+            <div class="bs-casm-result-item">
+              <div class="bs-casm-result-label">Cash</div>
+              <div class="bs-casm-result-value" id="bs-casm-cash-display"></div>
             </div>
-            <div class="bs-casm-result bs-casm-margin">
-              <span class="bs-casm-result-label">Margin</span>
-              <span class="bs-casm-result-value">
-                <span id="bs-casm-margin">$0.00</span>
-                <span class="bs-casm-percentage" id="bs-casm-margin-pct">(0%)</span>
-              </span>
+            <div class="bs-casm-result-item bs-casm-result-margin">
+              <div class="bs-casm-result-label">Margin</div>
+              <div class="bs-casm-result-value" id="bs-casm-margin"></div>
             </div>
-            <div class="bs-casm-result">
-              <span class="bs-casm-result-label">Bag Cost</span>
-              <span class="bs-casm-result-value" id="bs-casm-bag-cost">$0.00</span>
+            <div class="bs-casm-result-item">
+              <div class="bs-casm-result-label">Bag Cost</div>
+              <div class="bs-casm-result-value" id="bs-casm-bag-cost"></div>
             </div>
-            <div class="bs-casm-result bs-casm-total-cost">
-              <span class="bs-casm-result-label">Total Cost</span>
-              <span class="bs-casm-result-value" id="bs-casm-total-cost">$0.00</span>
+            <div class="bs-casm-result-item bs-casm-result-total">
+              <div class="bs-casm-result-label">Total Cost</div>
+              <div class="bs-casm-result-value" id="bs-casm-total-cost"></div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
     <!-- Hotel Search Section -->
     <div class="bs-section" id="bs-hotel-section" style="display: none;">
@@ -3111,6 +3112,473 @@ function syncCashPriceToAwardAnalysis() {
   }
 }
 
+// Extract airline from Google Flights and auto-fill CPM airline dropdown
+window.extractAndFillAirlineFromGoogleFlights = function extractAndFillAirlineFromGoogleFlights() {
+  try {
+    console.log('[BS Extension] ===== Starting airline extraction from Google Flights =====')
+    
+    // Get CPM airline dropdown first to check if it exists and is populated
+    const airlineSelect = document.getElementById('bs-casm-airline')
+    if (!airlineSelect) {
+      console.log('[BS Extension] ❌ CPM airline dropdown not found')
+      return
+    }
+    
+    console.log('[BS Extension] Dropdown found, current options count:', airlineSelect.options.length)
+    
+    // Wait for dropdown to be populated with options (need at least 2 options: default + one airline)
+    if (airlineSelect.options.length <= 1) {
+      console.log('[BS Extension] ⏳ Dropdown not populated yet (options:', airlineSelect.options.length, '), waiting...')
+      // Track retry attempts
+      if (!window.__airlineRetryCount) {
+        window.__airlineRetryCount = 0
+      }
+      window.__airlineRetryCount++
+      
+      // Retry up to 15 times (7.5 seconds total)
+      if (window.__airlineRetryCount < 15) {
+        setTimeout(() => {
+          window.extractAndFillAirlineFromGoogleFlights()
+        }, 500)
+      } else {
+        console.log('[BS Extension] ❌ Max retries reached, giving up on airline auto-fill')
+        window.__airlineRetryCount = 0
+      }
+      return
+    }
+    
+    // Reset retry count if dropdown is populated
+    window.__airlineRetryCount = 0
+    
+    // Check if already filled - only skip if it's a valid airline value (not empty or "Select")
+    const currentValue = airlineSelect.value || ''
+    const firstOption = airlineSelect.options[0]?.value || ''
+    const isDefaultValue = !currentValue || currentValue === '' || currentValue === firstOption || currentValue === 'Select'
+    
+    if (!isDefaultValue) {
+      console.log('[BS Extension] ✅ CPM airline already filled with valid value:', currentValue, '- skipping extraction')
+      return
+    }
+    
+    console.log('[BS Extension] 🔍 CPM airline needs to be filled (current value:', currentValue, ', is default:', isDefaultValue, ')')
+    
+    // STEP 1: Try to find airline from the FIRST top flight card (same as price extraction)
+    // This ensures we get the airline from the first/top flight (class="U3gSDe ETvUZc")
+    let airlineName = null
+    console.log('[BS Extension] Step 1: Looking for first top flight card (U3gSDe ETvUZc)...')
+    
+    // First, try to find the first top flight card (same selector as price extraction)
+    const topFlightCards = document.querySelectorAll('.U3gSDe.ETvUZc, [class*="U3gSDe"][class*="ETvUZc"]')
+    console.log('[BS Extension] Found', topFlightCards.length, 'top flight cards')
+    
+    if (topFlightCards.length > 0) {
+      const firstTopFlight = topFlightCards[0]
+      console.log('[BS Extension] ✅ Found first top flight card with class U3gSDe ETvUZc')
+      
+      // Look for airline within this first top flight card
+      const airlineContainer = firstTopFlight.querySelector('.sSHqwe.tPgKwe.ogfYpf')
+      console.log('[BS Extension] Looking for airline container (.sSHqwe.tPgKwe.ogfYpf) in first top flight...')
+      
+      if (airlineContainer) {
+        console.log('[BS Extension] ✅ Found airline container in first top flight')
+        const span = airlineContainer.querySelector('span')
+        if (span) {
+          let spanText = span.textContent?.trim() || span.innerText?.trim() || ''
+          console.log('[BS Extension] Found airline span text:', spanText)
+          
+          // If text contains a comma, use only the first part (before the comma)
+          if (spanText && spanText.includes(',')) {
+            spanText = spanText.split(',')[0].trim()
+            console.log('[BS Extension] Multiple airlines found in top flight, using first one:', spanText)
+          }
+          
+          if (spanText && spanText.length > 1 && spanText.length < 50 &&
+              !spanText.match(/^(Operated|by|Total|duration|hr|min|stop|stops|Nonstop|Direct)$/i)) {
+            airlineName = spanText
+            console.log('[BS Extension] ✅✅✅ EXTRACTED airline name from first top flight card:', airlineName)
+          } else {
+            console.log('[BS Extension] ⚠️ Span text filtered out (length:', spanText.length, ', matches filter:', spanText.match(/^(Operated|by|Total|duration|hr|min|stop|stops|Nonstop|Direct)$/i), ')')
+          }
+        } else {
+          console.log('[BS Extension] ⚠️ No span found inside airline container')
+        }
+      } else {
+        console.log('[BS Extension] ⚠️ Airline container not found in first top flight card')
+      }
+    } else {
+      console.log('[BS Extension] ⚠️ No top flight cards found with class U3gSDe ETvUZc')
+    }
+    
+    // Fallback: try to find the first flight result element
+    if (!airlineName) {
+      const flightResultSelectors = [
+        'li.pIav2d',
+        '.yR1fYc',
+        '.mxvQLc',
+        '[data-testid*="flight"]',
+        '[jsname*="flight"]'
+      ]
+      
+      let firstFlightElement = null
+      for (const selector of flightResultSelectors) {
+        const flightElements = document.querySelectorAll(selector)
+        if (flightElements.length > 0) {
+          firstFlightElement = flightElements[0] // Get the FIRST flight
+          console.log('[BS Extension] Found first flight element with selector:', selector)
+          break
+        }
+      }
+      
+      // If we found a flight element, look for airline within it
+      if (firstFlightElement) {
+        const airlineContainer = firstFlightElement.querySelector('.sSHqwe.tPgKwe.ogfYpf')
+        if (airlineContainer) {
+          const span = airlineContainer.querySelector('span')
+          if (span) {
+            let spanText = span.textContent?.trim() || span.innerText?.trim() || ''
+            
+            // If text contains a comma, use only the first part (before the comma)
+            if (spanText && spanText.includes(',')) {
+              spanText = spanText.split(',')[0].trim()
+              console.log('[BS Extension] Multiple airlines found in first flight, using first one:', spanText)
+            }
+            
+            if (spanText && spanText.length > 1 && spanText.length < 50 &&
+                !spanText.match(/^(Operated|by|Total|duration|hr|min|stop|stops|Nonstop|Direct)$/i)) {
+              airlineName = spanText
+              console.log('[BS Extension] Found airline name from first flight element:', airlineName)
+            }
+          }
+        }
+      }
+    }
+    
+    // Fallback: if we didn't find it in the first flight, try direct selectors (but still prioritize first match)
+    if (!airlineName) {
+      const selectors = [
+        // First try to find span inside the div (most specific)
+        '.sSHqwe.tPgKwe.ogfYpf span',
+        // Then try the div itself
+        '.sSHqwe.tPgKwe.ogfYpf',
+        // Try with attribute selectors
+        '[class*="sSHqwe"][class*="tPgKwe"][class*="ogfYpf"] span',
+        // Try div with all three classes
+        'div.sSHqwe.tPgKwe.ogfYpf span',
+        'div.sSHqwe.tPgKwe.ogfYpf'
+      ]
+      
+      for (const selector of selectors) {
+        const element = document.querySelector(selector) // Use querySelector to get FIRST match only
+        if (element) {
+          let text = ''
+          if (element.tagName === 'DIV' || element.classList.contains('sSHqwe')) {
+            const span = element.querySelector('span')
+            if (span) {
+              text = span.textContent?.trim() || span.innerText?.trim() || ''
+            }
+            // If no span found, use div's own text
+            if (!text) {
+              text = element.textContent?.trim() || element.innerText?.trim() || ''
+            }
+          } else {
+            text = element.textContent?.trim() || element.innerText?.trim() || ''
+          }
+          
+          // If text contains a comma, use only the first part (before the comma)
+          if (text && text.includes(',')) {
+            text = text.split(',')[0].trim()
+            console.log('[BS Extension] Multiple airlines found, using first one:', text)
+          }
+          
+          // Skip if text is too short or too long, or contains common non-airline words
+          if (text && text.length > 1 && text.length < 50 && 
+              !text.match(/^(Operated|by|Total|duration|hr|min|stop|stops|Nonstop|Direct)$/i)) {
+            airlineName = text
+            console.log('[BS Extension] Found airline name with selector', selector, ':', airlineName)
+            break
+          }
+        }
+      }
+    }
+    
+    if (!airlineName) {
+      console.log('[BS Extension] ❌ Could not extract airline name from first top flight')
+      console.log('[BS Extension] Trying fallback methods...')
+      // Don't return yet - try fallback methods below
+    }
+    
+    // STEP 2: Create a mapping for common airline name variations
+    console.log('[BS Extension] Step 2: Creating airline name mappings...')
+    const airlineMappings = {
+      'Austrian': 'Austrian Airlines',
+      'Lufthansa': 'Lufthansa',
+      'Swiss': 'Swiss',
+      'British Airways': 'British Airways',
+      'Air France': 'Air France',
+      'KLM': 'KLM',
+      'Delta': 'Delta Air Lines',
+      'United': 'United Airlines',
+      'American': 'American Airlines',
+      'SAS': 'SAS',
+      'Finnair': 'Finnair',
+      'Iberia': 'Iberia',
+      'Emirates': 'Emirates',
+      'Qatar': 'Qatar Airways',
+      'Singapore': 'Singapore Airlines',
+      'Cathay': 'Cathay Pacific',
+      'Cathay Pacific': 'Cathay Pacific',
+      'ANA': 'ANA',
+      'Japan Airlines': 'Japan Airlines',
+      'Qantas': 'Qantas',
+      'LOT': 'LOT Polish Airlines',
+      'Turkish': 'Turkish Airlines',
+      'Turkish Airlines': 'Turkish Airlines',
+      // Add more variations
+      'Turkish Air': 'Turkish Airlines',
+      'THY': 'Turkish Airlines'
+    }
+    
+    // If we still don't have an airline name, try fallback extraction
+    if (!airlineName) {
+      console.log('[BS Extension] Step 2b: Trying fallback extraction methods...')
+      // Try direct selectors as fallback
+      const fallbackSelectors = [
+        '.sSHqwe.tPgKwe.ogfYpf span',
+        'div.sSHqwe.tPgKwe.ogfYpf span',
+        '.sSHqwe.tPgKwe.ogfYpf'
+      ]
+      
+      for (const selector of fallbackSelectors) {
+        const element = document.querySelector(selector)
+        if (element) {
+          let text = ''
+          if (element.tagName === 'DIV' || element.classList.contains('sSHqwe')) {
+            const span = element.querySelector('span')
+            if (span) {
+              text = span.textContent?.trim() || span.innerText?.trim() || ''
+            }
+            if (!text) {
+              text = element.textContent?.trim() || element.innerText?.trim() || ''
+            }
+          } else {
+            text = element.textContent?.trim() || element.innerText?.trim() || ''
+          }
+          
+          if (text && text.includes(',')) {
+            text = text.split(',')[0].trim()
+          }
+          
+          if (text && text.length > 1 && text.length < 50 &&
+              !text.match(/^(Operated|by|Total|duration|hr|min|stop|stops|Nonstop|Direct)$/i)) {
+            airlineName = text
+            console.log('[BS Extension] ✅ Found airline via fallback selector', selector, ':', airlineName)
+            break
+          }
+        }
+      }
+    }
+    
+    if (!airlineName) {
+      console.log('[BS Extension] ❌ Could not extract airline name from any method')
+      return
+    }
+    
+    // Get mapped name
+    const mappedName = airlineMappings[airlineName] || airlineName
+    console.log('[BS Extension] Step 3: Mapped airline name:', airlineName, '->', mappedName)
+    
+    // STEP 3: Match airline name to dropdown options
+    console.log('[BS Extension] Step 4: Matching airline to dropdown options...')
+    const options = Array.from(airlineSelect.options)
+    console.log('[BS Extension] Available dropdown options:', options.length, 'options')
+    let matchedOption = null
+    
+    // Normalize strings for comparison (remove extra spaces, convert to lowercase)
+    const normalize = (str) => str.toLowerCase().trim().replace(/\s+/g, ' ')
+    const normalizedMappedName = normalize(mappedName)
+    const normalizedAirlineName = normalize(airlineName)
+    
+    // Try to find exact or partial match
+    for (const option of options) {
+      const optionText = option.textContent || option.innerText || ''
+      const optionValue = option.value || ''
+      
+      // Extract just the airline name from option text (remove CASM info like "Turkish Airlines (CASM: 5.2¢)")
+      const airlineNameFromText = optionText.split('(')[0].trim()
+      const normalizedOptionText = normalize(airlineNameFromText)
+      const normalizedOptionValue = normalize(optionValue)
+      const normalizedFullOptionText = normalize(optionText)
+      
+      // Check multiple matching strategies (prioritize exact matches)
+      // 1. Exact match with option value (case-insensitive)
+      if (normalizedOptionValue === normalizedMappedName ||
+          normalizedOptionValue === normalizedAirlineName) {
+        matchedOption = option
+        console.log('[BS Extension] Exact match found (by value):', optionValue, 'with text:', optionText)
+        break
+      }
+      
+      // 2. Exact match with airline name from text (before CASM info)
+      if (normalizedOptionText === normalizedMappedName ||
+          normalizedOptionText === normalizedAirlineName) {
+        matchedOption = option
+        console.log('[BS Extension] Exact match found (by text):', optionValue, 'with text:', optionText)
+        break
+      }
+      
+      // 3. Exact match with full option text
+      if (normalizedFullOptionText === normalizedMappedName ||
+          normalizedFullOptionText === normalizedAirlineName) {
+        matchedOption = option
+        console.log('[BS Extension] Exact match found (by full text):', optionValue, 'with text:', optionText)
+        break
+      }
+      
+      // 4. Contains match (one contains the other) - check option value
+      if (normalizedOptionValue.includes(normalizedMappedName) ||
+          normalizedMappedName.includes(normalizedOptionValue) ||
+          normalizedOptionValue.includes(normalizedAirlineName) ||
+          normalizedAirlineName.includes(normalizedOptionValue)) {
+        matchedOption = option
+        console.log('[BS Extension] Partial match found (by value):', optionValue, 'with text:', optionText)
+        break
+      }
+      
+      // 5. Special case: if extracted name is a single word (like "Turkish"), check if it's the start of option text or value
+      // This should be checked BEFORE general contains match to prioritize exact prefix matches
+      if (normalizedAirlineName.split(' ').length === 1) {
+        // Check if option text or value starts with the extracted name + space
+        if (normalizedOptionText.startsWith(normalizedAirlineName + ' ') || 
+            normalizedOptionValue.startsWith(normalizedAirlineName + ' ') ||
+            normalizedOptionText === normalizedAirlineName + ' airlines' ||
+            normalizedOptionValue === normalizedAirlineName + ' airlines') {
+          matchedOption = option
+          console.log('[BS Extension] ✅✅✅ PREFIX MATCH found (single word airline):', optionValue, 'with text:', optionText, 'for extracted:', airlineName)
+          break
+        }
+      }
+      
+      // 6. Contains match - check airline name from text (prioritize when extracted name is shorter, like "Turkish" matching "Turkish Airlines")
+      if (normalizedOptionText.includes(normalizedMappedName) ||
+          normalizedMappedName.includes(normalizedOptionText) ||
+          normalizedOptionText.includes(normalizedAirlineName) ||
+          normalizedAirlineName.includes(normalizedOptionText)) {
+        matchedOption = option
+        console.log('[BS Extension] Partial match found (by text):', optionValue, 'with text:', optionText, 'for extracted:', airlineName)
+        break
+      }
+      
+      // 7. Contains match - check full option text
+      if (normalizedFullOptionText.includes(normalizedMappedName) ||
+          normalizedMappedName.includes(normalizedFullOptionText) ||
+          normalizedFullOptionText.includes(normalizedAirlineName) ||
+          normalizedAirlineName.includes(normalizedFullOptionText)) {
+        matchedOption = option
+        console.log('[BS Extension] Partial match found (by full text):', optionValue, 'with text:', optionText)
+        break
+      }
+    }
+    
+    if (matchedOption) {
+      console.log('[BS Extension] Step 5: Setting dropdown value and triggering calculation...')
+      
+      // Set the value
+      airlineSelect.value = matchedOption.value
+      console.log('[BS Extension] ✅✅✅ Successfully set airline dropdown value to:', matchedOption.value)
+      console.log('[BS Extension]   Option text:', matchedOption.textContent)
+      console.log('[BS Extension]   Current dropdown value after setting:', airlineSelect.value)
+      
+      // Verify the value was set
+      if (airlineSelect.value === matchedOption.value) {
+        console.log('[BS Extension] ✅ Verified: Dropdown value successfully set')
+      } else {
+        console.error('[BS Extension] ❌ ERROR: Dropdown value was NOT set correctly! Expected:', matchedOption.value, 'Got:', airlineSelect.value)
+        // Try setting it again
+        airlineSelect.value = matchedOption.value
+        console.log('[BS Extension] Retried setting value, new value:', airlineSelect.value)
+      }
+      
+      // Force a re-render by removing and re-adding the selected attribute
+      Array.from(airlineSelect.options).forEach(opt => opt.selected = false)
+      matchedOption.selected = true
+      airlineSelect.value = matchedOption.value
+      
+      // Dispatch events to trigger any listeners
+      airlineSelect.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }))
+      airlineSelect.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }))
+      airlineSelect.dispatchEvent(new Event('blur', { bubbles: true, cancelable: true }))
+      console.log('[BS Extension] Dispatched change, input, and blur events')
+      
+      // Trigger CASM calculation - try multiple ways to ensure it runs
+      const triggerCalculation = () => {
+        console.log('[BS Extension] 🔄 Attempting to trigger CASM calculation...')
+        
+        // Method 1: Try to find and call the function from window (made globally accessible)
+        if (typeof window.calculateCASM === 'function') {
+          try {
+            console.log('[BS Extension] Calling window.calculateCASM()...')
+            window.calculateCASM()
+            console.log('[BS Extension] ✅✅✅ CASM calculation triggered via window.calculateCASM')
+            return true
+          } catch (e) {
+            console.error('[BS Extension] ❌ Error calling window.calculateCASM:', e)
+          }
+        } else {
+          console.log('[BS Extension] ⚠️ window.calculateCASM is not a function. Type:', typeof window.calculateCASM)
+        }
+        
+        // Method 2: Try to find the calculateCASM function in the closure
+        // Look for it in various places
+        const casmButton = document.querySelector('#bs-casm-calculator button, [onclick*="calculateCASM"]')
+        if (casmButton) {
+          console.log('[BS Extension] Found CASM button, clicking it...')
+          casmButton.click()
+          return true
+        }
+        
+        console.log('[BS Extension] ⚠️ Could not find CASM calculation trigger method')
+        return false
+      }
+      
+      // Trigger calculation multiple times with delays to ensure it runs
+      let triggered = false
+      setTimeout(() => {
+        if (triggerCalculation()) triggered = true
+      }, 100)
+      setTimeout(() => {
+        if (!triggered) triggerCalculation()
+      }, 300)
+      setTimeout(() => {
+        if (!triggered) triggerCalculation()
+      }, 600)
+      setTimeout(() => {
+        if (!triggered) {
+          console.log('[BS Extension] ⚠️ Final attempt to trigger calculation...')
+          triggerCalculation()
+        }
+      }, 1000)
+    } else {
+      console.log('[BS Extension] ❌❌❌ Could not match airline name to dropdown option.')
+      console.log('[BS Extension]   Extracted airline:', airlineName)
+      console.log('[BS Extension]   Mapped airline:', mappedName)
+      console.log('[BS Extension]   Available options count:', options.length)
+      console.log('[BS Extension]   First 5 options:', options.slice(0, 5).map(o => ({ value: o.value, text: o.textContent?.substring(0, 50) })))
+      
+      // Try one more time with a delay in case dropdown is still populating
+      if (!window.__airlineFinalRetry) {
+        window.__airlineFinalRetry = true
+        console.log('[BS Extension] Will retry airline extraction in 1 second...')
+        setTimeout(() => {
+          window.__airlineFinalRetry = false
+          window.extractAndFillAirlineFromGoogleFlights()
+        }, 1000)
+      }
+    }
+  } catch (error) {
+    console.error('[BS Extension] Error extracting airline from Google Flights:', error)
+  }
+}
+
 // Initialize CASM Calculator
 function initializeCASMCalculator() {
   const casmToggle = document.getElementById('bs-casm-toggle');
@@ -3122,19 +3590,35 @@ function initializeCASMCalculator() {
 
   if (!casmToggle || !casmCalculator) return;
 
-  // Populate airline dropdown
-  if (airlineSelect && window.getAirlinesList) {
-    const airlines = window.getAirlinesList();
-    airlines.forEach(airline => {
-      const casm = window.getAirlineCASM(airline);
-      if (casm) {
-        const option = document.createElement('option');
-        option.value = airline;
-        option.textContent = `${airline} (CASM: ${casm.toFixed(1)}¢)`;
-        airlineSelect.appendChild(option);
-      }
-    });
-  }
+    // Populate airline dropdown
+    if (airlineSelect && window.getAirlinesList) {
+      const airlines = window.getAirlinesList();
+      airlines.forEach(airline => {
+        const casm = window.getAirlineCASM(airline);
+        if (casm) {
+          const option = document.createElement('option');
+          option.value = airline;
+          option.textContent = `${airline} (CASM: ${casm.toFixed(1)}¢)`;
+          airlineSelect.appendChild(option);
+        }
+      });
+      
+      console.log('[BS Extension] Populated airline dropdown with', airlineSelect.options.length, 'options')
+      
+      // After dropdown is populated, try to auto-fill airline (multiple attempts)
+      setTimeout(() => {
+        if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
+          window.extractAndFillAirlineFromGoogleFlights()
+        }
+      }, 300)
+      
+      // Also try after a longer delay in case Google Flights elements load later
+      setTimeout(() => {
+        if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
+          window.extractAndFillAirlineFromGoogleFlights()
+        }
+      }, 2000)
+    }
 
   // Toggle CASM calculator visibility
   const savedCasmState = localStorage.getItem('bs-casm-enabled');
@@ -3150,12 +3634,83 @@ function initializeCASMCalculator() {
     if (casmToggle.checked) {
       // Try to auto-fill from URL or inputs
       autoFillCASMFromURL();
+      // Try to auto-fill airline from Google Flights (multiple attempts)
+      setTimeout(() => {
+        extractAndFillAirlineFromGoogleFlights();
+      }, 500);
+      setTimeout(() => {
+        extractAndFillAirlineFromGoogleFlights();
+      }, 2000);
+      setTimeout(() => {
+        extractAndFillAirlineFromGoogleFlights();
+      }, 4000);
     }
   });
+  
+  // Try to auto-fill airline when CASM is enabled (on page load)
+  if (casmToggle.checked) {
+    setTimeout(() => {
+      extractAndFillAirlineFromGoogleFlights();
+    }, 1000);
+    setTimeout(() => {
+      extractAndFillAirlineFromGoogleFlights();
+    }, 3000);
+  }
+  
+  // Watch for airline elements and top flight cards appearing dynamically
+  if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
+    const airlineObserver = new MutationObserver((mutations) => {
+      let shouldCheck = false
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length > 0) {
+          for (const node of mutation.addedNodes) {
+            if (node.nodeType === 1) { // Element node
+              // Check if the added node or its children contain airline elements or top flight cards
+              if (node.querySelector && (
+                node.querySelector('.sSHqwe.tPgKwe.ogfYpf') ||
+                node.querySelector('.U3gSDe.ETvUZc') ||
+                node.classList?.contains('sSHqwe') ||
+                node.classList?.contains('tPgKwe') ||
+                node.classList?.contains('ogfYpf') ||
+                node.classList?.contains('U3gSDe') ||
+                node.classList?.contains('ETvUZc')
+              )) {
+                shouldCheck = true
+                break
+              }
+            }
+          }
+        }
+        if (shouldCheck) break
+      }
+      
+      if (shouldCheck && casmToggle.checked && airlineSelect) {
+        // Check if dropdown needs to be filled (empty or just "Select")
+        const needsFilling = !airlineSelect.value || airlineSelect.value === '' || airlineSelect.value === 'Select'
+        if (needsFilling) {
+          // Debounce the check
+          clearTimeout(window.__airlineCheckTimeout)
+          window.__airlineCheckTimeout = setTimeout(() => {
+            extractAndFillAirlineFromGoogleFlights()
+          }, 500)
+        }
+      }
+    })
+    
+    // Start observing the document body for airline elements and top flight cards
+    airlineObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    })
+    
+    // Store observer for cleanup if needed
+    window.__airlineObserver = airlineObserver
+  }
 
   // Removed manual calculate distance button (auto-filled from URL or inputs)
 
   // Get baggage inputs
+  // Note: calculateCASM function is defined below and will be assigned to window.calculateCASM
   const regionSelect = document.getElementById('bs-casm-region');
   const bagsInput = document.getElementById('bs-casm-bags');
   const bagFeeInput = document.getElementById('bs-casm-bag-fee');
@@ -3214,6 +3769,9 @@ function initializeCASMCalculator() {
   // Calculate CASM with baggage costs
   function calculateCASM() {
     if (!resultsDiv) return;
+    
+    // Make function globally accessible for airline auto-fill (re-assign on each call to ensure it's available)
+    window.calculateCASM = calculateCASM
 
     const distance = parseFloat(distanceInput?.value) || 0;
     const airline = airlineSelect?.value || '';
@@ -3270,54 +3828,62 @@ function initializeCASMCalculator() {
     const margin = totalRevenue > 0 ? totalRevenue - totalOperatingCost : (cashPrice > 0 ? cashPrice - totalOperatingCost : null);
     const marginPct = totalRevenue > 0 && margin !== null ? ((margin / totalRevenue) * 100).toFixed(1) : null;
 
-    // Update display
+    // Update display with badge-style formatting (matching Award Flight Analysis)
     const costEl = document.getElementById('bs-casm-cost');
     const bagCostEl = document.getElementById('bs-casm-bag-cost');
-    const bagCostContainer = bagCostEl?.closest('.bs-casm-result');
+    const bagCostContainer = bagCostEl?.closest('.bs-casm-result-item');
     const totalCostEl = document.getElementById('bs-casm-total-cost');
     const cashEl = document.getElementById('bs-casm-cash-display');
     const marginEl = document.getElementById('bs-casm-margin');
-    const marginPctEl = document.getElementById('bs-casm-margin-pct');
 
-    // Show CASM cost with multiplier applied (x4 for business/first, x8 for round trip + business/first)
-    if (costEl) costEl.textContent = `$${casmCostWithMultiplier.toFixed(2)}`;
+    // CASM Cost - clean black text
+    if (costEl) {
+      costEl.innerHTML = `<span style="color:#000000;font-size:14px;font-weight:600;">💰 $${casmCostWithMultiplier.toFixed(2)}</span>`;
+    }
     
-    // Only show bag cost if bags >= 1
+    // Cash - clean black text
+    if (cashEl) {
+      if (cashPrice > 0) {
+        cashEl.innerHTML = `<span style="color:#000000;font-size:14px;font-weight:600;">💵 $${cashPrice.toFixed(2)}</span>`;
+      } else {
+        cashEl.innerHTML = `<span style="color:#666666;font-size:14px;font-weight:500;">—</span>`;
+      }
+    }
+
+    // Margin - clean black text with Save/More indicator
+    if (marginEl) {
+      if (margin !== null && marginPct !== null) {
+        const marginText = margin >= 0 ? 'Save' : 'More';
+        const marginPctText = `${Math.abs(parseFloat(marginPct))}%`;
+        
+        marginEl.innerHTML = `<span style="color:#000000;font-size:14px;font-weight:600;">$${Math.abs(margin).toFixed(2)} ${marginText} ${marginPctText}</span>`;
+      } else if (margin !== null) {
+        marginEl.innerHTML = `<span style="color:#000000;font-size:14px;font-weight:600;">$${Math.abs(margin).toFixed(2)}</span>`;
+      } else {
+        marginEl.innerHTML = `<span style="color:#666666;font-size:14px;font-weight:500;">$0.00</span>`;
+      }
+    }
+    
+    // Bag Cost - clean black text
     if (bagCostEl) {
       if (bags >= 1) {
-        bagCostEl.textContent = `$${bagExpectedCostTotal.toFixed(2)}`;
+        bagCostEl.innerHTML = `<span style="color:#000000;font-size:14px;font-weight:600;">💰 $${bagExpectedCostTotal.toFixed(2)}</span>`;
         if (bagCostContainer) bagCostContainer.style.display = '';
       } else {
         if (bagCostContainer) bagCostContainer.style.display = 'none';
       }
     }
     
-    if (totalCostEl) totalCostEl.textContent = `$${totalOperatingCost.toFixed(2)}`;
-    if (cashEl) cashEl.textContent = cashPrice > 0 ? `$${cashPrice.toFixed(2)}` : '—';
-
-    // Calculate and display margin
-    if (margin !== null) {
-      if (marginEl) {
-        marginEl.textContent = `$${margin.toFixed(2)}`;
-        marginEl.style.color = margin >= 0 ? '#4caf50' : '#f44336';
-      }
-      if (marginPctEl && marginPct !== null) {
-        marginPctEl.textContent = `(${margin >= 0 ? '+' : ''}${marginPct}%)`;
-        marginPctEl.style.color = margin >= 0 ? '#4caf50' : '#f44336';
-      }
-    } else {
-      if (marginEl) {
-        marginEl.textContent = '$0.00';
-        marginEl.style.color = '#666';
-      }
-      if (marginPctEl) {
-        marginPctEl.textContent = '(0%)';
-        marginPctEl.style.color = '#666';
-      }
+    // Total Cost - bold black text
+    if (totalCostEl) {
+      totalCostEl.innerHTML = `<span style="color:#000000;font-size:16px;font-weight:700;">$${totalOperatingCost.toFixed(2)}</span>`;
     }
 
     resultsDiv.style.display = 'block';
   }
+  
+  // Make calculateCASM globally accessible immediately after function definition
+  window.calculateCASM = calculateCASM
 
   // Auto-fill from URL
   async function autoFillCASMFromURL() {
@@ -3514,6 +4080,7 @@ function validateHotelData(data) {
   return data.city && data.checkin && data.checkout;
 }
 
+
 // Generate flight URLs
 function generateFlightUrl(service, data) {
   const { from, to, depart, return: ret, cabin, adults, language, currency, location } = data;
@@ -3531,7 +4098,7 @@ function generateFlightUrl(service, data) {
   const returnTimestamp = ret ? Math.floor(new Date(ret).getTime() / 1000) : departTimestamp;
   
   // Build Google Flights URL
-  const googleFlightsUrl = `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+${cabin}+class&hl=${language}&curr=${currency}&gl=${location}&tfu=EgYIAxAAGAA`;
+  const googleFlightsUrl = `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+${cabin}+class&hl=${language}&curr=${currency}&gl=${location}&tfu=EgYIABAAGAA`;
   
   const urls = {
     'google-flights': googleFlightsUrl,

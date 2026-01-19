@@ -844,10 +844,47 @@ function createStandaloneAwardSection() {
     return
   }
   
-  // Find the target element after div class="XwbuFf"
-  const targetElement = document.querySelector('.XwbuFf')
+  // Find the element with jsname="YdtKid" to insert before it (after class="MqKGaf FlfUOc")
+  let targetElement = document.querySelector('[jsname="YdtKid"]')
+  
+  // Verify that MqKGaf FlfUOc exists and comes before YdtKid
+  if (targetElement) {
+    const mqkgafElement = document.querySelector('.MqKGaf.FlfUOc')
+    if (mqkgafElement) {
+      // Check DOM order: if MqKGaf FlfUOc comes after YdtKid, we need a different approach
+      const allElements = Array.from(document.body.querySelectorAll('*'))
+      const mqkgafIndex = allElements.indexOf(mqkgafElement)
+      const ydtkidIndex = allElements.indexOf(targetElement)
+      
+      if (mqkgafIndex > ydtkidIndex) {
+        // MqKGaf FlfUOc comes after YdtKid, find common parent and insert after MqKGaf
+        let commonParent = mqkgafElement.parentElement
+        while (commonParent && commonParent !== document.body) {
+          if (commonParent.contains(targetElement)) {
+            // Insert after MqKGaf FlfUOc within the common parent
+            targetElement = mqkgafElement.nextSibling || mqkgafElement.parentElement
+            break
+          }
+          commonParent = commonParent.parentElement
+        }
+      }
+      // If MqKGaf comes before YdtKid, inserting before YdtKid will naturally place it after MqKGaf
+    }
+  }
+  
+  // Fallback: try to find the main results container
   if (!targetElement) {
-    console.log('Target element .XwbuFf not found')
+    targetElement = document.querySelector('.XwbuFf')
+  }
+  if (!targetElement) {
+    // Try to find the first flight result container
+    const firstFlight = document.querySelector('li.pIav2d, .yR1fYc, .mxvQLc')
+    if (firstFlight) {
+      targetElement = firstFlight.closest('div[class*="XwbuFf"], ul, ol, section') || firstFlight.parentElement
+    }
+  }
+  if (!targetElement) {
+    console.log('Target element for Award Flight Analysis not found')
     return
   }
   
@@ -914,59 +951,52 @@ function createStandaloneAwardSection() {
   `
   awardSection.appendChild(header)
   
-  // Create controls
+  // Create controls - all in one row
   const controls = document.createElement('div')
-  controls.style.cssText = 'display:flex;gap:24px;margin-bottom:24px;flex-wrap:wrap;align-items:flex-end;'
+  controls.style.cssText = 'display:flex;gap:20px;margin-bottom:24px;flex-wrap:wrap;align-items:flex-end;'
   controls.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:8px;">
+    <div style="display:flex;flex-direction:column;gap:6px;flex:0 0 auto;">
       <label style="font-size:13px;color:#000000;font-weight:500;margin-left:2px;">Cash Price</label>
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div style="display:flex;align-items:center;gap:6px;">
         <input type="number" id="bs-standalone-cash-price" placeholder="500" step="0.01" style="
           border:1.5px solid #e0e0e0;
-          padding:12px 16px;
-          border-radius:12px;
-          width:120px;
+          padding:10px 14px;
+          border-radius:10px;
+          width:100px;
           font-size:14px;
           background:#ffffff;
           color:#000000;
           transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);
         ">
-        <span style="font-size:14px;color:#000000;font-weight:500;">USD</span>
+        <span style="font-size:13px;color:#000000;font-weight:500;white-space:nowrap;">USD</span>
       </div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
+    <div style="display:flex;flex-direction:column;gap:6px;flex:0 0 auto;">
       <label style="font-size:13px;color:#000000;font-weight:500;margin-left:2px;">Miles Value</label>
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div style="display:flex;align-items:center;gap:6px;">
         <input type="number" id="bs-standalone-miles-value" placeholder="" step="0.1" autocomplete="off" name="bs-standalone-miles-value" inputmode="decimal" value="12" style="
           border:1.5px solid #e0e0e0;
-          padding:12px 16px;
-          border-radius:12px;
-          width:120px;
+          padding:10px 14px;
+          border-radius:10px;
+          width:100px;
           font-size:14px;
           background:#ffffff;
           color:#000000;
           transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           box-shadow:0 1px 3px rgba(0, 0, 0, 0.04);
         ">
-        <span style="font-size:14px;color:#000000;font-weight:500;">USD per 1000 miles</span>
+        <span style="font-size:13px;color:#000000;font-weight:500;white-space:nowrap;">USD per 1000 miles</span>
       </div>
     </div>
-  `
-  awardSection.appendChild(controls)
-  
-  // Create booking class filters dropdown
-  const filters = document.createElement('div')
-  filters.style.cssText = 'background:linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);border:1px solid rgba(0, 0, 0, 0.06);border-radius:16px;padding:20px;margin-bottom:24px;box-shadow:0 2px 6px rgba(0, 0, 0, 0.04);'
-  filters.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:12px;">
+    <div style="display:flex;flex-direction:column;gap:6px;flex:0 0 auto;">
       <label style="font-size:13px;color:#000000;font-weight:500;margin-left:2px;">Filter by Booking Class</label>
       <select id="bs-standalone-cabin-filter" style="
         border:1.5px solid #e0e0e0;
-        padding:12px 16px;
-        border-radius:12px;
+        padding:10px 14px;
+        border-radius:10px;
         font-size:14px;
-        min-width:220px;
+        min-width:200px;
         cursor:pointer;
         background:#ffffff;
         color:#000000;
@@ -981,7 +1011,7 @@ function createStandaloneAwardSection() {
       </select>
     </div>
   `
-  awardSection.appendChild(filters)
+  awardSection.appendChild(controls)
   
   // Create results container
   const resultsContainer = document.createElement('div')
@@ -1018,8 +1048,8 @@ function createStandaloneAwardSection() {
     if (legacyMiles) { legacyMiles.value = '12'; legacyMiles.defaultValue = '12'; }
   } catch (_) {}
   
-  // Insert after target element
-  targetElement.parentNode.insertBefore(awardSection, targetElement.nextSibling)
+  // Insert before target element (earlier in the page)
+  targetElement.parentNode.insertBefore(awardSection, targetElement)
   
   // Add event listeners
   const cashPriceInput = document.getElementById('bs-standalone-cash-price')
@@ -1072,6 +1102,15 @@ function createStandaloneAwardSection() {
   
   // Initial update
   updateStandaloneResults()
+  
+  // Try to extract and fill price from Google Flights after section is created
+  setTimeout(() => {
+    extractAndFillPriceFromGoogleFlights()
+    // Also try to extract and fill airline
+    if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
+      window.extractAndFillAirlineFromGoogleFlights()
+    }
+  }, 500)
 }
 
 // Setup bidirectional cabin synchronization between Flight Search and Award Flight Analysis
@@ -1461,12 +1500,13 @@ function updateStandaloneAwardResults() {
   const renderCombinationsTable = (combinations, cabinClassLabel = null, sortColumn = null, sortDirection = 'asc', filterValue = 'all', tableKey = null) => {
     if (combinations.length === 0) return ''
     
-    // Sort combinations - default to miles ascending if no sortColumn specified
+    // Sort combinations - default to multi-criteria sort if no sortColumn specified
     let sortedCombinations = [...combinations]
-    const effectiveSortColumn = sortColumn || 'miles'
+    const effectiveSortColumn = sortColumn
     const effectiveSortDirection = sortColumn ? sortDirection : 'asc'
     
     if (effectiveSortColumn) {
+      // User-selected column sort
       sortedCombinations.sort((a, b) => {
         let aVal, bVal
         
@@ -1517,6 +1557,29 @@ function updateStandaloneAwardResults() {
         if (aVal > bVal) return effectiveSortDirection === 'asc' ? 1 : -1
         return 0
       })
+    } else {
+      // Default multi-criteria sort: Highest CPM -> Lowest Miles -> Lowest Total -> Lowest Savings
+      sortedCombinations.sort((a, b) => {
+        // 1. Highest CPM first (descending)
+        const aCpm = a.effectiveCpmCents !== null ? a.effectiveCpmCents : -Infinity
+        const bCpm = b.effectiveCpmCents !== null ? b.effectiveCpmCents : -Infinity
+        if (aCpm !== bCpm) {
+          return bCpm - aCpm // Descending (highest first)
+        }
+        
+        // 2. Lowest miles (ascending)
+        if (a.miles !== b.miles) {
+          return a.miles - b.miles // Ascending (lowest first)
+        }
+        
+        // 3. Lowest total (ascending)
+        if (a.total !== b.total) {
+          return a.total - b.total // Ascending (lowest first)
+        }
+        
+        // 4. Lowest savings (ascending - most negative first)
+        return a.savingsPct - b.savingsPct // Ascending (lowest/most negative first)
+      })
     }
     
     let tableHtml = ''
@@ -1529,8 +1592,9 @@ function updateStandaloneAwardResults() {
     }
     
     const sortClass = (col) => {
-      const activeColumn = sortColumn || 'miles'
-      const activeDirection = sortColumn ? sortDirection : 'asc'
+      // For default multi-criteria sort, highlight CPM column as the primary sort
+      const activeColumn = sortColumn || 'cpm'
+      const activeDirection = sortColumn ? sortDirection : 'desc'
       if (activeColumn === col) {
         return `sortable sort-${activeDirection}`
       }
@@ -1555,9 +1619,27 @@ function updateStandaloneAwardResults() {
     tableHtml += `</thead>`
     tableHtml += `<tbody>`
     
+    // Calculate min and max miles for color coding
+    const milesValues = sortedCombinations.map(c => c.miles)
+    const minMiles = Math.min(...milesValues)
+    const maxMiles = Math.max(...milesValues)
+    const milesRange = maxMiles - minMiles
+    
     sortedCombinations.forEach(combo => {
       const rowClass = combo.isGoodDeal ? 'bs-good-deal' : 'bs-bad-deal'
       const programName = combo.program.toLowerCase()
+      
+      // Calculate color ratio: 0 = cheapest (green), 1 = most expensive (red)
+      const milesRatio = milesRange > 0 ? (combo.miles - minMiles) / milesRange : 0
+      
+      // Use same background style as savings: green for cheapest, red for most expensive
+      // Green: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%) with border #4caf50
+      // Red: linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%) with border #f44336
+      const isCheapestMiles = milesRatio <= 0.5 // Cheapest half gets green, most expensive half gets red
+      const milesBg = isCheapestMiles
+        ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)'
+        : 'linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%)'
+      const milesBorder = isCheapestMiles ? '#4caf50' : '#f44336'
       
       tableHtml += `<tr class="${rowClass}">`
       
@@ -1570,8 +1652,8 @@ function updateStandaloneAwardResults() {
       // Cabin
       tableHtml += `<td style="color:#000000;font-weight:600;">${combo.cabin}</td>`
       
-      // Miles
-      tableHtml += `<td><span style="background:linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);color:#000000;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid #8ab4f8;display:inline-block;">✈️ ${formatMilesDots(combo.miles)}</span></td>`
+      // Miles - color coded from green (cheapest) to red (most expensive)
+      tableHtml += `<td><span style="background:${milesBg};color:#000000;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid ${milesBorder};display:inline-block;">✈️ ${formatMilesDots(combo.miles)}</span></td>`
       
       // Taxes
       tableHtml += `<td><span style="background:linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);color:#000000;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid #fca5a5;display:inline-block;">💰 $${combo.taxes.toFixed(2)}</span></td>`
@@ -1610,7 +1692,13 @@ function updateStandaloneAwardResults() {
   
   // Get sort state for this table (use filterValue as key to separate sort states per filter)
   const sortKey = filterValue === 'all' ? 'all' : filterValue
-  const currentSort = window.__awardTableSortState[sortKey] || { column: 'miles', direction: 'asc' }
+  // Default to multi-criteria sort (null means use default multi-criteria logic)
+  const currentSort = window.__awardTableSortState[sortKey] || { column: null, direction: 'asc' }
+  
+  // Initialize sort state (null means use default multi-criteria sort) if not set
+  if (!window.__awardTableSortState[sortKey]) {
+    window.__awardTableSortState[sortKey] = { column: null, direction: 'asc' }
+  }
   
   // Render grouped by cabin class if "all" is selected, otherwise render all together
   if (filterValue === 'all') {
@@ -1628,14 +1716,23 @@ function updateStandaloneAwardResults() {
       if (groupedCombinations[cabinKey] && groupedCombinations[cabinKey].length > 0) {
         const cabinLabel = cabinClassLabels[cabinKey]
         const tableKey = `${filterValue}_${cabinLabel.replace(/\s+/g, '_')}`
-        const tableSort = window.__awardTableSortState[tableKey] || { column: 'miles', direction: 'asc' }
+        const tableSort = window.__awardTableSortState[tableKey] || { column: null, direction: 'asc' }
+        // Initialize sort state for this table if not set (null means use default multi-criteria sort)
+        if (!window.__awardTableSortState[tableKey]) {
+          window.__awardTableSortState[tableKey] = { column: null, direction: 'asc' }
+        }
         html += renderCombinationsTable(groupedCombinations[cabinKey], cabinLabel, tableSort.column, tableSort.direction, filterValue, tableKey)
       }
     })
   } else {
     // Render all combinations together (single group)
     const singleTableKey = filterValue || 'default'
-    html += renderCombinationsTable(groupedCombinations['all'] || [], null, currentSort.column, currentSort.direction, filterValue, singleTableKey)
+    const singleTableSort = window.__awardTableSortState[singleTableKey] || { column: null, direction: 'asc' }
+    // Initialize sort state for this table if not set (null means use default multi-criteria sort)
+    if (!window.__awardTableSortState[singleTableKey]) {
+      window.__awardTableSortState[singleTableKey] = { column: null, direction: 'asc' }
+    }
+    html += renderCombinationsTable(groupedCombinations['all'] || [], null, singleTableSort.column, singleTableSort.direction, filterValue, singleTableKey)
   }
   
   resultsContainer.innerHTML = html
@@ -1651,7 +1748,7 @@ function updateStandaloneAwardResults() {
           const tableKey = this.closest('table').getAttribute('data-table-key') || 'default'
           
           // Get current sort state for this table
-          const currentTableSort = window.__awardTableSortState[tableKey] || { column: 'miles', direction: 'asc' }
+          const currentTableSort = window.__awardTableSortState[tableKey] || { column: null, direction: 'asc' }
           
           // Determine new sort direction
           let newDirection = 'asc'
@@ -3022,6 +3119,226 @@ function isPageReady() {
   return true
 }
 
+// Extract price from YMlIz FpEdX jLMuyc element and auto-fill cash price fields
+function extractAndFillPriceFromGoogleFlights() {
+  try {
+    console.log('[BS Extension] Attempting to extract price from Google Flights...')
+    
+    // First, try to find the first price from top flights with class="U3gSDe ETvUZc"
+    let priceElement = null
+    
+    // Look for the first flight card with class U3gSDe ETvUZc
+    const topFlightCards = document.querySelectorAll('.U3gSDe.ETvUZc, [class*="U3gSDe"][class*="ETvUZc"]')
+    if (topFlightCards.length > 0) {
+      const firstTopFlight = topFlightCards[0]
+      console.log('[BS Extension] Found top flight card with class U3gSDe ETvUZc')
+      
+      // Look for price elements within this first top flight card
+      const priceSelectors = [
+        'span[aria-label*="dollars"]',
+        'span[aria-label*="US dollars"]',
+        '.YMlIz.FpEdX.jLMuyc span[aria-label*="dollars"]',
+        'div.YMlIz.FpEdX.jLMuyc span[aria-label*="dollars"]',
+        '.YMlIz.FpEdX.jLMuyc',
+        'div.YMlIz.FpEdX.jLMuyc'
+      ]
+      
+      for (const selector of priceSelectors) {
+        const priceEl = firstTopFlight.querySelector(selector)
+        if (priceEl) {
+          // If it's a div, check for span inside
+          if (priceEl.tagName === 'DIV' || priceEl.classList.contains('YMlIz')) {
+            const spanInside = priceEl.querySelector('span[aria-label*="dollars"]')
+            if (spanInside) {
+              priceElement = spanInside
+              console.log('[BS Extension] Found price span inside div in first top flight')
+              break
+            }
+            if (priceEl.getAttribute('aria-label')) {
+              priceElement = priceEl
+              console.log('[BS Extension] Found price div with aria-label in first top flight')
+              break
+            }
+          } else {
+            priceElement = priceEl
+            console.log('[BS Extension] Found price element in first top flight:', selector)
+            break
+          }
+        }
+      }
+    }
+    
+    // Fallback: Try multiple selectors to find the price element (original logic)
+    if (!priceElement) {
+      const selectors = [
+        // First try to find span inside div (most specific pattern)
+        '.YMlIz.FpEdX.jLMuyc span[aria-label*="dollars"]',
+        'div.YMlIz.FpEdX.jLMuyc span[aria-label*="dollars"]',
+        '.YMlIz.FpEdX.jLMuyc span[aria-label*="US dollars"]',
+        'div.YMlIz.FpEdX.jLMuyc span[aria-label*="US dollars"]',
+        // Specific pattern with data-gs and aria-label
+        'span[data-gs][aria-label*="dollars"]',
+        'span[data-gs][aria-label*="US dollars"]',
+        // Original selectors (div containers)
+        '.YMlIz.FpEdX.jLMuyc',
+        'div.YMlIz.FpEdX.jLMuyc',
+        '.YMlIz.FpEdX',
+        '.FpEdX.jLMuyc',
+        '[class*="YMlIz"][class*="FpEdX"][class*="jLMuyc"]',
+        '[aria-label*="dollars"]',
+        '[aria-label*="US dollars"]'
+      ]
+      
+      for (const selector of selectors) {
+        const foundElement = document.querySelector(selector)
+        if (foundElement) {
+          console.log('[BS Extension] Found element with selector:', selector)
+          
+          // If we found a div, check if it has a span inside with aria-label
+          if (foundElement.tagName === 'DIV' || foundElement.classList.contains('YMlIz')) {
+            const spanInside = foundElement.querySelector('span[aria-label*="dollars"]')
+            if (spanInside) {
+              priceElement = spanInside
+              console.log('[BS Extension] Found span inside div with aria-label')
+              break
+            }
+            // If no span found, check if the div itself has aria-label
+            if (foundElement.getAttribute('aria-label')) {
+              priceElement = foundElement
+              break
+            }
+          } else {
+            priceElement = foundElement
+            break
+          }
+        }
+      }
+    }
+    
+    if (!priceElement) {
+      console.log('[BS Extension] Price element not found, trying all elements with aria-label...')
+      // Try to find any element with aria-label containing "dollars"
+      const allElements = document.querySelectorAll('[aria-label]')
+      for (const el of allElements) {
+        const ariaLabel = el.getAttribute('aria-label') || ''
+        if (ariaLabel.includes('dollars') && ariaLabel.match(/\d+/)) {
+          priceElement = el
+          console.log('[BS Extension] Found price element via aria-label search:', ariaLabel)
+          break
+        }
+      }
+    }
+    
+    // Also try to find div.YMlIz.FpEdX.jLMuyc and then look for span inside
+    if (!priceElement) {
+      const divContainer = document.querySelector('.YMlIz.FpEdX.jLMuyc, div.YMlIz.FpEdX.jLMuyc')
+      if (divContainer) {
+        const spanWithAriaLabel = divContainer.querySelector('span[aria-label*="dollars"]')
+        if (spanWithAriaLabel) {
+          priceElement = spanWithAriaLabel
+          console.log('[BS Extension] Found span inside YMlIz div via fallback search')
+        }
+      }
+    }
+    
+    if (!priceElement) {
+      console.log('[BS Extension] Could not find price element')
+      return
+    }
+    
+    // Get aria-label attribute
+    const ariaLabel = priceElement.getAttribute('aria-label')
+    console.log('[BS Extension] Found aria-label:', ariaLabel)
+    
+    if (!ariaLabel) {
+      // Try textContent as fallback
+      const textContent = priceElement.textContent || priceElement.innerText || ''
+      console.log('[BS Extension] No aria-label, trying textContent:', textContent)
+      
+      // Extract number from text content
+      const textMatch = textContent.match(/(\d+(?:\.\d+)?)/)
+      if (textMatch) {
+        const price = parseFloat(textMatch[1])
+        if (!isNaN(price) && price > 0) {
+          fillCashPriceFields(price)
+          return
+        }
+      }
+      return
+    }
+    
+    // Extract number from aria-label like "149 US dollars", "149 dollars", "6517 US dollars", or "99,999 US dollars"
+    // Handle both comma-separated numbers (e.g., "99,999") and plain numbers (e.g., "1673")
+    // Pattern: matches 1-5 digits OR comma-separated numbers up to 99,999
+    let match = null
+    
+    // First try: match comma-separated numbers (e.g., "99,999" or "1,673")
+    match = ariaLabel.match(/(\d{1,3}(?:,\d{3})+(?:\.\d+)?)/)
+    
+    // Second try: match plain numbers without commas (1-5 digits for up to 99,999)
+    if (!match) {
+      match = ariaLabel.match(/(\d{1,5}(?:\.\d+)?)/)
+    }
+    
+    // Third try: fallback to any number sequence
+    if (!match) {
+      match = ariaLabel.match(/(\d+(?:\.\d+)?)/)
+    }
+    
+    if (!match) {
+      console.log('[BS Extension] Could not extract number from aria-label:', ariaLabel)
+      return
+    }
+    
+    // Remove commas from the matched number string before parsing
+    const priceStr = match[1].replace(/,/g, '')
+    const price = parseFloat(priceStr)
+    if (isNaN(price) || price <= 0) {
+      console.log('[BS Extension] Invalid price extracted:', price)
+      return
+    }
+    
+    // Validate price is within reasonable range (up to 99,999)
+    if (price > 99999) {
+      console.log('[BS Extension] Price exceeds maximum (99,999):', price)
+      return
+    }
+    
+    console.log('[BS Extension] Extracted price from Google Flights:', price)
+    fillCashPriceFields(price)
+    
+  } catch (error) {
+    console.error('[BS Extension] Error extracting price from Google Flights:', error)
+  }
+}
+
+// Helper function to fill cash price fields
+// This fills both CASM Calculator Cash field and Award Flight Analysis Cash Price field
+// Both use the first price from top flights (class="U3gSDe ETvUZc"), not the cheapest
+function fillCashPriceFields(price) {
+  // Fill CASM Calculator Cash field
+  const casmCashInput = document.getElementById('bs-casm-cash-price')
+  if (casmCashInput) {
+    casmCashInput.value = price
+    casmCashInput.dispatchEvent(new Event('input', { bubbles: true }))
+    casmCashInput.dispatchEvent(new Event('change', { bubbles: true }))
+    console.log('[BS Extension] Filled CASM Calculator Cash field with:', price)
+  } else {
+    console.log('[BS Extension] CASM Calculator Cash field not found')
+  }
+  
+  // Fill Award Flight Analysis Cash Price field
+  const standaloneCashInput = document.getElementById('bs-standalone-cash-price')
+  if (standaloneCashInput) {
+    standaloneCashInput.value = price
+    standaloneCashInput.dispatchEvent(new Event('input', { bubbles: true }))
+    standaloneCashInput.dispatchEvent(new Event('change', { bubbles: true }))
+    console.log('[BS Extension] Filled Award Flight Analysis Cash Price field with:', price)
+  } else {
+    console.log('[BS Extension] Award Flight Analysis Cash Price field not found')
+  }
+}
+
 // Function to inject flight details
 function injectFlightDetails() {
   // Prevent concurrent injections
@@ -3113,6 +3430,10 @@ function ensureVisibility() {
       if (isPageReady()) {
         console.log("[BS Extension] Page fully loaded and ready, starting injection")
         injectFlightDetails()
+        // Try to extract and fill price after a delay to allow elements to render
+        setTimeout(() => {
+          extractAndFillPriceFromGoogleFlights()
+        }, 1000)
       } else {
         // Retry after a delay
         setTimeout(waitForReady, 500)
@@ -3176,6 +3497,14 @@ function ensureVisibility() {
         setTimeout(() => {
           if (!isInjecting) {
             injectFlightDetails()
+            // Try to extract and fill price after URL change
+            setTimeout(() => {
+              extractAndFillPriceFromGoogleFlights()
+              // Try to extract and fill airline
+              if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
+                window.extractAndFillAirlineFromGoogleFlights()
+              }
+            }, 1500)
           }
         }, 1000)
       }
@@ -3190,6 +3519,82 @@ function ensureVisibility() {
 setTimeout(() => {
   ensureVisibility()
 }, 2000)
+
+// Watch for price element to appear and auto-fill
+let priceExtractionAttempts = 0
+const maxPriceExtractionAttempts = 10
+
+const priceObserver = new MutationObserver(() => {
+  // Debounce the extraction
+  if (priceExtractionAttempts >= maxPriceExtractionAttempts) {
+    return
+  }
+  
+  priceExtractionAttempts++
+  
+  // Check if price element exists
+  const priceElement = document.querySelector('.YMlIz.FpEdX.jLMuyc, [aria-label*="dollars"]')
+  if (priceElement) {
+    // Check if we've already filled the price
+    const casmCashInput = document.getElementById('bs-casm-cash-price')
+    const standaloneCashInput = document.getElementById('bs-standalone-cash-price')
+    
+    // Only fill if fields are empty or zero
+    const casmHasValue = casmCashInput && casmCashInput.value && parseFloat(casmCashInput.value) > 0
+    const standaloneHasValue = standaloneCashInput && standaloneCashInput.value && parseFloat(standaloneCashInput.value) > 0
+    
+    if (!casmHasValue || !standaloneHasValue) {
+      extractAndFillPriceFromGoogleFlights()
+    }
+    
+    // Also try to extract airline
+    if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
+      window.extractAndFillAirlineFromGoogleFlights()
+    }
+  }
+})
+
+// Start observing for price element
+if (document.body) {
+  priceObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+  })
+} else {
+  // Wait for body to be available
+  document.addEventListener('DOMContentLoaded', () => {
+    priceObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    })
+  })
+}
+
+// Also try periodically to extract price
+let periodicPriceCheck = setInterval(() => {
+  const casmCashInput = document.getElementById('bs-casm-cash-price')
+  const standaloneCashInput = document.getElementById('bs-standalone-cash-price')
+  
+  const casmHasValue = casmCashInput && casmCashInput.value && parseFloat(casmCashInput.value) > 0
+  const standaloneHasValue = standaloneCashInput && standaloneCashInput.value && parseFloat(standaloneCashInput.value) > 0
+  
+  if (!casmHasValue || !standaloneHasValue) {
+    extractAndFillPriceFromGoogleFlights()
+  } else {
+    // Stop checking if both fields are filled
+    clearInterval(periodicPriceCheck)
+  }
+  
+  // Also try to extract airline periodically
+  if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
+    window.extractAndFillAirlineFromGoogleFlights()
+  }
+}, 2000)
+
+// Stop periodic check after 30 seconds
+setTimeout(() => {
+  clearInterval(periodicPriceCheck)
+}, 30000)
 
 // Debounced observer for detecting new flight content
 let observerTimeout = null

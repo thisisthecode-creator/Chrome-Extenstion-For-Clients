@@ -477,12 +477,12 @@
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Flight inputs in one row */
+/* Flight inputs in one row - full width */
 .bs-section:nth-child(1) .bs-inputs-grid {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: flex-end;
-  gap: 6px;
+  gap: 12px;
 }
 
 /* Switch Container - reduced padding */
@@ -556,41 +556,45 @@
   min-width: 100px;
 }
 
-/* Specific widths for flight input fields */
+/* Specific widths for flight input fields - full width */
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-from),
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-to) {
-  min-width: 140px;
-  max-width: 140px;
+  flex: 1 1 0;
+  min-width: 120px;
 }
 
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-depart),
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-return) {
+  flex: 1 1 0;
   min-width: 140px;
-  max-width: 140px;
 }
 
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-cabin) {
-  min-width: 160px;
-  max-width: 160px;
+  flex: 1 1 0;
+  min-width: 140px;
 }
 
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-adults) {
-  min-width: 80px;
-  max-width: 80px;
+  flex: 0 1 auto;
+  min-width: 100px;
+  max-width: 120px;
 }
 
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-airline) {
+  flex: 0 1 auto;
   min-width: 50px;
   max-width: 50px;
 }
 
 .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-number) {
+  flex: 0 1 auto;
   min-width: 100px;
-  max-width: 100px;
+  max-width: 120px;
 }
 
 
@@ -612,6 +616,8 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .bs-input-group input:focus,
@@ -4711,15 +4717,8 @@
 }
 
 /* CASM Calculator Styles */
-.bs-casm-calculator {
-  margin-top: 12px;
-  padding: 14px 16px;
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  width: 100%;
-  box-sizing: border-box;
-}
+/* CASM Calculator now uses standard bs-section styling - matches Flight Search section */
+/* Results styling kept below */
 
 .bs-casm-row {
   display: flex;
@@ -4730,14 +4729,26 @@
   justify-content: space-between;
 }
 
-.bs-casm-row.bs-casm-results-row {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 2px solid #f0f0f0;
-  align-items: center;
-  justify-content: flex-start;
+.bs-casm-results-row {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e8eaed;
   width: 100%;
   box-sizing: border-box;
+}
+
+.bs-casm-results {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.bs-casm-result {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 0 0 auto;
 }
 
 .bs-casm-inputs {
@@ -4760,12 +4771,11 @@
 }
 
 .bs-casm-field label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #555;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  margin-bottom: 1px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #000000;
+  margin-left: 2px;
+  margin-bottom: 0;
 }
 
 .bs-casm-input-wrap {
@@ -4776,14 +4786,14 @@
 
 .bs-casm-field input,
 .bs-casm-field select {
-  padding: 6px 10px;
-  border: 1.5px solid #d5d5d5;
-  border-radius: 5px;
-  font-size: 13px;
-  background: #fff;
-  color: #000;
-  transition: all 0.15s ease;
-  height: 32px;
+  padding: 10px 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #ffffff;
+  color: #000000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
   font-weight: 500;
 }
@@ -4791,8 +4801,15 @@
 .bs-casm-field input:focus,
 .bs-casm-field select:focus {
   outline: none;
-  border-color: #000;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+  border-color: #1a73e8 !important;
+  box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+.bs-casm-field input:hover,
+.bs-casm-field select:hover {
+  border-color: #1a73e8 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
 }
 
 .bs-casm-field input::placeholder {
@@ -4868,12 +4885,67 @@
   cursor: not-allowed;
 }
 
-.bs-casm-results {
+.bs-casm-results-row {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e8eaed;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.bs-casm-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 24px 20px;
+  align-items: start;
+}
+
+.bs-casm-result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bs-casm-result-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #5f6368;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+.bs-casm-result-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+  min-height: 32px;
   display: flex;
   align-items: center;
-  gap: 32px;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
+}
+
+.bs-casm-result-margin .bs-casm-result-value {
+  font-weight: 600;
+}
+
+.bs-casm-result-total .bs-casm-result-label {
+  font-weight: 700;
+  color: #000000;
+}
+
+.bs-casm-result-total .bs-casm-result-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* Legacy support - keep for backward compatibility */
+.bs-casm-results {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
 }
@@ -4882,25 +4954,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 90px;
-  flex-shrink: 0;
-}
-
-.bs-casm-result.bs-casm-margin {
-  min-width: 110px;
-}
-
-.bs-casm-result.bs-casm-total-cost {
-  min-width: 100px;
-}
-
-.bs-casm-result-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  line-height: 1.3;
+  flex: 0 0 auto;
+  min-width: 0;
 }
 
 .bs-casm-result-value {
