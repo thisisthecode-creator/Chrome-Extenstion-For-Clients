@@ -57,7 +57,8 @@
     "https://saegzrncsjcsvgcjkniv.supabase.co/*",
     "https://seats.aero/*",
     "https://api.exchangerate-api.com/*",
-    "https://api-shop.miles-and-more.com/*"
+    "https://api-shop.miles-and-more.com/*",
+    "https://nominatim.openstreetmap.org/*"
   ],
   "web_accessible_resources": [
     {

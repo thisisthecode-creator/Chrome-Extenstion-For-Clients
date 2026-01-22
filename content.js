@@ -74,13 +74,6 @@ function injectExtensionPanel() {
             </label>
           </div>
           <div class="bs-toggle-item">
-            <label class="bs-toggle-label" for="bs-calculation-toggle">Calculation</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-calculation-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-          <div class="bs-toggle-item">
             <label class="bs-toggle-label" for="bs-settings-toggle">Settings</label>
             <label class="bs-toggle-switch">
               <input type="checkbox" id="bs-settings-toggle">
@@ -194,6 +187,9 @@ function injectExtensionPanel() {
       </div>
       
       <div class="bs-buttons-grid" id="bs-external-links" style="display:none;">
+        <button class="bs-btn bs-btn-open-all" id="bs-flight-open-all" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold;">
+          Open All
+        </button>
         <button class="bs-btn bs-btn-google-flights" data-service="google-flights">
           Google Flights
         </button>
@@ -229,6 +225,15 @@ function injectExtensionPanel() {
         </button>
         <button class="bs-btn bs-btn-turbli" data-service="turbli">
           Turbli
+        </button>
+        <button class="bs-btn bs-btn-roame" data-service="roame">
+          Roame
+        </button>
+        <button class="bs-btn bs-btn-awardlogic" data-service="awardlogic">
+          AwardLogic
+        </button>
+        <button class="bs-btn bs-btn-pointhound" data-service="pointhound">
+          Pointhound
         </button>
         <button class="bs-btn bs-btn-pointsyeah-seatmap" data-service="pointsyeah-seatmap" style="display: none;">
           PY Seats
@@ -392,14 +397,32 @@ function injectExtensionPanel() {
       </div>
       
       <div class="bs-buttons-grid" id="bs-hotel-external-links" style="display:none;">
+        <button class="bs-btn bs-btn-open-all" id="bs-hotel-open-all" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold;">
+          Open All
+        </button>
+        <button class="bs-btn bs-btn-google-hotels" data-service="google-hotels">
+          Google Hotels
+        </button>
         <button class="bs-btn bs-btn-rooms-aero" data-service="rooms-aero">
           Rooms.aero
         </button>
-        <button class="bs-btn bs-btn-hilton" data-service="hilton">
-          Hilton
+        <button class="bs-btn bs-btn-points-yeah" data-service="pointsyeah-hotels">
+          PointsYeah
+        </button>
+        <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles-hotels">
+          RoveMiles
+        </button>
+        <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles-hotels-loyal">
+          RoveMiles Loyalty
+        </button>
+        <button class="bs-btn bs-btn-maxmypoint" data-service="maxmypoint">
+          MaxMyPoint
         </button>
         <button class="bs-btn bs-btn-hyatt" data-service="hyatt">
           Hyatt
+        </button>
+        <button class="bs-btn bs-btn-hilton" data-service="hilton">
+          Hilton
         </button>
         <button class="bs-btn bs-btn-marriott" data-service="marriott">
           Marriott
@@ -416,20 +439,14 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-choice" data-service="choice">
           Choice
         </button>
+        <button class="bs-btn bs-btn-radisson" data-service="radisson">
+          Radisson
+        </button>
         <button class="bs-btn bs-btn-melia" data-service="melia">
           Melia
         </button>
         <button class="bs-btn bs-btn-gha" data-service="gha">
           GHA
-        </button>
-        <button class="bs-btn bs-btn-google-hotels" data-service="google-hotels">
-          Google Hotels
-        </button>
-        <button class="bs-btn bs-btn-best-western" data-service="best-western">
-          BestWest
-        </button>
-        <button class="bs-btn bs-btn-radisson" data-service="radisson">
-          Radisson
         </button>
       </div>
 
@@ -655,868 +672,7 @@ function injectExtensionPanel() {
 
     </div>
 
-    <!-- Calculation Section -->
-    <div class="bs-section" id="bs-calculation-section" style="display: none;">
-      <div class="bs-section-header">
-        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-          <line x1="9" y1="3" x2="9" y2="21"/>
-          <line x1="15" y1="3" x2="15" y2="21"/>
-          <line x1="3" y1="9" x2="21" y2="9"/>
-          <line x1="3" y1="15" x2="21" y2="15"/>
-        </svg>
-        <span>Calculation</span>
-        <div class="bs-header-controls">
-          <div class="bs-auto-reload-toggle">
-            <label class="bs-toggle-label" for="bs-total-calculator-toggle">Total Calculator</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-total-calculator-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-          <div class="bs-auto-reload-toggle">
-            <label class="bs-toggle-label" for="bs-rovemiles-toggle">Rovemiles</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-rovemiles-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-          <div class="bs-auto-reload-toggle">
-            <label class="bs-toggle-label" for="bs-hyatt-calculator-toggle">Hyatt Calculator</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-hyatt-calculator-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-          <div class="bs-auto-reload-toggle">
-            <label class="bs-toggle-label" for="bs-hilton-calculator-toggle">Hilton Calculator</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-hilton-calculator-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Total Calculator Subsection -->
-      <div class="bs-calculation-subsection" id="bs-total-calculator-section">
-        <div class="bs-calculator-card">
-          <div class="bs-calculator-header bs-calculator-header-yellow">
-            <div class="bs-calculator-header-content">
-              <div class="bs-calculator-header-left">
-                <svg class="bs-calculator-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect width="16" height="20" x="4" y="2" rx="2"></rect>
-                  <line x1="8" x2="16" y1="6" y2="6"></line>
-                  <line x1="16" x2="16" y1="14" y2="18"></line>
-                  <path d="M16 10h.01"></path>
-                  <path d="M12 10h.01"></path>
-                  <path d="M8 10h.01"></path>
-                  <path d="M12 14h.01"></path>
-                  <path d="M8 14h.01"></path>
-                  <path d="M12 18h.01"></path>
-                  <path d="M8 18h.01"></path>
-                </svg>
-                <h2 class="bs-calculator-title">Total Value Calculator</h2>
-              </div>
-              <button class="bs-calculator-info-btn" type="button" aria-label="Show information">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M12 16v-4"></path>
-                  <path d="M12 8h.01"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="bs-calculator-body">
-            <form id="bs-total-calculator-form" class="bs-calculator-form">
-              <div class="bs-form-section">
-                <div class="bs-form-section-header">
-                  <svg class="bs-form-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect width="20" height="14" x="2" y="5" rx="2"></rect>
-                    <line x1="2" x2="22" y1="10" y2="10"></line>
-                  </svg>
-                  <h3 class="bs-form-section-title">Loyalty Program</h3>
-                </div>
-                <div class="bs-form-program-wrapper">
-                  <div class="bs-form-program-select-wrapper">
-                    <select id="bs-calc-program" class="bs-form-program-select" required>
-                      <optgroup label="💳 Credit Card Programs"></optgroup>
-                      <optgroup label="✈️ Airlines"></optgroup>
-                      <optgroup label="🏨 Hotels"></optgroup>
-                    </select>
-                    <button type="button" class="bs-form-favorite-btn" title="Add to favorites">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                      </svg>
-                    </button>
-                  </div>
-                  <div class="bs-form-historical-grid">
-                    <div class="bs-form-historical-card">
-                      <div class="bs-form-historical-header">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-                          <polyline points="16 7 22 7 22 13"></polyline>
-                        </svg>
-                        <span class="bs-form-historical-label">Current</span>
-                      </div>
-                      <span class="bs-form-historical-value" id="bs-calc-historical-current">$-</span>
-                    </div>
-                    <div class="bs-form-historical-card">
-                      <span class="bs-form-historical-label">6-Month Avg</span>
-                      <span class="bs-form-historical-value" id="bs-calc-historical-6m">$-</span>
-                    </div>
-                    <div class="bs-form-historical-card">
-                      <span class="bs-form-historical-label">12-Month Avg</span>
-                      <span class="bs-form-historical-value" id="bs-calc-historical-12m">$-</span>
-                    </div>
-                    <div class="bs-form-historical-card">
-                      <span class="bs-form-historical-label">24-Month Avg</span>
-                      <span class="bs-form-historical-value" id="bs-calc-historical-24m">$-</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bs-form-section">
-                <div class="bs-form-section-header">
-                  <svg class="bs-form-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect width="16" height="20" x="4" y="2" rx="2"></rect>
-                    <line x1="8" x2="16" y1="6" y2="6"></line>
-                    <line x1="16" x2="16" y1="14" y2="18"></line>
-                    <path d="M16 10h.01"></path>
-                    <path d="M12 10h.01"></path>
-                    <path d="M8 10h.01"></path>
-                    <path d="M12 14h.01"></path>
-                    <path d="M8 14h.01"></path>
-                    <path d="M12 18h.01"></path>
-                    <path d="M8 18h.01"></path>
-                  </svg>
-                  <h3 class="bs-form-section-title">Calculation Parameters</h3>
-                </div>
-                <div class="bs-form-params-grid">
-                  <div class="bs-form-params-group">
-                    <div class="bs-form-params-card">
-                      <h4 class="bs-form-params-card-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
-                        </svg>
-                        Points & Miles
-                      </h4>
-                      <div class="bs-form-params-fields">
-                        <div class="bs-form-group">
-                          <label for="bs-calc-miles">Points/Miles Amount <span class="bs-required">*</span></label>
-                          <input type="number" id="bs-calc-miles" min="0" placeholder="0" required class="bs-form-input-right">
-                        </div>
-                        <div class="bs-form-group">
-                          <label for="bs-calc-cost-per-1000">Cost per 1,000 Points ($)</label>
-                          <input type="number" id="bs-calc-cost-per-1000" step="0.01" min="0" placeholder="0.00" class="bs-form-input-right">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="bs-form-params-group">
-                    <div class="bs-form-params-card">
-                      <h4 class="bs-form-params-card-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <line x1="12" x2="12" y1="2" y2="22"></line>
-                          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                        </svg>
-                        Cash & Fees
-                      </h4>
-                      <div class="bs-form-params-fields">
-                        <div class="bs-form-group">
-                          <label for="bs-calc-cash-price">Cash Price ($)</label>
-                          <input type="number" id="bs-calc-cash-price" step="0.01" min="0" placeholder="0.00" class="bs-form-input-right">
-                        </div>
-                        <div class="bs-form-group">
-                          <label for="bs-calc-taxes-fees">Taxes & Fees ($)</label>
-                          <input type="number" id="bs-calc-taxes-fees" step="0.01" min="0" placeholder="0.00" class="bs-form-input-right">
-                        </div>
-                        <div class="bs-form-group">
-                          <label for="bs-calc-multiplier">Credit Card Multiplier</label>
-                          <input type="number" id="bs-calc-multiplier" step="0.1" min="0" placeholder="0.0" class="bs-form-input-right">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bs-form-actions">
-                <div class="bs-form-actions-center">
-                  <button type="button" id="bs-calc-reset" class="bs-btn-reset">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-                      <path d="M3 3v5h5"></path>
-                    </svg>
-                    Reset Form
-                  </button>
-                </div>
-                <div class="bs-form-actions-buttons">
-                  <button type="button" class="bs-btn-currency">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <line x1="12" x2="12" y1="2" y2="22"></line>
-                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                    </svg>
-                    Currency Converter
-                  </button>
-                  <button type="submit" class="bs-btn-calculate">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect width="16" height="20" x="4" y="2" rx="2"></rect>
-                      <line x1="8" x2="16" y1="6" y2="6"></line>
-                      <line x1="16" x2="16" y1="14" y2="18"></line>
-                      <path d="M16 10h.01"></path>
-                      <path d="M12 10h.01"></path>
-                      <path d="M8 10h.01"></path>
-                      <path d="M12 14h.01"></path>
-                      <path d="M8 14h.01"></path>
-                      <path d="M12 18h.01"></path>
-                      <path d="M8 18h.01"></path>
-                    </svg>
-                    Calculate Value
-                  </button>
-                </div>
-              </div>
-          </form>
-          <div id="bs-total-calculator-results" class="bs-calculator-results-card" style="display: none;">
-            <!-- Results will be populated here -->
-          </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Rovemiles Subsection -->
-      <div class="bs-calculation-subsection" id="bs-rovemiles-section" style="display: none;">
-      <div class="bs-calculator-content">
-        <div class="bs-subsection-header">
-          <div class="bs-subsection-header-content">
-            <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-            <div>
-              <h3>Rovemiles Calculator</h3>
-              <p class="bs-subsection-description">Calculate total cashback value from Rovemiles bookings</p>
-            </div>
-          </div>
-        </div>
-          <form id="bs-rovemiles-form" class="bs-calculator-form">
-            <div class="bs-rovemiles-form-grid">
-              <!-- Booking Information -->
-            <div class="bs-form-card bs-form-card-blue">
-              <div class="bs-form-card-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                  <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-                <span>Booking Information</span>
-              </div>
-                <div class="bs-form-group">
-                  <label for="bs-rove-total-cost">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                      <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
-                    Total Cost (USD) <span class="bs-required">*</span>
-                  </label>
-                  <div class="bs-input-wrapper">
-                    <span class="bs-input-prefix">$</span>
-                    <input type="text" id="bs-rove-total-cost" placeholder="800.00" required>
-                  </div>
-                </div>
-                <div class="bs-form-group">
-                  <label for="bs-rove-cash-price">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                      <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
-                    Cash Price (USD)
-                  </label>
-                  <div class="bs-input-wrapper">
-                    <span class="bs-input-prefix">$</span>
-                    <input type="text" id="bs-rove-cash-price" placeholder="350.00">
-                  </div>
-                  <div class="bs-input-hint">Optional: For indirect cost calculation</div>
-              </div>
-              <div class="bs-form-group">
-                <label for="bs-rove-miles">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                    Rovemiles Earned <span class="bs-required">*</span>
-                </label>
-                <div class="bs-input-wrapper">
-                    <input type="text" id="bs-rove-miles" placeholder="28000" required>
-                  <span class="bs-input-suffix">miles</span>
-                </div>
-              </div>
-            </div>
-
-              <!-- Credit Card Settings -->
-            <div class="bs-form-card bs-form-card-purple">
-              <div class="bs-form-card-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                  <line x1="1" y1="10" x2="23" y2="10"/>
-                </svg>
-                <span>Credit Card Settings</span>
-              </div>
-                <div class="bs-form-group">
-                  <label for="bs-rove-program">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                      <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
-                    Credit Card Program
-                  </label>
-                  <select id="bs-rove-program"></select>
-                </div>
-                <div class="bs-form-group">
-                  <label for="bs-rove-multiplier">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                    </svg>
-                    Credit Card Multiplier
-                  </label>
-                  <div class="bs-input-wrapper">
-                    <input type="text" id="bs-rove-multiplier" placeholder="1.0">
-                    <span class="bs-input-suffix">x</span>
-                  </div>
-                  <div class="bs-input-hint">Earning rate per $1 spent</div>
-              </div>
-              <div class="bs-form-group">
-                <label for="bs-rove-program-value">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="12" y1="1" x2="12" y2="23"/>
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                  </svg>
-                    Program Value (USD)
-                </label>
-                <div class="bs-input-wrapper">
-                  <span class="bs-input-prefix">$</span>
-                  <input type="text" id="bs-rove-program-value" placeholder="0.0000">
-                </div>
-                <div class="bs-input-hint">Optional: Override program value</div>
-              </div>
-            </div>
-
-              <!-- Valuation Settings -->
-            <div class="bs-form-card bs-form-card-amber">
-              <div class="bs-form-card-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="1" x2="12" y2="23"/>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-                <span>Valuation Settings</span>
-              </div>
-              <div class="bs-form-group">
-                <label for="bs-rove-cpm">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 6v6l4 2"/>
-                  </svg>
-                  Rove Miles CPM (USD) <span class="bs-required">*</span>
-                </label>
-                <div class="bs-input-wrapper">
-                  <span class="bs-input-prefix">$</span>
-                    <input type="text" id="bs-rove-cpm" placeholder="0.0195" required>
-                </div>
-                  <div class="bs-input-hint">Cost per mile for Rove Miles</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="bs-form-actions">
-              <button type="button" id="bs-rove-reset" class="bs-btn-secondary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="1 4 1 10 7 10"/>
-                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-                </svg>
-                Reset All Fields
-              </button>
-            </div>
-          </form>
-          <div id="bs-rovemiles-results" class="bs-rovemiles-results">
-            <!-- Results will be populated here -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Hyatt Calculator Subsection -->
-      <div class="bs-calculation-subsection" id="bs-hyatt-calculator-section" style="display: none;">
-        <div class="bs-calculator-content">
-          <div class="bs-subsection-header">
-            <div class="bs-subsection-header-content">
-              <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-              <div>
-                <h3>Hyatt Points Calculator</h3>
-                <p class="bs-subsection-description">Calculate World of Hyatt points earning, value, and redemption</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="bs-hyatt-calculator">
-            <!-- Points Earning Calculator -->
-            <div class="bs-hyatt-section">
-              <div class="bs-hyatt-section-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect width="16" height="20" x="4" y="2" rx="2"/>
-                  <line x1="8" x2="16" y1="6" y2="6"/>
-                </svg>
-                <h4>Points Earning Calculator</h4>
-              </div>
-              <div class="bs-hyatt-form-card">
-                <div class="bs-form-row">
-                  <div class="bs-form-group">
-                    <label for="bs-hyatt-base-cost">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                      </svg>
-                      Hotel Base Cost (USD) <span class="bs-required">*</span>
-                    </label>
-                    <div class="bs-input-wrapper">
-                      <span class="bs-input-prefix">$</span>
-                      <input type="number" id="bs-hyatt-base-cost" step="0.01" min="0" placeholder="0.00">
-                    </div>
-                  </div>
-                  <div class="bs-form-group">
-                    <label for="bs-hyatt-taxes-fees">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                      </svg>
-                      Taxes & Fees (USD)
-                    </label>
-                    <div class="bs-input-wrapper">
-                      <span class="bs-input-prefix">$</span>
-                      <input type="number" id="bs-hyatt-taxes-fees" step="0.01" min="0" placeholder="0.00">
-                    </div>
-                  </div>
-                </div>
-                <div class="bs-form-row">
-                  <div class="bs-form-group">
-                    <label for="bs-hyatt-elite-status">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                      </svg>
-                      World of Hyatt Status
-                    </label>
-                    <select id="bs-hyatt-elite-status">
-                      <option value="0">Member (No Bonus)</option>
-                      <option value="0.10">Discoverist (10% bonus)</option>
-                      <option value="0.20">Explorist (20% bonus)</option>
-                      <option value="0.30">Globalist (30% bonus)</option>
-                    </select>
-                  </div>
-                  <div class="bs-form-group">
-                    <label for="bs-hyatt-credit-card">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                        <line x1="1" y1="10" x2="23" y2="10"/>
-                      </svg>
-                      Hyatt Credit Card
-                    </label>
-                    <select id="bs-hyatt-credit-card">
-                      <option value="0">No Hyatt Credit Card</option>
-                      <option value="4">Personal - World of Hyatt Card (4X points)</option>
-                      <option value="4">Business - World of Hyatt Card (4X points)</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="bs-hyatt-results-card">
-                  <div class="bs-hyatt-result-item">
-                    <span class="bs-hyatt-result-label">Total Points Earned</span>
-                    <span class="bs-hyatt-result-value" id="bs-hyatt-earned-points">0 Points</span>
-                  </div>
-                  <div class="bs-hyatt-result-item">
-                    <span class="bs-hyatt-result-label">Value</span>
-                    <span class="bs-hyatt-result-value" id="bs-hyatt-earned-value">$0.00</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Points Value Calculator -->
-            <div class="bs-hyatt-section">
-              <div class="bs-hyatt-section-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                  <polyline points="17 6 23 6 23 12"/>
-                </svg>
-                <h4>Points Value Calculator</h4>
-              </div>
-              <div class="bs-hyatt-form-card">
-                <div class="bs-form-row">
-                  <div class="bs-form-group">
-                    <label for="bs-hyatt-category">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                      </svg>
-                      Hotel Category
-                    </label>
-                    <select id="bs-hyatt-category">
-                      <option value="1">Category 1</option>
-                      <option value="2">Category 2</option>
-                      <option value="3">Category 3</option>
-                      <option value="4">Category 4</option>
-                      <option value="5">Category 5</option>
-                      <option value="6">Category 6</option>
-                      <option value="7">Category 7</option>
-                      <option value="8">Category 8</option>
-                    </select>
-                  </div>
-                  <div class="bs-form-group">
-                    <label for="bs-hyatt-rate-type">Award Availability</label>
-                    <div class="bs-hyatt-rate-buttons">
-                      <button type="button" class="bs-hyatt-rate-btn" data-rate="offPeak">Off-Peak</button>
-                      <button type="button" class="bs-hyatt-rate-btn active" data-rate="standard">Standard</button>
-                      <button type="button" class="bs-hyatt-rate-btn" data-rate="peak">Peak</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="bs-form-group">
-                  <label for="bs-hyatt-points">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                    </svg>
-                    Number of Points
-                  </label>
-                  <input type="number" id="bs-hyatt-points" min="0" step="1000" placeholder="0">
-                </div>
-                <div class="bs-hyatt-results-grid">
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Points Value</span>
-                    <span class="bs-hyatt-result-value" id="bs-hyatt-points-value">$0.00</span>
-                    <span class="bs-hyatt-result-note" id="bs-hyatt-cents-per-point">0.00¢ per point</span>
-                  </div>
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Free Nights</span>
-                    <span class="bs-hyatt-result-value" id="bs-hyatt-free-nights">0 night(s)</span>
-                    <span class="bs-hyatt-result-note" id="bs-hyatt-category-note">Category 1 (Standard)</span>
-                  </div>
-                  <div class="bs-hyatt-result-card" id="bs-hyatt-cashback-card" style="display: none;">
-                    <span class="bs-hyatt-result-label">Cashback Equivalent</span>
-                    <span class="bs-hyatt-result-value" id="bs-hyatt-cashback-percent">0.00%</span>
-                    <span class="bs-hyatt-result-note" id="bs-hyatt-cashback-note">for $0.00</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Redemption Value Calculator -->
-            <div class="bs-hyatt-section">
-              <div class="bs-hyatt-section-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="1" x2="12" y2="23"/>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-                <h4>Redemption Value Calculator</h4>
-              </div>
-              <div class="bs-hyatt-form-card">
-                <div class="bs-form-row">
-                  <div class="bs-form-group">
-                    <label for="bs-hyatt-redemption-points">Cost In Points</label>
-                    <div class="bs-hyatt-input-row">
-                      <input type="number" id="bs-hyatt-redemption-points" min="0" step="1000" placeholder="0">
-                      <select id="bs-hyatt-stay-time-points">
-                        <option value="stay">Entire Stay</option>
-                        <option value="day">Per Day</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="bs-form-group">
-                    <label for="bs-hyatt-cash-cost">Cost In Cash</label>
-                    <div class="bs-hyatt-input-row">
-                      <div class="bs-input-wrapper">
-                        <span class="bs-input-prefix">$</span>
-                        <input type="number" id="bs-hyatt-cash-cost" step="0.01" min="0" placeholder="0.00">
-                      </div>
-                      <select id="bs-hyatt-stay-time-cash">
-                        <option value="stay">Entire Stay</option>
-                        <option value="day">Per Day</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="bs-form-group">
-                  <label for="bs-hyatt-total-days">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                      <line x1="16" x2="16" y1="2" y2="6"/>
-                      <line x1="8" x2="8" y1="2" y2="6"/>
-                      <line x1="3" x2="21" y1="10" y2="10"/>
-                    </svg>
-                    Total Days
-                  </label>
-                  <div class="bs-input-wrapper">
-                    <input type="number" id="bs-hyatt-total-days" min="1" step="1" value="1" placeholder="1">
-                    <span class="bs-input-suffix">Days</span>
-                  </div>
-                </div>
-                <div class="bs-hyatt-results-grid">
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Points Value</span>
-                    <span class="bs-hyatt-result-value" id="bs-hyatt-redemption-value">0.00¢ per point</span>
-                    <span class="bs-hyatt-result-note" id="bs-hyatt-redemption-note">$0.0000 per point</span>
-                  </div>
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Future Booking Value</span>
-                    <span class="bs-hyatt-result-value" id="bs-hyatt-future-value">$0.00</span>
-                    <span class="bs-hyatt-result-note">Based on earned points from stay</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- Hilton Calculator Subsection -->
-      <div class="bs-calculation-subsection" id="bs-hilton-calculator-section" style="display: none;">
-        <div class="bs-calculator-content">
-          <div class="bs-subsection-header">
-            <div class="bs-subsection-header-content">
-              <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-              <div>
-                <h3>Hilton Points Calculator</h3>
-                <p class="bs-subsection-description">Calculate Hilton Honors points earning, value, and redemption</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="bs-hyatt-calculator">
-            <!-- Points Earning Calculator -->
-            <div class="bs-hyatt-section">
-              <div class="bs-hyatt-section-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                  <polyline points="17 6 23 6 23 12"/>
-                </svg>
-                <h4>Points Earning Calculator</h4>
-              </div>
-              <div class="bs-hyatt-form-card">
-                <div class="bs-form-row">
-                  <div class="bs-form-group">
-                    <label for="bs-hilton-base-cost">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                      </svg>
-                      Hotel Base Cost (USD) <span class="bs-required">*</span>
-                    </label>
-                    <div class="bs-input-wrapper">
-                      <span class="bs-input-prefix">$</span>
-                      <input type="number" id="bs-hilton-base-cost" step="0.01" min="0" placeholder="0.00">
-                    </div>
-                  </div>
-                  <div class="bs-form-group">
-                    <label for="bs-hilton-taxes-fees">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                      </svg>
-                      Taxes & Fees (USD)
-                    </label>
-                    <div class="bs-input-wrapper">
-                      <span class="bs-input-prefix">$</span>
-                      <input type="number" id="bs-hilton-taxes-fees" step="0.01" min="0" placeholder="0.00">
-                    </div>
-                  </div>
-                </div>
-                <div class="bs-form-row">
-                  <div class="bs-form-group">
-                    <label for="bs-hilton-brand">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                      </svg>
-                      Hilton Brand
-                    </label>
-                    <select id="bs-hilton-brand">
-                      <option value="10">All Brands (10X)</option>
-                      <option value="5">Tru / Home2 (5X)</option>
-                    </select>
-                  </div>
-                  <div class="bs-form-group">
-                    <label for="bs-hilton-credit-card">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                        <line x1="1" y1="10" x2="23" y2="10"/>
-                      </svg>
-                      Hilton Credit Card
-                    </label>
-                    <select id="bs-hilton-credit-card">
-                      <option value="0">No Hilton Credit Card</option>
-                      <option value="7">7X - Hilton Card</option>
-                      <option value="12">12X - Hilton Surpass</option>
-                      <option value="12">12X - Hilton Business Card</option>
-                      <option value="14">14X - Hilton Aspire</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="bs-form-group">
-                  <label for="bs-hilton-elite-status">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                    </svg>
-                    Hilton Honors Status
-                  </label>
-                  <select id="bs-hilton-elite-status">
-                    <option value="0">No Status (No Bonus)</option>
-                    <option value="0.20">Hilton Silver (20% bonus)</option>
-                    <option value="0.80">Hilton Gold (80% bonus)</option>
-                    <option value="1">Hilton Diamond (100% bonus)</option>
-                  </select>
-                </div>
-                <div class="bs-hyatt-results-card">
-                  <div class="bs-hyatt-result-item">
-                    <span class="bs-hyatt-result-label">Total Points Earned</span>
-                    <span class="bs-hyatt-result-value" id="bs-hilton-total-points">0 Points</span>
-                  </div>
-                  <div class="bs-hyatt-result-item">
-                    <span class="bs-hyatt-result-label">Value</span>
-                    <span class="bs-hyatt-result-value" id="bs-hilton-points-value">$0.00</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Points Breakdown -->
-            <div class="bs-hyatt-section">
-              <div class="bs-hyatt-section-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                </svg>
-                <h4>Points Breakdown</h4>
-              </div>
-              <div class="bs-hyatt-form-card">
-                <div class="bs-hyatt-results-grid">
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Base Points</span>
-                    <span class="bs-hyatt-result-value" id="bs-hilton-base-points">0 points</span>
-                    <span class="bs-hyatt-result-note" id="bs-hilton-base-note">10X points per dollar</span>
-                  </div>
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Elite Status Bonus</span>
-                    <span class="bs-hyatt-result-value" id="bs-hilton-elite-bonus">0 points</span>
-                    <span class="bs-hyatt-result-note" id="bs-hilton-elite-note">No elite status bonus</span>
-                  </div>
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Credit Card Points</span>
-                    <span class="bs-hyatt-result-value" id="bs-hilton-card-points">0 points</span>
-                    <span class="bs-hyatt-result-note" id="bs-hilton-card-note">No Hilton credit card</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Points Value Calculator -->
-            <div class="bs-hyatt-section">
-              <div class="bs-hyatt-section-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                  <polyline points="17 6 23 6 23 12"/>
-                </svg>
-                <h4>Points Value Calculator</h4>
-              </div>
-              <div class="bs-hyatt-form-card">
-                <div class="bs-hyatt-results-grid">
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Standard Hilton Value</span>
-                    <span class="bs-hyatt-result-value">0.59¢ per point</span>
-                    <span class="bs-hyatt-result-note">Average Hilton Honors point value</span>
-                  </div>
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Your Points Value</span>
-                    <span class="bs-hyatt-result-value" id="bs-hilton-your-value">$0.00</span>
-                    <span class="bs-hyatt-result-note">Based on total points earned</span>
-                  </div>
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Points Earned</span>
-                    <span class="bs-hyatt-result-value" id="bs-hilton-earned-display">0</span>
-                    <span class="bs-hyatt-result-note">From this stay</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Redemption Value Calculator -->
-            <div class="bs-hyatt-section">
-              <div class="bs-hyatt-section-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="1" x2="12" y2="23"/>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-                <h4>Redemption Value Calculator</h4>
-              </div>
-              <div class="bs-hyatt-form-card">
-                <div class="bs-form-row">
-                  <div class="bs-form-group">
-                    <label for="bs-hilton-redemption-points">Cost In Points</label>
-                    <div class="bs-hyatt-input-row">
-                      <input type="number" id="bs-hilton-redemption-points" min="0" step="1000" placeholder="0">
-                      <select id="bs-hilton-stay-time-points">
-                        <option value="stay">Entire Stay</option>
-                        <option value="day">Per Day</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="bs-form-group">
-                    <label for="bs-hilton-cash-cost">Cost In Cash</label>
-                    <div class="bs-hyatt-input-row">
-                      <div class="bs-input-wrapper">
-                        <span class="bs-input-prefix">$</span>
-                        <input type="number" id="bs-hilton-cash-cost" step="0.01" min="0" placeholder="0.00">
-                      </div>
-                      <select id="bs-hilton-stay-time-cash">
-                        <option value="stay">Entire Stay</option>
-                        <option value="day">Per Day</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="bs-form-group">
-                  <label for="bs-hilton-total-days">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                      <line x1="16" x2="16" y1="2" y2="6"/>
-                      <line x1="8" x2="8" y1="2" y2="6"/>
-                      <line x1="3" x2="21" y1="10" y2="10"/>
-                    </svg>
-                    Total Days
-                  </label>
-                  <div class="bs-input-wrapper">
-                    <input type="number" id="bs-hilton-total-days" min="1" step="1" value="1" placeholder="1">
-                    <span class="bs-input-suffix">Days</span>
-                  </div>
-                </div>
-                <div class="bs-hyatt-results-grid">
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Points Value</span>
-                    <span class="bs-hyatt-result-value" id="bs-hilton-redemption-value">0.00¢ per point</span>
-                    <span class="bs-hyatt-result-note" id="bs-hilton-redemption-note">$0.0000 per point</span>
-                  </div>
-                  <div class="bs-hyatt-result-card">
-                    <span class="bs-hyatt-result-label">Future Booking Value</span>
-                    <span class="bs-hyatt-result-value" id="bs-hilton-future-value">$0.00</span>
-                    <span class="bs-hyatt-result-note">Based on earned points from stay</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Calculation Section - REMOVED -->
 
     <!-- Settings Section -->
     <div class="bs-section" id="bs-settings-section" style="display: none;">
@@ -1527,7 +683,6 @@ function injectExtensionPanel() {
         </svg>
         <span>Settings</span>
       </div>
-      
       <div class="bs-settings-content">
         <div class="bs-settings-compact">
         <div class="bs-settings-item">
@@ -1607,8 +762,6 @@ function saveToggleStates() {
   const hotelToggle = document.getElementById('bs-hotel-toggle');
   const searchToggle = document.getElementById('bs-search-toggle');
   const informationToggle = document.getElementById('bs-information-toggle');
-  const calculationToggle = document.getElementById('bs-calculation-toggle');
-  const rovemilesToggle = document.getElementById('bs-rovemiles-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   
   const toggleStates = {
@@ -1616,8 +769,6 @@ function saveToggleStates() {
     hotel: hotelToggle ? hotelToggle.checked : false,
     search: searchToggle ? searchToggle.checked : false,
     information: informationToggle ? informationToggle.checked : false,
-    calculation: calculationToggle ? calculationToggle.checked : false,
-    rovemiles: rovemilesToggle ? rovemilesToggle.checked : false,
     settings: settingsToggle ? settingsToggle.checked : false
   };
   
@@ -1654,15 +805,11 @@ function applyToggleStates(toggleStates) {
   const hotelToggle = document.getElementById('bs-hotel-toggle');
   const searchToggle = document.getElementById('bs-search-toggle');
   const informationToggle = document.getElementById('bs-information-toggle');
-  const calculationToggle = document.getElementById('bs-calculation-toggle');
-  const rovemilesToggle = document.getElementById('bs-rovemiles-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   const flightSection = document.getElementById('bs-flight-section');
   const hotelSection = document.getElementById('bs-hotel-section');
   const searchSection = document.getElementById('bs-search-section');
   const informationSection = document.getElementById('bs-information-section');
-  const calculationSection = document.getElementById('bs-calculation-section');
-  const rovemilesSection = document.getElementById('bs-rovemiles-section');
   const settingsSection = document.getElementById('bs-settings-section');
   
   // Apply flight toggle state
@@ -1697,67 +844,7 @@ function applyToggleStates(toggleStates) {
   const hyattCalculatorSection = document.getElementById('bs-hyatt-calculator-section');
   const hiltonCalculatorToggle = document.getElementById('bs-hilton-calculator-toggle');
   const hiltonCalculatorSection = document.getElementById('bs-hilton-calculator-section');
-  const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
-  const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
-  const hyattEnabled = hyattCalculatorToggle && hyattCalculatorToggle.checked;
-  const hiltonEnabled = hiltonCalculatorToggle && hiltonCalculatorToggle.checked;
   
-  if (calculationToggle && calculationSection) {
-    calculationToggle.checked = toggleStates.calculation;
-    // Show calculation section if calculation toggle is on OR any sub-calculator is on
-    if (toggleStates.calculation || totalCalcEnabled || rovemilesEnabled || hyattEnabled || hiltonEnabled) {
-      calculationSection.style.display = 'block';
-    } else {
-      calculationSection.style.display = 'none';
-    }
-  }
-  
-  // Apply total calculator toggle state (within calculation section)
-  if (totalCalculatorToggle && totalCalculatorSection) {
-    const saved = localStorage.getItem('bs-total-calculator-enabled');
-    if (saved !== null) totalCalculatorToggle.checked = saved === 'true';
-    // Only show total calculator if calculation section is visible
-    if (calculationSection && calculationSection.style.display !== 'none') {
-      totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
-    } else {
-      totalCalculatorSection.style.display = 'none';
-    }
-  }
-  
-  // Apply rovemiles toggle state (within calculation section)
-  if (rovemilesToggle && rovemilesSection) {
-    rovemilesToggle.checked = toggleStates.rovemiles;
-    // Only show rovemiles if calculation section is visible
-    if (calculationSection && calculationSection.style.display !== 'none') {
-      rovemilesSection.style.display = toggleStates.rovemiles ? '' : 'none';
-    } else {
-      rovemilesSection.style.display = 'none';
-    }
-  }
-
-  // Apply hyatt calculator toggle state (within calculation section)
-  if (hyattCalculatorToggle && hyattCalculatorSection) {
-    const saved = localStorage.getItem('bs-hyatt-calculator-enabled');
-    if (saved !== null) hyattCalculatorToggle.checked = saved === 'true';
-    // Only show hyatt calculator if calculation section is visible
-    if (calculationSection && calculationSection.style.display !== 'none') {
-      hyattCalculatorSection.style.display = hyattCalculatorToggle.checked ? '' : 'none';
-    } else {
-      hyattCalculatorSection.style.display = 'none';
-    }
-  }
-
-  // Apply hilton calculator toggle state (within calculation section)
-  if (hiltonCalculatorToggle && hiltonCalculatorSection) {
-    const saved = localStorage.getItem('bs-hilton-calculator-enabled');
-    if (saved !== null) hiltonCalculatorToggle.checked = saved === 'true';
-    // Only show hilton calculator if calculation section is visible
-    if (calculationSection && calculationSection.style.display !== 'none') {
-      hiltonCalculatorSection.style.display = hiltonCalculatorToggle.checked ? '' : 'none';
-    } else {
-      hiltonCalculatorSection.style.display = 'none';
-    }
-  }
   
   // Apply settings toggle state
   if (settingsToggle && settingsSection) {
@@ -1773,7 +860,12 @@ function initializeEventListeners() {
   // Flight buttons
   const flightButtons = document.querySelectorAll('.bs-section:nth-child(1) .bs-btn');
   flightButtons.forEach(btn => {
-    btn.addEventListener('click', handleFlightButtonClick);
+    // Skip the "Open All" button
+    if (btn.id === 'bs-flight-open-all') {
+      btn.addEventListener('click', handleOpenAllFlights, { capture: true, once: false });
+    } else {
+      btn.addEventListener('click', handleFlightButtonClick);
+    }
   });
 
   // External links toggle
@@ -1839,10 +931,19 @@ function initializeEventListeners() {
   // Hotel auto-reload setup
   setupHotelInputAutoReload();
   
-  // Hotel buttons
-  const hotelButtons = document.querySelectorAll('.bs-section:nth-child(2) .bs-btn');
+  // Hotel buttons - only target buttons in the external links container
+  const hotelButtons = document.querySelectorAll('#bs-hotel-external-links .bs-btn');
   hotelButtons.forEach(btn => {
-    btn.addEventListener('click', handleHotelButtonClick);
+    // Skip the "Open All" button
+    if (btn.id === 'bs-hotel-open-all') {
+      btn.addEventListener('click', handleOpenAllHotels, { capture: true, once: false });
+    } else {
+      // Remove any existing listeners by cloning (if any were added before)
+      const handler = function(e) {
+        handleHotelButtonClick(e);
+      };
+      btn.addEventListener('click', handler, { capture: true, once: false });
+    }
   });
   
   // Search buttons
@@ -1863,15 +964,11 @@ function initializeEventListeners() {
   const informationSection = document.getElementById('bs-information-section');
   const settingsSection = document.getElementById('bs-settings-section');
   
-  const calculationToggle = document.getElementById('bs-calculation-toggle');
-  const calculationSection = document.getElementById('bs-calculation-section');
-  
   console.log('Toggle elements found:', {
     flightToggle: !!flightToggle,
     hotelToggle: !!hotelToggle,
     searchToggle: !!searchToggle,
     informationToggle: !!informationToggle,
-    calculationToggle: !!calculationToggle,
     settingsToggle: !!settingsToggle
   });
   
@@ -1880,7 +977,6 @@ function initializeEventListeners() {
     hotelSection: !!hotelSection,
     searchSection: !!searchSection,
     informationSection: !!informationSection,
-    calculationSection: !!calculationSection,
     settingsSection: !!settingsSection
   });
   
@@ -1970,21 +1066,6 @@ function initializeEventListeners() {
       // Show/hide total calculator section based on its own toggle
       totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
       
-      // If total calculator is enabled, ensure calculation section is visible
-      if (totalCalculatorToggle.checked && calculationSection) {
-        calculationSection.style.display = 'block';
-      }
-      
-      // Update calculation section visibility
-      const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
-      const hyattEnabled = document.getElementById('bs-hyatt-calculator-toggle')?.checked;
-      if (calculationSection && calculationToggle) {
-        if (calculationToggle.checked || totalCalculatorToggle.checked || rovemilesEnabled || hyattEnabled) {
-          calculationSection.style.display = 'block';
-    } else {
-          calculationSection.style.display = 'none';
-        }
-      }
     });
       }
       
@@ -2002,21 +1083,6 @@ function initializeEventListeners() {
       // Show/hide rovemiles section based on its own toggle
       rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
       
-      // If rovemiles is enabled, ensure calculation section is visible
-      if (rovemilesToggle.checked && calculationSection) {
-        calculationSection.style.display = 'block';
-      }
-      
-      // Update calculation section visibility
-      const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
-      const hyattEnabled = document.getElementById('bs-hyatt-calculator-toggle')?.checked;
-      if (calculationSection && calculationToggle) {
-        if (calculationToggle.checked || totalCalcEnabled || rovemilesToggle.checked || hyattEnabled) {
-          calculationSection.style.display = 'block';
-        } else {
-          calculationSection.style.display = 'none';
-        }
-      }
       saveToggleStates();
     });
   }
@@ -2038,22 +1104,6 @@ function initializeEventListeners() {
       // Show/hide hyatt calculator section based on its own toggle
       hyattCalculatorSection.style.display = hyattCalculatorToggle.checked ? '' : 'none';
       
-      // If hyatt calculator is enabled, ensure calculation section is visible
-      if (hyattCalculatorToggle.checked && calculationSection) {
-        calculationSection.style.display = 'block';
-      }
-      
-      // Update calculation section visibility
-      const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
-      const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
-      const hiltonEnabled = document.getElementById('bs-hilton-calculator-toggle')?.checked;
-      if (calculationSection && calculationToggle) {
-        if (calculationToggle.checked || totalCalcEnabled || rovemilesEnabled || hyattCalculatorToggle.checked || hiltonEnabled) {
-          calculationSection.style.display = 'block';
-        } else {
-          calculationSection.style.display = 'none';
-        }
-      }
       saveToggleStates();
     });
   }
@@ -2075,101 +1125,10 @@ function initializeEventListeners() {
       // Show/hide hilton calculator section based on its own toggle
       hiltonCalculatorSection.style.display = hiltonCalculatorToggle.checked ? '' : 'none';
       
-      // If hilton calculator is enabled, ensure calculation section is visible
-      if (hiltonCalculatorToggle.checked && calculationSection) {
-        calculationSection.style.display = 'block';
-      }
-      
-      // Update calculation section visibility
-      const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
-      const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
-      const hyattEnabled = hyattCalculatorToggle && hyattCalculatorToggle.checked;
-      if (calculationSection && calculationToggle) {
-        if (calculationToggle.checked || totalCalcEnabled || rovemilesEnabled || hyattEnabled || hiltonCalculatorToggle.checked) {
-          calculationSection.style.display = 'block';
-        } else {
-          calculationSection.style.display = 'none';
-        }
-      }
       saveToggleStates();
     });
   }
       
-  // Main calculation toggle - works with Total Calculator, Rovemiles, Hyatt Calculator, and Hilton Calculator
-  if (calculationToggle && calculationSection) {
-    // Load saved state
-    const savedCalcState = localStorage.getItem('bs-calculation-enabled');
-    if (savedCalcState !== null) {
-      calculationToggle.checked = savedCalcState === 'true';
-    }
-    
-    // Set initial visibility - show if calculation toggle is on OR any sub-calculator is on
-    const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
-    const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
-    const hyattEnabled = hyattCalculatorToggle && hyattCalculatorToggle.checked;
-    const hiltonEnabled = hiltonCalculatorToggle && hiltonCalculatorToggle.checked;
-    if (calculationToggle.checked || totalCalcEnabled || rovemilesEnabled || hyattEnabled || hiltonEnabled) {
-      calculationSection.style.display = 'block';
-      // Ensure total calculator visibility matches its toggle
-      if (totalCalculatorToggle && totalCalculatorSection) {
-        totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
-      }
-      // Ensure rovemiles visibility matches its toggle
-      if (rovemilesToggle && rovemilesSection) {
-        rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
-      }
-      // Ensure hyatt calculator visibility matches its toggle
-      if (hyattCalculatorToggle && hyattCalculatorSection) {
-        hyattCalculatorSection.style.display = hyattCalculatorToggle.checked ? '' : 'none';
-      }
-      // Ensure hilton calculator visibility matches its toggle
-      if (hiltonCalculatorToggle && hiltonCalculatorSection) {
-        hiltonCalculatorSection.style.display = hiltonCalculatorToggle.checked ? '' : 'none';
-      }
-    } else {
-      calculationSection.style.display = 'none';
-    }
-    
-    calculationToggle.addEventListener('change', () => {
-      localStorage.setItem('bs-calculation-enabled', calculationToggle.checked);
-      
-      if (calculationToggle.checked) {
-        // Show calculation section
-        calculationSection.style.display = 'block';
-        // Ensure total calculator visibility matches its toggle
-        if (totalCalculatorToggle && totalCalculatorSection) {
-          totalCalculatorSection.style.display = totalCalculatorToggle.checked ? '' : 'none';
-        }
-        // Ensure rovemiles visibility matches its toggle
-        if (rovemilesToggle && rovemilesSection) {
-          rovemilesSection.style.display = rovemilesToggle.checked ? '' : 'none';
-        }
-        // Ensure hyatt calculator visibility matches its toggle
-        if (hyattCalculatorToggle && hyattCalculatorSection) {
-          hyattCalculatorSection.style.display = hyattCalculatorToggle.checked ? '' : 'none';
-        }
-        // Ensure hilton calculator visibility matches its toggle
-        if (hiltonCalculatorToggle && hiltonCalculatorSection) {
-          hiltonCalculatorSection.style.display = hiltonCalculatorToggle.checked ? '' : 'none';
-        }
-      } else {
-        // Check if any sub-calculator is enabled
-        const totalCalcEnabled = totalCalculatorToggle && totalCalculatorToggle.checked;
-        const rovemilesEnabled = rovemilesToggle && rovemilesToggle.checked;
-        const hyattEnabled = hyattCalculatorToggle && hyattCalculatorToggle.checked;
-        const hiltonEnabled = hiltonCalculatorToggle && hiltonCalculatorToggle.checked;
-        
-        if (totalCalcEnabled || rovemilesEnabled || hyattEnabled || hiltonEnabled) {
-          // If any sub-calculator is on, keep section visible
-          calculationSection.style.display = 'block';
-        } else {
-          // Only hide if all sub-calculators are also off
-          calculationSection.style.display = 'none';
-        }
-      }
-      saveToggleStates();
-    });
-  }
 
   // Information section sub-toggles
   const infoCardsToggle = document.getElementById('bs-info-cards-toggle');
@@ -2777,31 +1736,268 @@ function setupHotelInputAutoReload() {
   }
 }
 
-function autoReloadHotels() {
+// Flag to prevent auto-reload when button is clicked
+let hotelButtonClicked = false;
+
+async function autoReloadHotels() {
+  // Don't auto-reload if a button was just clicked
+  if (hotelButtonClicked) {
+    console.log('Skipping auto-reload - button was clicked');
+    return;
+  }
   console.log('Auto-reloading Google Hotels...');
   const hotelData = getHotelInputData();
   if (!validateHotelData(hotelData)) return;
-  const url = generateHotelUrl('google-hotels', hotelData);
+  const url = await generateHotelUrl('google-hotels', hotelData);
   if (url) window.open(url, '_blank');
 }
 
+// Geocode city name to get coordinates and location details
+async function geocodeCity(cityName) {
+  if (!cityName || !cityName.trim()) {
+    return null;
+  }
+  
+  const cacheKey = `geocode_${cityName.toLowerCase().trim()}`;
+  
+  // Check cache first
+  if (window.cacheService) {
+    const cached = window.cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+  }
+  
+  try {
+    // Use OpenStreetMap Nominatim API (free, no API key required)
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cityName)}&format=json&limit=1&addressdetails=1`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'BenefitSystems-Chrome-Extension' // Required by Nominatim
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Geocoding failed: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data || data.length === 0) {
+      return null;
+    }
+    
+    const result = data[0];
+    const geocodeData = {
+      city: result.address?.city || result.address?.town || result.address?.village || cityName,
+      country: result.address?.country || '',
+      countryCode: result.address?.country_code?.toUpperCase() || '',
+      latitude: parseFloat(result.lat),
+      longitude: parseFloat(result.lon),
+      displayName: result.display_name || cityName,
+      fullLocation: result.display_name || cityName
+    };
+    
+    // Cache for 24 hours (cities don't change location often)
+    if (window.cacheService) {
+      window.cacheService.set(cacheKey, geocodeData, 24 * 60 * 60 * 1000);
+    }
+    
+    return geocodeData;
+  } catch (error) {
+    console.error('Geocoding error:', error);
+    return null;
+  }
+}
+
 // Handle hotel button clicks
-function handleHotelButtonClick(e) {
+async function handleHotelButtonClick(e) {
   e.preventDefault();
+  e.stopPropagation(); // Prevent event bubbling that might trigger auto-reload
+  e.stopImmediatePropagation(); // Prevent other listeners on the same element
+  
+  // Set flag to prevent auto-reload from firing
+  hotelButtonClicked = true;
+  
+  // Clear any pending auto-reload timeouts to prevent Google Hotels from opening
+  const hotelInputs = [
+    document.getElementById('bs-hotel-city'),
+    document.getElementById('bs-hotel-checkin'),
+    document.getElementById('bs-hotel-checkout'),
+    document.getElementById('bs-hotel-adults'),
+    document.getElementById('bs-hotel-rooms')
+  ];
+  hotelInputs.forEach(input => {
+    if (input && input.autoReloadTimeout) {
+      clearTimeout(input.autoReloadTimeout);
+      input.autoReloadTimeout = null;
+    }
+  });
   
   const service = e.currentTarget.dataset.service;
   const hotelData = getHotelInputData();
   
   if (!validateHotelData(hotelData)) {
+    hotelButtonClicked = false; // Reset flag if validation fails
     showNotification('Bitte alle Pflichtfelder ausfüllen (City, Check-In, Check-Out)', 'error');
     return;
   }
   
-  const url = generateHotelUrl(service, hotelData);
+  // For PointsYeah, RoveMiles, Radisson, and Melia, get geocoding data using the city from hotel input field
+  let geocodeData = null;
+  if (service === 'pointsyeah-hotels' || service === 'rovemiles-hotels' || service === 'rovemiles-hotels-loyal' || service === 'radisson' || service === 'melia') {
+    // Get city name directly from the hotel city input field
+    const cityInput = document.getElementById('bs-hotel-city');
+    const cityName = cityInput?.value?.trim() || hotelData.city;
+    
+    if (cityName) {
+      showNotification('Geocoding location...', 'info');
+      geocodeData = await geocodeCity(cityName);
+      if (!geocodeData) {
+        showNotification('Could not geocode city. Using city name only.', 'warning');
+      }
+    }
+  }
+  
+  const url = await generateHotelUrl(service, hotelData, geocodeData);
   
   if (url) {
     window.open(url, '_blank');
   }
+  
+  // Reset flag after a delay to allow auto-reload to work again for future input changes
+  setTimeout(() => {
+    hotelButtonClicked = false;
+  }, 2000);
+}
+
+// Handle "Open All" button click for flights - opens all flight search services in separate tabs
+async function handleOpenAllFlights(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+  
+  const flightData = getFlightInputData();
+  
+  if (!validateFlightData(flightData)) {
+    showNotification('Bitte alle Pflichtfelder ausfüllen (From, To, Depart)', 'error');
+    return;
+  }
+  
+  // Get all flight service buttons (excluding "Open All" and seatmap buttons which are hidden)
+  const allButtons = document.querySelectorAll('#bs-external-links .bs-btn[data-service]');
+  const services = Array.from(allButtons)
+    .filter(btn => btn.style.display !== 'none') // Exclude hidden seatmap buttons
+    .map(btn => btn.dataset.service);
+  
+  if (services.length === 0) {
+    showNotification('No flight services found', 'error');
+    return;
+  }
+  
+  showNotification(`Opening ${services.length} flight search tabs...`, 'info');
+  
+  // Save flight data to localStorage
+  saveFlightDataToStorage(flightData);
+  
+  // Open each service in a new tab with a small delay to avoid browser blocking
+  for (let i = 0; i < services.length; i++) {
+    const service = services[i];
+    const url = generateFlightUrl(service, flightData);
+    
+    if (url && url !== '#') {
+      // Small delay between opening tabs to avoid browser popup blocking
+      setTimeout(() => {
+        // Google Flights loads in current tab, all others in new tab
+        if (service === 'google-flights') {
+          window.location.href = url;
+        } else {
+          window.open(url, '_blank');
+        }
+      }, i * 100); // 100ms delay between each tab
+    }
+  }
+}
+
+// Handle "Open All" button click - opens all hotel search services in separate tabs
+async function handleOpenAllHotels(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+  
+  // Set flag to prevent auto-reload
+  hotelButtonClicked = true;
+  
+  // Clear any pending auto-reload timeouts
+  const hotelInputs = [
+    document.getElementById('bs-hotel-city'),
+    document.getElementById('bs-hotel-checkin'),
+    document.getElementById('bs-hotel-checkout'),
+    document.getElementById('bs-hotel-adults'),
+    document.getElementById('bs-hotel-rooms')
+  ];
+  hotelInputs.forEach(input => {
+    if (input && input.autoReloadTimeout) {
+      clearTimeout(input.autoReloadTimeout);
+      input.autoReloadTimeout = null;
+    }
+  });
+  
+  const hotelData = getHotelInputData();
+  
+  if (!validateHotelData(hotelData)) {
+    hotelButtonClicked = false;
+    showNotification('Bitte alle Pflichtfelder ausfüllen (City, Check-In, Check-Out)', 'error');
+    return;
+  }
+  
+  // Get all hotel service buttons (excluding "Open All")
+  const allButtons = document.querySelectorAll('#bs-hotel-external-links .bs-btn[data-service]');
+  const services = Array.from(allButtons).map(btn => btn.dataset.service);
+  
+  if (services.length === 0) {
+    hotelButtonClicked = false;
+    showNotification('No hotel services found', 'error');
+    return;
+  }
+  
+  showNotification(`Opening ${services.length} hotel search tabs...`, 'info');
+  
+  // Get geocoding data once for services that need it
+  const needsGeocoding = ['pointsyeah-hotels', 'rovemiles-hotels', 'rovemiles-hotels-loyal'];
+  const needsGeocode = services.some(service => needsGeocoding.includes(service));
+  
+  let geocodeData = null;
+  if (needsGeocode) {
+    const cityInput = document.getElementById('bs-hotel-city');
+    const cityName = cityInput?.value?.trim() || hotelData.city;
+    
+    if (cityName) {
+      geocodeData = await geocodeCity(cityName);
+      if (!geocodeData) {
+        showNotification('Could not geocode city. Some services may not work correctly.', 'warning');
+      }
+    }
+  }
+  
+  // Open each service in a new tab with a small delay to avoid browser blocking
+  for (let i = 0; i < services.length; i++) {
+    const service = services[i];
+    const url = await generateHotelUrl(service, hotelData, geocodeData);
+    
+    if (url && url !== '#') {
+      // Small delay between opening tabs to avoid browser popup blocking
+      setTimeout(() => {
+        window.open(url, '_blank');
+      }, i * 100); // 100ms delay between each tab
+    }
+  }
+  
+  // Reset flag after all tabs are opened
+  setTimeout(() => {
+    hotelButtonClicked = false;
+  }, services.length * 100 + 2000);
 }
 
 // Handle Search button clicks
@@ -4129,6 +3325,118 @@ function generateFlightUrl(service, data) {
     
     'turbli': `https://turbli.com/${from}/${to}/${depart}/`,
     
+    'roame': (() => {
+      // Map cabin to Roame searchClass format
+      const cabinMap = {
+        'economy': 'ECON',
+        'business': 'BUS',
+        'first': 'FIRST'
+      };
+      const searchClass = cabinMap[cabin] || 'ECON';
+      
+      // Map cabin to fareClasses
+      const fareClassMap = {
+        'economy': 'ECON',
+        'business': 'BUS',
+        'first': 'FIRST'
+      };
+      const fareClass = fareClassMap[cabin] || 'ECON';
+      
+      // For endDepartureDate, use return date if available, otherwise use same as departure
+      const endDepartureDate = ret || depart;
+      
+      // Build base URL with required parameters
+      let url = `https://roame.travel/search?origin=${from}&originType=airport&destination=${to}&destinationType=airport&departureDate=${depart}&endDepartureDate=${endDepartureDate}&pax=${adults}&searchClass=${searchClass}&fareClasses=${fareClass}&fareClasses=PREMECON&isSkyview=false&flexibleDates=0&selectedCards=accor&selectedCards=amex&selectedCards=bilt&selectedCards=bofa&selectedCards=brex&selectedCards=capital_one&selectedCards=chase&selectedCards=citi&selectedCards=hawaiian&selectedCards=marriott&selectedCards=ramp&selectedCards=wells_fargo&selectedPrograms=ALL&selectedAirlines=&unselectedAirlines=&selectedAirports=&unselectedAirports=&selectedAircrafts=&unselectedAircrafts=&maxStops=3&minPremiumPercent=0&maxPoints=300000&maxSurcharge=800`;
+      
+      // Add cachebust parameter (timestamp)
+      const cachebust = Date.now();
+      url += `&cachebust=${cachebust}`;
+      
+      // Note: originId and destinationId are internal IDs that Roame uses
+      // The URL should work without them, but they might improve accuracy
+      
+      return url;
+    })(),
+    
+    'awardlogic': (() => {
+      // Map cabin to AwardLogic format (E=Economy, B=Business, F=First)
+      const cabinMap = {
+        'economy': 'E',
+        'business': 'B',
+        'first': 'F'
+      };
+      const cabinCode = cabinMap[cabin] || 'E';
+      
+      // Determine trip type
+      const tripType = ret ? 'round-trip' : 'one-way';
+      
+      // Format passengers: adults:children:infants:seniors:youth:students
+      // Default to adults only: 1:0:0:0:0:0
+      const passengers = `${adults}:0:0:0:0:0`;
+      
+      // Generate a search ID (UUID-like format for cache busting)
+      // Using timestamp-based approach
+      const searchId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+      
+      if (tripType === 'round-trip') {
+        // Round-trip format: /round-trip/ORIGIN-DEST/OUTBOUND_DATE/RETURN_DATE/CABIN/PASSENGERS
+        return `https://awardlogic.com/award/results/round-trip/${from}-${to}/${depart}/${ret}/${cabinCode}/${passengers}?search=${searchId}`;
+      } else {
+        // One-way format: /one-way/ORIGIN-DEST/DATE/CABIN/PASSENGERS
+        return `https://awardlogic.com/award/results/one-way/${from}-${to}/${depart}/${cabinCode}/${passengers}?search=${searchId}`;
+      }
+    })(),
+    
+    'pointhound': (() => {
+      // Map cabin to Pointhound format (Economy, Business, First)
+      const cabinMap = {
+        'economy': 'Economy',
+        'business': 'Business',
+        'first': 'First'
+      };
+      const flightClass = cabinMap[cabin] || 'Economy';
+      
+      // Get airport names from input fields
+      const fromInput = document.getElementById('bs-flight-from');
+      const toInput = document.getElementById('bs-flight-to');
+      
+      let originName = '';
+      let destinationName = '';
+      
+      // Try to get airport name from airport data
+      if (fromInput?.dataset?.airportData) {
+        try {
+          const airport = JSON.parse(fromInput.dataset.airportData);
+          originName = airport.name || `${airport.city || ''} Airport`.trim() || from;
+        } catch (e) {
+          originName = from;
+        }
+      } else {
+        originName = from;
+      }
+      
+      if (toInput?.dataset?.airportData) {
+        try {
+          const airport = JSON.parse(toInput.dataset.airportData);
+          destinationName = airport.name || `${airport.city || ''} Airport`.trim() || to;
+        } catch (e) {
+          destinationName = to;
+        }
+      } else {
+        destinationName = to;
+      }
+      
+      // URL encode airport names (replace spaces with +)
+      const encodedOriginName = encodeURIComponent(originName).replace(/%20/g, '+');
+      const encodedDestinationName = encodeURIComponent(destinationName).replace(/%20/g, '+');
+      
+      return `https://www.pointhound.com/flights?dateBuffer=false&flightClass=${flightClass}&originCode=${from}&originName=${encodedOriginName}&destinationCode=${to}&destinationName=${encodedDestinationName}&passengerCount=${adults}&departureDate=${depart}`;
+    })(),
+    
     'pointsyeah-seatmap': data.airline && data.flightNumber ? `https://www.pointsyeah.com/seatmap/detail?airline=${encodeURIComponent(data.airline)}&departure=${from}&arrival=${to}&date=${depart}&flightNumber=${encodeURIComponent(data.flightNumber)}&cabins=Economy%2CPremium%20Economy%2CBusiness%2CFirst` : '#',
     
     'seats-aero-seatmap': data.airline && data.flightNumber ? `https://seats.aero/seatmap?airline=${encodeURIComponent(data.airline)}&from=${from}&to=${to}&date=${depart}&flight=${encodeURIComponent(data.flightNumber)}&stops=0` : '#'
@@ -4138,7 +3446,7 @@ function generateFlightUrl(service, data) {
 }
 
 // Generate hotel URLs
-function generateHotelUrl(service, data) {
+async function generateHotelUrl(service, data, geocodeData = null) {
   const { city, checkin, checkout, adults, rooms } = data;
 
   // Calculate nights
@@ -4199,15 +3507,191 @@ function generateHotelUrl(service, data) {
     
     'choice': `https://www.choicehotels.com/de-de/${encodeURIComponent(city.toLowerCase())}/hotels?adults=${adults}&checkInDate=${checkin}&checkOutDate=${checkout}&ratePlanCode=SRD&sort=price`,
     
-    'melia': `https://www.melia.com/en/booking?checkIn=${checkin}&checkOut=${checkout}&rooms=${rooms}&adults=${adults}&destination=${encodeURIComponent(city)}&search=${encodeURIComponent(JSON.stringify({destination:{city:city,type:"DESTINATION",name:city.toLowerCase()},occupation:[{adults:adults}],calendar:{dates:[new Date(checkin).getTime(),new Date(checkout).getTime()],locale:"en"}}))}`,
+    'melia': (() => {
+      // Melia new format: everything in search parameter only
+      const checkInTimestamp = new Date(checkin).getTime();
+      const checkoutTimestamp = new Date(checkout).getTime();
+      
+      const searchData = {
+        destination: {
+          city: geocodeData?.city || city,
+          type: "DESTINATION",
+          name: (geocodeData?.city || city).toLowerCase()
+        },
+        occupation: Array(rooms).fill(null).map(() => ({ adults: adults })),
+        calendar: {
+          dates: [checkInTimestamp, checkoutTimestamp],
+          locale: "en"
+        },
+        dynamicServicesFilters: []
+      };
+      
+      // Add country if available from geocoding
+      if (geocodeData && geocodeData.country) {
+        searchData.destination.country = geocodeData.country;
+      }
+      
+      // Note: destination.id, destination.hotelList, and hotels would require Melia API calls
+      // These are optional and the URL should work without them
+      
+      const searchJson = JSON.stringify(searchData);
+      return `https://www.melia.com/en/booking?search=${encodeURIComponent(searchJson)}`;
+    })(),
     
-    'best-western': `https://www.bestwestern.com/en_US/book/hotels-in-${encodeURIComponent(city.toLowerCase())}.html?checkIn=${checkin}&checkOut=${checkout}&adults=${adults}&rooms=${rooms}`,
+    'maxmypoint': `https://maxmypoint.com/?search=${encodeURIComponent(city)}`,
     
-    'radisson': `https://www.radissonhotels.com/en-us/booking/search-results?destination=${encodeURIComponent(city)}&checkInDate=${checkin}&checkOutDate=${checkout}&adults%5B%5D=${adults}&children%5B%5D=0&aoc%5B%5D=&searchType=lowest&promotionCode=&voucher=&brands=`,
+    'radisson': (() => {
+      // Radisson supports both destination (city name) and placeId (Google Place ID)
+      // If we have geocoding data, we could use placeId, but it requires Google Places API
+      // For now, use destination with city name, or coordinates if available
+      let baseUrl = `https://www.radissonhotels.com/en-us/booking/search-results?checkInDate=${checkin}&checkOutDate=${checkout}&adults%5B%5D=${adults}&children%5B%5D=0&aoc%5B%5D=&searchType=lowest&promotionCode=&voucher=&brands=`;
+      
+      // If geocoding data is available, we could potentially get Place ID from Google Places API
+      // For now, use destination parameter with city name
+      if (geocodeData && geocodeData.city) {
+        // Note: To use placeId, we would need Google Places API integration
+        // For now, use destination with the geocoded city name
+        baseUrl += `&destination=${encodeURIComponent(geocodeData.city)}`;
+      } else {
+        baseUrl += `&destination=${encodeURIComponent(city)}`;
+      }
+      
+      // Add brandFirst parameter (empty in the new URL format)
+      baseUrl += `&brandFirst=`;
+      
+      return baseUrl;
+    })(),
     
     'gha': `https://de.ghadiscovery.com/search/hotels?keyword=${encodeURIComponent(city)}&clearBookingParams=1&types=all&sortBy=price&sortDirection=asc`,
     
-    'rooms-aero': `https://rooms.aero/search?city=${encodeURIComponent(city)}&start=${checkin}&end=${checkout}&nights=${nights}`
+    'rooms-aero': `https://rooms.aero/search?city=${encodeURIComponent(city)}&start=${checkin}&end=${checkout}&nights=${nights}`,
+    
+    'pointsyeah-hotels': (() => {
+      // Format dates for PointsYeah (YYYY-MM-DD)
+      const fromDate = checkin;
+      const toDate = checkout;
+      
+      // Default hotel programs (can be customized)
+      const hotelPrograms = 'wyndhamhotels%2Cchoicehotels%2Chyatt%2Cihg%2Chilton%2Cmarriott%2Camextravel%2Cvirtuoso%2Caadvantagehotels%2Cunitedhotel';
+      
+      // Default bank programs
+      const bankPrograms = 'Amex%2CCapital%20One%2CChase';
+      
+      // Build base URL
+      let baseUrl = `https://www.pointsyeah.com/hotelsearch?adult=${adults}&bankPrograms=${bankPrograms}&bankpromotion=false&certificates=&children=0&dest_type=city&distance=30000&fromDate=${fromDate}&hotelPrograms=${hotelPrograms}&pointpromotion=false&room=${rooms}&toDate=${toDate}`;
+      
+      // Add geocoding data if available
+      if (geocodeData) {
+        baseUrl += `&city=${encodeURIComponent(geocodeData.city)}`;
+        baseUrl += `&country_code=${geocodeData.countryCode}`;
+        baseUrl += `&latitude=${geocodeData.latitude}`;
+        baseUrl += `&longitude=${geocodeData.longitude}`;
+        baseUrl += `&label=${encodeURIComponent(geocodeData.city)}`;
+        baseUrl += `&location=${encodeURIComponent(geocodeData.fullLocation)}`;
+      } else {
+        // Fallback to city name only
+        baseUrl += `&city=${encodeURIComponent(city)}`;
+        baseUrl += `&label=${encodeURIComponent(city)}`;
+        baseUrl += `&location=${encodeURIComponent(city)}`;
+      }
+      
+      return baseUrl;
+    })(),
+    
+    'rovemiles-hotels': (() => {
+      // Format rooms as JSON array (URL encoded)
+      const roomsData = Array(rooms).fill(null).map(() => ({
+        adults: adults,
+        children: 0,
+        childrenAges: []
+      }));
+      const roomsJson = JSON.stringify(roomsData);
+      const roomsEncoded = encodeURIComponent(encodeURIComponent(roomsJson)); // Double encode as shown in example
+      
+      // Default filters JSON
+      const filters = {
+        hotelName: "",
+        cancellation: "all",
+        guestRating: 0,
+        loyaltyEligible: false, // Regular RoveMiles shows all hotels
+        loyaltyPrograms: [],
+        types: [],
+        propertyRating: [],
+        facilities: [],
+        priceRange: {
+          start: 0,
+          end: 2000,
+          currency: "cash"
+        },
+        sorting: "1"
+      };
+      const filtersEncoded = encodeURIComponent(JSON.stringify(filters));
+      
+      // Build base URL
+      let baseUrl = `https://www.rovemiles.com/search/hotels?checkin=${checkin}&checkout=${checkout}&rooms=${roomsEncoded}&nationality=US&currency=USD&is_hotel=false&filters=${filtersEncoded}`;
+      
+      // Add geocoding data if available
+      if (geocodeData) {
+        baseUrl += `&search_name=${encodeURIComponent(geocodeData.city)}`;
+        baseUrl += `&country_code=${geocodeData.countryCode}`;
+        // Coordinates need to be double URL encoded for RoveMiles
+        const coordinates = `${geocodeData.latitude},${geocodeData.longitude}`;
+        baseUrl += `&coordinates=${encodeURIComponent(encodeURIComponent(coordinates))}`;
+      } else {
+        // Fallback to city name only
+        baseUrl += `&search_name=${encodeURIComponent(city)}`;
+      }
+      
+      return baseUrl;
+    })(),
+    
+    'rovemiles-hotels-loyal': (() => {
+      // Same as rovemiles-hotels but with loyaltyEligible: true explicitly
+      // Format rooms as JSON array (URL encoded)
+      const roomsData = Array(rooms).fill(null).map(() => ({
+        adults: adults,
+        children: 0,
+        childrenAges: []
+      }));
+      const roomsJson = JSON.stringify(roomsData);
+      const roomsEncoded = encodeURIComponent(encodeURIComponent(roomsJson)); // Double encode as shown in example
+      
+      // Filters JSON with loyaltyEligible: true for Loyal button
+      const filters = {
+        hotelName: "",
+        cancellation: "all",
+        guestRating: 0,
+        loyaltyEligible: true, // Show hotels with loyalty benefits
+        loyaltyPrograms: [],
+        types: [],
+        propertyRating: [],
+        facilities: [],
+        priceRange: {
+          start: 0,
+          end: 2000,
+          currency: "cash"
+        },
+        sorting: "1"
+      };
+      const filtersEncoded = encodeURIComponent(JSON.stringify(filters));
+      
+      // Build base URL
+      let baseUrl = `https://www.rovemiles.com/search/hotels?checkin=${checkin}&checkout=${checkout}&rooms=${roomsEncoded}&nationality=US&currency=USD&is_hotel=false&filters=${filtersEncoded}`;
+      
+      // Add geocoding data if available
+      if (geocodeData) {
+        baseUrl += `&search_name=${encodeURIComponent(geocodeData.city)}`;
+        baseUrl += `&country_code=${geocodeData.countryCode}`;
+        // Coordinates need to be double URL encoded for RoveMiles
+        const coordinates = `${geocodeData.latitude},${geocodeData.longitude}`;
+        baseUrl += `&coordinates=${encodeURIComponent(encodeURIComponent(coordinates))}`;
+      } else {
+        // Fallback to city name only
+        baseUrl += `&search_name=${encodeURIComponent(city)}`;
+      }
+      
+      return baseUrl;
+    })()
   };
   
   return urls[service] || '#';

@@ -28,6 +28,7 @@
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 50%, rgba(0, 0, 0, 0.1) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   pointer-events: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -170,6 +171,39 @@
   background: rgba(255, 255, 255, 0.5);
 }
 
+/* Remove padding from hotel section */
+#bs-hotel-section {
+  padding: 0;
+  padding-top: 24px;
+  border-top: none;
+}
+
+/* Remove border-bottom from section before hotel section to remove line above it */
+#bs-flight-section + #bs-hotel-section,
+.bs-section:has(+ #bs-hotel-section) {
+  border-bottom: none;
+}
+
+/* Remove padding from CASM calculator, search section, information section, and comparison sections */
+#bs-casm-calculator,
+#bs-search-section,
+#bs-information-section,
+.available-transfer-partners,
+.selected-cards-comparison {
+  padding: 0;
+}
+
+/* Remove border-top and border-bottom from search section */
+#bs-search-section {
+  border-top: none;
+  border-bottom: none;
+}
+
+/* Remove border-bottom from section before search section to remove line above it */
+.bs-section:has(+ #bs-search-section) {
+  border-bottom: none;
+}
+
 .bs-section:hover {
   background: rgba(255, 255, 255, 0.8);
 }
@@ -181,6 +215,10 @@
 /* Collapsible My Credit Cards section */
 .card-selection-panel .bs-section-content {
   display: block; /* Show content by default */
+}
+
+.bs-section-header {
+  padding-top: 24px;
 }
 
 .card-selection-panel .bs-section-header {
@@ -478,7 +516,8 @@
 }
 
 /* Flight inputs in one row - full width */
-.bs-section:nth-child(1) .bs-inputs-grid {
+.bs-section:nth-child(1) .bs-inputs-grid,
+#bs-hotel-section .bs-inputs-grid {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
@@ -557,7 +596,8 @@
 }
 
 /* Specific widths for flight input fields - full width */
-.bs-section:nth-child(1) .bs-inputs-grid .bs-input-group {
+.bs-section:nth-child(1) .bs-inputs-grid .bs-input-group,
+#bs-hotel-section .bs-inputs-grid .bs-input-group {
   flex: 1 1 auto;
   min-width: 0;
 }
@@ -818,7 +858,8 @@
 /* Responsive Design */
 @media (max-width: 1200px) {
   /* On smaller screens, allow wrapping for flight inputs */
-  .bs-section:nth-child(1) .bs-inputs-grid {
+  .bs-section:nth-child(1) .bs-inputs-grid,
+  #bs-hotel-section .bs-inputs-grid {
     flex-wrap: wrap;
   }
 }
@@ -839,11 +880,13 @@
   }
 
   /* Mobile: stack all inputs vertically */
-  .bs-section:nth-child(1) .bs-inputs-grid {
+  .bs-section:nth-child(1) .bs-inputs-grid,
+  #bs-hotel-section .bs-inputs-grid {
     flex-direction: column;
   }
 
-  .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group {
+  .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group,
+  #bs-hotel-section .bs-inputs-grid .bs-input-group {
     min-width: 100%;
     max-width: 100%;
   }
@@ -3349,7 +3392,7 @@
   background: #ffffff;
   border: 1px solid #e8eaed;
   border-radius: 4px;
-  padding: 16px;
+  padding: 0;
   margin-top: 16px;
 }
 
@@ -3932,6 +3975,7 @@
   border-collapse: collapse;
   background: white;
   min-width: 600px;
+  table-layout: auto;
 }
 
 .transfer-partners-comparison .comparison-table thead {
@@ -3942,62 +3986,168 @@
 }
 
 .transfer-partners-comparison .comparison-table th {
-  padding: 4px 3px;
+  padding: 2px 3px;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 10px;
   color: #000000 !important;
   text-align: center;
   border-right: 1px solid #e8eaed;
   white-space: nowrap;
-  min-width: 55px;
-  width: 70px;
+  min-width: 45px;
   line-height: 1.2;
 }
 
-/* Make all credit card columns the same width */
-.transfer-partners-comparison .amex-col,
-.transfer-partners-comparison .chase-col,
-.transfer-partners-comparison .citi-col,
-.transfer-partners-comparison .capital-one-col,
-.transfer-partners-comparison .bilt-col,
-.transfer-partners-comparison .wells-fargo-col,
-.transfer-partners-comparison .rove-col {
-  width: 70px !important;
-  min-width: 70px !important;
+/* Partner name header should use auto width within max constraint */
+.transfer-partners-comparison .comparison-table th.partner-name-header {
+  width: auto;
+  min-width: 120px;
+  max-width: 200px;
+}
+
+/* Make all credit card columns flexible - they adjust based on available space */
+.transfer-partners-comparison .amex-col {
+  width: auto !important;
+  min-width: 45px !important;
   max-width: 70px !important;
+  background-color: #e3f2fd !important;
+}
+
+.transfer-partners-comparison .chase-col {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  background-color: #d1f2eb !important;
+}
+
+.transfer-partners-comparison .citi-col {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  background-color: #e3f2fd !important;
+}
+
+.transfer-partners-comparison .capital-one-col {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  background-color: #fef2f2 !important;
+}
+
+.transfer-partners-comparison .bilt-col {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  background-color: #f3e8ff !important;
+}
+
+.transfer-partners-comparison .wells-fargo-col {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  background-color: #f0f9ff !important;
+}
+
+.transfer-partners-comparison .rove-col {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  background-color: #fef3c7 !important;
 }
 
 .transfer-partners-comparison .comparison-table td {
-  padding: 4px 3px;
+  padding: 2px 3px;
   border-right: 1px solid #e8eaed;
   border-bottom: 1px solid #e8eaed;
   text-align: center;
   vertical-align: middle;
-  min-width: 55px;
+  min-width: 50px;
   color: #000000 !important;
   line-height: 1.2;
-  font-size: 11px;
+  font-size: 10px;
 }
 
-/* Make all credit card cells the same width */
-.transfer-partners-comparison .amex-cell,
-.transfer-partners-comparison .chase-cell,
-.transfer-partners-comparison .citi-cell,
-.transfer-partners-comparison .capital-one-cell,
-.transfer-partners-comparison .bilt-cell,
-.transfer-partners-comparison .wells-fargo-cell,
-.transfer-partners-comparison .rove-cell {
-  width: 70px !important;
-  min-width: 70px !important;
+/* Partner name cell should auto-fit, not have fixed width */
+.transfer-partners-comparison .comparison-table td.partner-name-cell {
+  min-width: 120px;
+  width: auto;
+  max-width: 200px;
+}
+
+/* Make all credit card cells flexible - they adjust based on available space */
+.transfer-partners-comparison .amex-cell {
+  width: auto !important;
+  min-width: 45px !important;
   max-width: 70px !important;
+  padding: 2px !important;
+  text-align: center;
+  background-color: #e3f2fd !important;
+}
+
+.transfer-partners-comparison .chase-cell {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  padding: 2px !important;
+  text-align: center;
+  background-color: #d1f2eb !important;
+}
+
+.transfer-partners-comparison .citi-cell {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  padding: 2px !important;
+  text-align: center;
+  background-color: #e3f2fd !important;
+}
+
+.transfer-partners-comparison .capital-one-cell {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  padding: 2px !important;
+  text-align: center;
+  background-color: #fef2f2 !important;
+}
+
+.transfer-partners-comparison .bilt-cell {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  padding: 2px !important;
+  text-align: center;
+  background-color: #f3e8ff !important;
+}
+
+.transfer-partners-comparison .wells-fargo-cell {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  padding: 2px !important;
+  text-align: center;
+  background-color: #f0f9ff !important;
+}
+
+.transfer-partners-comparison .rove-cell {
+  width: auto !important;
+  min-width: 45px !important;
+  max-width: 70px !important;
+  padding: 2px !important;
+  text-align: center;
+  background-color: #fef3c7 !important;
 }
 
 .transfer-partners-comparison .partner-name-header {
   text-align: left !important;
-  min-width: 140px;
+  min-width: 120px;
+  width: auto;
+  max-width: 200px;
   font-size: 12px;
   font-weight: 600;
   color: #000000 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .transfer-partners-comparison .program-header {
@@ -4027,7 +4177,21 @@
 .transfer-partners-comparison .partner-name-header .sort-button {
   justify-content: flex-start;
   text-align: left;
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #000000 !important;
+  padding: 2px 4px;
+}
+
+.transfer-partners-comparison .amex-col .sort-button,
+.transfer-partners-comparison .chase-col .sort-button,
+.transfer-partners-comparison .capital-one-col .sort-button,
+.transfer-partners-comparison .rove-col .sort-button,
+.transfer-partners-comparison .citi-col .sort-button,
+.transfer-partners-comparison .bilt-col .sort-button,
+.transfer-partners-comparison .wells-fargo-col .sort-button {
+  font-size: 9px;
+  padding: 2px;
   font-weight: 600;
   color: #000000 !important;
 }
@@ -4035,7 +4199,12 @@
 .transfer-partners-comparison .partner-name-cell {
   text-align: left !important;
   padding: 8px 4px;
-  min-width: 150px;
+  min-width: 120px;
+  width: auto;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .transfer-partners-comparison .program-cell {
@@ -4059,11 +4228,12 @@
 .transfer-partners-comparison .partner-name {
   font-weight: 600;
   color: #000000 !important;
-  font-size: 14px;
+  font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.2;
+  max-width: 100%;
 }
 
 .transfer-partners-comparison .partner-program {
@@ -4087,14 +4257,15 @@
 }
 
 .transfer-partners-comparison .ratio-value {
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 2px 4px;
+  border-radius: 3px;
   border: 1px solid #e8eaed;
   background: white;
   display: inline-block;
-  min-width: 40px;
+  min-width: 30px;
+  line-height: 1.2;
 }
 
 .transfer-partners-comparison .ratio-value.amex {
@@ -4125,6 +4296,18 @@
   color: #7c3aed;
   background: #f3e8ff;
   border-color: #ddd6fe;
+}
+
+.transfer-partners-comparison .ratio-value.wells-fargo {
+  color: #0369a1;
+  background: #f0f9ff;
+  border-color: #bae6fd;
+}
+
+.transfer-partners-comparison .ratio-value.rove {
+  color: #92400e;
+  background: #fef3c7;
+  border-color: #fde68a;
 }
 
 /* Color-coded ratio values based on transfer rates */
@@ -8270,9 +8453,6 @@
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
-  border-radius: 8px;
-  border: 1px dashed #d1d5db;
-}
 
 .bs-history-chart-container {
   margin-top: 20px;
@@ -8299,10 +8479,10 @@
 /* Hotel Benefits Styles */
 .bs-hotel-subsection {
   margin-top: 24px;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  border: none;
 }
 
 .bs-hotel-benefits-content {
