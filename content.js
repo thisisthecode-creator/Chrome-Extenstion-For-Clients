@@ -3369,20 +3369,13 @@ function generateFlightUrl(service, data) {
       // Default to adults only: 1:0:0:0:0:0
       const passengers = `${adults}:0:0:0:0:0`;
       
-      // Generate a search ID (UUID-like format for cache busting)
-      // Using timestamp-based approach
-      const searchId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0;
-        const v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-      });
-      
+      // Use path-based format without search parameter (search ID is generated server-side)
       if (tripType === 'round-trip') {
         // Round-trip format: /round-trip/ORIGIN-DEST/OUTBOUND_DATE/RETURN_DATE/CABIN/PASSENGERS
-        return `https://awardlogic.com/award/results/round-trip/${from}-${to}/${depart}/${ret}/${cabinCode}/${passengers}?search=${searchId}`;
+        return `https://awardlogic.com/award/results/round-trip/${from}-${to}/${depart}/${ret}/${cabinCode}/${passengers}`;
       } else {
         // One-way format: /one-way/ORIGIN-DEST/DATE/CABIN/PASSENGERS
-        return `https://awardlogic.com/award/results/one-way/${from}-${to}/${depart}/${cabinCode}/${passengers}?search=${searchId}`;
+        return `https://awardlogic.com/award/results/one-way/${from}-${to}/${depart}/${cabinCode}/${passengers}`;
       }
     })(),
     
@@ -3406,30 +3399,48 @@ function generateFlightUrl(service, data) {
       if (fromInput?.dataset?.airportData) {
         try {
           const airport = JSON.parse(fromInput.dataset.airportData);
-          originName = airport.name || `${airport.city || ''} Airport`.trim() || from;
+          // Use full airport name if available, otherwise construct from city
+          if (airport.name) {
+            originName = airport.name;
+          } else if (airport.city) {
+            originName = `${airport.city} Airport`;
+          } else {
+            originName = from;
+          }
         } catch (e) {
           originName = from;
         }
       } else {
-        originName = from;
+        // Fallback: try to get from input value if it contains airport name
+        const inputValue = fromInput?.value?.trim() || '';
+        originName = inputValue.length > 3 ? inputValue : from;
       }
       
       if (toInput?.dataset?.airportData) {
         try {
           const airport = JSON.parse(toInput.dataset.airportData);
-          destinationName = airport.name || `${airport.city || ''} Airport`.trim() || to;
+          // Use full airport name if available, otherwise construct from city
+          if (airport.name) {
+            destinationName = airport.name;
+          } else if (airport.city) {
+            destinationName = `${airport.city} Airport`;
+          } else {
+            destinationName = to;
+          }
         } catch (e) {
           destinationName = to;
         }
       } else {
-        destinationName = to;
+        // Fallback: try to get from input value if it contains airport name
+        const inputValue = toInput?.value?.trim() || '';
+        destinationName = inputValue.length > 3 ? inputValue : to;
       }
       
-      // URL encode airport names (replace spaces with +)
-      const encodedOriginName = encodeURIComponent(originName).replace(/%20/g, '+');
-      const encodedDestinationName = encodeURIComponent(destinationName).replace(/%20/g, '+');
+      // URL encode airport names properly (Pointhound expects + for spaces in query params)
+      const encodedOriginName = originName.split(' ').map(part => encodeURIComponent(part)).join('+');
+      const encodedDestinationName = destinationName.split(' ').map(part => encodeURIComponent(part)).join('+');
       
-      return `https://www.pointhound.com/flights?dateBuffer=false&flightClass=${flightClass}&originCode=${from}&originName=${encodedOriginName}&destinationCode=${to}&destinationName=${encodedDestinationName}&passengerCount=${adults}&departureDate=${depart}`;
+      return `https://www.pointhound.com/flights?dateBuffer=false&flightClass=${encodeURIComponent(flightClass)}&originCode=${from}&originName=${encodedOriginName}&destinationCode=${to}&destinationName=${encodedDestinationName}&passengerCount=${adults}&departureDate=${depart}`;
     })(),
     
     'pointsyeah-seatmap': data.airline && data.flightNumber ? `https://www.pointsyeah.com/seatmap/detail?airline=${encodeURIComponent(data.airline)}&departure=${from}&arrival=${to}&date=${depart}&flightNumber=${encodeURIComponent(data.flightNumber)}&cabins=Economy%2CPremium%20Economy%2CBusiness%2CFirst` : '#',
