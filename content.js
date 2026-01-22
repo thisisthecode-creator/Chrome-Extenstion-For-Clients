@@ -1909,12 +1909,7 @@ async function handleOpenAllFlights(e) {
     if (url && url !== '#') {
       // Small delay between opening tabs to avoid browser popup blocking
       setTimeout(() => {
-        // Google Flights loads in current tab, all others in new tab
-        if (service === 'google-flights') {
-          window.location.href = url;
-        } else {
-          window.open(url, '_blank');
-        }
+        window.open(url, '_blank');
       }, i * 100); // 100ms delay between each tab
     }
   }
