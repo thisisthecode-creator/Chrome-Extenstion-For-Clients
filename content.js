@@ -440,12 +440,6 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-choice" data-service="choice">
           Choice
         </button>
-        <button class="bs-btn bs-btn-radisson" data-service="radisson">
-          Radisson
-        </button>
-        <button class="bs-btn bs-btn-melia" data-service="melia">
-          Melia
-        </button>
         <button class="bs-btn bs-btn-gha" data-service="gha">
           GHA
         </button>
@@ -1754,6 +1748,66 @@ async function autoReloadHotels() {
   if (url) window.open(url, '_blank');
 }
 
+// Get Google Place ID from coordinates using reverse geocoding
+// Note: This requires Google Geocoding API key. Without it, this will return null.
+async function getPlaceIdFromCoordinates(latitude, longitude) {
+  if (!latitude || !longitude) {
+    return null;
+  }
+  
+  const cacheKey = `placeid_${latitude}_${longitude}`;
+  
+  // Check cache first
+  if (window.cacheService) {
+    const cached = window.cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+  }
+  
+  try {
+    // Use Google Geocoding API reverse geocoding
+    // Note: This requires a Google API key. You can add it to config.js if available
+    // For now, we'll try without API key (may not work due to CORS/API key requirements)
+    // Alternative: Use a proxy service or add API key to config
+    const apiKey = window.config?.googleApiKey || '';
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+    
+    // If no API key, try using a free alternative or return null
+    if (!apiKey) {
+      // Try using Nominatim's place_id (different from Google's, but may work for some services)
+      // Or return null and let the URL work without placeId
+      console.warn('Google API key not found. Radisson placeId lookup unavailable.');
+      return null;
+    }
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Reverse geocoding failed: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.status === 'OK' && data.results && data.results.length > 0) {
+      // Get place_id from the first result
+      const placeId = data.results[0].place_id;
+      
+      // Cache for 24 hours
+      if (window.cacheService && placeId) {
+        window.cacheService.set(cacheKey, placeId, 24 * 60 * 60 * 1000);
+      }
+      
+      return placeId;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Place ID lookup error:', error);
+    return null;
+  }
+}
+
 // Geocode city name to get coordinates and location details
 async function geocodeCity(cityName) {
   if (!cityName || !cityName.trim()) {
@@ -1846,9 +1900,9 @@ async function handleHotelButtonClick(e) {
     return;
   }
   
-  // For PointsYeah, RoveMiles, Radisson, and Melia, get geocoding data using the city from hotel input field
+  // For PointsYeah and RoveMiles, get geocoding data using the city from hotel input field
   let geocodeData = null;
-  if (service === 'pointsyeah-hotels' || service === 'rovemiles-hotels' || service === 'rovemiles-hotels-loyal' || service === 'radisson' || service === 'melia') {
+  if (service === 'pointsyeah-hotels' || service === 'rovemiles-hotels' || service === 'rovemiles-hotels-loyal') {
     // Get city name directly from the hotel city input field
     const cityInput = document.getElementById('bs-hotel-city');
     const cityName = cityInput?.value?.trim() || hotelData.city;
@@ -3573,69 +3627,47 @@ async function generateHotelUrl(service, data, geocodeData = null) {
     'choice': `https://www.choicehotels.com/de-de/${encodeURIComponent(city.toLowerCase())}/hotels?adults=${adults}&checkInDate=${checkin}&checkOutDate=${checkout}&ratePlanCode=SRD&sort=price`,
     
     'melia': (() => {
-      // Melia new format: everything in search parameter only
-      // Structure should match working format regardless of input city name
+      // Melia format: /de/ locale with search parameter
+      // Structure matches: destination with city, country, type, name
       const checkInTimestamp = new Date(checkin).getTime();
       const checkoutTimestamp = new Date(checkout).getTime();
       
       // Use geocoded city name if available, otherwise use input city
-      // This ensures consistent city names regardless of input format
       const cityName = geocodeData?.city || city;
       const countryName = geocodeData?.country || null;
       
-      // Build destination object with required fields
+      // Build destination object matching the required format
       const destination = {
         city: cityName,
         type: "DESTINATION",
         name: cityName.toLowerCase()
       };
       
-      // Country is important for proper search - include if available
+      // Country is required for proper search
       if (countryName) {
         destination.country = countryName;
       }
+      
+      // hotelList, id, and hotels are only for specific hotel searches
+      // For city searches, we omit these fields
       
       const searchData = {
         destination: destination,
         occupation: Array(rooms).fill(null).map(() => ({ adults: adults })),
         calendar: {
           dates: [checkInTimestamp, checkoutTimestamp],
-          locale: "en"
+          locale: "de"
         },
         dynamicServicesFilters: []
       };
       
-      // Note: destination.id, destination.hotelList, and hotels are only needed
-      // for specific hotel searches. For city searches, omit these fields.
-      // The structure above works for city-based searches without requiring API calls.
-      
       const searchJson = JSON.stringify(searchData);
-      return `https://www.melia.com/en/booking?search=${encodeURIComponent(searchJson)}`;
+      return `https://www.melia.com/de/booking?search=${encodeURIComponent(searchJson)}`;
     })(),
     
     'maxmypoint': `https://maxmypoint.com/?search=${encodeURIComponent(city)}`,
     
-    'radisson': (() => {
-      // Radisson supports both destination (city name) and placeId (Google Place ID)
-      // If we have geocoding data, we could use placeId, but it requires Google Places API
-      // For now, use destination with city name, or coordinates if available
-      let baseUrl = `https://www.radissonhotels.com/en-us/booking/search-results?checkInDate=${checkin}&checkOutDate=${checkout}&adults%5B%5D=${adults}&children%5B%5D=0&aoc%5B%5D=&searchType=lowest&promotionCode=&voucher=&brands=`;
-      
-      // If geocoding data is available, we could potentially get Place ID from Google Places API
-      // For now, use destination parameter with city name
-      if (geocodeData && geocodeData.city) {
-        // Note: To use placeId, we would need Google Places API integration
-        // For now, use destination with the geocoded city name
-        baseUrl += `&destination=${encodeURIComponent(geocodeData.city)}`;
-      } else {
-        baseUrl += `&destination=${encodeURIComponent(city)}`;
-      }
-      
-      // Add brandFirst parameter (empty in the new URL format)
-      baseUrl += `&brandFirst=`;
-      
-      return baseUrl;
-    })(),
+    'radisson': null, // Will be handled separately below due to async requirements
     
     'gha': `https://de.ghadiscovery.com/search/hotels?keyword=${encodeURIComponent(city)}&clearBookingParams=1&types=all&sortBy=price&sortDirection=asc`,
     
@@ -3768,6 +3800,25 @@ async function generateHotelUrl(service, data, geocodeData = null) {
       return baseUrl;
     })()
   };
+  
+  // Handle Radisson separately since it requires async placeId lookup
+  if (service === 'radisson') {
+    // Radisson format: use placeId (Google Place ID) instead of destination
+    // Format: placeId=...&checkInDate=...&checkOutDate=...&adults[]=...&children[]=0&aoc[]=&searchType=lowest&promotionCode=&voucher=&brands=&brandFirst=
+    let baseUrl = `https://www.radissonhotels.com/en-us/booking/search-results?checkInDate=${checkin}&checkOutDate=${checkout}&adults%5B%5D=${adults}&children%5B%5D=0&aoc%5B%5D=&searchType=lowest&promotionCode=&voucher=&brands=&brandFirst=`;
+    
+    // Try to get placeId from geocoding data
+    if (geocodeData && geocodeData.latitude && geocodeData.longitude) {
+      const placeId = await getPlaceIdFromCoordinates(geocodeData.latitude, geocodeData.longitude);
+      if (placeId) {
+        return baseUrl + `&placeId=${placeId}`;
+      }
+    }
+    
+    // If no placeId available, return URL without it (may not work correctly)
+    // Note: Radisson requires placeId for proper search
+    return baseUrl;
+  }
   
   return urls[service] || '#';
 }
@@ -5114,17 +5165,6 @@ const HOTEL_PROGRAMS = [
       { level: 2, name: 'Gold\n(5 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['10% Bonus Points', 'Late Check-Out 2pm', 'Preferred rooms', 'Bonus points promotions'] },
       { level: 3, name: 'Platinum\n(15 N)', color: 'bg-gray-400 text-white', benefits: ['15% Bonus Points', 'Room upgrade', 'Late Check-Out 4pm', 'Welcome amenity', 'Guaranteed availability', 'Early Check-In', 'Caesars Rewards status match', 'Avis/Budget car rental upgrade'] },
       { level: 4, name: 'Diamond\n(40 N)', color: 'bg-blue-500 text-white', benefits: ['30% Bonus Points', 'Late Check-Out 6pm', 'VIP treatment', 'Exclusive offers', 'Free Gold Status', 'Points bonus', 'Suite upgrade'] }
-    ]
-  },
-  {
-    id: 'radisson',
-    name: 'Radisson',
-    currentLevel: 1,
-    totalLevels: 3,
-    levels: [
-      { level: 1, name: 'Club', color: 'bg-gray-100 text-gray-800', benefits: ['Points earning', 'Member rates', 'Free WiFi', 'Points toward free N', 'No blackout dates', 'Member promotions', 'Mobile check-in'] },
-      { level: 2, name: 'Premium\n(15 N)', color: 'bg-gray-300 text-gray-800', benefits: ['15% bonus points', 'Late Check-Out 2pm', 'Preferred rooms', 'Welcome gift'] },
-      { level: 3, name: 'VIP\n(30 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['25% bonus points', 'Suite upgrade', 'Late Check-Out 4pm', 'Welcome amenity', 'Guaranteed availability', 'Early Check-In', 'Club lounge access', 'Free breakfast'] }
     ]
   }
 ];
