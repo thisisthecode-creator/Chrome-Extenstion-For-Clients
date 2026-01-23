@@ -319,6 +319,7 @@ function injectExtensionPanel() {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- Hotel Search Section -->
     <div class="bs-section" id="bs-hotel-section" style="display: none;">
@@ -723,6 +724,7 @@ function injectExtensionPanel() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   `;
   
@@ -3497,7 +3499,64 @@ async function generateHotelUrl(service, data, geocodeData = null) {
   const toDateMarriott = toMarriottFormat(checkout);
   
   const urls = {
-    'google-hotels': `https://www.google.com/travel/search?q=${encodeURIComponent(city)}&ts=CAESABogCgIaABIaEhQKBwjpDxABGAESBwjpDxABGAIYATICEAAqCQoFOgNVU0QaAA&ap=aAE&qs=OAA&hl=en-US&gl=us&ved=0CAAQ5JsGahcKEwiYgdOF74aQAxUAAAAAHQAAAAAQBg&checkin=${checkin}&checkout=${checkout}&adults=${adults}&rooms=${rooms}`,
+    'google-hotels': (() => {
+      // Google Hotels URL with proper date formatting
+      // Ensure dates are in YYYY-MM-DD format
+      let checkinFormatted = checkin;
+      let checkoutFormatted = checkout;
+      
+      // If dates are not in correct format, convert them
+      if (checkinFormatted && !checkinFormatted.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        try {
+          const d = new Date(checkinFormatted);
+          const year = d.getFullYear();
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const day = String(d.getDate()).padStart(2, '0');
+          checkinFormatted = `${year}-${month}-${day}`;
+        } catch (e) {
+          // Keep original if conversion fails
+        }
+      }
+      
+      if (checkoutFormatted && !checkoutFormatted.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        try {
+          const d = new Date(checkoutFormatted);
+          const year = d.getFullYear();
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const day = String(d.getDate()).padStart(2, '0');
+          checkoutFormatted = `${year}-${month}-${day}`;
+        } catch (e) {
+          // Keep original if conversion fails
+        }
+      }
+      
+      // Parse dates to extract day, month, year for alternative format
+      let checkinDay = '', checkinMonth = '', checkinYear = '';
+      let checkoutDay = '', checkoutMonth = '', checkoutYear = '';
+      
+      if (checkinFormatted.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const parts = checkinFormatted.split('-');
+        checkinYear = parts[0];
+        checkinMonth = parts[1];
+        checkinDay = parts[2];
+      }
+      
+      if (checkoutFormatted.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const parts = checkoutFormatted.split('-');
+        checkoutYear = parts[0];
+        checkoutMonth = parts[1];
+        checkoutDay = parts[2];
+      }
+      
+      // Note: Google Hotels uses the 'ts' parameter (base64-encoded protobuf) for dates and filters,
+      // which is complex to generate. The explicit checkin/checkout parameters may not always
+      // be recognized by Google Hotels, and users may need to manually set dates on the page.
+      // Brand filters are also encoded in the 'ts' parameter, so "all brands" filter cannot
+      // be automatically set via URL parameters. Users will need to manually select "all brands"
+      // filter on the Google Hotels page.
+      // We include the dates in the URL anyway in case Google starts recognizing them.
+      return `https://www.google.com/travel/search?q=${encodeURIComponent(city)}&checkin=${checkinFormatted}&checkout=${checkoutFormatted}&adults=${adults}&rooms=${rooms}`;
+    })(),
     
     'hilton': `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0`,
     
@@ -3515,15 +3574,29 @@ async function generateHotelUrl(service, data, geocodeData = null) {
     
     'melia': (() => {
       // Melia new format: everything in search parameter only
+      // Structure should match working format regardless of input city name
       const checkInTimestamp = new Date(checkin).getTime();
       const checkoutTimestamp = new Date(checkout).getTime();
       
+      // Use geocoded city name if available, otherwise use input city
+      // This ensures consistent city names regardless of input format
+      const cityName = geocodeData?.city || city;
+      const countryName = geocodeData?.country || null;
+      
+      // Build destination object with required fields
+      const destination = {
+        city: cityName,
+        type: "DESTINATION",
+        name: cityName.toLowerCase()
+      };
+      
+      // Country is important for proper search - include if available
+      if (countryName) {
+        destination.country = countryName;
+      }
+      
       const searchData = {
-        destination: {
-          city: geocodeData?.city || city,
-          type: "DESTINATION",
-          name: (geocodeData?.city || city).toLowerCase()
-        },
+        destination: destination,
         occupation: Array(rooms).fill(null).map(() => ({ adults: adults })),
         calendar: {
           dates: [checkInTimestamp, checkoutTimestamp],
@@ -3532,13 +3605,9 @@ async function generateHotelUrl(service, data, geocodeData = null) {
         dynamicServicesFilters: []
       };
       
-      // Add country if available from geocoding
-      if (geocodeData && geocodeData.country) {
-        searchData.destination.country = geocodeData.country;
-      }
-      
-      // Note: destination.id, destination.hotelList, and hotels would require Melia API calls
-      // These are optional and the URL should work without them
+      // Note: destination.id, destination.hotelList, and hotels are only needed
+      // for specific hotel searches. For city searches, omit these fields.
+      // The structure above works for city-based searches without requiring API calls.
       
       const searchJson = JSON.stringify(searchData);
       return `https://www.melia.com/en/booking?search=${encodeURIComponent(searchJson)}`;

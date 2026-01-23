@@ -51,6 +51,7 @@
   overflow: hidden;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  display: block !important; /* Always visible regardless of flight search state */
 }
 
 .bs-logo-header {
@@ -63,13 +64,13 @@
 
 /* Section Toggles */
 .bs-section-toggles {
-  display: flex;
+  display: flex !important; /* Always visible regardless of flight search state */
   align-items: center;
   gap: 20px;
 }
 
 .bs-toggle-item {
-  display: flex;
+  display: flex !important; /* Always visible regardless of flight search state */
   align-items: center;
   gap: 8px;
 }
@@ -90,7 +91,7 @@
 /* Toggle Switch */
 .bs-toggle-switch {
   position: relative;
-  display: inline-block;
+  display: inline-block !important; /* Always visible regardless of flight search state */
   width: 44px;
   height: 24px;
   cursor: pointer;
@@ -171,10 +172,9 @@
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* Remove padding from hotel section */
+/* Hotel section - same padding as flight search */
 #bs-hotel-section {
-  padding: 0;
-  padding-top: 24px;
+  padding: 24px 28px;
   border-top: none;
 }
 
@@ -184,13 +184,17 @@
   border-bottom: none;
 }
 
-/* Remove padding from CASM calculator, search section, information section, and comparison sections */
+/* Remove padding from CASM calculator and comparison sections */
 #bs-casm-calculator,
-#bs-search-section,
-#bs-information-section,
 .available-transfer-partners,
 .selected-cards-comparison {
   padding: 0;
+}
+
+/* Search and Information sections - same padding as flight search */
+#bs-search-section,
+#bs-information-section {
+  padding: 24px 28px;
 }
 
 /* Remove border-top and border-bottom from search section */
