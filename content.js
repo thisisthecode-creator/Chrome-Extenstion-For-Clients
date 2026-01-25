@@ -100,14 +100,14 @@ function injectExtensionPanel() {
             <path d="M20.49 15a9 9 0 0 1-14.13 3.36L1 14"/>
           </svg>
         </button>
+        <button class="bs-action-btn bs-action-open-all" id="bs-flight-open-all" title="Open all flight search services">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </button>
         <div class="bs-header-controls">
-          <div class="bs-auto-reload-toggle">
-            <label class="bs-toggle-label" for="bs-auto-reload-toggle">Auto-reload</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-auto-reload-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
           <div class="bs-auto-reload-toggle">
             <label class="bs-toggle-label" for="bs-external-links-toggle">Search Links</label>
             <label class="bs-toggle-switch">
@@ -187,9 +187,6 @@ function injectExtensionPanel() {
       </div>
       
       <div class="bs-buttons-grid" id="bs-external-links" style="display:none;">
-        <button class="bs-btn bs-btn-open-all" id="bs-flight-open-all" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold;">
-          Open All
-        </button>
         <button class="bs-btn bs-btn-google-flights" data-service="google-flights">
           Google Flights
         </button>
@@ -336,14 +333,14 @@ function injectExtensionPanel() {
             <path d="M20.49 15a9 9 0 0 1-14.13 3.36L1 14"/>
           </svg>
         </button>
+        <button class="bs-action-btn bs-action-open-all" id="bs-hotel-open-all" title="Open all hotel search services">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </button>
         <div class="bs-header-controls">
-          <div class="bs-auto-reload-toggle">
-            <label class="bs-toggle-label" for="bs-hotel-auto-reload-toggle">Auto-reload</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-hotel-auto-reload-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
           <div class="bs-auto-reload-toggle">
             <label class="bs-toggle-label" for="bs-hotel-external-links-toggle">Search Links</label>
             <label class="bs-toggle-switch">
@@ -398,9 +395,6 @@ function injectExtensionPanel() {
       </div>
       
       <div class="bs-buttons-grid" id="bs-hotel-external-links" style="display:none;">
-        <button class="bs-btn bs-btn-open-all" id="bs-hotel-open-all" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold;">
-          Open All
-        </button>
         <button class="bs-btn bs-btn-google-hotels" data-service="google-hotels">
           Google Hotels
         </button>
@@ -853,15 +847,16 @@ function applyToggleStates(toggleStates) {
 function initializeEventListeners() {
   console.log('=== INITIALIZING EVENT LISTENERS ===');
   
+  // Flight "Open All" button in header
+  const flightOpenAllBtn = document.getElementById('bs-flight-open-all');
+  if (flightOpenAllBtn) {
+    flightOpenAllBtn.addEventListener('click', handleOpenAllFlights, { capture: true, once: false });
+  }
+
   // Flight buttons
   const flightButtons = document.querySelectorAll('.bs-section:nth-child(1) .bs-btn');
   flightButtons.forEach(btn => {
-    // Skip the "Open All" button
-    if (btn.id === 'bs-flight-open-all') {
-      btn.addEventListener('click', handleOpenAllFlights, { capture: true, once: false });
-    } else {
-      btn.addEventListener('click', handleFlightButtonClick);
-    }
+    btn.addEventListener('click', handleFlightButtonClick);
   });
 
   // External links toggle
@@ -927,19 +922,20 @@ function initializeEventListeners() {
   // Hotel auto-reload setup
   setupHotelInputAutoReload();
   
+  // Hotel "Open All" button in header
+  const hotelOpenAllBtn = document.getElementById('bs-hotel-open-all');
+  if (hotelOpenAllBtn) {
+    hotelOpenAllBtn.addEventListener('click', handleOpenAllHotels, { capture: true, once: false });
+  }
+
   // Hotel buttons - only target buttons in the external links container
   const hotelButtons = document.querySelectorAll('#bs-hotel-external-links .bs-btn');
   hotelButtons.forEach(btn => {
-    // Skip the "Open All" button
-    if (btn.id === 'bs-hotel-open-all') {
-      btn.addEventListener('click', handleOpenAllHotels, { capture: true, once: false });
-    } else {
-      // Remove any existing listeners by cloning (if any were added before)
-      const handler = function(e) {
-        handleHotelButtonClick(e);
-      };
-      btn.addEventListener('click', handler, { capture: true, once: false });
-    }
+    // Remove any existing listeners by cloning (if any were added before)
+    const handler = function(e) {
+      handleHotelButtonClick(e);
+    };
+    btn.addEventListener('click', handler, { capture: true, once: false });
   });
   
   // Search buttons
