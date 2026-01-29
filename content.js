@@ -211,6 +211,9 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-air-canada" data-service="air-canada">
           Air Canada
         </button>
+        <button class="bs-btn bs-btn-united" data-service="united">
+          United
+        </button>
         <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles">
           Rovemiles
         </button>
@@ -3363,6 +3366,16 @@ function generateFlightUrl(service, data) {
     'air-canada': ret
       ? `https://www.aircanada.com/aeroplan/redeem/availability/outbound?org0=${from}&dest0=${to}&org1=${to}&dest1=${from}&departureDate0=${depart}&departureDate1=${ret}&ADT=${adults}&YTH=0&CHD=0&INF=0&INS=0&lang=en-CA&tripType=R&marketCode=INT`
       : `https://www.aircanada.com/aeroplan/redeem/availability/outbound?org0=${from}&dest0=${to}&departureDate0=${depart}&ADT=${adults}&YTH=0&CHD=0&INF=0&INS=0&lang=en-CA&tripType=O&marketCode=INT`,
+    
+    'united': (() => {
+      // United FSR URL: tt=1 round trip, tt=0 one-way; sc=7 economy; px=adults,0,0,0,0,0,0,0
+      const tt = ret ? '1' : '0';
+      const px = `${adults},0,0,0,0,0,0,0`;
+      const cabinMap = { 'economy': '7', 'business': '2', 'first': '1' };
+      const sc = cabinMap[cabin] || '7';
+      const base = `https://www.united.com/en/us/fsr/choose-flights?f=${from}&t=${to}&d=${depart}&tt=${tt}&at=${adults}&sc=${sc}&px=${encodeURIComponent(px)}&taxng=1&newHP=True&clm=7&st=bestmatches&tqp=A`;
+      return ret ? `${base}&r=${ret}` : base;
+    })(),
     
     'rovemiles': `https://www.rovemiles.com/search/flights?origin=${from}&destination=${to}&cabin=${cabin}&adults=${adults}&children=0&infants=0&payment=miles&start_date=${depart}`,
     
