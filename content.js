@@ -3368,13 +3368,12 @@ function generateFlightUrl(service, data) {
       : `https://www.aircanada.com/aeroplan/redeem/availability/outbound?org0=${from}&dest0=${to}&departureDate0=${depart}&ADT=${adults}&YTH=0&CHD=0&INF=0&INS=0&lang=en-CA&tripType=O&marketCode=INT`,
     
     'united': (() => {
-      // United FSR URL: tt=1 round trip, tt=0 one-way; sc=7 economy; px=adults,0,0,0,0,0,0,0
+      // United FSR URL: tt=1 round trip, tt=0 one-way; sc=7 economy; px=adults; r=return or depart
       const tt = ret ? '1' : '0';
-      const px = `${adults},0,0,0,0,0,0,0`;
       const cabinMap = { 'economy': '7', 'business': '2', 'first': '1' };
       const sc = cabinMap[cabin] || '7';
-      const base = `https://www.united.com/en/us/fsr/choose-flights?f=${from}&t=${to}&d=${depart}&tt=${tt}&at=${adults}&sc=${sc}&px=${encodeURIComponent(px)}&taxng=1&newHP=True&clm=7&st=bestmatches&tqp=A`;
-      return ret ? `${base}&r=${ret}` : base;
+      const returnDate = ret || depart;
+      return `https://www.united.com/en/us/fsr/choose-flights?tt=${tt}&st=bestmatches&d=${depart}&clm=7&taxng=1&f=${from}&px=${adults}&newHP=True&sc=${sc}&r=${returnDate}&at=${adults}&tqp=A&t=${to}&idx=1&mm=0`;
     })(),
     
     'rovemiles': `https://www.rovemiles.com/search/flights?origin=${from}&destination=${to}&cabin=${cabin}&adults=${adults}&children=0&infants=0&payment=miles&start_date=${depart}`,
