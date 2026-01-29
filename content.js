@@ -3368,12 +3368,18 @@ function generateFlightUrl(service, data) {
       : `https://www.aircanada.com/aeroplan/redeem/availability/outbound?org0=${from}&dest0=${to}&departureDate0=${depart}&ADT=${adults}&YTH=0&CHD=0&INF=0&INS=0&lang=en-CA&tripType=O&marketCode=INT`,
     
     'united': (() => {
-      // United FSR URL: tt=1 round trip, tt=0 one-way; sc=7 economy; px=adults; r=return or depart
-      const tt = ret ? '1' : '0';
+      // United FSR: one-way (tqp=A, tt=1, rm=1, act=0) vs round-trip (tqp=R, r=, sc=7,7, ct=0)
       const cabinMap = { 'economy': '7', 'business': '2', 'first': '1' };
-      const sc = cabinMap[cabin] || '7';
-      const returnDate = ret || depart;
-      return `https://www.united.com/en/us/fsr/choose-flights?tt=${tt}&st=bestmatches&d=${depart}&clm=7&taxng=1&f=${from}&px=${adults}&newHP=True&sc=${sc}&r=${returnDate}&at=${adults}&tqp=A&t=${to}&idx=1&mm=0`;
+      const scCode = cabinMap[cabin] || '7';
+      const px = `${adults},0,0,0,0,0,0,0`;
+      const editId = typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID().toUpperCase()
+        : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => ((c === 'x' ? Math.random() * 16 : (Math.random() * 4 + 8)) | 0).toString(16).toUpperCase());
+      if (ret) {
+        const sc = `${scCode},${scCode}`;
+        return `https://www.united.com/en/us/fsr/choose-flights?f=${from}&t=${to}&d=${depart}&r=${ret}&sc=${encodeURIComponent(sc)}&st=bestmatches&cbm=-1&cbm2=-1&ft=0&cp=0&ct=0&px=${encodeURIComponent(px)}&taxng=1&clm=7&EditSearchCartId=${editId}&tqp=R`;
+      }
+      return `https://www.united.com/en/us/fsr/choose-flights?f=${from}&t=${to}&d=${depart}&sc=${scCode}&st=bestmatches&cbm=-1&cbm2=-1&ft=0&cp=0&tt=1&at=${adults}&rm=1&act=0&px=${encodeURIComponent(px)}&taxng=1&clm=7&EditSearchCartId=${editId}&tqp=A`;
     })(),
     
     'rovemiles': `https://www.rovemiles.com/search/flights?origin=${from}&destination=${to}&cabin=${cabin}&adults=${adults}&children=0&infants=0&payment=miles&start_date=${depart}`,
