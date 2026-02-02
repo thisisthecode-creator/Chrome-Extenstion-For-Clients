@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Benefit Systems",
-  "version": "191",
+  "version": "203",
   "description": "Access to all Benefitsystems tools and calculators",
   "icons": {
     "16": "icon16.png",
@@ -20,8 +20,7 @@
         "lib/error-handler.js",
         "lib/cache-service.js",
         "lib/http-client.js",
-        "lib/airport-data.js",
-        "lib/airport-autocomplete.js",
+        "AIRPORT_AUTOCOMPLETE_COMPLETE.js",
         "lib/transfer-partners-data.js",
         "lib/credit-cards-data.js",
         "lib/transfer-partners-tooltip.js",

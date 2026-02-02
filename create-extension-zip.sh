@@ -46,6 +46,7 @@ zip -r "$ZIP_NAME" \
   flight-details-injector*.js \
   flight-details-styles.css \
   styles.css \
+  AIRPORT_AUTOCOMPLETE_COMPLETE.js \
   icon*.png \
   icons/ \
   lib/ \

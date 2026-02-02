@@ -60,20 +60,6 @@ function injectExtensionPanel() {
             </label>
           </div>
           <div class="bs-toggle-item">
-            <label class="bs-toggle-label" for="bs-search-toggle">Search</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-search-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-          <div class="bs-toggle-item">
-            <label class="bs-toggle-label" for="bs-information-toggle">Information</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-information-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-          <div class="bs-toggle-item">
             <label class="bs-toggle-label" for="bs-settings-toggle">Settings</label>
             <label class="bs-toggle-switch">
               <input type="checkbox" id="bs-settings-toggle">
@@ -88,9 +74,7 @@ function injectExtensionPanel() {
     <!-- Flight Search Section -->
     <div class="bs-section" id="bs-flight-section">
       <div class="bs-section-header">
-        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
-        </svg>
+        <span class="bs-section-icon" style="font-size: 20px; line-height: 1;">✈️</span>
         <span>Flight Search</span>
         <button class="bs-action-btn bs-action-refresh" id="bs-refresh-flight" title="Refresh results">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -211,9 +195,6 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-air-canada" data-service="air-canada">
           Air Canada
         </button>
-        <button class="bs-btn bs-btn-united" data-service="united">
-          United
-        </button>
         <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles">
           Rovemiles
         </button>
@@ -324,9 +305,7 @@ function injectExtensionPanel() {
     <!-- Hotel Search Section -->
     <div class="bs-section" id="bs-hotel-section" style="display: none;">
       <div class="bs-section-header">
-        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6h14"/><path d="M4 14h16v7H4z"/>
-        </svg>
+        <span class="bs-section-icon" style="font-size: 20px; line-height: 1;">🏨</span>
         <span>Hotel Search</span>
         <button class="bs-action-btn bs-action-refresh" id="bs-refresh-hotel" title="Refresh results">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -348,13 +327,6 @@ function injectExtensionPanel() {
             <label class="bs-toggle-label" for="bs-hotel-external-links-toggle">Search Links</label>
             <label class="bs-toggle-switch">
               <input type="checkbox" id="bs-hotel-external-links-toggle">
-              <span class="bs-toggle-slider"></span>
-            </label>
-          </div>
-          <div class="bs-auto-reload-toggle">
-            <label class="bs-toggle-label" for="bs-hotel-benefits-toggle">Hotel Benefits</label>
-            <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-hotel-benefits-toggle">
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
@@ -441,227 +413,6 @@ function injectExtensionPanel() {
           GHA
         </button>
       </div>
-
-      <!-- Hotel Benefits Subsection -->
-      <div class="bs-hotel-subsection" id="bs-hotel-benefits-section" style="display: none;">
-        <div class="bs-hotel-benefits-content">
-          <div class="bs-subsection-header">
-            <div class="bs-subsection-header-content">
-              <svg class="bs-subsection-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-              <div>
-                <h3>Hotel Benefits</h3>
-                <p class="bs-subsection-description">Compare hotel loyalty program benefits and status levels</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="bs-hotel-benefits-container">
-            <!-- Filter Bar -->
-            <div class="bs-hotel-benefits-filter-bar">
-              <div class="bs-hotel-benefits-filter-header">
-                <h4>Hotel Benefits Management</h4>
-                <div class="bs-hotel-benefits-filter-actions">
-                  <button type="button" class="bs-hotel-benefits-btn" id="bs-hotel-benefits-favorites-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                    </svg>
-                    <span>Show Favorites</span>
-                  </button>
-                  <button type="button" class="bs-hotel-benefits-btn" id="bs-hotel-benefits-status-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polyline points="6 9 12 15 18 9"/>
-                    </svg>
-                    <span>Show Status</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Search Bar -->
-              <div class="bs-hotel-benefits-search">
-                <div class="bs-input-wrapper">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="m21 21-4.35-4.35"/>
-                  </svg>
-                  <input type="text" id="bs-hotel-benefits-search" placeholder="Search benefits (e.g., 'suite', 'breakfast', 'lounge')...">
-                  <button type="button" class="bs-hotel-benefits-clear-search" id="bs-hotel-benefits-clear-search" style="display: none;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <line x1="18" y1="6" x2="6" y2="18"/>
-                      <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Quick Filter Buttons -->
-              <div class="bs-hotel-benefits-quick-filters" id="bs-hotel-benefits-quick-filters">
-                <!-- Quick filter buttons will be populated by JavaScript -->
-              </div>
-
-              <!-- Status Level Selectors (collapsible) -->
-              <div class="bs-hotel-benefits-status-section" id="bs-hotel-benefits-status-section" style="display: none;">
-                <h5>Set Current Status Levels</h5>
-                <div class="bs-hotel-benefits-status-grid" id="bs-hotel-benefits-status-grid">
-                  <!-- Status selectors will be populated by JavaScript -->
-                </div>
-              </div>
-            </div>
-
-            <!-- Benefits Table -->
-            <div class="bs-hotel-benefits-table-container" id="bs-hotel-benefits-table-container">
-              <!-- Benefits table will be populated by JavaScript -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Search Section -->
-    <div class="bs-section" id="bs-search-section" style="display: none;">
-      <div class="bs-section-header">
-        <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-        </svg>
-        <span>Search</span>
-      </div>
-      
-      <div class="bs-search-container">
-        <label for="bs-search-term">Search Term</label>
-        <input type="text" id="bs-search-term" placeholder="e.g., Hyatt, Amex Green..." />
-      </div>
-      
-      <div class="bs-buttons-grid">
-        <button class="bs-btn bs-btn-travel-news" data-service="travel-news">
-          Travel News
-        </button>
-        <button class="bs-btn bs-btn-hotel-points" data-service="hotel-points">
-          Hotel Points
-        </button>
-        <button class="bs-btn bs-btn-airline-miles" data-service="airline-miles">
-          Airline Miles
-        </button>
-        <button class="bs-btn bs-btn-credit-cards" data-service="credit-cards">
-          Credit Cards
-        </button>
-        <button class="bs-btn bs-btn-search-engine" data-service="search-engine">
-          Search Engine
-        </button>
-      </div>
-    </div>
-
-    <!-- Information Section -->
-    <div class="bs-section" id="bs-information-section" style="display: none;">
-        <div class="bs-section-header">
-          <svg class="bs-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 16v-4"/>
-            <path d="M12 8h.01"/>
-          </svg>
-          <span>Information</span>
-          <div class="bs-header-controls">
-            <div class="bs-auto-reload-toggle">
-              <label class="bs-toggle-label" for="bs-info-cards-toggle">My Credit Cards</label>
-              <label class="bs-toggle-switch">
-                <input type="checkbox" id="bs-info-cards-toggle" checked>
-                <span class="bs-toggle-slider"></span>
-              </label>
-            </div>
-            <div class="bs-auto-reload-toggle">
-              <label class="bs-toggle-label" for="bs-info-partners-toggle">Available Transfer Partners</label>
-              <label class="bs-toggle-switch">
-                <input type="checkbox" id="bs-info-partners-toggle" checked>
-                <span class="bs-toggle-slider"></span>
-              </label>
-            </div>
-            <div class="bs-auto-reload-toggle">
-              <label class="bs-toggle-label" for="bs-info-selected-toggle">Selected Cards</label>
-              <label class="bs-toggle-switch">
-                <input type="checkbox" id="bs-info-selected-toggle" checked>
-                <span class="bs-toggle-slider"></span>
-              </label>
-            </div>
-            <div class="bs-auto-reload-toggle">
-              <label class="bs-toggle-label" for="bs-info-points-toggle">Points Tracker</label>
-              <label class="bs-toggle-switch">
-                <input type="checkbox" id="bs-info-points-toggle" checked>
-                <span class="bs-toggle-slider"></span>
-              </label>
-            </div>
-            <div class="bs-header-actions">
-              <button class="bs-action-btn bs-action-save" id="bs-save-information" title="Save information data">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              </button>
-              <button class="bs-action-btn bs-action-reset" id="bs-reset-information" title="Reset information data">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-    
-          
-          <!-- Card Selection Panel -->
-          <div class="card-selection-panel" id="bs-info-cards-panel">
-            <div class="bs-section-header">
-              <h4>My Credit Cards <span class="card-count" id="total-cards-count">(Loading...)</span></h4>
-            </div>
-            <div class="bs-section-content">
-              <div class="card-selection-controls">
-                <input type="text" id="card-search-input" placeholder="Search cards..." class="card-search-input">
-              </div>
-              <div class="card-selection-grid" id="card-selection-grid">
-                <!-- Cards will be loaded here -->
-              </div>
-            </div>
-          </div>
-
-          <!-- Selected Cards Comparison -->
-          <div class="selected-cards-comparison" id="selected-cards-comparison">
-            <div class="selected-cards-grid" id="selected-cards-grid">
-              <!-- Selected cards comparison table will be displayed here -->
-            </div>
-          </div>
-
-          <!-- Results Display -->
-          <div class="results-display" id="results-display">
-
-              <!-- Available Transfer Partners -->
-              <div class="available-transfer-partners" id="available-transfer-partners">
-                <div class="partners-header">
-                  <h4>Available Transfer Partners (<span id="partners-count">0</span>)</h4>
-                  <div class="partners-search-controls">
-                    <input type="text" id="partners-search-input" placeholder="Search transfer partners..." class="partners-search-input">
-                    <select id="partners-type-filter" class="partners-type-filter">
-                      <option value="">All Types</option>
-                      <option value="Airline">Airlines</option>
-                      <option value="Hotel">Hotels</option>
-                    </select>
-                    <select id="partners-alliance-filter" class="partners-alliance-filter">
-                      <option value="">All Alliances</option>
-                      <option value="Star Alliance">Star Alliance</option>
-                      <option value="SkyTeam">SkyTeam</option>
-                      <option value="Oneworld">Oneworld</option>
-                      <option value="None">No Alliance</option>
-                    </select>
-                  </div>
-                </div>
-              <div class="partners-content" id="partners-content">
-                <!-- Filtered transfer partners will be displayed here -->
-              </div>
-            </div>
-          </div>
-
-                  </div>
-                </div>
-              </div>
-
     </div>
 
     <!-- Calculation Section - REMOVED -->
@@ -740,8 +491,6 @@ function injectExtensionPanel() {
     initializeAirportAutocomplete();
     // Initialize transfer partners tooltip
     initializeTransferPartnersTooltip();
-    // Initialize Information section content
-    initializeInformationContent();
     // Initialize credit card multipliers
     initializeCreditCardMultipliers();
     // Initialize calculation section
@@ -753,15 +502,11 @@ function injectExtensionPanel() {
 function saveToggleStates() {
   const flightToggle = document.getElementById('bs-flight-toggle');
   const hotelToggle = document.getElementById('bs-hotel-toggle');
-  const searchToggle = document.getElementById('bs-search-toggle');
-  const informationToggle = document.getElementById('bs-information-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   
   const toggleStates = {
     flight: flightToggle ? flightToggle.checked : false,
     hotel: hotelToggle ? hotelToggle.checked : false,
-    search: searchToggle ? searchToggle.checked : false,
-    information: informationToggle ? informationToggle.checked : false,
     settings: settingsToggle ? settingsToggle.checked : false
   };
   
@@ -796,13 +541,9 @@ function loadToggleStates() {
 function applyToggleStates(toggleStates) {
   const flightToggle = document.getElementById('bs-flight-toggle');
   const hotelToggle = document.getElementById('bs-hotel-toggle');
-  const searchToggle = document.getElementById('bs-search-toggle');
-  const informationToggle = document.getElementById('bs-information-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   const flightSection = document.getElementById('bs-flight-section');
   const hotelSection = document.getElementById('bs-hotel-section');
-  const searchSection = document.getElementById('bs-search-section');
-  const informationSection = document.getElementById('bs-information-section');
   const settingsSection = document.getElementById('bs-settings-section');
   
   // Apply flight toggle state
@@ -818,17 +559,6 @@ function applyToggleStates(toggleStates) {
   }
   
   // Apply search toggle state
-  if (searchToggle && searchSection) {
-    searchToggle.checked = toggleStates.search;
-    searchSection.style.display = toggleStates.search ? 'block' : 'none';
-  }
-  
-  // Apply information toggle state
-  if (informationToggle && informationSection) {
-    informationToggle.checked = toggleStates.information;
-    informationSection.style.display = toggleStates.information ? 'block' : 'none';
-  }
-  
   // Apply calculation toggle state
   // Also check for total calculator, rovemiles, hyatt calculator, and hilton calculator toggles
   const totalCalculatorToggle = document.getElementById('bs-total-calculator-toggle');
@@ -846,9 +576,161 @@ function applyToggleStates(toggleStates) {
   }
 }
 
+// Initialize drag and drop for buttons
+function initializeButtonDragAndDrop() {
+  // Initialize flight buttons drag and drop
+  const flightButtonsContainer = document.getElementById('bs-external-links');
+  if (flightButtonsContainer) {
+    setupDragAndDrop(flightButtonsContainer, 'bs-flight-buttons-order');
+    restoreButtonOrder(flightButtonsContainer, 'bs-flight-buttons-order');
+  }
+  
+  // Initialize hotel buttons drag and drop
+  const hotelButtonsContainer = document.getElementById('bs-hotel-external-links');
+  if (hotelButtonsContainer) {
+    setupDragAndDrop(hotelButtonsContainer, 'bs-hotel-buttons-order');
+    restoreButtonOrder(hotelButtonsContainer, 'bs-hotel-buttons-order');
+  }
+}
+
+// Setup drag and drop for a button container
+function setupDragAndDrop(container, storageKey) {
+  const buttons = container.querySelectorAll('.bs-btn[data-service]');
+  let draggedElement = null;
+  
+  buttons.forEach(button => {
+    // Skip hidden buttons (seatmap buttons)
+    if (button.style.display === 'none') {
+      return;
+    }
+    
+    button.draggable = true;
+    button.classList.add('bs-draggable-btn');
+    
+    button.addEventListener('dragstart', (e) => {
+      draggedElement = button;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', button.dataset.service);
+      button.classList.add('bs-dragging');
+      setTimeout(() => {
+        button.style.display = 'none';
+      }, 0);
+    });
+    
+    button.addEventListener('dragend', (e) => {
+      if (draggedElement) {
+        draggedElement.style.display = '';
+        draggedElement.classList.remove('bs-dragging');
+        draggedElement = null;
+      }
+      // Remove all drag-over classes
+      container.querySelectorAll('.bs-drag-over').forEach(el => {
+        el.classList.remove('bs-drag-over');
+      });
+    });
+    
+    button.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      
+      if (!draggedElement || button === draggedElement) {
+        return;
+      }
+      
+      const rect = button.getBoundingClientRect();
+      const next = (e.clientY - rect.top) / (rect.bottom - rect.top) > 0.5;
+      
+      if (next) {
+        container.insertBefore(draggedElement, button.nextSibling);
+      } else {
+        container.insertBefore(draggedElement, button);
+      }
+      
+      // Add visual feedback
+      button.classList.add('bs-drag-over');
+    });
+    
+    button.addEventListener('dragleave', (e) => {
+      button.classList.remove('bs-drag-over');
+    });
+    
+    button.addEventListener('drop', (e) => {
+      e.preventDefault();
+      button.classList.remove('bs-drag-over');
+      
+      // Save the new order
+      saveButtonOrder(container, storageKey);
+    });
+  });
+}
+
+
+// Save button order to localStorage
+function saveButtonOrder(container, storageKey) {
+  const buttons = container.querySelectorAll('.bs-btn[data-service]');
+  const order = Array.from(buttons)
+    .filter(btn => btn.style.display !== 'none')
+    .map(btn => btn.dataset.service);
+  
+  localStorage.setItem(storageKey, JSON.stringify(order));
+  console.log(`Saved button order for ${storageKey}:`, order);
+}
+
+// Restore button order from localStorage
+function restoreButtonOrder(container, storageKey) {
+  const savedOrder = localStorage.getItem(storageKey);
+  if (!savedOrder) {
+    return; // No saved order, use default
+  }
+  
+  try {
+    const order = JSON.parse(savedOrder);
+    const buttons = container.querySelectorAll('.bs-btn[data-service]');
+    const buttonMap = new Map();
+    const hiddenButtons = [];
+    
+    // Create a map of service -> button and collect hidden buttons
+    buttons.forEach(btn => {
+      if (btn.dataset.service) {
+        if (btn.style.display === 'none') {
+          hiddenButtons.push(btn);
+        } else {
+          buttonMap.set(btn.dataset.service, btn);
+        }
+      }
+    });
+    
+    // Reorder visible buttons based on saved order
+    order.forEach(service => {
+      const button = buttonMap.get(service);
+      if (button) {
+        container.appendChild(button);
+        buttonMap.delete(service); // Remove from map to track which ones were moved
+      }
+    });
+    
+    // Append any remaining visible buttons that weren't in the saved order
+    buttonMap.forEach(button => {
+      container.appendChild(button);
+    });
+    
+    // Append hidden buttons at the end
+    hiddenButtons.forEach(button => {
+      container.appendChild(button);
+    });
+    
+    console.log(`Restored button order for ${storageKey}:`, order);
+  } catch (e) {
+    console.error(`Error restoring button order for ${storageKey}:`, e);
+  }
+}
+
 // Initialize all event listeners
 function initializeEventListeners() {
   console.log('=== INITIALIZING EVENT LISTENERS ===');
+  
+  // Initialize drag and drop for buttons
+  initializeButtonDragAndDrop();
   
   // Flight "Open All" button in header
   const flightOpenAllBtn = document.getElementById('bs-flight-open-all');
@@ -902,26 +784,6 @@ function initializeEventListeners() {
     });
   }
 
-  // Hotel Benefits Toggle
-  const hotelBenefitsToggle = document.getElementById('bs-hotel-benefits-toggle');
-  const hotelBenefitsSection = document.getElementById('bs-hotel-benefits-section');
-  if (hotelBenefitsToggle && hotelBenefitsSection) {
-    const savedHotelBenefits = localStorage.getItem('bs-hotel-benefits-enabled');
-    if (savedHotelBenefits !== null) hotelBenefitsToggle.checked = savedHotelBenefits === 'true';
-    hotelBenefitsSection.style.display = hotelBenefitsToggle.checked ? '' : 'none';
-    hotelBenefitsToggle.addEventListener('change', () => {
-      localStorage.setItem('bs-hotel-benefits-enabled', hotelBenefitsToggle.checked);
-      hotelBenefitsSection.style.display = hotelBenefitsToggle.checked ? '' : 'none';
-      if (hotelBenefitsToggle.checked) {
-        initializeHotelBenefits();
-      }
-    });
-    // Initialize if already enabled
-    if (hotelBenefitsToggle.checked) {
-      initializeHotelBenefits();
-    }
-  }
-  
   // Hotel auto-reload setup
   setupHotelInputAutoReload();
   
@@ -941,37 +803,23 @@ function initializeEventListeners() {
     btn.addEventListener('click', handler, { capture: true, once: false });
   });
   
-  // Search buttons
-  const searchButtons = document.querySelectorAll('#bs-search-section .bs-btn');
-  searchButtons.forEach(btn => {
-    btn.addEventListener('click', handleSearchButtonClick);
-  });
-  
   // Section toggle functionality
   const flightToggle = document.getElementById('bs-flight-toggle');
   const hotelToggle = document.getElementById('bs-hotel-toggle');
-  const searchToggle = document.getElementById('bs-search-toggle');
-  const informationToggle = document.getElementById('bs-information-toggle');
   const settingsToggle = document.getElementById('bs-settings-toggle');
   const flightSection = document.getElementById('bs-flight-section');
   const hotelSection = document.getElementById('bs-hotel-section');
-  const searchSection = document.getElementById('bs-search-section');
-  const informationSection = document.getElementById('bs-information-section');
   const settingsSection = document.getElementById('bs-settings-section');
   
   console.log('Toggle elements found:', {
     flightToggle: !!flightToggle,
     hotelToggle: !!hotelToggle,
-    searchToggle: !!searchToggle,
-    informationToggle: !!informationToggle,
     settingsToggle: !!settingsToggle
   });
   
   console.log('Section elements found:', {
     flightSection: !!flightSection,
     hotelSection: !!hotelSection,
-    searchSection: !!searchSection,
-    informationSection: !!informationSection,
     settingsSection: !!settingsSection
   });
   
@@ -997,48 +845,6 @@ function initializeEventListeners() {
     });
   }
   
-  if (searchToggle && searchSection) {
-    searchToggle.addEventListener('change', () => {
-      if (searchToggle.checked) {
-        searchSection.style.display = 'block';
-      } else {
-        searchSection.style.display = 'none';
-      }
-      saveToggleStates();
-    });
-  }
-  
-  if (informationToggle && informationSection) {
-    console.log('Setting up Information toggle event listener...');
-    informationToggle.addEventListener('change', () => {
-      console.log('Information toggle changed:', informationToggle.checked);
-      if (informationToggle.checked) {
-        informationSection.style.display = 'block';
-        console.log('Information section shown');
-      } else {
-        informationSection.style.display = 'none';
-        console.log('Information section hidden');
-      }
-      saveToggleStates();
-    });
-    
-    // Also add click handler as backup
-    informationToggle.addEventListener('click', () => {
-      console.log('Information toggle clicked');
-      setTimeout(() => {
-        if (informationToggle.checked) {
-          informationSection.style.display = 'block';
-          console.log('Information section shown via click');
-        } else {
-          informationSection.style.display = 'none';
-          console.log('Information section hidden via click');
-        }
-      }, 10);
-    });
-  } else {
-    console.log('Information toggle or section not found:', { informationToggle, informationSection });
-  }
-
   // Calculation section toggle - Total Calculator sub-toggle
   const totalCalculatorToggle = document.getElementById('bs-total-calculator-toggle');
   const totalCalculatorSection = document.getElementById('bs-total-calculator-section');
@@ -1373,6 +1179,24 @@ function initializeEventListeners() {
       fromInput.value = toInput.value;
       toInput.value = temp;
       
+      // Swap airport data if available
+      const tempData = fromInput.dataset.airportData;
+      if (toInput.dataset.airportData) {
+        fromInput.dataset.airportData = toInput.dataset.airportData;
+      } else {
+        delete fromInput.dataset.airportData;
+      }
+      if (tempData) {
+        toInput.dataset.airportData = tempData;
+      } else {
+        delete toInput.dataset.airportData;
+      }
+      
+      // Sync hotel city from new "To" destination
+      setTimeout(() => {
+        syncHotelCityFromFlight();
+      }, 100);
+      
       // Add animation
       switchBtn.classList.add('bs-switch-rotate');
       setTimeout(() => {
@@ -1599,6 +1423,189 @@ function setupFlightInputAutoReload() {
 
   // Sync Flight Search Cabin to Award Flight Analysis Filter
   syncCabinToAwardFilter();
+  
+  // Sync hotel city from flight "To" destination
+  setupHotelCitySync();
+  
+  // Sync hotel check-in and check-out dates from flight dates
+  setupHotelDateSync();
+}
+
+// Sync hotel city from flight "To" destination
+function setupHotelCitySync() {
+  const toInput = document.getElementById('bs-flight-to');
+  const hotelCityInput = document.getElementById('bs-hotel-city');
+  
+  if (!toInput || !hotelCityInput) {
+    return;
+  }
+  
+  // Listen for changes to flight "To" input
+  toInput.addEventListener('change', function() {
+    console.log('Flight "To" destination changed, syncing hotel city');
+    syncHotelCityFromFlight();
+  });
+  
+  // Also listen for input events (for autocomplete selection)
+  toInput.addEventListener('input', function() {
+    // Use a small delay to allow autocomplete to set the airportData
+    setTimeout(() => {
+      syncHotelCityFromFlight();
+    }, 100);
+  });
+  
+  // Sync on initial load if "To" input already has a value
+  if (toInput.value || toInput.dataset.airportData) {
+    setTimeout(() => {
+      syncHotelCityFromFlight();
+    }, 200);
+  }
+}
+
+// Function to sync hotel city from flight "To" destination
+function syncHotelCityFromFlight() {
+  const toInput = document.getElementById('bs-flight-to');
+  const hotelCityInput = document.getElementById('bs-hotel-city');
+  
+  if (!toInput || !hotelCityInput) {
+    return;
+  }
+  
+  // Try to get city from airport data first (set by autocomplete)
+  const toAirportData = toInput.dataset.airportData;
+  
+  if (toAirportData) {
+    try {
+      const airport = JSON.parse(toAirportData);
+      const cityName = airport.city || '';
+      
+      if (cityName) {
+        hotelCityInput.value = cityName;
+        // Trigger change event to update any dependent logic
+        hotelCityInput.dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('Hotel city synced from flight destination:', cityName);
+        return;
+      }
+    } catch (e) {
+      console.error('Error parsing airport data for city sync:', e);
+    }
+  }
+  
+  // Try to extract city name from input value if it's in format "City (IATA)"
+  const inputValue = toInput.value?.trim() || '';
+  const cityMatch = inputValue.match(/^(.+?)\s*\([A-Z]{3}\)$/);
+  if (cityMatch) {
+    const cityName = cityMatch[1].trim();
+    if (cityName) {
+      hotelCityInput.value = cityName;
+      hotelCityInput.dispatchEvent(new Event('change', { bubbles: true }));
+      console.log('Hotel city synced from flight destination (parsed from input):', cityName);
+      return;
+    }
+  }
+}
+
+// Sync hotel check-in and check-out dates from flight depart and return dates
+function setupHotelDateSync() {
+  const departInput = document.getElementById('bs-flight-depart');
+  const returnInput = document.getElementById('bs-flight-return');
+  const checkinInput = document.getElementById('bs-hotel-checkin');
+  const checkoutInput = document.getElementById('bs-hotel-checkout');
+  
+  if (!departInput || !checkinInput || !checkoutInput) {
+    return;
+  }
+  
+  // Listen for changes to flight depart date
+  departInput.addEventListener('change', function() {
+    console.log('Flight depart date changed, syncing hotel dates');
+    syncHotelDatesFromFlight();
+  });
+  
+  // Listen for changes to flight return date
+  if (returnInput) {
+    returnInput.addEventListener('change', function() {
+      console.log('Flight return date changed, syncing hotel dates');
+      syncHotelDatesFromFlight();
+    });
+  }
+  
+  // Also listen for input events
+  departInput.addEventListener('input', function() {
+    setTimeout(() => {
+      syncHotelDatesFromFlight();
+    }, 100);
+  });
+  
+  if (returnInput) {
+    returnInput.addEventListener('input', function() {
+      setTimeout(() => {
+        syncHotelDatesFromFlight();
+      }, 100);
+    });
+  }
+  
+  // Sync on initial load if dates are already set
+  if (departInput.value || (returnInput && returnInput.value)) {
+    setTimeout(() => {
+      syncHotelDatesFromFlight();
+    }, 200);
+  }
+}
+
+// Helper function to check if checkout date matches check-in + 1 day (auto-calculated)
+function isCheckoutAutoCalculated(checkinDateString, checkoutDateString) {
+  if (!checkinDateString || !checkoutDateString) return false;
+  
+  try {
+    const checkinDate = new Date(checkinDateString);
+    const checkoutDate = new Date(checkoutDateString);
+    const expectedCheckout = new Date(checkinDate);
+    expectedCheckout.setDate(expectedCheckout.getDate() + 1);
+    
+    // Compare dates (ignore time)
+    return checkoutDate.toISOString().split('T')[0] === expectedCheckout.toISOString().split('T')[0];
+  } catch (e) {
+    return false;
+  }
+}
+
+// Function to sync hotel check-in and check-out dates from flight depart and return dates
+function syncHotelDatesFromFlight() {
+  const departInput = document.getElementById('bs-flight-depart');
+  const returnInput = document.getElementById('bs-flight-return');
+  const checkinInput = document.getElementById('bs-hotel-checkin');
+  const checkoutInput = document.getElementById('bs-hotel-checkout');
+  
+  if (!departInput || !checkinInput || !checkoutInput) {
+    return;
+  }
+  
+  const departDate = departInput.value;
+  const returnDate = returnInput?.value || '';
+  
+  // Always update check-in date from depart date when depart date changes
+  if (departDate) {
+    checkinInput.value = departDate;
+    checkinInput.dispatchEvent(new Event('change', { bubbles: true }));
+    console.log('Hotel check-in date synced from flight depart date:', departDate);
+    
+    // Always update check-out date based on return date or check-in + 1 day
+    if (returnDate) {
+      // If return date exists, use return date for check-out
+      checkoutInput.value = returnDate;
+      checkoutInput.dispatchEvent(new Event('change', { bubbles: true }));
+      console.log('Hotel check-out date synced from flight return date:', returnDate);
+    } else {
+      // If no return date, set check-out to check-in + 1 day
+      const checkinDate = new Date(departDate);
+      checkinDate.setDate(checkinDate.getDate() + 1);
+      const checkoutDateString = checkinDate.toISOString().split('T')[0];
+      checkoutInput.value = checkoutDateString;
+      checkoutInput.dispatchEvent(new Event('change', { bubbles: true }));
+      console.log('Hotel check-out date synced to check-in + 1 day:', checkoutDateString);
+    }
+  }
 }
 
 // Sync Flight Search Cabin selection to Award Flight Analysis Filter
@@ -3210,6 +3217,20 @@ function restoreFlightData() {
     if (locationInput) locationInput.value = savedData.location;
   }
   
+  // Sync hotel city from flight "To" destination after restoring
+  if (savedData.to) {
+    setTimeout(() => {
+      syncHotelCityFromFlight();
+    }, 150);
+  }
+  
+  // Sync hotel dates from flight dates after restoring
+  if (savedData.depart || savedData.return) {
+    setTimeout(() => {
+      syncHotelDatesFromFlight();
+    }, 150);
+  }
+  
   if (savedData.airline) {
     // airline removed
   }
@@ -3366,21 +3387,6 @@ function generateFlightUrl(service, data) {
     'air-canada': ret
       ? `https://www.aircanada.com/aeroplan/redeem/availability/outbound?org0=${from}&dest0=${to}&org1=${to}&dest1=${from}&departureDate0=${depart}&departureDate1=${ret}&ADT=${adults}&YTH=0&CHD=0&INF=0&INS=0&lang=en-CA&tripType=R&marketCode=INT`
       : `https://www.aircanada.com/aeroplan/redeem/availability/outbound?org0=${from}&dest0=${to}&departureDate0=${depart}&ADT=${adults}&YTH=0&CHD=0&INF=0&INS=0&lang=en-CA&tripType=O&marketCode=INT`,
-    
-    'united': (() => {
-      // United FSR: one-way (tqp=A, tt=1, rm=1, act=0) vs round-trip (tqp=R, r=, sc=7,7, ct=0)
-      const cabinMap = { 'economy': '7', 'business': '2', 'first': '1' };
-      const scCode = cabinMap[cabin] || '7';
-      const px = `${adults},0,0,0,0,0,0,0`;
-      const editId = typeof crypto !== 'undefined' && crypto.randomUUID
-        ? crypto.randomUUID().toUpperCase()
-        : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => ((c === 'x' ? Math.random() * 16 : (Math.random() * 4 + 8)) | 0).toString(16).toUpperCase());
-      if (ret) {
-        const sc = `${scCode},${scCode}`;
-        return `https://www.united.com/en/us/fsr/choose-flights?f=${from}&t=${to}&d=${depart}&r=${ret}&sc=${encodeURIComponent(sc)}&st=bestmatches&cbm=-1&cbm2=-1&ft=0&cp=0&ct=0&px=${encodeURIComponent(px)}&taxng=1&clm=7&EditSearchCartId=${editId}&tqp=R`;
-      }
-      return `https://www.united.com/en/us/fsr/choose-flights?f=${from}&t=${to}&d=${depart}&sc=${scCode}&st=bestmatches&cbm=-1&cbm2=-1&ft=0&cp=0&tt=1&at=${adults}&rm=1&act=0&px=${encodeURIComponent(px)}&taxng=1&clm=7&EditSearchCartId=${editId}&tqp=A`;
-    })(),
     
     'rovemiles': `https://www.rovemiles.com/search/flights?origin=${from}&destination=${to}&cabin=${cabin}&adults=${adults}&children=0&infants=0&payment=miles&start_date=${depart}`,
     
@@ -4672,40 +4678,8 @@ function displayRovemilesResults(results) {
 }
 
 // Initialize airport autocomplete
-function initializeAirportAutocomplete() {
-  // Wait for airport data service to be available
-  const initAutocomplete = () => {
-    if (!window.airportDataService) {
-      setTimeout(initAutocomplete, 100);
-      return;
-    }
-
-    // Find airport input fields
-    const fromInput = document.getElementById('bs-flight-from');
-    const toInput = document.getElementById('bs-flight-to');
-
-    if (fromInput && !fromInput.dataset.autocompleteInitialized) {
-      new AirportAutocomplete(fromInput, {
-        maxResults: 8,
-        minQueryLength: 1
-      });
-      fromInput.dataset.autocompleteInitialized = 'true';
-      console.log('Airport autocomplete initialized for FROM input');
-    }
-
-    if (toInput && !toInput.dataset.autocompleteInitialized) {
-      new AirportAutocomplete(toInput, {
-        maxResults: 8,
-        minQueryLength: 1
-      });
-      toInput.dataset.autocompleteInitialized = 'true';
-      console.log('Airport autocomplete initialized for TO input');
-    }
-  };
-
-  // Start initialization
-  initAutocomplete();
-}
+// initializeAirportAutocomplete is now provided by AIRPORT_AUTOCOMPLETE_COMPLETE.js
+// The function is defined globally in that file and will be called from setupObserver
 
 // Initialize Hyatt Calculator
 function initializeHyattCalculator() {
@@ -5404,34 +5378,9 @@ const HotelStatusLevelsService = {
   }
 };
 
-// Initialize Hotel Benefits
-function initializeHotelBenefits() {
-  const benefitsSection = document.getElementById('bs-hotel-benefits-section');
-  if (!benefitsSection) return;
+// Initialize Hotel Benefits - REMOVED
 
-  // Get current level for a hotel program from Supabase
-  async function getCurrentLevel(hotelId) {
-    try {
-      const data = await HotelStatusLevelsService.getByProgramId(hotelId);
-      return data?.current_level || 1;
-    } catch (error) {
-      console.error('Error getting current level:', error);
-      return 1;
-    }
-  }
-
-  // Get validity date for a hotel program from Supabase
-  async function getValidityDate(hotelId) {
-    try {
-      const data = await HotelStatusLevelsService.getByProgramId(hotelId);
-      return data?.valid_until || null;
-    } catch (error) {
-      console.error('Error getting validity date:', error);
-      return null;
-    }
-  }
-
-  // Update status level in Supabase
+// Wait for page to be fully loaded before initializing
   async function updateStatus(hotelId, newLevel) {
     try {
       const program = HOTEL_PROGRAMS.find(p => p.id === hotelId);
@@ -5989,10 +5938,6 @@ function initializeHotelBenefits() {
       }
     });
   }
-
-  // Initial render - load data from Supabase first
-  loadHotelStatuses();
-}
 
 // Wait for page to be fully loaded before initializing
 function waitForPageFullyLoaded() {
