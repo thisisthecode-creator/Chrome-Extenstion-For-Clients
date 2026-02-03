@@ -31,8 +31,6 @@
         "lib/baggageCosts.js",
         "lib/seatsAeroClient.js",
         "lib/lufthansaClient.js",
-        "lib/currencies.js",
-        "lib/currency-converter.js",
         "content.js",
         "flight-details-injector.js"
       ],

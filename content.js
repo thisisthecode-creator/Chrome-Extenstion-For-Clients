@@ -112,6 +112,13 @@ function injectExtensionPanel() {
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
+          <div class="bs-auto-reload-toggle">
+            <label class="bs-toggle-label" for="bs-flight-nonstop">Nonstop</label>
+            <label class="bs-toggle-switch">
+              <input type="checkbox" id="bs-flight-nonstop" title="Add nonstop filter to Google Flights">
+              <span class="bs-toggle-slider"></span>
+            </label>
+          </div>
           <div class="bs-header-actions">
             <button class="bs-action-btn bs-action-save" id="bs-save-flight" title="Save flight data">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -369,39 +376,6 @@ function injectExtensionPanel() {
       <div class="bs-settings-content">
         <div class="bs-settings-compact">
           <div class="bs-settings-row">
-            <div class="bs-settings-item">
-              <label>Language</label>
-              <select id="bs-flight-language">
-                <option value="en">English</option>
-                <option value="de">Deutsch</option>
-                <option value="fr">Français</option>
-                <option value="es">Español</option>
-                <option value="it">Italiano</option>
-                <option value="pl">Polski</option>
-              </select>
-            </div>
-            <div class="bs-settings-item">
-              <label>Currency</label>
-              <select id="bs-flight-currency">
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-                <option value="CHF">CHF</option>
-                <option value="PLN">PLN</option>
-              </select>
-            </div>
-            <div class="bs-settings-item">
-              <label>Location</label>
-              <select id="bs-flight-location">
-                <option value="US">United States</option>
-                <option value="DE">Germany</option>
-                <option value="GB">United Kingdom</option>
-                <option value="FR">France</option>
-                <option value="AT">Austria</option>
-                <option value="CH">Switzerland</option>
-                <option value="PL">Poland</option>
-              </select>
-            </div>
             <div class="bs-settings-item bs-settings-item-api-key">
               <label for="bs-seatsaero-api-key">Seats.aero API Key</label>
               <div class="bs-settings-input-row">
@@ -708,6 +682,16 @@ function initializeEventListeners() {
     linksToggle.addEventListener('change', () => {
       localStorage.setItem('bs-external-links-enabled', linksToggle.checked);
       linksContainer.style.display = linksToggle.checked ? '' : 'none';
+    });
+  }
+
+  // Nonstop toggle (Google Flights): persist state
+  const nonstopToggle = document.getElementById('bs-flight-nonstop');
+  if (nonstopToggle) {
+    const savedNonstop = localStorage.getItem('bs-flight-nonstop-enabled');
+    if (savedNonstop !== null) nonstopToggle.checked = savedNonstop === 'true';
+    nonstopToggle.addEventListener('change', () => {
+      localStorage.setItem('bs-flight-nonstop-enabled', nonstopToggle.checked);
     });
   }
 
@@ -2363,14 +2347,14 @@ function restoreFlightData() {
     if (languageInput) languageInput.value = savedData.language;
   }
   
-  if (savedData.currency) {
-    const currencyInput = document.getElementById('bs-flight-currency');
-    if (currencyInput) currencyInput.value = savedData.currency;
-  }
-  
   if (savedData.location) {
     const locationInput = document.getElementById('bs-flight-location');
     if (locationInput) locationInput.value = savedData.location;
+  }
+  
+  if (typeof savedData.nonstop === 'boolean') {
+    const nonstopInput = document.getElementById('bs-flight-nonstop');
+    if (nonstopInput) nonstopInput.checked = savedData.nonstop;
   }
   
   // Sync hotel city from flight "To" destination after restoring
@@ -2490,8 +2474,9 @@ function getFlightInputData() {
     cabin: document.getElementById('bs-flight-cabin')?.value || 'economy',
     adults: parseInt(document.getElementById('bs-flight-adults')?.value || '1', 10),
     language: document.getElementById('bs-flight-language')?.value || 'en',
-    currency: document.getElementById('bs-flight-currency')?.value || 'USD',
-    location: document.getElementById('bs-flight-location')?.value || 'US'
+    currency: 'USD',
+    location: document.getElementById('bs-flight-location')?.value || 'US',
+    nonstop: document.getElementById('bs-flight-nonstop')?.checked || false
   };
 }
 
@@ -2519,7 +2504,7 @@ function validateHotelData(data) {
 
 // Generate flight URLs
 function generateFlightUrl(service, data) {
-  const { from, to, depart, return: ret, cabin, adults, language, currency, location } = data;
+  const { from, to, depart, return: ret, cabin, adults, language, currency, location, nonstop } = data;
   
   // Format dates for different services
   const skyscannerDate = depart.replace(/-/g, '');
@@ -2533,8 +2518,10 @@ function generateFlightUrl(service, data) {
   const departTimestamp = Math.floor(new Date(depart).getTime() / 1000);
   const returnTimestamp = ret ? Math.floor(new Date(ret).getTime() / 1000) : departTimestamp;
   
-  // Build Google Flights URL
-  const googleFlightsUrl = `https://www.google.com/travel/flights/search?q=flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+${cabin}+class&hl=${language}&curr=${currency}&gl=${location}&tfu=EgYIABAAGAA`;
+  // Build Google Flights URL (q= format); add +nonstop when Nonstop toggle is on
+  const qBase = `flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+${cabin}+class`;
+  const qWithNonstop = nonstop ? qBase + '+nonstop' : qBase;
+  const googleFlightsUrl = `https://www.google.com/travel/flights/search?q=${qWithNonstop}&hl=${language}&curr=${currency}&gl=${location}&tfu=EgYIABAAGAA`;
   
   const urls = {
     'google-flights': googleFlightsUrl,
@@ -3035,6 +3022,11 @@ function initializeCollapsible() {
 }
 
 
+// Remove Google Flights footer (class plvncb) so it cannot be changed or used
+function removePlvncbFooter() {
+  document.querySelectorAll('.plvncb').forEach(el => { try { el.remove(); } catch (_) {} });
+}
+
 // Setup observer to inject panel when page loads
 function setupObserver() {
   // Try multiple times with different delays
@@ -3042,14 +3034,19 @@ function setupObserver() {
   delays.forEach(delay => {
     setTimeout(() => injectExtensionPanel(), delay);
   });
-  
+
+  // Remove Google Flights footer immediately and after delays (in case it's added later)
+  removePlvncbFooter();
+  [200, 1000, 3000].forEach(delay => setTimeout(removePlvncbFooter, delay));
+
   // Watch for DOM changes
   const observer = new MutationObserver(() => {
     if (!document.querySelector('.bs-extension-panel')) {
       injectExtensionPanel();
     }
+    removePlvncbFooter();
   });
-  
+
   observer.observe(document.body, {
     childList: true,
     subtree: true
@@ -3281,7 +3278,6 @@ async function updateHistoricalData(programName) {
 function initializeTotalCalculator() {
   const form = document.getElementById('bs-total-calculator-form');
   const resetBtn = document.getElementById('bs-calc-reset');
-  const currencyBtn = document.querySelector('.bs-btn-currency');
   const programSelect = document.getElementById('bs-calc-program');
 
   if (!form) return;
@@ -3313,21 +3309,7 @@ function initializeTotalCalculator() {
     }
   }
 
-  // Initialize Currency Converter button
-  if (currencyBtn) {
-    currencyBtn.addEventListener('click', () => {
-      if (window.currencyConverter) {
-        window.currencyConverter.open();
-      } else if (window.initializeCurrencyConverter) {
-        window.initializeCurrencyConverter();
-        setTimeout(() => {
-          if (window.currencyConverter) {
-            window.currencyConverter.open();
-          }
-        }, 100);
-      }
-    });
-  }
+  // Currency Converter removed – all calculations use USD only
 }
 
 // Calculate Total Value

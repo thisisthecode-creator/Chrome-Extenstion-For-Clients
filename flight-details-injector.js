@@ -4,32 +4,28 @@
 console.log("Flight Details Injector loaded")
 
 // ---------------- Seats.aero helpers ----------------
+// All calculations use USD only; no currency selector.
 function getUserCurrency() {
-  const select = document.getElementById('bs-flight-currency')
-  if (select && select.value) return select.value
-  try {
-    const saved = JSON.parse(localStorage.getItem('bs-extension-flight-data') || '{}')
-    if (saved && saved.currency) return saved.currency
-  } catch (e) {}
   return 'USD'
 }
 
-const fxRates = {
+// Fixed conversion to USD only (units per 1 USD). Used when taxes/price are in other currency.
+const FIXED_UNITS_PER_USD = {
   USD: 1,
-  EUR: 0.92,
+  EUR: 0.84,
   CAD: 1.36,
-  GBP: 0.78,
-  CHF: 0.90,
-  PLN: 4.00
+  GBP: 0.73,
+  CHF: 0.78,
+  PLN: 3.56
 }
 
 function convertAmount(amountMinor, fromCurrency, toCurrency) {
   if (!fromCurrency || !toCurrency || fromCurrency === toCurrency) return amountMinor
-  const from = fxRates[fromCurrency] || 1
-  const to = fxRates[toCurrency] || 1
+  if (toCurrency !== 'USD') return amountMinor
+  const perUsd = FIXED_UNITS_PER_USD[fromCurrency] || 1
   const amountMajor = amountMinor / 100
-  const usd = amountMajor / from
-  return Math.round((usd * to) * 100)
+  const usdMajor = amountMajor / perUsd
+  return Math.round(usdMajor * 100)
 }
 
 function formatMinor(amountMinor, currency) {
@@ -3122,12 +3118,16 @@ function extractAndFillPriceFromGoogleFlights() {
       const firstTopFlight = topFlightCards[0]
       console.log('[BS Extension] Found top flight card with class U3gSDe ETvUZc')
       
-      // Look for price elements within this first top flight card
+      // Look for price elements within this first top flight card (USD or EUR)
       const priceSelectors = [
         'span[aria-label*="dollars"]',
         'span[aria-label*="US dollars"]',
+        'span[aria-label*="euro"]',
+        'span[aria-label*="EUR"]',
         '.YMlIz.FpEdX.jLMuyc span[aria-label*="dollars"]',
+        '.YMlIz.FpEdX.jLMuyc span[aria-label*="euro"]',
         'div.YMlIz.FpEdX.jLMuyc span[aria-label*="dollars"]',
+        'div.YMlIz.FpEdX.jLMuyc span[aria-label*="euro"]',
         '.YMlIz.FpEdX.jLMuyc',
         'div.YMlIz.FpEdX.jLMuyc'
       ]
@@ -3137,7 +3137,7 @@ function extractAndFillPriceFromGoogleFlights() {
         if (priceEl) {
           // If it's a div, check for span inside
           if (priceEl.tagName === 'DIV' || priceEl.classList.contains('YMlIz')) {
-            const spanInside = priceEl.querySelector('span[aria-label*="dollars"]')
+            const spanInside = priceEl.querySelector('span[aria-label*="dollars"], span[aria-label*="euro"], span[aria-label*="EUR"]')
             if (spanInside) {
               priceElement = spanInside
               console.log('[BS Extension] Found price span inside div in first top flight')
@@ -3160,14 +3160,16 @@ function extractAndFillPriceFromGoogleFlights() {
     // Fallback: Try multiple selectors to find the price element (original logic)
     if (!priceElement) {
       const selectors = [
-        // First try to find span inside div (most specific pattern)
+        // First try to find span inside div (most specific pattern) – USD or EUR
         '.YMlIz.FpEdX.jLMuyc span[aria-label*="dollars"]',
+        '.YMlIz.FpEdX.jLMuyc span[aria-label*="euro"]',
         'div.YMlIz.FpEdX.jLMuyc span[aria-label*="dollars"]',
+        'div.YMlIz.FpEdX.jLMuyc span[aria-label*="euro"]',
         '.YMlIz.FpEdX.jLMuyc span[aria-label*="US dollars"]',
         'div.YMlIz.FpEdX.jLMuyc span[aria-label*="US dollars"]',
         // Specific pattern with data-gs and aria-label
         'span[data-gs][aria-label*="dollars"]',
-        'span[data-gs][aria-label*="US dollars"]',
+        'span[data-gs][aria-label*="euro"]',
         // Original selectors (div containers)
         '.YMlIz.FpEdX.jLMuyc',
         'div.YMlIz.FpEdX.jLMuyc',
@@ -3175,7 +3177,8 @@ function extractAndFillPriceFromGoogleFlights() {
         '.FpEdX.jLMuyc',
         '[class*="YMlIz"][class*="FpEdX"][class*="jLMuyc"]',
         '[aria-label*="dollars"]',
-        '[aria-label*="US dollars"]'
+        '[aria-label*="euro"]',
+        '[aria-label*="EUR"]'
       ]
       
       for (const selector of selectors) {
@@ -3185,7 +3188,7 @@ function extractAndFillPriceFromGoogleFlights() {
           
           // If we found a div, check if it has a span inside with aria-label
           if (foundElement.tagName === 'DIV' || foundElement.classList.contains('YMlIz')) {
-            const spanInside = foundElement.querySelector('span[aria-label*="dollars"]')
+            const spanInside = foundElement.querySelector('span[aria-label*="dollars"], span[aria-label*="euro"], span[aria-label*="EUR"]')
             if (spanInside) {
               priceElement = spanInside
               console.log('[BS Extension] Found span inside div with aria-label')
@@ -3206,11 +3209,11 @@ function extractAndFillPriceFromGoogleFlights() {
     
     if (!priceElement) {
       console.log('[BS Extension] Price element not found, trying all elements with aria-label...')
-      // Try to find any element with aria-label containing "dollars"
+      // Try to find any element with aria-label containing "dollars" or "euro"
       const allElements = document.querySelectorAll('[aria-label]')
       for (const el of allElements) {
         const ariaLabel = el.getAttribute('aria-label') || ''
-        if (ariaLabel.includes('dollars') && ariaLabel.match(/\d+/)) {
+        if ((ariaLabel.includes('dollars') || /euro|EUR/i.test(ariaLabel)) && ariaLabel.match(/\d+/)) {
           priceElement = el
           console.log('[BS Extension] Found price element via aria-label search:', ariaLabel)
           break
@@ -3222,7 +3225,7 @@ function extractAndFillPriceFromGoogleFlights() {
     if (!priceElement) {
       const divContainer = document.querySelector('.YMlIz.FpEdX.jLMuyc, div.YMlIz.FpEdX.jLMuyc')
       if (divContainer) {
-        const spanWithAriaLabel = divContainer.querySelector('span[aria-label*="dollars"]')
+        const spanWithAriaLabel = divContainer.querySelector('span[aria-label*="dollars"], span[aria-label*="euro"], span[aria-label*="EUR"]')
         if (spanWithAriaLabel) {
           priceElement = spanWithAriaLabel
           console.log('[BS Extension] Found span inside YMlIz div via fallback search')
@@ -3239,8 +3242,16 @@ function extractAndFillPriceFromGoogleFlights() {
     const ariaLabel = priceElement.getAttribute('aria-label')
     console.log('[BS Extension] Found aria-label:', ariaLabel)
     
+    // Detect currency from aria-label (euro/euros/EUR -> EUR, else USD for calculation)
+    const currencyFromLabel = (label) => {
+      if (!label) return 'USD'
+      const lower = label.toLowerCase()
+      if (lower.includes('euro') || lower.includes('eur')) return 'EUR'
+      return 'USD'
+    }
+    
     if (!ariaLabel) {
-      // Try textContent as fallback
+      // Try textContent as fallback (assume USD)
       const textContent = priceElement.textContent || priceElement.innerText || ''
       console.log('[BS Extension] No aria-label, trying textContent:', textContent)
       
@@ -3249,14 +3260,14 @@ function extractAndFillPriceFromGoogleFlights() {
       if (textMatch) {
         const price = parseFloat(textMatch[1])
         if (!isNaN(price) && price > 0) {
-          fillCashPriceFields(price)
+          fillCashPriceFields(price, 'USD')
           return
         }
       }
       return
     }
     
-    // Extract number from aria-label like "149 US dollars", "149 dollars", "6517 US dollars", or "99,999 US dollars"
+    // Extract number from aria-label like "149 US dollars", "500 euros", "6517 US dollars", or "99,999 US dollars"
     // Handle both comma-separated numbers (e.g., "99,999") and plain numbers (e.g., "1673")
     // Pattern: matches 1-5 digits OR comma-separated numbers up to 99,999
     let match = null
@@ -3293,22 +3304,37 @@ function extractAndFillPriceFromGoogleFlights() {
       return
     }
     
-    console.log('[BS Extension] Extracted price from Google Flights:', price)
-    fillCashPriceFields(price)
+    const currency = currencyFromLabel(ariaLabel)
+    console.log('[BS Extension] Extracted price from Google Flights:', price, currency)
+    fillCashPriceFields(price, currency)
     
   } catch (error) {
     console.error('[BS Extension] Error extracting price from Google Flights:', error)
   }
 }
 
+// Convert price to USD if needed (Award Flight Analysis expects USD for calculation)
+function toUsdForCashPrice(amountMajor, currency) {
+  if (!currency || currency === 'USD') return amountMajor
+  const minor = Math.round(amountMajor * 100)
+  const usdMinor = convertAmount(minor, currency, 'USD')
+  return usdMinor / 100
+}
+
 // Helper function to fill cash price fields (Award Flight Analysis Cash Price field)
-function fillCashPriceFields(price) {
+// price: amount in display currency; currency: 'USD' | 'EUR' | etc. If EUR (or other), converts to USD before filling.
+function fillCashPriceFields(price, currency) {
+  const usdPrice = toUsdForCashPrice(price, currency || 'USD')
   const standaloneCashInput = document.getElementById('bs-standalone-cash-price')
   if (standaloneCashInput) {
-    standaloneCashInput.value = price
+    standaloneCashInput.value = usdPrice.toFixed(2)
     standaloneCashInput.dispatchEvent(new Event('input', { bubbles: true }))
     standaloneCashInput.dispatchEvent(new Event('change', { bubbles: true }))
-    console.log('[BS Extension] Filled Award Flight Analysis Cash Price field with:', price)
+    if (currency && currency !== 'USD') {
+      console.log('[BS Extension] Filled Award Flight Analysis Cash Price with', usdPrice.toFixed(2), 'USD (converted from', price, currency + ')')
+    } else {
+      console.log('[BS Extension] Filled Award Flight Analysis Cash Price field with:', usdPrice)
+    }
   } else {
     console.log('[BS Extension] Award Flight Analysis Cash Price field not found')
   }

@@ -8938,3 +8938,10 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* Hide Google Flights footer so it cannot be used or changed */
+.plvncb {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
