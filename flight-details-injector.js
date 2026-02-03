@@ -1093,23 +1093,12 @@ function createStandaloneAwardSection() {
   
   // Do not set a default for miles value; leave empty to use Supabase market CPM
   
-  // Sync cash price from CASM if available
-  const casmCashInput = document.getElementById('bs-casm-cash-price')
-  if (casmCashInput && casmCashInput.value && cashPriceInput) {
-    cashPriceInput.value = casmCashInput.value
-    cashPriceInput.dispatchEvent(new Event('input', { bubbles: true }))
-  }
-  
   // Initial update
   updateStandaloneResults()
   
   // Try to extract and fill price from Google Flights after section is created
   setTimeout(() => {
     extractAndFillPriceFromGoogleFlights()
-    // Also try to extract and fill airline
-    if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
-      window.extractAndFillAirlineFromGoogleFlights()
-    }
   }, 500)
 }
 
@@ -3312,22 +3301,8 @@ function extractAndFillPriceFromGoogleFlights() {
   }
 }
 
-// Helper function to fill cash price fields
-// This fills both CASM Calculator Cash field and Award Flight Analysis Cash Price field
-// Both use the first price from top flights (class="U3gSDe ETvUZc"), not the cheapest
+// Helper function to fill cash price fields (Award Flight Analysis Cash Price field)
 function fillCashPriceFields(price) {
-  // Fill CASM Calculator Cash field
-  const casmCashInput = document.getElementById('bs-casm-cash-price')
-  if (casmCashInput) {
-    casmCashInput.value = price
-    casmCashInput.dispatchEvent(new Event('input', { bubbles: true }))
-    casmCashInput.dispatchEvent(new Event('change', { bubbles: true }))
-    console.log('[BS Extension] Filled CASM Calculator Cash field with:', price)
-  } else {
-    console.log('[BS Extension] CASM Calculator Cash field not found')
-  }
-  
-  // Fill Award Flight Analysis Cash Price field
   const standaloneCashInput = document.getElementById('bs-standalone-cash-price')
   if (standaloneCashInput) {
     standaloneCashInput.value = price
@@ -3500,10 +3475,6 @@ function ensureVisibility() {
             // Try to extract and fill price after URL change
             setTimeout(() => {
               extractAndFillPriceFromGoogleFlights()
-              // Try to extract and fill airline
-              if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
-                window.extractAndFillAirlineFromGoogleFlights()
-              }
             }, 1500)
           }
         }, 1000)
@@ -3535,21 +3506,10 @@ const priceObserver = new MutationObserver(() => {
   // Check if price element exists
   const priceElement = document.querySelector('.YMlIz.FpEdX.jLMuyc, [aria-label*="dollars"]')
   if (priceElement) {
-    // Check if we've already filled the price
-    const casmCashInput = document.getElementById('bs-casm-cash-price')
     const standaloneCashInput = document.getElementById('bs-standalone-cash-price')
-    
-    // Only fill if fields are empty or zero
-    const casmHasValue = casmCashInput && casmCashInput.value && parseFloat(casmCashInput.value) > 0
     const standaloneHasValue = standaloneCashInput && standaloneCashInput.value && parseFloat(standaloneCashInput.value) > 0
-    
-    if (!casmHasValue || !standaloneHasValue) {
+    if (!standaloneHasValue) {
       extractAndFillPriceFromGoogleFlights()
-    }
-    
-    // Also try to extract airline
-    if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
-      window.extractAndFillAirlineFromGoogleFlights()
     }
   }
 })
@@ -3572,22 +3532,13 @@ if (document.body) {
 
 // Also try periodically to extract price
 let periodicPriceCheck = setInterval(() => {
-  const casmCashInput = document.getElementById('bs-casm-cash-price')
   const standaloneCashInput = document.getElementById('bs-standalone-cash-price')
-  
-  const casmHasValue = casmCashInput && casmCashInput.value && parseFloat(casmCashInput.value) > 0
   const standaloneHasValue = standaloneCashInput && standaloneCashInput.value && parseFloat(standaloneCashInput.value) > 0
   
-  if (!casmHasValue || !standaloneHasValue) {
+  if (!standaloneHasValue) {
     extractAndFillPriceFromGoogleFlights()
   } else {
-    // Stop checking if both fields are filled
     clearInterval(periodicPriceCheck)
-  }
-  
-  // Also try to extract airline periodically
-  if (typeof window.extractAndFillAirlineFromGoogleFlights === 'function') {
-    window.extractAndFillAirlineFromGoogleFlights()
   }
 }, 2000)
 

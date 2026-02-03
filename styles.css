@@ -184,8 +184,7 @@
   border-bottom: none;
 }
 
-/* Remove padding from CASM calculator and comparison sections */
-#bs-casm-calculator,
+/* Remove padding from comparison sections */
 .available-transfer-partners,
 .selected-cards-comparison {
   padding: 0;
@@ -492,11 +491,27 @@
 
 .bs-settings-compact {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   gap: 16px;
-  max-width: 600px;
-  margin: 0 auto;
+  width: 100%;
+}
+
+.bs-settings-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 12px;
+  width: 100%;
+}
+
+.bs-settings-row .bs-settings-item:not(.bs-settings-item-api-key) {
+  flex: 0 1 auto;
+  min-width: 90px;
+}
+
+.bs-settings-row .bs-settings-item-api-key {
+  flex: 1 1 0;
+  min-width: 320px;
 }
 
 .bs-settings-item {
@@ -751,6 +766,24 @@
   overflow: hidden;
 }
 
+/* Badge on top-right of button (e.g. $ for paid services) */
+.bs-btn-badge {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  pointer-events: none;
+}
+.bs-btn-badge-dollar {
+  color: #0d8050;
+}
+.bs-btn-badge-login {
+  font-size: 10px;
+  color: #5f6368;
+}
+
 .bs-btn-icon {
   display: inline-block;
   width: 16px;
@@ -942,15 +975,24 @@
     margin: 8px 0;
   }
   
-  /* Mobile: stack settings vertically */
+  /* Mobile: stack settings vertically; allow settings row to wrap */
   .bs-settings-compact {
     flex-direction: column;
     gap: 8px;
   }
   
+  .bs-settings-row {
+    flex-wrap: wrap;
+  }
+  
   .bs-settings-item {
     justify-content: space-between;
     width: 100%;
+  }
+  
+  .bs-settings-row .bs-settings-item {
+    flex: 1 1 auto;
+    min-width: 100px;
   }
   
   .bs-settings-item select {
@@ -1712,17 +1754,33 @@
 
 .bs-settings-compact {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 16px;
-  align-items: end;
+}
+
+.bs-settings-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 12px;
+  width: 100%;
+}
+
+.bs-settings-row .bs-settings-item:not(.bs-settings-item-api-key) {
+  flex: 0 1 auto;
+  min-width: 90px;
+}
+
+.bs-settings-row .bs-settings-item-api-key {
+  flex: 1 1 0;
+  min-width: 320px;
 }
 
 .bs-settings-item {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 150px;
-  flex: 1;
+  min-width: 0;
 }
 
 .bs-settings-item label {
@@ -1740,12 +1798,74 @@
   font-size: 14px;
   background: #ffffff;
   transition: border-color 0.2s ease;
+  height: 40px;
+  box-sizing: border-box;
 }
 
 .bs-settings-item select:focus {
   outline: none;
   border-color: #1a73e8;
   box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+}
+
+.bs-settings-input-row {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  min-width: 0;
+  height: 40px;
+}
+
+.bs-settings-item .bs-settings-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #ffffff;
+  color: #000000;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  height: 40px;
+}
+
+.bs-settings-item-api-key .bs-settings-input {
+  min-width: 280px;
+}
+
+.bs-settings-item .bs-settings-input::placeholder {
+  color: #9aa0a6;
+}
+
+.bs-settings-item .bs-settings-input:hover {
+  border-color: #000000;
+}
+
+.bs-settings-item .bs-settings-input:focus {
+  outline: none;
+  border-color: #000000;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.bs-settings-key-toggle {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+  background: #ffffff;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.bs-settings-key-toggle:hover {
+  border-color: #000000;
 }
 
 .bs-settings-link {
@@ -2763,9 +2883,18 @@
     align-items: stretch;
   }
   
+  .bs-settings-row {
+    flex-wrap: wrap;
+  }
+  
   .bs-settings-item {
     min-width: unset;
     flex: unset;
+  }
+  
+  .bs-settings-row .bs-settings-item {
+    flex: 1 1 auto;
+    min-width: 100px;
   }
   
   .partners-grid {
@@ -4944,269 +5073,6 @@
   border-top: 1px solid #e9ecef;
   background: #f8f9fa;
   text-align: right;
-}
-
-/* CASM Calculator Styles */
-/* CASM Calculator now uses standard bs-section styling - matches Flight Search section */
-/* Results styling kept below */
-
-.bs-casm-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 16px;
-  flex-wrap: nowrap;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.bs-casm-results-row {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #e8eaed;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.bs-casm-results {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
-
-.bs-casm-result {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 0 0 auto;
-}
-
-.bs-casm-inputs {
-  display: flex;
-  align-items: flex-end;
-  gap: 16px;
-  flex: 1;
-  min-width: 0;
-  flex-wrap: nowrap;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.bs-casm-field {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  flex-shrink: 0;
-  flex-grow: 0;
-}
-
-.bs-casm-field label {
-  font-size: 13px;
-  font-weight: 500;
-  color: #000000;
-  margin-left: 2px;
-  margin-bottom: 0;
-}
-
-.bs-casm-input-wrap {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-
-.bs-casm-field input,
-.bs-casm-field select {
-  padding: 10px 14px;
-  border: 1.5px solid #e0e0e0;
-  border-radius: 10px;
-  font-size: 14px;
-  background: #ffffff;
-  color: #000000;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  box-sizing: border-box;
-  font-weight: 500;
-}
-
-.bs-casm-field input:focus,
-.bs-casm-field select:focus {
-  outline: none;
-  border-color: #1a73e8 !important;
-  box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-  transform: translateY(-1px);
-}
-
-.bs-casm-field input:hover,
-.bs-casm-field select:hover {
-  border-color: #1a73e8 !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
-}
-
-.bs-casm-field input::placeholder {
-  color: #aaa;
-  font-size: 12px;
-  font-weight: 400;
-}
-
-.bs-casm-field input[type="number"] {
-  width: 90px;
-  flex-shrink: 0;
-}
-
-.bs-casm-field select {
-  width: 160px;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  padding-right: 28px;
-  flex-shrink: 0;
-}
-
-.bs-casm-field:nth-child(1) input[type="number"] {
-  width: 90px; /* Distance input */
-}
-
-.bs-casm-field:nth-child(2) select {
-  width: 200px; /* Airline dropdown wider */
-}
-
-.bs-casm-field:nth-child(3) input[type="number"] {
-  width: 90px; /* Cash input */
-}
-
-.bs-casm-field:nth-child(4) select {
-  width: 150px; /* Region dropdown */
-}
-
-.bs-casm-field:nth-child(5) input[type="number"] {
-  width: 100px; /* Check-In Bags */
-}
-
-.bs-casm-field:nth-child(6) input[type="number"] {
-  width: 90px; /* Bag Fee */
-}
-
-.bs-casm-icon-btn {
-  background: #f7f7f7;
-  border: 1.5px solid #d5d5d5;
-  border-radius: 5px;
-  padding: 0;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.bs-casm-icon-btn:hover {
-  background: #eeeeee;
-  border-color: #000;
-}
-
-.bs-casm-icon-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.bs-casm-results-row {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #e8eaed;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.bs-casm-results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 24px 20px;
-  align-items: start;
-}
-
-.bs-casm-result-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.bs-casm-result-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #5f6368;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  line-height: 1.3;
-  margin-bottom: 2px;
-}
-
-.bs-casm-result-value {
-  font-size: 14px;
-  font-weight: 500;
-  color: #000000;
-  min-height: 32px;
-  display: flex;
-  align-items: center;
-}
-
-.bs-casm-result-margin .bs-casm-result-value {
-  font-weight: 600;
-}
-
-.bs-casm-result-total .bs-casm-result-label {
-  font-weight: 700;
-  color: #000000;
-}
-
-.bs-casm-result-total .bs-casm-result-value {
-  font-size: 16px;
-  font-weight: 700;
-  color: #000000;
-}
-
-/* Legacy support - keep for backward compatibility */
-.bs-casm-results {
-  display: flex;
-  align-items: flex-end;
-  gap: 16px;
-  flex-wrap: wrap;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.bs-casm-result {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 0 0 auto;
-  min-width: 0;
-}
-
-.bs-casm-result-value {
-  font-size: 16px;
-  font-weight: 700;
-  color: #000;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  line-height: 1.2;
-  border: 1.5px solid #d5d5d5;
-  border-radius: 5px;
-  padding: 6px 10px;
-  height: 32px;
-  box-sizing: border-box;
-}
-
-.bs-casm-percentage {
-  font-size: 13px;
-  font-weight: 500;
-  opacity: 0.8;
 }
 
 /* ================================

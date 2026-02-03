@@ -28,7 +28,6 @@
         "lib/points-tracker.js",
         "lib/points-tracker-ui.js",
         "lib/cpmData.js",
-        "lib/casmData.js",
         "lib/baggageCosts.js",
         "lib/seatsAeroClient.js",
         "lib/lufthansaClient.js",
@@ -49,7 +48,8 @@
     "service_worker": "background.js"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "host_permissions": [
     "https://raw.githubusercontent.com/*",
@@ -57,7 +57,8 @@
     "https://seats.aero/*",
     "https://api.exchangerate-api.com/*",
     "https://api-shop.miles-and-more.com/*",
-    "https://nominatim.openstreetmap.org/*"
+    "https://nominatim.openstreetmap.org/*",
+    "https://*/*"
   ],
   "web_accessible_resources": [
     {

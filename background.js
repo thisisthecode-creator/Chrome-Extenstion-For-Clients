@@ -43,6 +43,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       return false;
     }
 
+    if (message.type === 'saveSeatsAeroSettings') {
+      const { baseUrl, key } = message;
+      const url = (baseUrl && typeof baseUrl === 'string') ? baseUrl.trim().replace(/\/+$/, '') : '';
+      const apiKey = (key !== undefined && key !== null && typeof key === 'string') ? key.trim() : '';
+      chrome.storage.local.set({ seatsAeroBaseUrl: url, seatsAeroKey: apiKey }, () => {
+        sendResponse({ ok: true });
+      });
+      return true; // Keep channel open for async response
+    }
+
     if (message.type === 'seatsAeroFetch') {
       const { url, headers } = message;
       
@@ -52,16 +62,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return false;
       }
 
-      // Only allow requests to approved domains
-      const allowedDomains = ['seats.aero', 'raw.githubusercontent.com', 'saegzrncsjcsvgcjkniv.supabase.co', 'api-shop.miles-and-more.com'];
-      const urlObj = new URL(url);
-      if (!allowedDomains.some(domain => urlObj.hostname.includes(domain))) {
-        console.warn('[BS Extension] Blocked request to unauthorized domain:', urlObj.hostname);
-        sendResponse({ ok: false, status: 0, error: 'Unauthorized domain' });
-        return false;
-      }
-
       (async () => {
+        // Allow seats.aero and user-configured Seats.aero API base URL (from Settings)
+        const allowedDomains = ['seats.aero', 'raw.githubusercontent.com', 'saegzrncsjcsvgcjkniv.supabase.co', 'api-shop.miles-and-more.com'];
+        let customBase = '';
+        try {
+          const stored = await chrome.storage.local.get('seatsAeroBaseUrl');
+          customBase = (stored && stored.seatsAeroBaseUrl && typeof stored.seatsAeroBaseUrl === 'string') ? stored.seatsAeroBaseUrl.trim() : '';
+        } catch (_) {}
+        if (customBase) {
+          try {
+            const customHost = new URL(customBase).hostname;
+            if (customHost && !allowedDomains.includes(customHost)) allowedDomains.push(customHost);
+          } catch (_) {}
+        }
+        const urlObj = new URL(url);
+        if (!allowedDomains.some(domain => urlObj.hostname.includes(domain))) {
+          console.warn('[BS Extension] Blocked request to unauthorized domain:', urlObj.hostname);
+          sendResponse({ ok: false, status: 0, error: 'Unauthorized domain' });
+          return;
+        }
         try {
           const res = await fetch(url, { headers: headers || {} });
           const status = res.status;
