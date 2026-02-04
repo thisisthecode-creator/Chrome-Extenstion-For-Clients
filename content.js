@@ -375,6 +375,39 @@ function injectExtensionPanel() {
       </div>
       <div class="bs-settings-content">
         <div class="bs-settings-compact">
+          <div class="bs-settings-row bs-settings-row-theme">
+            <div class="bs-settings-item bs-settings-item-theme">
+              <label for="bs-theme-select">Theme</label>
+              <select id="bs-theme-select" class="bs-settings-select" title="Extension and flight row appearance">
+                <option value="light">Light</option>
+                <option value="dark">Dark mode</option>
+              </select>
+            </div>
+          </div>
+          <div class="bs-settings-group-label">Flight row colors</div>
+          <div class="bs-settings-row bs-settings-row-colors">
+            <div class="bs-settings-item bs-settings-item-color">
+              <label for="bs-color-nonstop">Nonstop</label>
+              <div class="bs-settings-color-row">
+                <input type="color" id="bs-color-nonstop" class="bs-settings-color-input" value="#c8e6c9" title="Nonstop flights row color">
+                <input type="text" id="bs-color-nonstop-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#c8e6c9" spellcheck="false">
+              </div>
+            </div>
+            <div class="bs-settings-item bs-settings-item-color">
+              <label for="bs-color-stops">1 stop</label>
+              <div class="bs-settings-color-row">
+                <input type="color" id="bs-color-stops" class="bs-settings-color-input" value="#ffc107" title="1 stop flights row color">
+                <input type="text" id="bs-color-stops-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#ffc107" spellcheck="false">
+              </div>
+            </div>
+            <div class="bs-settings-item bs-settings-item-color">
+              <label for="bs-color-multiple-stops">2+ stops</label>
+              <div class="bs-settings-color-row">
+                <input type="color" id="bs-color-multiple-stops" class="bs-settings-color-input" value="#f44336" title="2+ stops flights row color">
+                <input type="text" id="bs-color-multiple-stops-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#f44336" spellcheck="false">
+              </div>
+            </div>
+          </div>
           <div class="bs-settings-row">
             <div class="bs-settings-item bs-settings-item-api-key">
               <label for="bs-seatsaero-api-key">Seats.aero API Key</label>
@@ -405,6 +438,10 @@ function injectExtensionPanel() {
   // Load and apply saved toggle states
   const toggleStates = loadToggleStates();
   applyToggleStates(toggleStates);
+  
+  // Apply saved theme and flight row colors
+  applyDarkMode();
+  applyFlightStopColors();
   
   // Restore saved flight data after a short delay to ensure inputs are ready
   setTimeout(() => {
@@ -498,6 +535,81 @@ function applyToggleStates(toggleStates) {
     settingsToggle.checked = toggleStates.settings;
     settingsSection.style.display = toggleStates.settings ? 'block' : 'none';
   }
+}
+
+// Theme: apply Light or Dark (Google Flights) to panel and body
+function applyTheme() {
+  const theme = localStorage.getItem('bs-theme') || 'light';
+  const isDark = theme === 'dark';
+  const panel = document.querySelector('.bs-extension-panel');
+  if (panel) {
+    if (isDark) {
+      panel.classList.add('bs-dark-mode');
+      document.body.classList.add('bs-dark-mode');
+    } else {
+      panel.classList.remove('bs-dark-mode');
+      document.body.classList.remove('bs-dark-mode');
+    }
+  }
+  const themeSelect = document.getElementById('bs-theme-select');
+  if (themeSelect) {
+    themeSelect.value = theme;
+  }
+  applyFlightStopColors();
+}
+
+// Backward compatibility: applyDarkMode still used by old toggle if present
+function applyDarkMode() {
+  const theme = localStorage.getItem('bs-theme');
+  if (theme !== undefined && theme !== null) {
+    applyTheme();
+    return;
+  }
+  const enabled = localStorage.getItem('bs-dark-mode-enabled') === 'true';
+  if (enabled) localStorage.setItem('bs-theme', 'dark');
+  else localStorage.setItem('bs-theme', 'light');
+  applyTheme();
+}
+
+// Lighten/darken hex for gradients (0–1 factor)
+function hexLighten(hex, factor) {
+  const n = parseInt(hex.slice(1), 16);
+  let r = (n >> 16) & 0xff, g = (n >> 8) & 0xff, b = n & 0xff;
+  r = Math.round(r + (255 - r) * factor);
+  g = Math.round(g + (255 - g) * factor);
+  b = Math.round(b + (255 - b) * factor);
+  return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+function hexDarken(hex, factor) {
+  const n = parseInt(hex.slice(1), 16);
+  let r = (n >> 16) & 0xff, g = (n >> 8) & 0xff, b = n & 0xff;
+  r = Math.round(r * (1 - factor));
+  g = Math.round(g * (1 - factor));
+  b = Math.round(b * (1 - factor));
+  return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
+// Inject or update dynamic style for flight stop row colors (exact color from settings)
+function applyFlightStopColors() {
+  const nonstop = (localStorage.getItem('bs-flight-color-nonstop') || '#c8e6c9').replace(/^#?/, '#');
+  const stops = (localStorage.getItem('bs-flight-color-stops') || '#ffc107').replace(/^#?/, '#');
+  const multi = (localStorage.getItem('bs-flight-color-multiple-stops') || '#f44336').replace(/^#?/, '#');
+
+  let css = '/* Benefit Systems – flight row colors (plain) */\n';
+  css += '.yR1fYc.bs-nonstop-flight { background: ' + nonstop + ' !important; border-color: ' + nonstop + ' !important; box-shadow: none !important; }\n';
+  css += '.yR1fYc.bs-stops-flight { background: ' + stops + ' !important; border-color: ' + stops + ' !important; box-shadow: none !important; }\n';
+  css += '.yR1fYc.bs-multiple-stops-flight { background: ' + multi + ' !important; border-color: ' + multi + ' !important; box-shadow: none !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-nonstop-flight { background: ' + nonstop + ' !important; border-color: ' + nonstop + ' !important; box-shadow: none !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-stops-flight { background: ' + stops + ' !important; border-color: ' + stops + ' !important; box-shadow: none !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight { background: ' + multi + ' !important; border-color: ' + multi + ' !important; box-shadow: none !important; }\n';
+
+  let el = document.getElementById('bs-flight-stop-colors');
+  if (!el) {
+    el = document.createElement('style');
+    el.id = 'bs-flight-stop-colors';
+    document.head.appendChild(el);
+  }
+  el.textContent = css;
 }
 
 // Initialize drag and drop for buttons
@@ -676,7 +788,7 @@ function initializeEventListeners() {
     if (saved !== null) {
       linksToggle.checked = saved === 'true';
     } else {
-      linksToggle.checked = false;
+      linksToggle.checked = true;
     }
     linksContainer.style.display = linksToggle.checked ? '' : 'none';
     linksToggle.addEventListener('change', () => {
@@ -1084,6 +1196,50 @@ function initializeEventListeners() {
   } else {
     console.log('Settings toggle or section not found:', { settingsToggle, settingsSection });
   }
+
+  // Theme (Light / Dark)
+  const themeSelect = document.getElementById('bs-theme-select');
+  if (themeSelect) {
+    const savedTheme = localStorage.getItem('bs-theme');
+    if (savedTheme === 'dark' || savedTheme === 'light') themeSelect.value = savedTheme;
+    themeSelect.addEventListener('change', () => {
+      localStorage.setItem('bs-theme', themeSelect.value);
+      applyTheme();
+    });
+  }
+
+  // Flight row colors: sync color picker <-> hex input, persist, apply
+  function initColorSetting(colorId, hexId, storageKey, defaultValue) {
+    const picker = document.getElementById(colorId);
+    const hexInput = document.getElementById(hexId);
+    if (!picker || !hexInput) return;
+    const saved = localStorage.getItem(storageKey);
+    const value = (saved || defaultValue).replace(/^#?/, '#');
+    picker.value = value.toLowerCase();
+    hexInput.value = value;
+    function saveAndApply() {
+      const hex = hexInput.value.replace(/^#?/, '#');
+      if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
+        localStorage.setItem(storageKey, hex);
+        picker.value = hex;
+        applyFlightStopColors();
+      }
+    }
+    picker.addEventListener('input', () => {
+      hexInput.value = picker.value;
+      saveAndApply();
+    });
+    hexInput.addEventListener('change', () => {
+      const hex = hexInput.value.replace(/^#?/, '#');
+      if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
+        picker.value = hex;
+        saveAndApply();
+      }
+    });
+  }
+  initColorSetting('bs-color-nonstop', 'bs-color-nonstop-hex', 'bs-flight-color-nonstop', '#c8e6c9');
+  initColorSetting('bs-color-stops', 'bs-color-stops-hex', 'bs-flight-color-stops', '#ffc107');
+  initColorSetting('bs-color-multiple-stops', 'bs-color-multiple-stops-hex', 'bs-flight-color-multiple-stops', '#f44336');
 
   // Seats.aero API URL and Key: save on change and sync to config + background
   const seatsAeroKeyInput = document.getElementById('bs-seatsaero-api-key');

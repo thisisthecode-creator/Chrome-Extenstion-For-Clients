@@ -549,6 +549,75 @@
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
+.bs-settings-group-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5f6368;
+  margin: 4px 0 0;
+  padding-bottom: 6px;
+}
+
+.bs-settings-row-theme .bs-settings-item-theme {
+  min-width: 0;
+}
+
+.bs-settings-select {
+  min-width: 140px;
+}
+
+.bs-settings-row-colors {
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.bs-settings-item-color {
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.bs-settings-item-color label {
+  margin-bottom: 4px;
+}
+
+.bs-settings-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bs-settings-color-input {
+  width: 36px;
+  height: 28px;
+  padding: 2px;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+}
+
+.bs-settings-color-input:hover {
+  border-color: #1a73e8;
+}
+
+.bs-settings-color-hex {
+  width: 72px;
+  padding: 4px 8px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: monospace;
+  color: #1a1a1a;
+  background: #ffffff;
+}
+
+.bs-settings-color-hex:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.15);
+}
+
 /* Flight inputs in one row - full width */
 .bs-section:nth-child(1) .bs-inputs-grid,
 #bs-hotel-section .bs-inputs-grid {
@@ -8944,4 +9013,285 @@
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
+}
+
+/* ================================
+   Dark mode (Google Flights theme)
+   ================================ */
+.bs-extension-panel.bs-dark-mode {
+  background: linear-gradient(135deg, #202124 0%, #292a2d 100%) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+.bs-extension-panel.bs-dark-mode:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.12) !important;
+}
+
+.bs-extension-panel.bs-dark-mode::before {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 50%, rgba(255, 255, 255, 0.08) 100%) !important;
+}
+
+.bs-extension-panel.bs-dark-mode:hover::before {
+  background: linear-gradient(135deg, rgba(26, 115, 232, 0.25) 0%, rgba(26, 115, 232, 0.1) 50%, rgba(26, 115, 232, 0.25) 100%) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-logo-container {
+  background: linear-gradient(135deg, #202124 0%, #292a2d 100%) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Default text and all descendants: light color for readability (exceptions below) */
+.bs-extension-panel.bs-dark-mode,
+.bs-extension-panel.bs-dark-mode * {
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-toggle-label {
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-toggle-label:hover {
+  color: #ffffff !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-toggle-slider {
+  background-color: #5f6368 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-toggle-slider:before {
+  background: linear-gradient(135deg, #e8eaed 0%, #dadce0 100%) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-toggle-switch input:checked + .bs-toggle-slider {
+  background: linear-gradient(135deg, #8ab4f8 0%, #1a73e8 100%) !important;
+  border-color: #8ab4f8 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-section {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-section:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-section-header {
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-section-icon {
+  stroke: #8ab4f8 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-auto-reload-toggle .bs-toggle-label {
+  color: #9aa0a6 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-action-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-action-btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-action-save:hover {
+  background: rgba(52, 168, 83, 0.2) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-action-reset:hover {
+  background: rgba(234, 67, 53, 0.2) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-action-info:hover {
+  background: rgba(26, 115, 232, 0.2) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-action-open-all:hover {
+  background: rgba(102, 126, 234, 0.2) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-input-group label {
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-input-group input,
+.bs-extension-panel.bs-dark-mode .bs-input-group select {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-input-group input:focus,
+.bs-extension-panel.bs-dark-mode .bs-input-group select:focus {
+  border-color: #8ab4f8 !important;
+  box-shadow: 0 0 0 4px rgba(138, 180, 248, 0.2) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-input-group input:hover,
+.bs-extension-panel.bs-dark-mode .bs-input-group select:hover {
+  border-color: #8ab4f8 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-input-group input::placeholder {
+  color: #9aa0a6 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-switch-btn {
+  border-color: #5f6368 !important;
+  background: linear-gradient(135deg, #292a2d 0%, #3c4043 100%) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-switch-btn:hover {
+  border-color: #8ab4f8 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-switch-btn svg {
+  stroke: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-btn {
+  background: linear-gradient(135deg, #292a2d 0%, #3c4043 100%) !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-btn:hover {
+  background: linear-gradient(135deg, #3c4043 0%, #5f6368 100%) !important;
+  border-color: #8ab4f8 !important;
+  color: #8ab4f8 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-btn-badge-login {
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-btn-badge-dollar {
+  color: #81c995 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-footer {
+  background: #202124 !important;
+  border-top-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-link {
+  color: #8ab4f8 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-item label {
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-item select {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-input-row .bs-settings-input {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-input-row .bs-settings-input::placeholder {
+  color: #9aa0a6 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-drag-over {
+  background: rgba(138, 180, 248, 0.15) !important;
+  border-color: #8ab4f8 !important;
+}
+
+/* Airport autocomplete in dark mode */
+.bs-extension-panel.bs-dark-mode .airport-autocomplete-dropdown {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .airport-autocomplete-item {
+  border-bottom-color: #3c4043 !important;
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .airport-autocomplete-item:hover,
+.bs-extension-panel.bs-dark-mode .airport-autocomplete-item.selected {
+  background-color: #3c4043 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .airport-autocomplete-item.selected {
+  background-color: rgba(26, 115, 232, 0.3) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .airport-iata {
+  color: #8ab4f8 !important;
+  background: rgba(26, 115, 232, 0.25) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .airport-details {
+  color: #9aa0a6 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .airport-name {
+  color: #9aa0a6 !important;
+}
+
+/* Transfer partners tooltip in dark mode (when opened from dark panel) */
+.bs-extension-panel.bs-dark-mode .transfer-partners-tooltip {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .tooltip-header {
+  background: #202124 !important;
+  border-bottom-color: #3c4043 !important;
+}
+
+/* Card selection / comparison panels inside dark mode */
+.bs-extension-panel.bs-dark-mode .card-selection-panel .bs-section-header::after {
+  color: #9aa0a6 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-search-container input {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-search-container input::placeholder {
+  color: #9aa0a6 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-group-label {
+  color: #9aa0a6 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-select {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-color-input {
+  border-color: #5f6368 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-color-input:hover {
+  border-color: #8ab4f8 !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-color-hex {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-settings-color-hex:focus {
+  border-color: #8ab4f8 !important;
+  box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.2) !important;
 }

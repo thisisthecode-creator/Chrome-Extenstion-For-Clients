@@ -275,20 +275,199 @@ span[jsname="S3Zlrc"].Xm6fzc.g2sH3c {
   margin-top: auto;
 }
 
-/* Light green background for .yR1fYc elements containing nonstop flights */
+/* Plain color for .yR1fYc elements (overridden by dynamic style from Settings) */
 .yR1fYc.bs-nonstop-flight {
-  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%) !important;
+  background: #c8e6c9 !important;
   border-color: #c8e6c9 !important;
+  box-shadow: none !important;
 }
 
-/* Yellow background for .yR1fYc elements containing flights with 1 stop */
 .yR1fYc.bs-stops-flight {
-  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%) !important;
+  background: #ffc107 !important;
   border-color: #ffc107 !important;
+  box-shadow: none !important;
 }
 
-/* Red background for .yR1fYc elements containing flights with 2+ stops */
 .yR1fYc.bs-multiple-stops-flight {
-  background: linear-gradient(135deg, #fdecea 0%, #fcc5c0 100%) !important;
+  background: #f44336 !important;
   border-color: #f44336 !important;
+  box-shadow: none !important;
+}
+
+/* ================================
+   Dark mode (Google Flights theme) - injected flight details
+   ================================ */
+body.bs-dark-mode .injected-flight-details {
+  color: #e8eaed !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+body.bs-dark-mode .flight-details-separator {
+  background-color: #5f6368 !important;
+}
+
+body.bs-dark-mode .info-icon {
+  color: #e8eaed !important;
+}
+
+body.bs-dark-mode .info-text {
+  color: #e8eaed !important;
+}
+
+body.bs-dark-mode .below-average {
+  color: #f28b82 !important;
+}
+
+body.bs-dark-mode .average {
+  color: #fdd663 !important;
+}
+
+body.bs-dark-mode .above-average {
+  color: #81c995 !important;
+}
+
+body.bs-dark-mode .tooltip-text {
+  background-color: #292a2d !important;
+  color: #e8eaed !important;
+  border-color: #5f6368 !important;
+}
+
+body.bs-dark-mode .tooltip-text::after {
+  border-color: #292a2d transparent transparent transparent !important;
+}
+
+body.bs-dark-mode .injected-flight-details:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Dark mode stop-count backgrounds (plain; overridden by dynamic style from Settings) */
+body.bs-dark-mode .yR1fYc.bs-nonstop-flight {
+  background: #2d5a30 !important;
+  border-color: #2d5a30 !important;
+  box-shadow: none !important;
+}
+
+body.bs-dark-mode .yR1fYc.bs-stops-flight {
+  background: #5a4f00 !important;
+  border-color: #5a4f00 !important;
+  box-shadow: none !important;
+}
+
+body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight {
+  background: #5a2d2d !important;
+  border-color: #5a2d2d !important;
+  box-shadow: none !important;
+}
+
+/* ================================
+   Award Flight Analysis – dark mode (follows Theme in Settings)
+   ================================ */
+body.bs-dark-mode #bs-standalone-award-section {
+  background: linear-gradient(135deg, #202124 0%, #292a2d 100%) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.12) !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section > div[style*="position: absolute"] {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 50%, rgba(255, 255, 255, 0.08) 100%) !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section h2,
+body.bs-dark-mode #bs-standalone-award-section p,
+body.bs-dark-mode #bs-standalone-award-section label,
+body.bs-dark-mode #bs-standalone-award-section span {
+  color: #e8eaed !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section input,
+body.bs-dark-mode #bs-standalone-award-section select {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section input::placeholder {
+  color: #9aa0a6 !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section input:focus,
+body.bs-dark-mode #bs-standalone-award-section select:focus {
+  border-color: #8ab4f8 !important;
+  box-shadow: 0 0 0 4px rgba(138, 180, 248, 0.2) !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section input:hover,
+body.bs-dark-mode #bs-standalone-award-section select:hover {
+  border-color: #8ab4f8 !important;
+}
+
+/* Header border (second child is the header div) */
+body.bs-dark-mode #bs-standalone-award-section > div:nth-child(2) {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Empty state / no data messages */
+body.bs-dark-mode #bs-standalone-award-results > div {
+  background: #292a2d !important;
+  color: #e8eaed !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Award tables */
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table {
+  background: #292a2d !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table thead {
+  background: #202124 !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table th {
+  color: #e8eaed !important;
+  border-bottom-color: #5f6368 !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table th.sortable:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table th.sortable::after,
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table th.sortable.sort-asc::after,
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table th.sortable.sort-desc::after {
+  color: #9aa0a6 !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table td {
+  color: #e8eaed !important;
+  border-bottom-color: #3c4043 !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-good-deal {
+  background: rgba(129, 201, 149, 0.15) !important;
+}
+
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* Table cell badges/spans – keep readable text */
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table td span {
+  color: #e8eaed !important;
+}
+
+/* Section headers (e.g. "First Class", "Business Class") */
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table ~ div h3,
+body.bs-dark-mode #bs-standalone-award-results h3 {
+  color: #e8eaed !important;
+  border-bottom-color: #5f6368 !important;
 }
