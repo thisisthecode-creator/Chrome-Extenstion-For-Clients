@@ -451,132 +451,137 @@ body.bs-dark-mode #bs-standalone-award-section > div:nth-child(2) {
   border-bottom-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Empty state / no data messages */
+/* Empty state / no data messages – same as light mode for readability */
 body.bs-dark-mode #bs-standalone-award-results > div {
-  background: #292a2d !important;
-  color: #e8eaed !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: #ffffff !important;
+  color: #202124 !important;
+  border: 1px solid #dadce0 !important;
+  border-radius: 16px !important;
 }
 
-/* Award tables – strong visibility on dark background */
+/* Award tables in dark mode: same look as light mode (light bg, dark text) for good readability */
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table {
-  background: #292a2d !important;
-  border: 1px solid #5f6368 !important;
+  background: #ffffff !important;
+  border: 1px solid #dadce0 !important;
   border-radius: 12px !important;
   overflow: hidden !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.06) !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table thead {
-  background: #3c4043 !important;
-  border-bottom: 2px solid #5f6368 !important;
+  background: #f1f3f4 !important;
+  border-bottom: 2px solid #dadce0 !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table th {
-  color: #e8eaed !important;
-  border-bottom: 2px solid #5f6368 !important;
+  color: #202124 !important;
+  border-bottom: 2px solid #dadce0 !important;
   padding: 12px 16px !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table th.sortable:hover {
-  background-color: rgba(255, 255, 255, 0.06) !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table th.sortable::after,
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table th.sortable.sort-asc::after,
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table th.sortable.sort-desc::after {
-  color: #9aa0a6 !important;
+  color: #5f6368 !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table td {
-  color: #e8eaed !important;
-  border-bottom: 1px solid #3c4043 !important;
+  color: #202124 !important;
+  border-bottom: 1px solid #e8eaed !important;
   padding: 12px 16px !important;
 }
 
-/* Data rows: distinct background so program/cells stand out in dark mode */
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table tbody tr {
-  background: #35363a !important;
+  background: #ffffff !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table tbody tr:nth-child(even) {
-  background: #3c4043 !important;
+  background: #f8f9fa !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table tbody tr:hover {
-  background-color: #4a4d52 !important;
+  background-color: #f1f3f4 !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-good-deal {
-  background: #1e4620 !important;
+  background: #e8f5e9 !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-good-deal td {
-  color: #e8eaed !important;
+  color: #202124 !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal {
-  background: #4a2626 !important;
+  background: #fce4ec !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal td {
-  color: #e8eaed !important;
+  color: #202124 !important;
 }
 
-/* Table cell badges/spans – dark mode: solid pill backgrounds + white text for clear contrast */
+/* Badges: same as light mode – light tint backgrounds + dark text */
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table td span {
-  color: #ffffff !important;
+  color: #1a1a1a !important;
   border-radius: 8px !important;
-  padding: 5px 12px !important;
+  padding: 4px 10px !important;
   font-size: 12px !important;
   font-weight: 700 !important;
   display: inline-block !important;
-  border: none !important;
 }
 
-/* Class column (Y, J, W, F) – dark blue pill */
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table td:nth-child(2) span {
-  background: #1565c0 !important;
-  color: #ffffff !important;
+  background: #e3f2fd !important;
+  border: 1.5px solid #90caf9 !important;
+  color: #1565c0 !important;
 }
 
-/* Miles column – dark slate pill */
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table td:nth-child(4) span {
-  background: #546e7a !important;
-  color: #ffffff !important;
+  background: #f5f5f5 !important;
+  border: 1.5px solid #bdbdbd !important;
+  color: #212121 !important;
 }
 
-/* Taxes column – dark red pill */
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table td:nth-child(5) span {
-  background: #c62828 !important;
-  color: #ffffff !important;
+  background: #ffebee !important;
+  border: 1.5px solid #ef9a9a !important;
+  color: #c62828 !important;
 }
 
-/* CPM column – green (good) or red (bad) */
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table td:nth-child(7) span {
-  background: #2e7d32 !important;
-  color: #ffffff !important;
+  background: #e8f5e9 !important;
+  border: 1.5px solid #81c784 !important;
+  color: #2e7d32 !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal td:nth-child(7) span {
-  background: #c62828 !important;
-  color: #ffffff !important;
+  background: #ffebee !important;
+  border: 1.5px solid #e57373 !important;
+  color: #c62828 !important;
 }
 
-/* Savings column – green (Save) or red (More) */
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table td:nth-child(8) span {
-  background: #2e7d32 !important;
-  color: #ffffff !important;
+  background: #e8f5e9 !important;
+  border: 1.5px solid #81c784 !important;
+  color: #2e7d32 !important;
 }
 
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal td:nth-child(8) span {
-  background: #c62828 !important;
-  color: #ffffff !important;
+  background: #ffebee !important;
+  border: 1.5px solid #e57373 !important;
+  color: #c62828 !important;
 }
 
-/* Section headers (e.g. "First Class", "Business Class") */
+/* Section headers (e.g. "First Class", "Business Class") – same as light mode for readability */
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table ~ div h3,
 body.bs-dark-mode #bs-standalone-award-results h3 {
-  color: #e8eaed !important;
-  border-bottom-color: #5f6368 !important;
+  color: #202124 !important;
+  border-bottom-color: #dadce0 !important;
+  background: #f8f9fa !important;
+  padding: 12px 0 8px 0 !important;
+  margin: 0 0 16px 0 !important;
+  border-radius: 8px 8px 0 0 !important;
 }
