@@ -164,6 +164,11 @@
   object-fit: contain;
 }
 
+/* Light mode: show only light logo; dark mode uses .bs-logo-dark */
+.bs-logo-dark {
+  display: none;
+}
+
 /* Section Container */
 .bs-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
@@ -9038,6 +9043,14 @@
 .bs-extension-panel.bs-dark-mode .bs-logo-container {
   background: linear-gradient(135deg, #202124 0%, #292a2d 100%) !important;
   border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-logo-light {
+  display: none !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-logo-dark {
+  display: block !important;
 }
 
 /* Default text and all descendants: light color for readability (exceptions below) */

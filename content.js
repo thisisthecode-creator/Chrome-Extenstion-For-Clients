@@ -55,7 +55,8 @@ function injectExtensionPanel() {
     <div class="bs-logo-container" id="bs-logo-container">
       <div class="bs-logo-header">
         <a href="https://www.benefitsystems.io/" target="_blank" class="bs-logo-link">
-          <img src="https://tools.benefitsystems.io/Benefit3.png" alt="Benefit Systems" class="bs-logo" />
+          <img src="https://tools.benefitsystems.io/Benefit3.png" alt="Benefit Systems" class="bs-logo bs-logo-light" />
+          <img src="" alt="Benefit Systems" class="bs-logo bs-logo-dark" id="bs-logo-dark" />
         </a>
         <div class="bs-section-toggles">
           <div class="bs-toggle-item">
@@ -389,22 +390,22 @@ function injectExtensionPanel() {
             <div class="bs-settings-item bs-settings-item-color">
               <label for="bs-color-nonstop">Nonstop</label>
               <div class="bs-settings-color-row">
-                <input type="color" id="bs-color-nonstop" class="bs-settings-color-input" value="#c8e6c9" title="Nonstop flights row color">
-                <input type="text" id="bs-color-nonstop-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#c8e6c9" spellcheck="false">
+                <input type="color" id="bs-color-nonstop" class="bs-settings-color-input" value="#e3ffdb" title="Nonstop flights row color">
+                <input type="text" id="bs-color-nonstop-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#e3ffdb" spellcheck="false">
               </div>
             </div>
             <div class="bs-settings-item bs-settings-item-color">
               <label for="bs-color-stops">1 stop</label>
               <div class="bs-settings-color-row">
-                <input type="color" id="bs-color-stops" class="bs-settings-color-input" value="#ffc107" title="1 stop flights row color">
-                <input type="text" id="bs-color-stops-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#ffc107" spellcheck="false">
+                <input type="color" id="bs-color-stops" class="bs-settings-color-input" value="#ffecd1" title="1 stop flights row color">
+                <input type="text" id="bs-color-stops-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#ffecd1" spellcheck="false">
               </div>
             </div>
             <div class="bs-settings-item bs-settings-item-color">
               <label for="bs-color-multiple-stops">2+ stops</label>
               <div class="bs-settings-color-row">
-                <input type="color" id="bs-color-multiple-stops" class="bs-settings-color-input" value="#f44336" title="2+ stops flights row color">
-                <input type="text" id="bs-color-multiple-stops-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#f44336" spellcheck="false">
+                <input type="color" id="bs-color-multiple-stops" class="bs-settings-color-input" value="#fbd3d0" title="2+ stops flights row color">
+                <input type="text" id="bs-color-multiple-stops-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#fbd3d0" spellcheck="false">
               </div>
             </div>
           </div>
@@ -428,6 +429,12 @@ function injectExtensionPanel() {
   
   // Insert panel at the top
   targetContainer.insertBefore(panel, targetContainer.firstChild);
+  
+  // Dark mode logo: use extension icon (icon128.png)
+  const darkLogo = document.getElementById('bs-logo-dark');
+  if (darkLogo && typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL) {
+    darkLogo.src = chrome.runtime.getURL('icon128.png');
+  }
   
   // Initialize event listeners
   initializeEventListeners();
@@ -604,9 +611,9 @@ function textColorForBackground(hex) {
 
 // Inject or update dynamic style for flight stop row colors (exact color from settings) + contrast text
 function applyFlightStopColors() {
-  const nonstop = (localStorage.getItem('bs-flight-color-nonstop') || '#c8e6c9').replace(/^#?/, '#');
-  const stops = (localStorage.getItem('bs-flight-color-stops') || '#ffc107').replace(/^#?/, '#');
-  const multi = (localStorage.getItem('bs-flight-color-multiple-stops') || '#f44336').replace(/^#?/, '#');
+  const nonstop = (localStorage.getItem('bs-flight-color-nonstop') || '#e3ffdb').replace(/^#?/, '#');
+  const stops = (localStorage.getItem('bs-flight-color-stops') || '#ffecd1').replace(/^#?/, '#');
+  const multi = (localStorage.getItem('bs-flight-color-multiple-stops') || '#fbd3d0').replace(/^#?/, '#');
 
   const nonstopText = textColorForBackground(nonstop);
   const stopsText = textColorForBackground(stops);
@@ -1260,9 +1267,9 @@ function initializeEventListeners() {
       }
     });
   }
-  initColorSetting('bs-color-nonstop', 'bs-color-nonstop-hex', 'bs-flight-color-nonstop', '#c8e6c9');
-  initColorSetting('bs-color-stops', 'bs-color-stops-hex', 'bs-flight-color-stops', '#ffc107');
-  initColorSetting('bs-color-multiple-stops', 'bs-color-multiple-stops-hex', 'bs-flight-color-multiple-stops', '#f44336');
+  initColorSetting('bs-color-nonstop', 'bs-color-nonstop-hex', 'bs-flight-color-nonstop', '#e3ffdb');
+  initColorSetting('bs-color-stops', 'bs-color-stops-hex', 'bs-flight-color-stops', '#ffecd1');
+  initColorSetting('bs-color-multiple-stops', 'bs-color-multiple-stops-hex', 'bs-flight-color-multiple-stops', '#fbd3d0');
 
   // Seats.aero API URL and Key: save on change and sync to config + background
   const seatsAeroKeyInput = document.getElementById('bs-seatsaero-api-key');
