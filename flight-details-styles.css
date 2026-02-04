@@ -456,13 +456,21 @@ body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-good-deal {
   background: rgba(129, 201, 149, 0.15) !important;
 }
 
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-good-deal td {
+  color: #1a1a1a !important;
+}
+
 body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal {
   background: rgba(255, 255, 255, 0.03) !important;
 }
 
-/* Table cell badges/spans – keep readable text */
-body.bs-dark-mode #bs-standalone-award-section .bs-award-table td span {
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal td {
   color: #e8eaed !important;
+}
+
+/* Table cell badges/spans – black text on colored backgrounds for readability */
+body.bs-dark-mode #bs-standalone-award-section .bs-award-table td span {
+  color: #000000 !important;
 }
 
 /* Section headers (e.g. "First Class", "Business Class") */

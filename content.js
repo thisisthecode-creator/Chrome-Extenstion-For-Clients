@@ -589,19 +589,42 @@ function hexDarken(hex, factor) {
   return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
 }
 
-// Inject or update dynamic style for flight stop row colors (exact color from settings)
+// Relative luminance (0–1). Use dark text if luminance > threshold, else light text for contrast.
+function hexLuminance(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = ((n >> 16) & 0xff) / 255;
+  const g = ((n >> 8) & 0xff) / 255;
+  const b = (n & 0xff) / 255;
+  const [rs, gs, bs] = [r, g, b].map(c => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+}
+function textColorForBackground(hex) {
+  return hexLuminance(hex) > 0.5 ? '#1a1a1a' : '#ffffff';
+}
+
+// Inject or update dynamic style for flight stop row colors (exact color from settings) + contrast text
 function applyFlightStopColors() {
   const nonstop = (localStorage.getItem('bs-flight-color-nonstop') || '#c8e6c9').replace(/^#?/, '#');
   const stops = (localStorage.getItem('bs-flight-color-stops') || '#ffc107').replace(/^#?/, '#');
   const multi = (localStorage.getItem('bs-flight-color-multiple-stops') || '#f44336').replace(/^#?/, '#');
 
-  let css = '/* Benefit Systems – flight row colors (plain) */\n';
-  css += '.yR1fYc.bs-nonstop-flight { background: ' + nonstop + ' !important; border-color: ' + nonstop + ' !important; box-shadow: none !important; }\n';
-  css += '.yR1fYc.bs-stops-flight { background: ' + stops + ' !important; border-color: ' + stops + ' !important; box-shadow: none !important; }\n';
-  css += '.yR1fYc.bs-multiple-stops-flight { background: ' + multi + ' !important; border-color: ' + multi + ' !important; box-shadow: none !important; }\n';
-  css += 'body.bs-dark-mode .yR1fYc.bs-nonstop-flight { background: ' + nonstop + ' !important; border-color: ' + nonstop + ' !important; box-shadow: none !important; }\n';
-  css += 'body.bs-dark-mode .yR1fYc.bs-stops-flight { background: ' + stops + ' !important; border-color: ' + stops + ' !important; box-shadow: none !important; }\n';
-  css += 'body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight { background: ' + multi + ' !important; border-color: ' + multi + ' !important; box-shadow: none !important; }\n';
+  const nonstopText = textColorForBackground(nonstop);
+  const stopsText = textColorForBackground(stops);
+  const multiText = textColorForBackground(multi);
+
+  let css = '/* Benefit Systems – flight row colors (plain) + contrast text */\n';
+  css += '.yR1fYc.bs-nonstop-flight { background: ' + nonstop + ' !important; border-color: ' + nonstop + ' !important; box-shadow: none !important; color: ' + nonstopText + ' !important; }\n';
+  css += '.yR1fYc.bs-nonstop-flight * { color: ' + nonstopText + ' !important; }\n';
+  css += '.yR1fYc.bs-stops-flight { background: ' + stops + ' !important; border-color: ' + stops + ' !important; box-shadow: none !important; color: ' + stopsText + ' !important; }\n';
+  css += '.yR1fYc.bs-stops-flight * { color: ' + stopsText + ' !important; }\n';
+  css += '.yR1fYc.bs-multiple-stops-flight { background: ' + multi + ' !important; border-color: ' + multi + ' !important; box-shadow: none !important; color: ' + multiText + ' !important; }\n';
+  css += '.yR1fYc.bs-multiple-stops-flight * { color: ' + multiText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-nonstop-flight { background: ' + nonstop + ' !important; border-color: ' + nonstop + ' !important; box-shadow: none !important; color: ' + nonstopText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-nonstop-flight * { color: ' + nonstopText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-stops-flight { background: ' + stops + ' !important; border-color: ' + stops + ' !important; box-shadow: none !important; color: ' + stopsText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-stops-flight * { color: ' + stopsText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight { background: ' + multi + ' !important; border-color: ' + multi + ' !important; box-shadow: none !important; color: ' + multiText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight * { color: ' + multiText + ' !important; }\n';
 
   let el = document.getElementById('bs-flight-stop-colors');
   if (!el) {
