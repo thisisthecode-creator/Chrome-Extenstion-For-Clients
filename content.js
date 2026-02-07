@@ -90,6 +90,14 @@ function injectExtensionPanel() {
       <div class="bs-section-header">
         <span class="bs-section-icon" style="font-size: 20px; line-height: 1;">✈️</span>
         <span>Flight Search</span>
+        <button class="bs-action-btn bs-action-info" id="bs-flight-transfer-info" title="Airline transfer ratios (Amex, Chase, Citi, etc.)" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          <span class="bs-action-info-label">Info</span>
+        </button>
         <button class="bs-action-btn bs-action-refresh" id="bs-refresh-flight" title="Refresh results">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="23 4 23 10 17 10"/>
@@ -97,6 +105,7 @@ function injectExtensionPanel() {
             <path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10"/>
             <path d="M20.49 15a9 9 0 0 1-14.13 3.36L1 14"/>
           </svg>
+          <span class="bs-action-btn-label">Refresh</span>
         </button>
         <button class="bs-action-btn bs-action-open-all" id="bs-flight-open-all" title="Open all flight search services">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -104,6 +113,7 @@ function injectExtensionPanel() {
             <polyline points="15 3 21 3 21 9"/>
             <line x1="10" y1="14" x2="21" y2="3"/>
           </svg>
+          <span class="bs-action-btn-label">Open All</span>
         </button>
         <div class="bs-header-controls">
           <div class="bs-auto-reload-toggle">
@@ -251,6 +261,14 @@ function injectExtensionPanel() {
       <div class="bs-section-header">
         <span class="bs-section-icon" style="font-size: 20px; line-height: 1;">🏨</span>
         <span>Hotel Search</span>
+        <button class="bs-action-btn bs-action-info" id="bs-hotel-transfer-info" title="Hotel transfer ratios (Amex, Chase, Citi, etc.)" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          <span class="bs-action-info-label">Info</span>
+        </button>
         <button class="bs-action-btn bs-action-refresh" id="bs-refresh-hotel" title="Refresh results">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="23 4 23 10 17 10"/>
@@ -258,6 +276,7 @@ function injectExtensionPanel() {
             <path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10"/>
             <path d="M20.49 15a9 9 0 0 1-14.13 3.36L1 14"/>
           </svg>
+          <span class="bs-action-btn-label">Refresh</span>
         </button>
         <button class="bs-action-btn bs-action-open-all" id="bs-hotel-open-all" title="Open all hotel search services">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -265,6 +284,7 @@ function injectExtensionPanel() {
             <polyline points="15 3 21 3 21 9"/>
             <line x1="10" y1="14" x2="21" y2="3"/>
           </svg>
+          <span class="bs-action-btn-label">Open All</span>
         </button>
         <div class="bs-header-controls">
           <div class="bs-auto-reload-toggle">
@@ -357,11 +377,13 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-choice" data-service="choice">
           Choice
         </button>
-        <button class="bs-btn bs-btn-iprefer" data-service="iprefer">
+        <button class="bs-btn bs-btn-iprefer" data-service="iprefer" title="Citi 1:4 iPrefer">
           iPrefer
+          <span class="bs-btn-badge bs-btn-badge-citi" title="Citi 1:4 iPrefer">Citi 1:4 iPrefer</span>
         </button>
-        <button class="bs-btn bs-btn-preferred-hotels" data-service="preferred-hotels">
+        <button class="bs-btn bs-btn-preferred-hotels" data-service="preferred-hotels" title="Citi 1:2 Choice">
           Preferred Hotels
+          <span class="bs-btn-badge bs-btn-badge-citi" title="Citi 1:2 Choice">Citi 1:2 Choice</span>
         </button>
         <button class="bs-btn bs-btn-gha" data-service="gha">
           GHA
@@ -1371,6 +1393,10 @@ function initializeEventListeners() {
     });
   }
 
+  const flightTransferInfoBtn = document.getElementById('bs-flight-transfer-info');
+  if (flightTransferInfoBtn) {
+    flightTransferInfoBtn.addEventListener('click', showFlightTransferModal);
+  }
   // Refresh button
   const refreshFlightBtn = document.getElementById('bs-refresh-flight');
   if (refreshFlightBtn) {
@@ -1382,6 +1408,10 @@ function initializeEventListeners() {
   }
   
   // Hotel refresh button
+  const hotelTransferInfoBtn = document.getElementById('bs-hotel-transfer-info');
+  if (hotelTransferInfoBtn) {
+    hotelTransferInfoBtn.addEventListener('click', showHotelTransferModal);
+  }
   const refreshHotelBtn = document.getElementById('bs-refresh-hotel');
   if (refreshHotelBtn) {
     refreshHotelBtn.addEventListener('click', () => {
@@ -3222,6 +3252,237 @@ async function generateHotelUrl(service, data, geocodeData = null) {
   return urls[service] || '#';
 }
 
+
+// Hotel transfer ratios modal (Amex, Chase, Citi, etc.)
+const HOTEL_TRANSFER_ROWS = [
+  { partner: 'Accor', program: 'Live Limitless', amex: null, chase: null, citi: '1:0.5', capOne: '1:0.5', bilt: '1:0.67', wellsFargo: null, rove: '1:0.67' },
+  { partner: 'Choice', program: 'Privileges', amex: '1:1', chase: null, citi: '1:2', capOne: '1:1', bilt: null, wellsFargo: '1:2', rove: null },
+  { partner: 'Hilton', program: 'Honors', amex: '1:2', chase: null, citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'Hyatt', program: 'World of Hyatt', amex: null, chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'IHG', program: 'One Rewards', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'Marriott', program: 'Bonvoy', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'Preferred Hotels & Resorts', program: 'Rewards', amex: null, chase: null, citi: '1:4', capOne: null, bilt: null, wellsFargo: null, rove: null },
+  { partner: 'The Leading Hotels of the World', program: 'Leaders Club', amex: null, chase: null, citi: '1:0.2', capOne: null, bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Wyndham', program: 'Rewards', amex: null, chase: null, citi: '1:1', capOne: '1:1', bilt: null, wellsFargo: null, rove: null }
+];
+
+function getRatioCellClass(ratio) {
+  if (!ratio) return '';
+  if (ratio === '1:0.2') return 'bs-ratio-poor';
+  if (['1:0.5', '1:0.67'].includes(ratio)) return 'bs-ratio-ok';
+  return 'bs-ratio-good';
+}
+
+function createHotelTransferModal() {
+  const backdrop = document.createElement('div');
+  backdrop.className = 'bs-transfer-modal-backdrop';
+  backdrop.setAttribute('aria-hidden', 'true');
+  const box = document.createElement('div');
+  box.className = 'bs-transfer-modal-box';
+  box.innerHTML = `
+    <div class="bs-transfer-modal-header">
+      <h3 class="bs-transfer-modal-title">Hotels</h3>
+      <button type="button" class="bs-action-btn bs-transfer-modal-close" title="Close">&times;</button>
+    </div>
+    <div class="bs-transfer-modal-body">
+      <div class="bs-transfer-search-wrap">
+        <input type="text" class="bs-transfer-search" placeholder="Search partners or programs..." autocomplete="off" />
+      </div>
+      <div class="bs-transfer-table-wrap">
+        <table class="bs-transfer-table">
+          <thead>
+            <tr>
+              <th class="bs-transfer-th-partner">Partner</th>
+              <th class="bs-transfer-th">Amex</th>
+              <th class="bs-transfer-th">Chase</th>
+              <th class="bs-transfer-th">Citi</th>
+              <th class="bs-transfer-th">Capital One</th>
+              <th class="bs-transfer-th">Bilt</th>
+              <th class="bs-transfer-th">Wells Fargo</th>
+              <th class="bs-transfer-th">Rove</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${HOTEL_TRANSFER_ROWS.map(r => `
+              <tr>
+                <td class="bs-transfer-td-partner">
+                  <div class="bs-transfer-partner-name">${r.partner}</div>
+                  <div class="bs-transfer-partner-program">${r.program}</div>
+                </td>
+                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.amex)}">${r.amex || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.chase)}">${r.chase || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.citi)}">${r.citi || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.capOne)}">${r.capOne || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.bilt)}">${r.bilt || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.wellsFargo)}">${r.wellsFargo || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.rove)}">${r.rove || '–'}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  backdrop.appendChild(box);
+  const close = () => {
+    backdrop.classList.remove('bs-transfer-modal-visible');
+  };
+  backdrop.addEventListener('click', (e) => { if (e.target === backdrop) close(); });
+  box.querySelector('.bs-transfer-modal-close').addEventListener('click', close);
+  const searchInput = box.querySelector('.bs-transfer-search');
+  const tbody = box.querySelector('.bs-transfer-table tbody');
+  if (searchInput && tbody) {
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      tbody.querySelectorAll('tr').forEach(tr => {
+        tr.style.display = !q || tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+  }
+  return backdrop;
+}
+
+function showHotelTransferModal() {
+  let modal = document.getElementById('bs-hotel-transfer-modal');
+  if (!modal) {
+    modal = createHotelTransferModal();
+    modal.id = 'bs-hotel-transfer-modal';
+    document.body.appendChild(modal);
+  }
+  const searchInput = modal.querySelector('.bs-transfer-search');
+  if (searchInput) {
+    searchInput.value = '';
+    modal.querySelectorAll('.bs-transfer-table tbody tr').forEach(tr => { tr.style.display = ''; });
+  }
+  modal.classList.add('bs-transfer-modal-visible');
+}
+
+// Airline transfer ratios modal (Amex, Chase, Citi, etc.)
+const AIRLINE_TRANSFER_ROWS = [
+  { partner: 'Aer Lingus', program: 'Avios', alliance: 'OneWorld', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: '1:1', rove: null },
+  { partner: 'Aeromexico', program: 'Club Premier', alliance: 'SkyTeam', amex: '1:1.6', chase: null, citi: null, capOne: '1:1', bilt: null, wellsFargo: null, rove: '1:1' },
+  { partner: 'Air Canada', program: 'Aeroplan', alliance: 'Star Alliance', amex: '1:1', chase: '1:1', citi: null, capOne: '1:1', bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'Air France / KLM', program: 'Flying Blue', alliance: 'SkyTeam', amex: '1:1', chase: '1:1', citi: '1:1', capOne: '1:1', bilt: '1:1', wellsFargo: '1:1', rove: '1:1' },
+  { partner: 'Air India', program: 'Maharaja Club', alliance: 'Star Alliance', amex: null, chase: null, citi: null, capOne: null, bilt: null, wellsFargo: null, rove: '1:1' },
+  { partner: 'Alaska Airlines', program: 'Mileage Plan', alliance: 'OneWorld', amex: null, chase: null, citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'American Airlines', program: 'AAdvantage', alliance: 'OneWorld', amex: null, chase: null, citi: '1:1', capOne: null, bilt: null, wellsFargo: null, rove: null },
+  { partner: 'ANA', program: 'Mileage Club', alliance: 'Star Alliance', amex: '1:1', chase: null, citi: null, capOne: null, bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Avianca', program: 'LifeMiles', alliance: 'Star Alliance', amex: '1:1', chase: null, citi: '1:1', capOne: '1:1', bilt: '1:1', wellsFargo: '1:1', rove: null },
+  { partner: 'British Airways', program: 'Avios', alliance: 'OneWorld', amex: '1:1', chase: '1:1', citi: null, capOne: '1:1', bilt: '1:1', wellsFargo: '1:1', rove: null },
+  { partner: 'Cathay Pacific', program: 'Asia Miles', alliance: 'OneWorld', amex: '1:0.8', chase: null, citi: '1:1', capOne: '1:1', bilt: '1:1', wellsFargo: null, rove: '1:1' },
+  { partner: 'Delta', program: 'SkyMiles', alliance: 'SkyTeam', amex: '1:1', chase: null, citi: null, capOne: null, bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Emirates', program: 'Skywards', alliance: null, amex: '1:0.8', chase: null, citi: '1:0.8', capOne: '1:0.75', bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'Etihad', program: 'Guest', alliance: null, amex: '1:1', chase: null, citi: '1:1', capOne: '1:1', bilt: '1:1', wellsFargo: null, rove: '1:1' },
+  { partner: 'EVA Air', program: 'MileageLands', alliance: 'Star Alliance', amex: null, chase: null, citi: '1:1', capOne: '1:0.75', bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Finnair', program: 'Plus', alliance: 'OneWorld', amex: null, chase: null, citi: null, capOne: '1:1', bilt: null, wellsFargo: null, rove: '1:1' },
+  { partner: 'Iberia', program: 'Avios', alliance: 'OneWorld', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: '1:1', rove: null },
+  { partner: 'Japan Airlines', program: 'Mileage', alliance: 'OneWorld', amex: null, chase: null, citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'JetBlue', program: 'TrueBlue', alliance: null, amex: '1:0.8', chase: '1:1', citi: '1:1', capOne: '1:0.6', bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Lufthansa', program: 'Miles and More', alliance: 'Star Alliance', amex: null, chase: null, citi: null, capOne: null, bilt: null, wellsFargo: null, rove: '1:1' },
+  { partner: 'Qantas', program: 'Frequent Flyer', alliance: 'OneWorld', amex: '1:1', chase: null, citi: '1:1', capOne: '1:1', bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Qatar Airways', program: 'Privilege Club', alliance: 'OneWorld', amex: '1:1', chase: null, citi: '1:1', capOne: null, bilt: '1:1', wellsFargo: null, rove: '1:1' },
+  { partner: 'Singapore Airlines', program: 'KrisFlyer', alliance: 'Star Alliance', amex: '1:1', chase: '1:1', citi: '1:1', capOne: '1:1', bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Southwest', program: 'Rapid Rewards', alliance: null, amex: null, chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'Spirit Airlines', program: 'Free Spirit', alliance: null, amex: null, chase: null, citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'TAP Portugal', program: 'Miles & Go', alliance: 'Star Alliance', amex: null, chase: null, citi: null, capOne: '1:1', bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'Thai Airways', program: 'Royal Orchid Plus', alliance: 'Star Alliance', amex: null, chase: null, citi: '1:1', capOne: null, bilt: null, wellsFargo: null, rove: '1:1' },
+  { partner: 'Turkish Airlines', program: 'Miles & Smiles', alliance: 'Star Alliance', amex: null, chase: null, citi: '1:1', capOne: '1:1', bilt: '1:1', wellsFargo: null, rove: '1:1' },
+  { partner: 'United', program: 'MileagePlus', alliance: 'Star Alliance', amex: null, chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'Vietnam Airlines', program: 'Lotusmiles', alliance: 'SkyTeam', amex: null, chase: null, citi: null, capOne: null, bilt: null, wellsFargo: null, rove: '1:1' },
+  { partner: 'Virgin Atlantic', program: 'Flying Club', alliance: 'SkyTeam', amex: '1:1', chase: '1:1', citi: '1:1', capOne: '1:1', bilt: '1:1', wellsFargo: '1:1', rove: null }
+];
+
+function getAirlineRatioCellClass(ratio) {
+  if (!ratio) return '';
+  if (['1:0.6', '1:0.75'].includes(ratio)) return 'bs-ratio-ok';
+  if (ratio === '1:0.8') return 'bs-ratio-warn';
+  return 'bs-ratio-good';
+}
+
+function createFlightTransferModal() {
+  const backdrop = document.createElement('div');
+  backdrop.className = 'bs-transfer-modal-backdrop';
+  backdrop.setAttribute('aria-hidden', 'true');
+  const box = document.createElement('div');
+  box.className = 'bs-transfer-modal-box';
+  box.innerHTML = `
+    <div class="bs-transfer-modal-header">
+      <h3 class="bs-transfer-modal-title">Airlines</h3>
+      <button type="button" class="bs-action-btn bs-transfer-modal-close" title="Close">&times;</button>
+    </div>
+    <div class="bs-transfer-modal-body">
+      <div class="bs-transfer-search-wrap">
+        <input type="text" class="bs-transfer-search" placeholder="Search airlines, programs or alliances..." autocomplete="off" />
+      </div>
+      <div class="bs-transfer-table-wrap">
+        <table class="bs-transfer-table">
+          <thead>
+            <tr>
+              <th class="bs-transfer-th-partner">Partner</th>
+              <th class="bs-transfer-th">Amex</th>
+              <th class="bs-transfer-th">Chase</th>
+              <th class="bs-transfer-th">Citi</th>
+              <th class="bs-transfer-th">Capital One</th>
+              <th class="bs-transfer-th">Bilt</th>
+              <th class="bs-transfer-th">Wells Fargo</th>
+              <th class="bs-transfer-th">Rove</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${AIRLINE_TRANSFER_ROWS.map(r => `
+              <tr>
+                <td class="bs-transfer-td-partner">
+                  <div class="bs-transfer-partner-name">${r.partner}</div>
+                  <div class="bs-transfer-partner-program">${r.program}</div>
+                  ${r.alliance ? `<div class="bs-transfer-partner-program">${r.alliance}</div>` : ''}
+                </td>
+                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.amex)}">${r.amex || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.chase)}">${r.chase || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.citi)}">${r.citi || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.capOne)}">${r.capOne || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.bilt)}">${r.bilt || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.wellsFargo)}">${r.wellsFargo || '–'}</span></td>
+                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.rove)}">${r.rove || '–'}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  backdrop.appendChild(box);
+  const close = () => {
+    backdrop.classList.remove('bs-transfer-modal-visible');
+  };
+  backdrop.addEventListener('click', (e) => { if (e.target === backdrop) close(); });
+  box.querySelector('.bs-transfer-modal-close').addEventListener('click', close);
+  const searchInput = box.querySelector('.bs-transfer-search');
+  const tbody = box.querySelector('.bs-transfer-table tbody');
+  if (searchInput && tbody) {
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      tbody.querySelectorAll('tr').forEach(tr => {
+        tr.style.display = !q || tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+  }
+  return backdrop;
+}
+
+function showFlightTransferModal() {
+  let modal = document.getElementById('bs-flight-transfer-modal');
+  if (!modal) {
+    modal = createFlightTransferModal();
+    modal.id = 'bs-flight-transfer-modal';
+    document.body.appendChild(modal);
+  }
+  const searchInput = modal.querySelector('.bs-transfer-search');
+  if (searchInput) {
+    searchInput.value = '';
+    modal.querySelectorAll('.bs-transfer-table tbody tr').forEach(tr => { tr.style.display = ''; });
+  }
+  modal.classList.add('bs-transfer-modal-visible');
+}
 
 // Show notification
 function showNotification(message, type = 'info') {

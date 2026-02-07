@@ -413,19 +413,52 @@
   filter: drop-shadow(0 2px 4px rgba(217, 48, 37, 0.3));
 }
 
+.bs-action-info {
+  background: #e8f0fe;
+  color: #1a73e8;
+  width: auto;
+  min-width: 32px;
+  padding: 0 10px;
+  gap: 6px;
+}
+.bs-action-info-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1a73e8;
+}
 .bs-action-info svg {
   stroke: #1a73e8;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
-
 .bs-action-info:hover {
-  background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);
-  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+  background: linear-gradient(135deg, #d2e3fc 0%, #aecbfa 100%);
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.25);
   transform: translateY(-2px) scale(1.05);
 }
-
 .bs-action-info:hover svg {
   stroke: #1557b0;
   filter: drop-shadow(0 2px 4px rgba(21, 87, 176, 0.3));
+}
+
+.bs-action-btn-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.bs-action-refresh,
+.bs-action-open-all {
+  width: auto;
+  min-width: 32px;
+  padding: 0 10px;
+  gap: 6px;
+}
+.bs-action-refresh svg,
+.bs-action-open-all svg {
+  flex-shrink: 0;
 }
 
 .bs-action-open-all svg {
@@ -857,6 +890,10 @@
   font-size: 10px;
   color: #5f6368;
 }
+.bs-btn-badge-citi {
+  font-size: 10px;
+  color: #5f6368;
+}
 
 .bs-btn-icon {
   display: inline-block;
@@ -957,6 +994,146 @@
 .bs-btn-bs-tools:hover {
   background: #ffffff !important;
   color: #000000 !important;
+}
+
+/* Hotel transfer ratios modal */
+.bs-transfer-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.bs-transfer-modal-backdrop.bs-transfer-modal-visible {
+  display: flex;
+}
+.bs-transfer-modal-box {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.bs-transfer-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+.bs-transfer-modal-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.bs-transfer-modal-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  line-height: 1;
+  color: #5f6368;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.bs-transfer-modal-close:hover {
+  background: #f1f3f4;
+  color: #1a1a1a;
+}
+.bs-transfer-modal-body {
+  padding: 16px 20px 20px;
+  overflow: auto;
+}
+.bs-transfer-search-wrap {
+  margin-bottom: 12px;
+}
+.bs-transfer-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #dadce0;
+  border-radius: 10px;
+  background: #fff;
+  color: #1a1a1a;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.bs-transfer-search::placeholder {
+  color: #5f6368;
+}
+.bs-transfer-search:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+.bs-transfer-table-wrap {
+  overflow-x: auto;
+}
+.bs-transfer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.bs-transfer-table th,
+.bs-transfer-table td {
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid #e8eaed;
+}
+.bs-transfer-th-partner,
+.bs-transfer-td-partner {
+  text-align: left;
+  min-width: 160px;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: #fff;
+  border-right: 1px solid #e8eaed;
+  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.06);
+}
+.bs-transfer-table thead th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.bs-transfer-th-partner {
+  background: #f8f9fa;
+  z-index: 2;
+}
+.bs-transfer-partner-name {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+.bs-transfer-partner-program {
+  font-size: 11px;
+  color: #5f6368;
+  margin-top: 2px;
+}
+.bs-ratio-good {
+  font-weight: 700;
+  color: #1e8e3e;
+}
+.bs-ratio-ok {
+  font-weight: 700;
+  color: #c2410c;
+}
+.bs-ratio-poor {
+  font-weight: 700;
+  color: #c5221f;
+}
+.bs-ratio-warn {
+  font-weight: 700;
+  color: #b45309;
 }
 
 /* Notification */
@@ -9123,8 +9300,18 @@
   background: rgba(234, 67, 53, 0.2) !important;
 }
 
+.bs-extension-panel.bs-dark-mode .bs-action-info {
+  background: rgba(26, 115, 232, 0.25) !important;
+  color: #8ab4f8 !important;
+}
+.bs-extension-panel.bs-dark-mode .bs-action-info .bs-action-info-label {
+  color: #8ab4f8 !important;
+}
+.bs-extension-panel.bs-dark-mode .bs-action-info svg {
+  stroke: #8ab4f8 !important;
+}
 .bs-extension-panel.bs-dark-mode .bs-action-info:hover {
-  background: rgba(26, 115, 232, 0.2) !important;
+  background: rgba(26, 115, 232, 0.4) !important;
 }
 
 .bs-extension-panel.bs-dark-mode .bs-action-open-all:hover {
@@ -9184,6 +9371,10 @@
 }
 
 .bs-extension-panel.bs-dark-mode .bs-btn-badge-login {
+  color: #e8eaed !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-btn-badge-citi {
   color: #e8eaed !important;
 }
 
