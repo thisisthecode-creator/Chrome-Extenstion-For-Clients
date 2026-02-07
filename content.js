@@ -357,6 +357,12 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-choice" data-service="choice">
           Choice
         </button>
+        <button class="bs-btn bs-btn-iprefer" data-service="iprefer">
+          iPrefer
+        </button>
+        <button class="bs-btn bs-btn-preferred-hotels" data-service="preferred-hotels">
+          Preferred Hotels
+        </button>
         <button class="bs-btn bs-btn-gha" data-service="gha">
           GHA
         </button>
@@ -2869,6 +2875,30 @@ function generateFlightUrl(service, data) {
   return urls[service] || '#';
 }
 
+/**
+ * Resolve city name or airport code to a country slug for iPrefer/Preferred Hotels URLs.
+ * Uses airport data (OpenFlights); works for city names (e.g. Vienna) and airport codes (e.g. VIE).
+ * @param {string} cityOrIata - City name or IATA code
+ * @returns {Promise<string|null>} Country slug (e.g. 'austria', 'united-states') or null if not found
+ */
+async function getCountrySlugFromCityOrAirport(cityOrIata) {
+  if (!cityOrIata || !window.airportDataService) return null;
+  const query = String(cityOrIata).trim();
+  if (!query) return null;
+  const results = await window.airportDataService.searchAirports(query, 1);
+  const first = results && results[0];
+  if (!first || !first.country) return null;
+  const country = String(first.country).trim();
+  if (!country) return null;
+  const slug = country
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+  return slug || null;
+}
+
 // Generate hotel URLs
 async function generateHotelUrl(service, data, geocodeData = null) {
   const { city, checkin, checkout, adults, rooms } = data;
@@ -3173,6 +3203,20 @@ async function generateHotelUrl(service, data, geocodeData = null) {
     // If no placeId available, return URL without it (may not work correctly)
     // Note: Radisson requires placeId for proper search
     return baseUrl;
+  }
+
+  // iPrefer and Preferred Hotels: resolve city/airport to country slug, then build URL
+  if (service === 'iprefer' || service === 'preferred-hotels') {
+    const countrySlug = await getCountrySlugFromCityOrAirport(city);
+    if (!countrySlug) {
+      showNotification('City/airport not found. Try a city name or airport code (e.g. Vienna or VIE).', 'warning');
+      return null;
+    }
+    const base = `https://${service === 'iprefer' ? 'iprefer' : 'preferredhotels'}.com/search/country/${countrySlug}?arrivalDate=${checkin}&departureDate=${checkout}&rateType=IPPOINTS&sortType=lowestPrice`;
+    if (service === 'preferred-hotels') {
+      return `${base}&numberOfAdults=${adults}`;
+    }
+    return base;
   }
   
   return urls[service] || '#';
