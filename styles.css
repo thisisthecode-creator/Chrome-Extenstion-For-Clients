@@ -908,6 +908,9 @@
   font-size: 10px;
   color: #5f6368;
 }
+.bs-btn-preferred-hotels .bs-btn-badge-citi {
+  font-size: 8px;
+}
 
 .bs-btn-icon {
   display: inline-block;
@@ -1037,17 +1040,34 @@
 }
 .bs-transfer-modal-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid #e0e0e0;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e8eaed;
   flex-shrink: 0;
+  background: #f8f9fa;
+}
+.bs-transfer-modal-header-text {
+  flex: 1;
+  min-width: 0;
 }
 .bs-transfer-modal-title {
-  margin: 0;
+  margin: 0 0 6px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #202124;
+}
+.bs-transfer-modal-explanation {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #5f6368;
+  font-weight: 400;
+}
+.bs-transfer-modal-explanation strong {
+  color: #202124;
+  font-weight: 600;
 }
 .bs-transfer-modal-close {
   width: 32px;
@@ -1067,6 +1087,74 @@
 .bs-transfer-modal-body {
   padding: 16px 20px 20px;
   overflow: auto;
+}
+.bs-transfer-view-switch-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.bs-transfer-view-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #5f6368;
+}
+.bs-transfer-filter-label {
+  margin-left: 8px;
+}
+.bs-transfer-view-switch {
+  display: inline-flex;
+  background: #e8eaed;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 0;
+}
+.bs-transfer-view-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #5f6368;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.bs-transfer-view-btn:hover {
+  color: #202124;
+}
+.bs-transfer-view-btn.active {
+  background: #fff;
+  color: #202124;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.bs-transfer-filter-wrap {
+  display: inline-flex;
+  background: #e8eaed;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.bs-transfer-filter-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5f6368;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.bs-transfer-filter-btn:hover {
+  color: #202124;
+}
+.bs-transfer-filter-btn.active {
+  background: #fff;
+  color: #202124;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .bs-transfer-search-wrap {
   margin-bottom: 12px;
@@ -1092,6 +1180,9 @@
 }
 .bs-transfer-table-wrap {
   overflow-x: auto;
+  border: 1px solid #e8eaed;
+  border-radius: 10px;
+  margin-bottom: 14px;
 }
 .bs-transfer-table {
   width: 100%;
@@ -1104,10 +1195,16 @@
   text-align: left;
   border-bottom: 1px solid #e8eaed;
 }
+.bs-transfer-table tbody tr:nth-child(even) {
+  background: #f8f9fa;
+}
+.bs-transfer-table tbody tr:hover {
+  background: #e8f0fe;
+}
 .bs-transfer-th-partner,
 .bs-transfer-td-partner {
   text-align: left;
-  min-width: 160px;
+  min-width: 170px;
   position: sticky;
   left: 0;
   z-index: 1;
@@ -1115,43 +1212,126 @@
   border-right: 1px solid #e8eaed;
   box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.06);
 }
-.bs-transfer-table thead th {
+.bs-transfer-table tbody tr:nth-child(even) .bs-transfer-td-partner {
   background: #f8f9fa;
+}
+.bs-transfer-table tbody tr:hover .bs-transfer-td-partner {
+  background: #e8f0fe;
+}
+.bs-transfer-table thead th {
+  background: #f1f3f4;
   font-weight: 600;
-  color: #1a1a1a;
+  font-size: 12px;
+  color: #202124;
+  border-bottom: 2px solid #dadce0;
+  padding: 12px 10px;
 }
 .bs-transfer-th-partner {
-  background: #f8f9fa;
+  background: #f1f3f4;
   z-index: 2;
+}
+.bs-transfer-th-sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.bs-transfer-th-sortable:hover {
+  background: #e8eaed;
+}
+.bs-transfer-sort-arrow {
+  opacity: 0;
+  margin-left: 4px;
+  font-size: 11px;
+  color: #5f6368;
+}
+.bs-transfer-sort-arrow-visible {
+  opacity: 1;
+}
+.bs-transfer-th-sorted .bs-transfer-sort-arrow {
+  color: #1a73e8;
+}
+.bs-transfer-loading-row td {
+  text-align: center;
+  color: #5f6368;
+  padding: 16px;
+}
+.bs-transfer-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  align-items: center;
+  padding: 12px 0 0;
+  border-top: 1px solid #e8eaed;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #5f6368;
+}
+.bs-transfer-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.bs-transfer-legend-item .bs-ratio-good,
+.bs-transfer-legend-item .bs-ratio-ok,
+.bs-transfer-legend-item .bs-ratio-poor,
+.bs-transfer-legend-item .bs-ratio-warn {
+  font-size: 10px;
+  line-height: 1;
 }
 .bs-transfer-partner-name,
 .bs-transfer-partner-program {
   text-align: left;
 }
 .bs-transfer-partner-name {
-  font-weight: 500;
-  color: #1a1a1a;
+  font-weight: 600;
+  color: #202124;
+  font-size: 13px;
 }
 .bs-transfer-partner-program {
   font-size: 11px;
   color: #5f6368;
   margin-top: 2px;
+  line-height: 1.3;
+}
+.bs-transfer-rate-label {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #5f6368;
+  background: #e8eaed;
+  padding: 2px 8px;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+.bs-transfer-via-label {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #5f6368;
+  font-style: italic;
+  line-height: 1.4;
 }
 .bs-ratio-good {
   font-weight: 700;
   color: #1e8e3e;
+  font-size: 13px;
 }
 .bs-ratio-ok {
   font-weight: 700;
   color: #c2410c;
+  font-size: 13px;
 }
 .bs-ratio-poor {
   font-weight: 700;
   color: #c5221f;
+  font-size: 13px;
 }
 .bs-ratio-warn {
   font-weight: 700;
   color: #b45309;
+  font-size: 13px;
 }
 
 /* Notification */
@@ -1499,56 +1679,64 @@
   position: fixed;
   background: #ffffff;
   border: 1px solid #dadce0;
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
   z-index: 10001;
   max-width: 1000px;
-  max-height: 600px;
-  overflow-y: auto;
+  max-height: 80vh;
+  overflow: auto;
   font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 13px;
+  line-height: 1.45;
 }
 
 .tooltip-header {
-  padding: 16px 20px 12px;
-  border-bottom: 1px solid #f1f3f4;
-  background: #f8f9fa;
-  border-radius: 8px 8px 0 0;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid #e8eaed;
+  background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+  border-radius: 12px 12px 0 0;
 }
 
 .tooltip-header h3 {
-  margin: 0 0 4px 0;
-  font-size: 16px;
+  margin: 0 0 6px 0;
+  font-size: 17px;
   font-weight: 600;
-  color: #000000;
+  color: #202124;
 }
 
 .tooltip-subtitle {
   font-size: 12px;
   color: #5f6368;
-  font-weight: 500;
+  font-weight: 400;
+  line-height: 1.4;
+  max-width: 520px;
 }
 
 .tooltip-content {
-  padding: 16px 20px;
+  padding: 18px 20px 20px;
 }
 
 .partners-section {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .partners-section:last-child {
   margin-bottom: 0;
 }
 
-.partners-section h4 {
-  margin: 0 0 12px 0;
+.partners-section h4,
+.tooltip-section-title {
+  margin: 0 0 10px 0;
   font-size: 14px;
   font-weight: 600;
-  color: #1a73e8;
-  border-bottom: 1px solid #e8f0fe;
-  padding-bottom: 4px;
+  color: #202124;
+  border-bottom: 2px solid #e8eaed;
+  padding-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+.tooltip-section-title {
+  display: block;
 }
 
 .partners-grid {
@@ -1650,31 +1838,44 @@
 }
 
 .tooltip-footer {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid #f1f3f4;
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-top: 1px solid #e8eaed;
+  background: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+}
+
+.ratio-legend-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #5f6368;
+  margin-bottom: 8px;
+  text-align: center;
 }
 
 .ratio-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px 20px;
   justify-content: center;
+  align-items: center;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 10px;
-  color: #5f6368;
+  font-size: 11px;
+  font-weight: 500;
+  color: #3c4043;
 }
 
 .legend-color {
-  width: 12px;
-  height: 12px;
-  border-radius: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 .legend-color.amex {
@@ -1702,28 +1903,35 @@
 }
 
 /* Transfer Partners Tooltip Table Styles */
+.transfer-partners-tooltip .comparison-table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #e8eaed;
+}
+
 .transfer-partners-tooltip .comparison-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
   min-width: 800px;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .transfer-partners-tooltip .comparison-table thead {
-  background: #f8f9fa;
+  background: #f1f3f4;
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
 .transfer-partners-tooltip .comparison-table th {
-  padding: 6px 4px;
+  padding: 10px 8px;
   font-weight: 600;
-  font-size: 10px;
-  color: #000000 !important;
+  font-size: 11px;
+  color: #202124 !important;
   text-align: center;
   border-right: 1px solid #e8eaed;
+  border-bottom: 2px solid #dadce0;
   white-space: nowrap;
   min-width: 50px;
   width: 60px;
@@ -1741,14 +1949,28 @@
   max-width: 60px !important;
 }
 
+.transfer-partners-tooltip .comparison-table tbody tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+.transfer-partners-tooltip .comparison-table tbody tr:hover {
+  background: #e8f0fe;
+}
+
 .transfer-partners-tooltip .comparison-table td {
-  padding: 6px 4px;
+  padding: 8px;
   border-right: 1px solid #e8eaed;
   border-bottom: 1px solid #e8eaed;
   text-align: center;
   vertical-align: middle;
   min-width: 50px;
-  color: #000000 !important;
+  color: #202124 !important;
+}
+
+.transfer-partners-tooltip .comparison-table .no-value {
+  color: #9aa0a6 !important;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 /* Make all credit card cells the same width in tooltips */
@@ -1765,16 +1987,33 @@
 
 .transfer-partners-tooltip .partner-name-header {
   text-align: left !important;
-  min-width: 120px;
+  min-width: 140px;
   font-size: 12px;
   font-weight: 600;
-  color: #000000 !important;
+  color: #202124 !important;
+  position: sticky;
+  left: 0;
+  z-index: 11;
+  background: #f1f3f4;
+  box-shadow: 2px 0 4px rgba(0,0,0,0.04);
 }
 
 .transfer-partners-tooltip .partner-name-cell {
   text-align: left !important;
-  padding: 6px 4px;
-  min-width: 120px;
+  padding: 8px 10px;
+  min-width: 140px;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: inherit;
+}
+
+.transfer-partners-tooltip .comparison-table tbody tr:nth-child(even) .partner-name-cell {
+  background: #f8f9fa;
+}
+
+.transfer-partners-tooltip .comparison-table tbody tr:hover .partner-name-cell {
+  background: #e8f0fe;
 }
 
 .transfer-partners-tooltip .partner-info {
@@ -1785,43 +2024,45 @@
 
 .transfer-partners-tooltip .partner-name {
   font-weight: 600;
-  color: #000000 !important;
-  font-size: 11px;
+  color: #202124 !important;
+  font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.1;
+  line-height: 1.25;
 }
 
 .transfer-partners-tooltip .partner-program {
-  font-size: 10px;
-  color: #000000 !important;
+  font-size: 11px;
+  color: #5f6368 !important;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.1;
+  line-height: 1.25;
 }
 
 .transfer-partners-tooltip .partner-alliance {
-  font-size: 9px;
-  color: #000000 !important;
+  font-size: 10px;
+  color: #9aa0a6 !important;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.1;
+  line-height: 1.25;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .transfer-partners-tooltip .ratio-value {
-  font-size: 9px;
-  font-weight: 600;
-  padding: 1px 3px;
-  border-radius: 1px;
-  border: 1px solid #e8eaed;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid transparent;
   background: white;
   display: inline-block;
-  min-width: 24px;
+  min-width: 28px;
 }
 
 .transfer-partners-tooltip .ratio-value.amex {

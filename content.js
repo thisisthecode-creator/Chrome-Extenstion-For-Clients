@@ -69,7 +69,7 @@ function injectExtensionPanel() {
           <div class="bs-toggle-item">
             <label class="bs-toggle-label" for="bs-hotel-toggle">Hotel Search</label>
             <label class="bs-toggle-switch">
-              <input type="checkbox" id="bs-hotel-toggle">
+              <input type="checkbox" id="bs-hotel-toggle" checked>
               <span class="bs-toggle-slider"></span>
             </label>
           </div>
@@ -520,15 +520,15 @@ function loadToggleStates() {
     }
   }
   
-  // Default states if no saved data
+  // Default states if no saved data (all ON except Settings)
   return {
-    flight: true,  // Flight Search ON by default
-    hotel: false,  // Hotel Search OFF by default
-    search: false,  // Search OFF by default
-    information: false,  // Information OFF by default
-    calculation: false,  // Calculation OFF by default
-    rovemiles: false,  // Rovemiles OFF by default
-    settings: false // Settings OFF by default
+    flight: true,   // Flight Search ON by default
+    hotel: true,    // Hotel Search ON by default
+    search: true,   // Search ON by default
+    information: true,  // Information ON by default
+    calculation: true,  // Calculation ON by default
+    rovemiles: true,    // Rovemiles ON by default
+    settings: false     // Settings OFF by default (only one that stays off)
   };
 }
 
@@ -875,7 +875,7 @@ function initializeEventListeners() {
     if (savedHotelLinks !== null) {
       hotelLinksToggle.checked = savedHotelLinks === 'true';
     } else {
-      hotelLinksToggle.checked = false;
+      hotelLinksToggle.checked = true;
     }
     hotelLinksContainer.style.display = hotelLinksToggle.checked ? '' : 'none';
     hotelLinksToggle.addEventListener('change', () => {
@@ -3252,24 +3252,75 @@ async function generateHotelUrl(service, data, geocodeData = null) {
 }
 
 
-// Hotel transfer ratios modal (Amex, Chase, Citi, etc.)
-const HOTEL_TRANSFER_ROWS = [
-  { partner: 'Accor', program: 'Live Limitless', amex: null, chase: null, citi: '1:0.5', capOne: '1:0.5', bilt: '1:0.67', wellsFargo: null, rove: '1:0.67' },
-  { partner: 'Choice', program: 'Privileges', amex: '1:1', chase: null, citi: '1:2', capOne: '1:1', bilt: null, wellsFargo: '1:2', rove: null },
-  { partner: 'Hilton', program: 'Honors', amex: '1:2', chase: null, citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
-  { partner: 'Hyatt', program: 'World of Hyatt', amex: null, chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
-  { partner: 'IHG', program: 'One Rewards', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
-  { partner: 'Marriott', program: 'Bonvoy', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
-  { partner: 'Preferred Hotels & Resorts', program: 'iPrefer', amex: null, chase: null, citi: '1:4', capOne: null, bilt: null, wellsFargo: null, rove: null },
-  { partner: 'The Leading Hotels of the World', program: 'Leaders Club', amex: null, chase: null, citi: '1:0.2', capOne: null, bilt: null, wellsFargo: null, rove: null },
-  { partner: 'Wyndham', program: 'Rewards', amex: null, chase: null, citi: '1:1', capOne: '1:1', bilt: null, wellsFargo: null, rove: null }
+// Hotel transfer ratios modal (Amex, Chase, Citi, etc.) – fallback when Supabase unavailable
+const HOTEL_TRANSFER_ROWS_FALLBACK = [
+  { partner: 'Accor', program: 'Live Limitless', rateLabel: 'Fixed Points Value', amex: null, chase: null, citi: '1:0.5', capOne: '1:0.5', bilt: '1:0.67', wellsFargo: null, rove: '1:0.67' },
+  { partner: 'Choice', program: 'Privileges', rateLabel: 'Fixed Points Rates', amex: '1:1', chase: null, citi: '1:2', capOne: '1:1', bilt: null, wellsFargo: '1:2', rove: null },
+  { partner: 'Hyatt', program: 'World of Hyatt', rateLabel: 'Fixed Points Rates', amex: null, chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'iPrefer', program: 'iPrefer', rateLabel: 'Fixed Points Rates', amex: null, chase: null, citi: '1:4', capOne: null, bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Preferred Hotels & Resorts', program: 'iPrefer', rateLabel: 'Fixed Points Rates', viaLabel: 'via Choice', amex: null, chase: null, citi: '1:2', capOne: null, bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Wyndham', program: 'Rewards', rateLabel: 'Fixed Points Rates', amex: null, chase: null, citi: '1:1', capOne: '1:1', bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Hilton', program: 'Honors', rateLabel: 'Dynamic Points Rates', amex: '1:2', chase: null, citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'IHG', program: 'One Rewards', rateLabel: 'Dynamic Points Rates', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'Marriott', program: 'Bonvoy', rateLabel: 'Dynamic Points Rates', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
+  { partner: 'The Leading Hotels of the World', program: 'Leaders Club', rateLabel: 'Dynamic Points Rates', amex: null, chase: null, citi: '1:0.2', capOne: null, bilt: null, wellsFargo: null, rove: null }
 ];
+
+function renderHotelTransferRows(rows) {
+  return (rows || []).map(r => `
+    <tr data-rate-label="${(r.rateLabel || '').replace(/"/g, '&quot;')}">
+      <td class="bs-transfer-td-partner">
+        <div class="bs-transfer-partner-name">${r.partner}</div>
+        <div class="bs-transfer-partner-program">${r.program}</div>
+        ${r.rateLabel ? `<div class="bs-transfer-rate-label">${r.rateLabel}${r.viaLabel ? ' ' + r.viaLabel : ''}</div>` : r.viaLabel ? `<div class="bs-transfer-via-label">${r.viaLabel}</div>` : ''}
+      </td>
+      <td class="bs-transfer-td"><span class="${getRatioCellClass(r.amex)}" data-ratio="${r.amex || ''}">${r.amex || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getRatioCellClass(r.chase)}" data-ratio="${r.chase || ''}">${r.chase || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getRatioCellClass(r.citi)}" data-ratio="${r.citi || ''}">${r.citi || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getRatioCellClass(r.capOne)}" data-ratio="${r.capOne || ''}">${r.capOne || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getRatioCellClass(r.bilt)}" data-ratio="${r.bilt || ''}">${r.bilt || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getRatioCellClass(r.wellsFargo)}" data-ratio="${r.wellsFargo || ''}">${r.wellsFargo || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getRatioCellClass(r.rove)}" data-ratio="${r.rove || ''}">${r.rove || '–'}</span></td>
+    </tr>
+  `).join('');
+}
 
 function getRatioCellClass(ratio) {
   if (!ratio) return '';
   if (ratio === '1:0.2') return 'bs-ratio-poor';
   if (['1:0.5', '1:0.67'].includes(ratio)) return 'bs-ratio-ok';
   return 'bs-ratio-good';
+}
+
+function ratioToPercentage(ratio) {
+  if (!ratio || ratio === '–') return '–';
+  const m = ratio.match(/^(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)$/);
+  if (!m) return ratio;
+  const a = parseFloat(m[1]);
+  const b = parseFloat(m[2]);
+  if (a === 0) return '–';
+  const pct = Math.round((b / a) * 100);
+  return pct + '%';
+}
+
+// For sorting ratio columns: "1:2" -> 2, "1:1" -> 1, "" -> -1 (sorts last)
+function ratioToSortValue(ratio) {
+  if (!ratio || ratio === '–') return -1;
+  const m = ratio.match(/^(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)$/);
+  if (!m) return -1;
+  return parseFloat(m[2]);
+}
+
+function applyTransferModalView(modal, view) {
+  if (!modal) return;
+  const isPct = view === 'percentage';
+  modal.querySelectorAll('.bs-transfer-table .bs-transfer-td span[data-ratio]').forEach(span => {
+    const ratio = span.getAttribute('data-ratio') || '';
+    span.textContent = isPct ? ratioToPercentage(ratio) : (ratio || '–');
+  });
+  modal.querySelectorAll('.bs-transfer-view-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-view') === view);
+  });
 }
 
 function createHotelTransferModal() {
@@ -3280,45 +3331,54 @@ function createHotelTransferModal() {
   box.className = 'bs-transfer-modal-box';
   box.innerHTML = `
     <div class="bs-transfer-modal-header">
-      <h3 class="bs-transfer-modal-title">Hotels</h3>
+      <div class="bs-transfer-modal-header-text">
+        <h3 class="bs-transfer-modal-title">Hotels – Transfer Ratios</h3>
+        <p class="bs-transfer-modal-explanation">Card points → hotel points. <strong>1:1</strong> = same value; <strong>1:2</strong> = 1000 pts → 2000 points. Columns = card program.</p>
+      </div>
       <button type="button" class="bs-action-btn bs-transfer-modal-close" title="Close">&times;</button>
     </div>
     <div class="bs-transfer-modal-body">
+      <div class="bs-transfer-view-switch-wrap">
+        <span class="bs-transfer-view-label">View:</span>
+        <div class="bs-transfer-view-switch">
+          <button type="button" class="bs-transfer-view-btn" data-view="ratio">Ratio</button>
+          <button type="button" class="bs-transfer-view-btn active" data-view="percentage">Percentage</button>
+        </div>
+        <span class="bs-transfer-view-label bs-transfer-filter-label">Filter:</span>
+        <div class="bs-transfer-filter-wrap">
+          <button type="button" class="bs-transfer-filter-btn active" data-filter="">All</button>
+          <button type="button" class="bs-transfer-filter-btn" data-filter="Fixed Points Value">Fixed Points Value</button>
+          <button type="button" class="bs-transfer-filter-btn" data-filter="Fixed Points Rates">Fixed Points Rates</button>
+          <button type="button" class="bs-transfer-filter-btn" data-filter="Dynamic Points Rates">Dynamic Points Rates</button>
+        </div>
+      </div>
       <div class="bs-transfer-search-wrap">
         <input type="text" class="bs-transfer-search" placeholder="Search partners or programs..." autocomplete="off" />
       </div>
       <div class="bs-transfer-table-wrap">
-        <table class="bs-transfer-table">
+        <table class="bs-transfer-table bs-transfer-table-sortable">
           <thead>
             <tr>
-              <th class="bs-transfer-th-partner">Partner</th>
-              <th class="bs-transfer-th">Amex</th>
-              <th class="bs-transfer-th">Chase</th>
-              <th class="bs-transfer-th">Citi</th>
-              <th class="bs-transfer-th">Capital One</th>
-              <th class="bs-transfer-th">Bilt</th>
-              <th class="bs-transfer-th">Wells Fargo</th>
-              <th class="bs-transfer-th">Rove</th>
+              <th class="bs-transfer-th bs-transfer-th-partner bs-transfer-th-sortable" data-column="partner" title="Sort">Hotel / Program <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="amex" title="Sort">Amex <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="chase" title="Sort">Chase <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="citi" title="Sort">Citi <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="capOne" title="Sort">Capital One <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="bilt" title="Sort">Bilt <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="wellsFargo" title="Sort">Wells Fargo <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="rove" title="Sort">Rove <span class="bs-transfer-sort-arrow"></span></th>
             </tr>
           </thead>
           <tbody>
-            ${HOTEL_TRANSFER_ROWS.map(r => `
-              <tr>
-                <td class="bs-transfer-td-partner">
-                  <div class="bs-transfer-partner-name">${r.partner}</div>
-                  <div class="bs-transfer-partner-program">${r.program}</div>
-                </td>
-                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.amex)}">${r.amex || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.chase)}">${r.chase || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.citi)}">${r.citi || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.capOne)}">${r.capOne || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.bilt)}">${r.bilt || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.wellsFargo)}">${r.wellsFargo || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getRatioCellClass(r.rove)}">${r.rove || '–'}</span></td>
-              </tr>
-            `).join('')}
+            <tr class="bs-transfer-loading-row"><td colspan="8">Loading…</td></tr>
           </tbody>
         </table>
+      </div>
+      <div class="bs-transfer-legend">
+        <span class="bs-transfer-legend-item"><span class="bs-ratio-good">●</span> Good (1:1 or better)</span>
+        <span class="bs-transfer-legend-item"><span class="bs-ratio-ok">●</span> OK</span>
+        <span class="bs-transfer-legend-item"><span class="bs-ratio-poor">●</span> Poor</span>
+        <span class="bs-transfer-legend-item" style="color:#5f6368">– No transfer</span>
       </div>
     </div>
   `;
@@ -3330,34 +3390,130 @@ function createHotelTransferModal() {
   box.querySelector('.bs-transfer-modal-close').addEventListener('click', close);
   const searchInput = box.querySelector('.bs-transfer-search');
   const tbody = box.querySelector('.bs-transfer-table tbody');
+  const filterWrap = box.querySelector('.bs-transfer-filter-wrap');
+  function applyHotelVisibility() {
+    if (!tbody) return;
+    const modal = tbody.closest('.bs-transfer-modal-backdrop');
+    const wrap = modal && modal.querySelector('.bs-transfer-filter-wrap');
+    const search = modal && modal.querySelector('.bs-transfer-search');
+    const q = (search && search.value.trim()) ? search.value.trim().toLowerCase() : '';
+    const activeFilterBtn = wrap && wrap.querySelector('.bs-transfer-filter-btn.active');
+    const filterValue = (activeFilterBtn && activeFilterBtn.getAttribute('data-filter')) || '';
+    tbody.querySelectorAll('tr').forEach(tr => {
+      if (tr.classList.contains('bs-transfer-loading-row')) {
+        tr.style.display = filterValue ? 'none' : '';
+        return;
+      }
+      const rateLabel = (tr.getAttribute('data-rate-label') || '').trim();
+      const matchFilter = !filterValue || rateLabel === filterValue || (rateLabel && filterValue && rateLabel.toLowerCase() === filterValue.toLowerCase());
+      const matchSearch = !q || tr.textContent.toLowerCase().includes(q);
+      tr.style.display = matchFilter && matchSearch ? '' : 'none';
+    });
+  }
   if (searchInput && tbody) {
-    searchInput.addEventListener('input', () => {
-      const q = searchInput.value.trim().toLowerCase();
-      tbody.querySelectorAll('tr').forEach(tr => {
-        tr.style.display = !q || tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+    searchInput.addEventListener('input', applyHotelVisibility);
+  }
+  if (filterWrap) {
+    filterWrap.querySelectorAll('.bs-transfer-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterWrap.querySelectorAll('.bs-transfer-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        applyHotelVisibility();
       });
     });
   }
+  backdrop.querySelectorAll('.bs-transfer-view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const view = btn.getAttribute('data-view');
+      applyTransferModalView(backdrop, view);
+    });
+  });
+  const table = box.querySelector('.bs-transfer-table');
+  const thead = table && table.querySelector('thead tr');
+  const HOTEL_COL_INDEX = { partner: 0, amex: 1, chase: 2, citi: 3, capOne: 4, bilt: 5, wellsFargo: 6, rove: 7 };
+  let sortColumn = null;
+  let sortDir = 1;
+  function getHotelSortValue(tr, col) {
+    const idx = HOTEL_COL_INDEX[col];
+    if (col === 'partner') {
+      return (tr.cells[0] && tr.cells[0].textContent || '').trim().toLowerCase();
+    }
+    const cell = tr.cells[idx];
+    if (!cell) return -1;
+    const span = cell.querySelector('span[data-ratio]');
+    const ratio = span ? (span.getAttribute('data-ratio') || '') : '';
+    return ratioToSortValue(ratio);
+  }
+  function sortHotelTable(col) {
+    if (!tbody) return;
+    if (sortColumn === col) sortDir = -sortDir;
+    else { sortColumn = col; sortDir = 1; }
+    const isPartner = col === 'partner';
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a, b) => {
+      const va = getHotelSortValue(a, col);
+      const vb = getHotelSortValue(b, col);
+      if (isPartner) return sortDir * (va < vb ? -1 : va > vb ? 1 : 0);
+      return sortDir * (va - vb);
+    });
+    rows.forEach(r => tbody.appendChild(r));
+    thead.querySelectorAll('.bs-transfer-th-sortable').forEach(th => {
+      const arrow = th.querySelector('.bs-transfer-sort-arrow');
+      const c = th.getAttribute('data-column');
+      if (c === sortColumn) {
+        th.classList.add('bs-transfer-th-sorted');
+        if (arrow) { arrow.textContent = sortDir === 1 ? '↑' : '↓'; arrow.classList.add('bs-transfer-sort-arrow-visible'); }
+      } else {
+        th.classList.remove('bs-transfer-th-sorted');
+        if (arrow) { arrow.textContent = ''; arrow.classList.remove('bs-transfer-sort-arrow-visible'); }
+      }
+    });
+  }
+  if (thead && tbody) {
+    thead.querySelectorAll('.bs-transfer-th-sortable').forEach(th => {
+      th.addEventListener('click', () => sortHotelTable(th.getAttribute('data-column')));
+    });
+  }
+  backdrop._applyHotelVisibility = applyHotelVisibility;
+  applyTransferModalView(backdrop, 'percentage');
   return backdrop;
 }
 
-function showHotelTransferModal() {
+async function showHotelTransferModal() {
   let modal = document.getElementById('bs-hotel-transfer-modal');
   if (!modal) {
     modal = createHotelTransferModal();
     modal.id = 'bs-hotel-transfer-modal';
     document.body.appendChild(modal);
   }
+  const tbody = modal.querySelector('.bs-transfer-table tbody');
   const searchInput = modal.querySelector('.bs-transfer-search');
-  if (searchInput) {
-    searchInput.value = '';
-    modal.querySelectorAll('.bs-transfer-table tbody tr').forEach(tr => { tr.style.display = ''; });
+  const filterWrap = modal.querySelector('.bs-transfer-filter-wrap');
+  if (searchInput) searchInput.value = '';
+  if (filterWrap) {
+    filterWrap.querySelectorAll('.bs-transfer-filter-btn').forEach(b => b.classList.remove('active'));
+    const allBtn = filterWrap.querySelector('.bs-transfer-filter-btn[data-filter=""]');
+    if (allBtn) allBtn.classList.add('active');
   }
   modal.classList.add('bs-transfer-modal-visible');
+  let rows = [];
+  try {
+    if (window.transferPartnersService && typeof window.transferPartnersService.getHotelTransferRowsLive === 'function') {
+      rows = await window.transferPartnersService.getHotelTransferRowsLive();
+    }
+  } catch (e) {
+    console.warn('Hotel transfer partners live fetch failed, using fallback', e);
+  }
+  if (!rows || rows.length === 0) rows = HOTEL_TRANSFER_ROWS_FALLBACK;
+  if (tbody) {
+    tbody.innerHTML = renderHotelTransferRows(rows);
+    applyTransferModalView(modal, 'percentage');
+    if (modal._applyHotelVisibility) modal._applyHotelVisibility();
+  }
 }
 
-// Airline transfer ratios modal (Amex, Chase, Citi, etc.)
-const AIRLINE_TRANSFER_ROWS = [
+// Airline transfer ratios modal – fallback when Supabase unavailable
+const AIRLINE_TRANSFER_ROWS_FALLBACK = [
   { partner: 'Aer Lingus', program: 'Avios', alliance: 'OneWorld', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: '1:1', rove: null },
   { partner: 'Aeromexico', program: 'Club Premier', alliance: 'SkyTeam', amex: '1:1.6', chase: null, citi: null, capOne: '1:1', bilt: null, wellsFargo: null, rove: '1:1' },
   { partner: 'Air Canada', program: 'Aeroplan', alliance: 'Star Alliance', amex: '1:1', chase: '1:1', citi: null, capOne: '1:1', bilt: '1:1', wellsFargo: null, rove: null },
@@ -3391,6 +3547,25 @@ const AIRLINE_TRANSFER_ROWS = [
   { partner: 'Virgin Atlantic', program: 'Flying Club', alliance: 'SkyTeam', amex: '1:1', chase: '1:1', citi: '1:1', capOne: '1:1', bilt: '1:1', wellsFargo: '1:1', rove: null }
 ];
 
+function renderAirlineTransferRows(rows) {
+  return (rows || []).map(r => `
+    <tr data-alliance="${(r.alliance || 'Other').replace(/"/g, '&quot;')}">
+      <td class="bs-transfer-td-partner">
+        <div class="bs-transfer-partner-name">${r.partner}</div>
+        <div class="bs-transfer-partner-program">${r.program}</div>
+        ${r.alliance ? `<div class="bs-transfer-partner-program">${r.alliance}</div>` : ''}
+      </td>
+      <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.amex)}" data-ratio="${r.amex || ''}">${r.amex || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.chase)}" data-ratio="${r.chase || ''}">${r.chase || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.citi)}" data-ratio="${r.citi || ''}">${r.citi || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.capOne)}" data-ratio="${r.capOne || ''}">${r.capOne || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.bilt)}" data-ratio="${r.bilt || ''}">${r.bilt || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.wellsFargo)}" data-ratio="${r.wellsFargo || ''}">${r.wellsFargo || '–'}</span></td>
+      <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.rove)}" data-ratio="${r.rove || ''}">${r.rove || '–'}</span></td>
+    </tr>
+  `).join('');
+}
+
 function getAirlineRatioCellClass(ratio) {
   if (!ratio) return '';
   if (['1:0.6', '1:0.75'].includes(ratio)) return 'bs-ratio-ok';
@@ -3406,46 +3581,55 @@ function createFlightTransferModal() {
   box.className = 'bs-transfer-modal-box';
   box.innerHTML = `
     <div class="bs-transfer-modal-header">
-      <h3 class="bs-transfer-modal-title">Airlines</h3>
+      <div class="bs-transfer-modal-header-text">
+        <h3 class="bs-transfer-modal-title">Airlines – Transfer Ratios</h3>
+        <p class="bs-transfer-modal-explanation">Card points → airline miles. <strong>1:1</strong> = 1000 pts → 1000 miles. Columns = card program. Use search to filter.</p>
+      </div>
       <button type="button" class="bs-action-btn bs-transfer-modal-close" title="Close">&times;</button>
     </div>
     <div class="bs-transfer-modal-body">
+      <div class="bs-transfer-view-switch-wrap">
+        <span class="bs-transfer-view-label">View:</span>
+        <div class="bs-transfer-view-switch">
+          <button type="button" class="bs-transfer-view-btn" data-view="ratio">Ratio</button>
+          <button type="button" class="bs-transfer-view-btn active" data-view="percentage">Percentage</button>
+        </div>
+        <span class="bs-transfer-view-label bs-transfer-filter-label">Filter:</span>
+        <div class="bs-transfer-filter-wrap">
+          <button type="button" class="bs-transfer-filter-btn active" data-filter="">All</button>
+          <button type="button" class="bs-transfer-filter-btn" data-filter="OneWorld">OneWorld</button>
+          <button type="button" class="bs-transfer-filter-btn" data-filter="SkyTeam">SkyTeam</button>
+          <button type="button" class="bs-transfer-filter-btn" data-filter="Star Alliance">Star Alliance</button>
+          <button type="button" class="bs-transfer-filter-btn" data-filter="Other">Other</button>
+        </div>
+      </div>
       <div class="bs-transfer-search-wrap">
         <input type="text" class="bs-transfer-search" placeholder="Search airlines, programs or alliances..." autocomplete="off" />
       </div>
       <div class="bs-transfer-table-wrap">
-        <table class="bs-transfer-table">
+        <table class="bs-transfer-table bs-transfer-table-sortable">
           <thead>
             <tr>
-              <th class="bs-transfer-th-partner">Partner</th>
-              <th class="bs-transfer-th">Amex</th>
-              <th class="bs-transfer-th">Chase</th>
-              <th class="bs-transfer-th">Citi</th>
-              <th class="bs-transfer-th">Capital One</th>
-              <th class="bs-transfer-th">Bilt</th>
-              <th class="bs-transfer-th">Wells Fargo</th>
-              <th class="bs-transfer-th">Rove</th>
+              <th class="bs-transfer-th bs-transfer-th-partner bs-transfer-th-sortable" data-column="partner" title="Sort">Airline / Program <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="amex" title="Sort">Amex <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="chase" title="Sort">Chase <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="citi" title="Sort">Citi <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="capOne" title="Sort">Capital One <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="bilt" title="Sort">Bilt <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="wellsFargo" title="Sort">Wells Fargo <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="rove" title="Sort">Rove <span class="bs-transfer-sort-arrow"></span></th>
             </tr>
           </thead>
           <tbody>
-            ${AIRLINE_TRANSFER_ROWS.map(r => `
-              <tr>
-                <td class="bs-transfer-td-partner">
-                  <div class="bs-transfer-partner-name">${r.partner}</div>
-                  <div class="bs-transfer-partner-program">${r.program}</div>
-                  ${r.alliance ? `<div class="bs-transfer-partner-program">${r.alliance}</div>` : ''}
-                </td>
-                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.amex)}">${r.amex || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.chase)}">${r.chase || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.citi)}">${r.citi || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.capOne)}">${r.capOne || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.bilt)}">${r.bilt || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.wellsFargo)}">${r.wellsFargo || '–'}</span></td>
-                <td class="bs-transfer-td"><span class="${getAirlineRatioCellClass(r.rove)}">${r.rove || '–'}</span></td>
-              </tr>
-            `).join('')}
+            <tr class="bs-transfer-loading-row"><td colspan="8">Loading…</td></tr>
           </tbody>
         </table>
+      </div>
+      <div class="bs-transfer-legend">
+        <span class="bs-transfer-legend-item"><span class="bs-ratio-good">●</span> Good (1:1+)</span>
+        <span class="bs-transfer-legend-item"><span class="bs-ratio-warn">●</span> Fair</span>
+        <span class="bs-transfer-legend-item"><span class="bs-ratio-ok">●</span> OK</span>
+        <span class="bs-transfer-legend-item" style="color:#5f6368">– No transfer</span>
       </div>
     </div>
   `;
@@ -3457,30 +3641,119 @@ function createFlightTransferModal() {
   box.querySelector('.bs-transfer-modal-close').addEventListener('click', close);
   const searchInput = box.querySelector('.bs-transfer-search');
   const tbody = box.querySelector('.bs-transfer-table tbody');
+  const filterWrap = box.querySelector('.bs-transfer-filter-wrap');
+  function applyAirlineVisibility() {
+    if (!tbody) return;
+    const q = (searchInput && searchInput.value.trim()) ? searchInput.value.trim().toLowerCase() : '';
+    const activeFilterBtn = filterWrap && filterWrap.querySelector('.bs-transfer-filter-btn.active');
+    const filterValue = (activeFilterBtn && activeFilterBtn.getAttribute('data-filter')) || '';
+    tbody.querySelectorAll('tr').forEach(tr => {
+      const alliance = (tr.getAttribute('data-alliance') || '').trim();
+      const matchFilter = !filterValue || alliance === filterValue;
+      const matchSearch = !q || tr.textContent.toLowerCase().includes(q);
+      tr.style.display = matchFilter && matchSearch ? '' : 'none';
+    });
+  }
   if (searchInput && tbody) {
-    searchInput.addEventListener('input', () => {
-      const q = searchInput.value.trim().toLowerCase();
-      tbody.querySelectorAll('tr').forEach(tr => {
-        tr.style.display = !q || tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+    searchInput.addEventListener('input', applyAirlineVisibility);
+  }
+  if (filterWrap) {
+    filterWrap.querySelectorAll('.bs-transfer-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterWrap.querySelectorAll('.bs-transfer-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        applyAirlineVisibility();
       });
     });
   }
+  backdrop.querySelectorAll('.bs-transfer-view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const view = btn.getAttribute('data-view');
+      applyTransferModalView(backdrop, view);
+    });
+  });
+  const table = box.querySelector('.bs-transfer-table');
+  const thead = table && table.querySelector('thead tr');
+  const AIRLINE_COL_INDEX = { partner: 0, amex: 1, chase: 2, citi: 3, capOne: 4, bilt: 5, wellsFargo: 6, rove: 7 };
+  let sortColumn = null;
+  let sortDir = 1; // 1 = asc, -1 = desc
+  function getSortValue(tr, col) {
+    const idx = AIRLINE_COL_INDEX[col];
+    if (col === 'partner') {
+      return (tr.cells[0] && tr.cells[0].textContent || '').trim().toLowerCase();
+    }
+    const cell = tr.cells[idx];
+    if (!cell) return -1;
+    const span = cell.querySelector('span[data-ratio]');
+    const ratio = span ? (span.getAttribute('data-ratio') || '') : '';
+    return ratioToSortValue(ratio);
+  }
+  function sortAirlineTable(col) {
+    if (!tbody) return;
+    if (sortColumn === col) sortDir = -sortDir;
+    else { sortColumn = col; sortDir = 1; }
+    const isPartner = col === 'partner';
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a, b) => {
+      const va = getSortValue(a, col);
+      const vb = getSortValue(b, col);
+      if (isPartner) return sortDir * (va < vb ? -1 : va > vb ? 1 : 0);
+      return sortDir * (va - vb);
+    });
+    rows.forEach(r => tbody.appendChild(r));
+    thead.querySelectorAll('.bs-transfer-th-sortable').forEach(th => {
+      const arrow = th.querySelector('.bs-transfer-sort-arrow');
+      const c = th.getAttribute('data-column');
+      if (c === sortColumn) {
+        th.classList.add('bs-transfer-th-sorted');
+        if (arrow) { arrow.textContent = sortDir === 1 ? '↑' : '↓'; arrow.classList.add('bs-transfer-sort-arrow-visible'); }
+      } else {
+        th.classList.remove('bs-transfer-th-sorted');
+        if (arrow) { arrow.textContent = ''; arrow.classList.remove('bs-transfer-sort-arrow-visible'); }
+      }
+    });
+  }
+  if (thead && tbody) {
+    thead.querySelectorAll('.bs-transfer-th-sortable').forEach(th => {
+      th.addEventListener('click', () => sortAirlineTable(th.getAttribute('data-column')));
+    });
+  }
+  backdrop._applyAirlineVisibility = applyAirlineVisibility;
+  applyTransferModalView(backdrop, 'percentage');
   return backdrop;
 }
 
-function showFlightTransferModal() {
+async function showFlightTransferModal() {
   let modal = document.getElementById('bs-flight-transfer-modal');
   if (!modal) {
     modal = createFlightTransferModal();
     modal.id = 'bs-flight-transfer-modal';
     document.body.appendChild(modal);
   }
+  const tbody = modal.querySelector('.bs-transfer-table tbody');
   const searchInput = modal.querySelector('.bs-transfer-search');
-  if (searchInput) {
-    searchInput.value = '';
-    modal.querySelectorAll('.bs-transfer-table tbody tr').forEach(tr => { tr.style.display = ''; });
+  const filterWrap = modal.querySelector('.bs-transfer-filter-wrap');
+  if (searchInput) searchInput.value = '';
+  if (filterWrap) {
+    filterWrap.querySelectorAll('.bs-transfer-filter-btn').forEach(b => b.classList.remove('active'));
+    const allBtn = filterWrap.querySelector('.bs-transfer-filter-btn[data-filter=""]');
+    if (allBtn) allBtn.classList.add('active');
   }
   modal.classList.add('bs-transfer-modal-visible');
+  let rows = [];
+  try {
+    if (window.transferPartnersService && typeof window.transferPartnersService.getAirlineTransferRowsLive === 'function') {
+      rows = await window.transferPartnersService.getAirlineTransferRowsLive();
+    }
+  } catch (e) {
+    console.warn('Airline transfer partners live fetch failed, using fallback', e);
+  }
+  if (!rows || rows.length === 0) rows = AIRLINE_TRANSFER_ROWS_FALLBACK;
+  if (tbody) {
+    tbody.innerHTML = renderAirlineTransferRows(rows);
+    applyTransferModalView(modal, 'percentage');
+    if (modal._applyAirlineVisibility) modal._applyAirlineVisibility();
+  }
 }
 
 // Show notification
