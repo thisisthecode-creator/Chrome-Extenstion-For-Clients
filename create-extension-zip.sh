@@ -3,20 +3,20 @@
 # Script to create a new Chrome extension zip with auto-incremented version number
 # The zip name will be: chrome-extension-updated-v{version}.zip
 
-# Find the highest existing version number
-HIGHEST_VERSION=$(ls -1 chrome-extension-updated-v*.zip 2>/dev/null | \
+# Find the highest existing version number (check both zip naming patterns)
+HIGHEST_VERSION=$(ls -1 gf-clients-v*.zip chrome-extension-updated-v*.zip 2>/dev/null | \
   sed 's/.*v\([0-9]*\)\.zip/\1/' | \
   sort -n | \
   tail -1)
 
-# If no existing zip found, start at v163 (or v1 if you prefer)
+# If no existing zip found, start at 1; otherwise always increment
 if [ -z "$HIGHEST_VERSION" ]; then
-  NEXT_VERSION=163
+  NEXT_VERSION=1
 else
   NEXT_VERSION=$((HIGHEST_VERSION + 1))
 fi
 
-ZIP_NAME="chrome-extension-updated-v${NEXT_VERSION}.zip"
+ZIP_NAME="gf-clients-v${NEXT_VERSION}.zip"
 
 echo "Creating zip: ${ZIP_NAME}"
 echo "Updating manifest.json with version ${NEXT_VERSION}..."

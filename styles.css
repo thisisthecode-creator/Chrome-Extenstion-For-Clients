@@ -443,9 +443,10 @@
 }
 
 .bs-action-btn-label {
+  display: inline-block;
   font-size: 12px;
   font-weight: 600;
-  color: inherit;
+  color: #1a1a1a;
   white-space: nowrap;
 }
 
@@ -455,6 +456,19 @@
   min-width: 32px;
   padding: 0 10px;
   gap: 6px;
+  flex-shrink: 0;
+}
+.bs-action-refresh svg {
+  stroke: #34a853;
+}
+.bs-action-refresh:hover {
+  background: linear-gradient(135deg, #e6f4ea 0%, #d4edda 100%);
+  box-shadow: 0 4px 12px rgba(52, 168, 83, 0.2);
+  transform: translateY(-2px) scale(1.05);
+}
+.bs-action-refresh:hover svg {
+  stroke: #1e8e3e;
+  filter: drop-shadow(0 2px 4px rgba(30, 142, 62, 0.3));
 }
 .bs-action-refresh svg,
 .bs-action-open-all svg {
@@ -1087,7 +1101,7 @@
 .bs-transfer-table th,
 .bs-transfer-table td {
   padding: 10px 12px;
-  text-align: center;
+  text-align: left;
   border-bottom: 1px solid #e8eaed;
 }
 .bs-transfer-th-partner,
@@ -1109,6 +1123,10 @@
 .bs-transfer-th-partner {
   background: #f8f9fa;
   z-index: 2;
+}
+.bs-transfer-partner-name,
+.bs-transfer-partner-program {
+  text-align: left;
 }
 .bs-transfer-partner-name {
   font-weight: 500;
@@ -9296,6 +9314,10 @@
   background: rgba(52, 168, 83, 0.2) !important;
 }
 
+.bs-extension-panel.bs-dark-mode .bs-action-refresh:hover {
+  background: rgba(52, 168, 83, 0.2) !important;
+}
+
 .bs-extension-panel.bs-dark-mode .bs-action-reset:hover {
   background: rgba(234, 67, 53, 0.2) !important;
 }
@@ -9316,6 +9338,10 @@
 
 .bs-extension-panel.bs-dark-mode .bs-action-open-all:hover {
   background: rgba(102, 126, 234, 0.2) !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-action-btn-label {
+  color: #e8eaed !important;
 }
 
 .bs-extension-panel.bs-dark-mode .bs-input-group label {

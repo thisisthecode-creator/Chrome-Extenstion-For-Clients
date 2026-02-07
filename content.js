@@ -377,13 +377,12 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-choice" data-service="choice">
           Choice
         </button>
-        <button class="bs-btn bs-btn-iprefer" data-service="iprefer" title="Citi 1:4 iPrefer">
+        <button class="bs-btn bs-btn-iprefer" data-service="iprefer" title="iPrefer">
           iPrefer
-          <span class="bs-btn-badge bs-btn-badge-citi" title="Citi 1:4 iPrefer">Citi 1:4 iPrefer</span>
         </button>
-        <button class="bs-btn bs-btn-preferred-hotels" data-service="preferred-hotels" title="Citi 1:2 Choice">
+        <button class="bs-btn bs-btn-preferred-hotels" data-service="preferred-hotels" title="via Choice">
           Preferred Hotels
-          <span class="bs-btn-badge bs-btn-badge-citi" title="Citi 1:2 Choice">Citi 1:2 Choice</span>
+          <span class="bs-btn-badge bs-btn-badge-citi" title="via Choice">via Choice</span>
         </button>
         <button class="bs-btn bs-btn-gha" data-service="gha">
           GHA
@@ -3261,7 +3260,7 @@ const HOTEL_TRANSFER_ROWS = [
   { partner: 'Hyatt', program: 'World of Hyatt', amex: null, chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
   { partner: 'IHG', program: 'One Rewards', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
   { partner: 'Marriott', program: 'Bonvoy', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
-  { partner: 'Preferred Hotels & Resorts', program: 'Rewards', amex: null, chase: null, citi: '1:4', capOne: null, bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Preferred Hotels & Resorts', program: 'iPrefer', amex: null, chase: null, citi: '1:4', capOne: null, bilt: null, wellsFargo: null, rove: null },
   { partner: 'The Leading Hotels of the World', program: 'Leaders Club', amex: null, chase: null, citi: '1:0.2', capOne: null, bilt: null, wellsFargo: null, rove: null },
   { partner: 'Wyndham', program: 'Rewards', amex: null, chase: null, citi: '1:1', capOne: '1:1', bilt: null, wellsFargo: null, rove: null }
 ];
