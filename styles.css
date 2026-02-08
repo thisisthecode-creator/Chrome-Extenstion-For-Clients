@@ -1032,7 +1032,8 @@
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
-  max-width: 100%;
+  width: 100%;
+  max-width: 1200px;
   max-height: 90vh;
   overflow: hidden;
   display: flex;
@@ -1054,18 +1055,36 @@
 }
 .bs-transfer-modal-title {
   margin: 0 0 6px 0;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: #202124;
 }
 .bs-transfer-modal-explanation {
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.45;
   color: #5f6368;
   font-weight: 400;
 }
 .bs-transfer-modal-explanation strong {
+  color: #202124;
+  font-weight: 600;
+}
+.bs-transfer-modal-filter-explanation {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #5f6368;
+  font-weight: 400;
+}
+.bs-transfer-modal-filter-explanation > div {
+  display: block;
+  margin-top: 2px;
+}
+.bs-transfer-modal-filter-explanation > div:first-child {
+  margin-top: 0;
+}
+.bs-transfer-modal-filter-explanation strong {
   color: #202124;
   font-weight: 600;
 }
@@ -1084,9 +1103,474 @@
   background: #f1f3f4;
   color: #1a1a1a;
 }
+.bs-transfer-modal-pdf-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #5f6368;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 4px;
+}
+.bs-transfer-modal-pdf-btn:hover {
+  background: #f1f3f4;
+  color: #1a1a1a;
+}
+
+/* Hotel Benefits / Tiers modal content */
+.bs-hotel-tiers-modal-box .bs-hotel-benefits-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.bs-hotel-benefits-filter-bar {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+}
+.bs-hotel-benefits-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.bs-hotel-benefits-filter-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #202124;
+  margin: 0;
+}
+.bs-hotel-benefits-filter-actions {
+  display: flex;
+  gap: 12px;
+}
+.bs-hotel-benefits-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.bs-hotel-benefits-btn:hover {
+  background: #e5e7eb;
+}
+.bs-hotel-benefits-btn svg {
+  width: 16px;
+  height: 16px;
+}
+.bs-hotel-benefits-search {
+  margin-bottom: 16px;
+}
+.bs-hotel-benefits-search .bs-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.bs-hotel-benefits-search .bs-input-wrapper svg:first-of-type {
+  position: absolute;
+  left: 12px;
+  width: 18px;
+  height: 18px;
+  color: #6b7280;
+}
+.bs-hotel-benefits-search input {
+  width: 100%;
+  padding: 12px 40px 12px 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+.bs-hotel-benefits-search input:focus {
+  outline: none;
+  border-color: #9333ea;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+.bs-hotel-benefits-clear-search {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+.bs-hotel-benefits-clear-search:hover {
+  color: #374151;
+}
+.bs-hotel-benefits-clear-search svg {
+  width: 16px;
+  height: 16px;
+}
+.bs-hotel-benefits-quick-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.bs-hotel-benefits-quick-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.bs-hotel-benefits-quick-filter:hover {
+  background: #e5e7eb;
+}
+.bs-hotel-benefits-quick-filter.active {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #166534;
+}
+.bs-hotel-benefits-filter-count {
+  padding: 2px 6px;
+  background: #dbeafe;
+  border: 1px solid #93c5fd;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #1e40af;
+  font-weight: 600;
+}
+.bs-hotel-benefits-status-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+.bs-hotel-benefits-status-section h5 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #202124;
+  margin-bottom: 16px;
+}
+.bs-hotel-benefits-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+.bs-hotel-benefits-status-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bs-hotel-benefits-status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bs-hotel-benefits-status-header label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+.bs-hotel-benefits-favorite-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #9ca3af;
+  transition: color 0.2s ease;
+}
+.bs-hotel-benefits-favorite-btn:hover {
+  color: #fbbf24;
+}
+.bs-hotel-benefits-favorite-btn.active {
+  color: #fbbf24;
+}
+.bs-hotel-benefits-favorite-btn.active svg {
+  fill: #fbbf24;
+}
+.bs-hotel-benefits-favorite-btn svg {
+  width: 18px;
+  height: 18px;
+}
+.bs-hotel-benefits-status-select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.bs-hotel-benefits-status-select:focus {
+  outline: none;
+  border-color: #9333ea;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+.bs-hotel-benefits-validity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bs-hotel-benefits-validity label {
+  font-size: 11px;
+  color: #6b7280;
+}
+.bs-hotel-benefits-validity-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.bs-hotel-benefits-date-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+  background: white;
+  transition: all 0.2s ease;
+}
+.bs-hotel-benefits-date-input:focus {
+  outline: none;
+  border-color: #9333ea;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+.bs-hotel-benefits-clear-date {
+  padding: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #dc2626;
+  transition: color 0.2s ease;
+}
+.bs-hotel-benefits-clear-date:hover {
+  color: #991b1b;
+}
+.bs-hotel-benefits-validity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+}
+.bs-hotel-benefits-validity-date {
+  color: #6b7280;
+}
+.bs-hotel-benefits-validity-days {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.bs-hotel-benefits-validity-days.ok {
+  background: #dcfce7;
+  color: #166534;
+}
+.bs-hotel-benefits-validity-days.warning {
+  background: #fed7aa;
+  color: #9a3412;
+}
+.bs-hotel-benefits-validity-days.expired {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.bs-hotel-benefits-table-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+}
+.bs-hotel-benefits-legend {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.bs-hotel-benefits-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #374151;
+}
+.bs-hotel-benefits-legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+.bs-hotel-benefits-table-wrapper {
+  overflow-x: auto;
+}
+.bs-hotel-benefits-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.bs-hotel-benefits-table thead {
+  background: #f9fafb;
+}
+.bs-hotel-benefits-table th {
+  padding: 12px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #e5e7eb;
+}
+.bs-hotel-benefits-table th:first-child {
+  min-width: 200px;
+}
+.bs-hotel-benefits-table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+}
+.bs-hotel-benefits-table tbody tr:hover {
+  background: #f9fafb;
+}
+.bs-hotel-benefits-hotel-name {
+  padding: 16px;
+  vertical-align: top;
+}
+.bs-hotel-benefits-hotel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bs-hotel-benefits-hotel-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #202124;
+}
+.bs-hotel-benefits-validity-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 10px;
+}
+.bs-hotel-benefits-validity-date-small {
+  color: #6b7280;
+}
+.bs-hotel-benefits-validity-days-small {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.bs-hotel-benefits-validity-days-small.ok {
+  background: #dcfce7;
+  color: #166534;
+}
+.bs-hotel-benefits-validity-days-small.warning {
+  background: #fed7aa;
+  color: #9a3412;
+}
+.bs-hotel-benefits-validity-days-small.expired {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.bs-hotel-benefits-level-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.bs-hotel-benefits-level-cell {
+  padding: 16px;
+  vertical-align: top;
+  min-width: 200px;
+}
+.bs-hotel-benefits-level-cell.current {
+  background: #faf5ff;
+  border-left: 4px solid #a78bfa;
+}
+.bs-hotel-benefits-level-cell.minimum {
+  background: #f0fdf4;
+  border-left: 4px solid #4ade80;
+}
+.bs-hotel-benefits-level-cell.empty,
+.bs-hotel-benefits-empty {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 12px;
+}
+.bs-hotel-benefits-level-header {
+  margin-bottom: 12px;
+  text-align: center;
+}
+.bs-hotel-benefits-benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bs-hotel-benefits-benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: #374151;
+  line-height: 1.5;
+}
+.bs-hotel-benefits-benefit-item svg {
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  color: #6b7280;
+}
+.bs-hotel-benefits-no-results {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+.bs-hotel-benefits-loading {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.bs-hotel-benefits-loading::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #9333ea;
+  border-radius: 50%;
+  animation: bs-hotel-benefits-spin 0.8s linear infinite;
+}
+@keyframes bs-hotel-benefits-spin {
+  to { transform: rotate(360deg); }
+}
+
 .bs-transfer-modal-body {
   padding: 16px 20px 20px;
   overflow: auto;
+}
+.bs-transfer-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.bs-transfer-controls .bs-transfer-view-switch-wrap {
+  margin-bottom: 0;
 }
 .bs-transfer-view-switch-wrap {
   display: flex;
@@ -1095,8 +1579,14 @@
   gap: 10px;
   margin-bottom: 14px;
 }
+.bs-transfer-col-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 .bs-transfer-view-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #5f6368;
 }
@@ -1112,7 +1602,7 @@
 }
 .bs-transfer-view-btn {
   padding: 8px 16px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #5f6368;
   background: transparent;
@@ -1137,9 +1627,28 @@
   gap: 0;
   flex-wrap: wrap;
 }
+.bs-transfer-col-toggles {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+.bs-transfer-col-toggles label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #5f6368;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.bs-transfer-col-toggles input {
+  cursor: pointer;
+}
 .bs-transfer-filter-btn {
   padding: 6px 12px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: #5f6368;
   background: transparent;
@@ -1163,7 +1672,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: 10px 14px;
-  font-size: 14px;
+  font-size: 15px;
   border: 1px solid #dadce0;
   border-radius: 10px;
   background: #fff;
@@ -1187,13 +1696,23 @@
 .bs-transfer-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 14px;
 }
 .bs-transfer-table th,
 .bs-transfer-table td {
-  padding: 10px 12px;
-  text-align: left;
+  padding: 10px 8px;
   border-bottom: 1px solid #e8eaed;
+}
+/* Only Amex, Chase, Citi, Capital One, Bilt, Wells Fargo, Rove: same width and centered */
+.bs-transfer-table th:not(.bs-transfer-th-partner),
+.bs-transfer-table td:not(.bs-transfer-td-partner) {
+  text-align: center;
+  width: 5em;
+  min-width: 5em;
+}
+.bs-transfer-table th.bs-transfer-th-partner,
+.bs-transfer-table td.bs-transfer-td-partner {
+  text-align: left;
 }
 .bs-transfer-table tbody tr:nth-child(even) {
   background: #f8f9fa;
@@ -1203,7 +1722,6 @@
 }
 .bs-transfer-th-partner,
 .bs-transfer-td-partner {
-  text-align: left;
   min-width: 170px;
   position: sticky;
   left: 0;
@@ -1221,14 +1739,48 @@
 .bs-transfer-table thead th {
   background: #f1f3f4;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   color: #202124;
   border-bottom: 2px solid #dadce0;
   padding: 12px 10px;
+  vertical-align: bottom;
 }
+.bs-transfer-col-count {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5f6368;
+  margin-top: 2px;
+}
+.bs-transfer-col-toggle {
+  margin-right: 6px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.bs-transfer-table.bs-hide-col-amex th[data-column="amex"],
+.bs-transfer-table.bs-hide-col-amex td:nth-child(2) { display: none !important; }
+.bs-transfer-table.bs-hide-col-chase th[data-column="chase"],
+.bs-transfer-table.bs-hide-col-chase td:nth-child(3) { display: none !important; }
+.bs-transfer-table.bs-hide-col-citi th[data-column="citi"],
+.bs-transfer-table.bs-hide-col-citi td:nth-child(4) { display: none !important; }
+.bs-transfer-table.bs-hide-col-capOne th[data-column="capOne"],
+.bs-transfer-table.bs-hide-col-capOne td:nth-child(5) { display: none !important; }
+.bs-transfer-table.bs-hide-col-bilt th[data-column="bilt"],
+.bs-transfer-table.bs-hide-col-bilt td:nth-child(6) { display: none !important; }
+.bs-transfer-table.bs-hide-col-wellsFargo th[data-column="wellsFargo"],
+.bs-transfer-table.bs-hide-col-wellsFargo td:nth-child(7) { display: none !important; }
+.bs-transfer-table.bs-hide-col-rove th[data-column="rove"],
+.bs-transfer-table.bs-hide-col-rove td:nth-child(8) { display: none !important; }
 .bs-transfer-th-partner {
   background: #f1f3f4;
   z-index: 2;
+  border-right: 2px solid #dadce0;
+  padding-right: 14px;
+}
+.bs-transfer-table tbody tr td.bs-transfer-td-partner {
+  border-right-width: 2px;
+  border-right-color: #dadce0;
+  padding-right: 14px;
 }
 .bs-transfer-th-sortable {
   cursor: pointer;
@@ -1241,7 +1793,7 @@
 .bs-transfer-sort-arrow {
   opacity: 0;
   margin-left: 4px;
-  font-size: 11px;
+  font-size: 12px;
   color: #5f6368;
 }
 .bs-transfer-sort-arrow-visible {
@@ -1255,6 +1807,13 @@
   color: #5f6368;
   padding: 16px;
 }
+.bs-transfer-counts {
+  font-size: 13px;
+  color: #5f6368;
+  margin-bottom: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e8eaed;
+}
 .bs-transfer-legend {
   display: flex;
   flex-wrap: wrap;
@@ -1263,7 +1822,7 @@
   padding: 12px 0 0;
   border-top: 1px solid #e8eaed;
   margin-top: 4px;
-  font-size: 12px;
+  font-size: 13px;
   color: #5f6368;
 }
 .bs-transfer-legend-item {
@@ -1275,7 +1834,7 @@
 .bs-transfer-legend-item .bs-ratio-ok,
 .bs-transfer-legend-item .bs-ratio-poor,
 .bs-transfer-legend-item .bs-ratio-warn {
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1;
 }
 .bs-transfer-partner-name,
@@ -1285,10 +1844,10 @@
 .bs-transfer-partner-name {
   font-weight: 600;
   color: #202124;
-  font-size: 13px;
+  font-size: 14px;
 }
 .bs-transfer-partner-program {
-  font-size: 11px;
+  font-size: 12px;
   color: #5f6368;
   margin-top: 2px;
   line-height: 1.3;
@@ -1296,7 +1855,7 @@
 .bs-transfer-rate-label {
   display: inline-block;
   margin-top: 6px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: #5f6368;
   background: #e8eaed;
@@ -1307,7 +1866,7 @@
 .bs-transfer-via-label {
   display: inline-block;
   margin-top: 4px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   color: #5f6368;
   font-style: italic;
@@ -1316,22 +1875,22 @@
 .bs-ratio-good {
   font-weight: 700;
   color: #1e8e3e;
-  font-size: 13px;
+  font-size: 14px;
 }
 .bs-ratio-ok {
   font-weight: 700;
   color: #c2410c;
-  font-size: 13px;
+  font-size: 14px;
 }
 .bs-ratio-poor {
   font-weight: 700;
   color: #c5221f;
-  font-size: 13px;
+  font-size: 14px;
 }
 .bs-ratio-warn {
   font-weight: 700;
   color: #b45309;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* Notification */

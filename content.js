@@ -269,6 +269,13 @@ function injectExtensionPanel() {
           </svg>
           <span class="bs-action-info-label">Info</span>
         </button>
+        <button class="bs-action-btn bs-action-info" id="bs-hotel-tiers" title="Hotel loyalty tiers and benefits" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span class="bs-action-info-label">Tiers</span>
+        </button>
         <button class="bs-action-btn bs-action-refresh" id="bs-refresh-hotel" title="Refresh results">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="23 4 23 10 17 10"/>
@@ -377,12 +384,13 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-choice" data-service="choice">
           Choice
         </button>
-        <button class="bs-btn bs-btn-iprefer" data-service="iprefer" title="iPrefer">
-          iPrefer
-        </button>
-        <button class="bs-btn bs-btn-preferred-hotels" data-service="preferred-hotels" title="via Choice">
+        <button class="bs-btn bs-btn-preferred-hotels" data-service="preferred-hotels" title="Choice 1:2">
           Preferred Hotels
-          <span class="bs-btn-badge bs-btn-badge-citi" title="via Choice">via Choice</span>
+          <span class="bs-btn-badge bs-btn-badge-citi" title="Choice 1:2">Choice 1:2</span>
+        </button>
+        <button class="bs-btn bs-btn-iprefer" data-service="iprefer" title="Citi 1:4">
+          iPrefer
+          <span class="bs-btn-badge bs-btn-badge-citi" title="Citi 1:4">Citi 1:4</span>
         </button>
         <button class="bs-btn bs-btn-gha" data-service="gha">
           GHA
@@ -1410,6 +1418,10 @@ function initializeEventListeners() {
   const hotelTransferInfoBtn = document.getElementById('bs-hotel-transfer-info');
   if (hotelTransferInfoBtn) {
     hotelTransferInfoBtn.addEventListener('click', showHotelTransferModal);
+  }
+  const hotelTiersBtn = document.getElementById('bs-hotel-tiers');
+  if (hotelTiersBtn) {
+    hotelTiersBtn.addEventListener('click', showHotelTiersModal);
   }
   const refreshHotelBtn = document.getElementById('bs-refresh-hotel');
   if (refreshHotelBtn) {
@@ -3258,7 +3270,7 @@ const HOTEL_TRANSFER_ROWS_FALLBACK = [
   { partner: 'Choice', program: 'Privileges', rateLabel: 'Fixed Points Rates', amex: '1:1', chase: null, citi: '1:2', capOne: '1:1', bilt: null, wellsFargo: '1:2', rove: null },
   { partner: 'Hyatt', program: 'World of Hyatt', rateLabel: 'Fixed Points Rates', amex: null, chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
   { partner: 'iPrefer', program: 'iPrefer', rateLabel: 'Fixed Points Rates', amex: null, chase: null, citi: '1:4', capOne: null, bilt: null, wellsFargo: null, rove: null },
-  { partner: 'Preferred Hotels & Resorts', program: 'iPrefer', rateLabel: 'Fixed Points Rates', viaLabel: 'via Choice', amex: null, chase: null, citi: '1:2', capOne: null, bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Preferred Hotels & Resorts', program: 'iPrefer', rateLabel: 'Fixed Points Rates', viaLabel: 'Choice → Preferred Hotels', amex: null, chase: null, citi: '1:2', capOne: null, bilt: null, wellsFargo: null, rove: null },
   { partner: 'Wyndham', program: 'Rewards', rateLabel: 'Fixed Points Rates', amex: null, chase: null, citi: '1:1', capOne: '1:1', bilt: null, wellsFargo: null, rove: null },
   { partner: 'Hilton', program: 'Honors', rateLabel: 'Dynamic Points Rates', amex: '1:2', chase: null, citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
   { partner: 'IHG', program: 'One Rewards', rateLabel: 'Dynamic Points Rates', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
@@ -3267,10 +3279,13 @@ const HOTEL_TRANSFER_ROWS_FALLBACK = [
 ];
 
 function renderHotelTransferRows(rows) {
-  return (rows || []).map(r => `
+  return (rows || []).map(r => {
+    const isFixedRates = (r.rateLabel || '') === 'Fixed Points Rates';
+    const partnerPrefix = isFixedRates ? '⭐ ' : '';
+    return `
     <tr data-rate-label="${(r.rateLabel || '').replace(/"/g, '&quot;')}">
       <td class="bs-transfer-td-partner">
-        <div class="bs-transfer-partner-name">${r.partner}</div>
+        <div class="bs-transfer-partner-name">${partnerPrefix}${r.partner}</div>
         <div class="bs-transfer-partner-program">${r.program}</div>
         ${r.rateLabel ? `<div class="bs-transfer-rate-label">${r.rateLabel}${r.viaLabel ? ' ' + r.viaLabel : ''}</div>` : r.viaLabel ? `<div class="bs-transfer-via-label">${r.viaLabel}</div>` : ''}
       </td>
@@ -3282,7 +3297,8 @@ function renderHotelTransferRows(rows) {
       <td class="bs-transfer-td"><span class="${getRatioCellClass(r.wellsFargo)}" data-ratio="${r.wellsFargo || ''}">${r.wellsFargo || '–'}</span></td>
       <td class="bs-transfer-td"><span class="${getRatioCellClass(r.rove)}" data-ratio="${r.rove || ''}">${r.rove || '–'}</span></td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function getRatioCellClass(ratio) {
@@ -3323,6 +3339,164 @@ function applyTransferModalView(modal, view) {
   });
 }
 
+// Update counts summary for visible rows (respects filter + search)
+// Total unique programs = only rows that have at least one transfer in a selected (checked) column
+function updateTransferModalCounts(tbody, countsEl) {
+  if (!tbody || !countsEl) return;
+  const table = tbody.closest('table');
+  const cardCols = [
+    { key: 'amex', label: 'Amex', idx: 1 },
+    { key: 'chase', label: 'Chase', idx: 2 },
+    { key: 'citi', label: 'Citi', idx: 3 },
+    { key: 'capOne', label: 'Capital One', idx: 4 },
+    { key: 'bilt', label: 'Bilt', idx: 5 },
+    { key: 'wellsFargo', label: 'Wells Fargo', idx: 6 },
+    { key: 'rove', label: 'Rove', idx: 7 }
+  ];
+  const selectedCols = table ? cardCols.filter(({ key }) => !table.classList.contains('bs-hide-col-' + key)) : cardCols;
+  const counts = { amex: 0, chase: 0, citi: 0, capOne: 0, bilt: 0, wellsFargo: 0, rove: 0 };
+  let visibleTotal = 0;
+  tbody.querySelectorAll('tr').forEach(tr => {
+    if (tr.classList.contains('bs-transfer-loading-row') || tr.style.display === 'none') return;
+    let hasRatioInSelectedColumn = false;
+    cardCols.forEach(({ key, idx }) => {
+      const cell = tr.cells[idx];
+      const span = cell && cell.querySelector('span[data-ratio]');
+      const ratio = span && (span.getAttribute('data-ratio') || '').trim();
+      if (ratio) {
+        counts[key]++;
+        if (selectedCols.some(c => c.key === key)) hasRatioInSelectedColumn = true;
+      }
+    });
+    if (hasRatioInSelectedColumn) visibleTotal++;
+  });
+  if (countsEl) countsEl.textContent = 'Total unique programs: ' + visibleTotal;
+  if (table) {
+    cardCols.forEach(({ key }) => {
+      const th = table.querySelector('thead th[data-column="' + key + '"]');
+      const countSpan = th && th.querySelector('.bs-transfer-col-count');
+      if (countSpan) countSpan.textContent = counts[key];
+    });
+  }
+}
+
+const TRANSFER_CARD_COLUMNS = ['amex', 'chase', 'citi', 'capOne', 'bilt', 'wellsFargo', 'rove'];
+
+function bindTransferColumnToggles(table) {
+  if (!table) return;
+  const modal = table.closest('.bs-transfer-modal-backdrop');
+  const togglesWrap = modal && modal.querySelector('.bs-transfer-col-toggles');
+  if (togglesWrap) {
+    // Use always-visible column checkboxes so hidden columns can be re-added in the same view
+    const tbody = table.querySelector('tbody');
+    const countsEl = modal && modal.querySelector('.bs-transfer-counts');
+    const refreshCounts = () => updateTransferModalCounts(tbody, countsEl);
+    TRANSFER_CARD_COLUMNS.forEach(col => {
+      const check = togglesWrap.querySelector('.bs-transfer-col-toggle[data-column="' + col + '"]');
+      if (!check) return;
+      check.addEventListener('change', function () {
+        table.classList.toggle('bs-hide-col-' + col, !this.checked);
+        refreshCounts();
+      });
+    });
+    return;
+  }
+  // Fallback: add checkbox inside each th (column header disappears when hidden)
+  const tbody = table.querySelector('tbody');
+  const countsEl = modal && modal.querySelector('.bs-transfer-counts');
+  const refreshCounts = () => updateTransferModalCounts(tbody, countsEl);
+  TRANSFER_CARD_COLUMNS.forEach(col => {
+    const th = table.querySelector('thead th[data-column="' + col + '"]');
+    if (!th || th.querySelector('.bs-transfer-col-toggle')) return;
+    const check = document.createElement('input');
+    check.type = 'checkbox';
+    check.className = 'bs-transfer-col-toggle';
+    check.dataset.column = col;
+    check.checked = true;
+    check.title = 'Show or hide this column';
+    th.insertBefore(check, th.firstChild);
+    check.addEventListener('click', (e) => e.stopPropagation());
+    check.addEventListener('change', function () {
+      table.classList.toggle('bs-hide-col-' + col, !this.checked);
+      refreshCounts();
+    });
+  });
+}
+
+function openModalAsPdf(modalBox, title) {
+  if (!modalBox) return;
+  const header = modalBox.querySelector('.bs-transfer-modal-header');
+  const body = modalBox.querySelector('.bs-transfer-modal-body');
+  if (!header || !body) return;
+  const headerClone = header.cloneNode(true);
+  headerClone.querySelectorAll('.bs-transfer-modal-close, .bs-transfer-modal-pdf-btn').forEach(el => el.remove());
+  const bodyClone = body.cloneNode(true);
+  // Remove column count badges (e.g. "Amex 4") so PDF header shows only "Amex", "Chase", etc.
+  bodyClone.querySelectorAll('.bs-transfer-col-count').forEach(el => el.remove());
+  // Remove sort UI so PDF doesn't show "Sort" or arrows
+  bodyClone.querySelectorAll('.bs-transfer-sort-arrow').forEach(el => el.remove());
+  bodyClone.querySelectorAll('th[title="Sort"]').forEach(el => el.removeAttribute('title'));
+  // Update "Total unique programs" to visible row count (clone has same display:none as current view)
+  const table = bodyClone.querySelector('.bs-transfer-table');
+  const countsEl = bodyClone.querySelector('.bs-transfer-counts');
+  if (table && countsEl) {
+    const isRowHidden = (tr) => {
+      const s = (tr.getAttribute('style') || '').toLowerCase();
+      return s.includes('display') && s.includes('none');
+    };
+    const dataRows = Array.from(table.querySelectorAll('tbody tr')).filter(
+      tr => !tr.classList.contains('bs-transfer-loading-row') && !isRowHidden(tr)
+    );
+    countsEl.textContent = 'Total unique programs: ' + dataRows.length;
+  }
+  const hideColCss = `
+.bs-transfer-table.bs-hide-col-amex th[data-column="amex"],.bs-transfer-table.bs-hide-col-amex td:nth-child(2){display:none !important;}
+.bs-transfer-table.bs-hide-col-chase th[data-column="chase"],.bs-transfer-table.bs-hide-col-chase td:nth-child(3){display:none !important;}
+.bs-transfer-table.bs-hide-col-citi th[data-column="citi"],.bs-transfer-table.bs-hide-col-citi td:nth-child(4){display:none !important;}
+.bs-transfer-table.bs-hide-col-capOne th[data-column="capOne"],.bs-transfer-table.bs-hide-col-capOne td:nth-child(5){display:none !important;}
+.bs-transfer-table.bs-hide-col-bilt th[data-column="bilt"],.bs-transfer-table.bs-hide-col-bilt td:nth-child(6){display:none !important;}
+.bs-transfer-table.bs-hide-col-wellsFargo th[data-column="wellsFargo"],.bs-transfer-table.bs-hide-col-wellsFargo td:nth-child(7){display:none !important;}
+.bs-transfer-table.bs-hide-col-rove th[data-column="rove"],.bs-transfer-table.bs-hide-col-rove td:nth-child(8){display:none !important;}
+`;
+  const html = `
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>${(title || 'Export').replace(/</g, '&lt;')}</title>
+<style>
+@page{size:auto;margin:12mm;}
+body{font-family:system-ui,-apple-system,sans-serif;margin:12px;color:#202124;font-size:12px;}
+.bs-transfer-modal-header{background:#f8f9fa;padding:10px 14px;border-bottom:1px solid #e8eaed;margin-bottom:0;}
+.bs-transfer-modal-title{margin:0 0 4px 0;font-size:16px;font-weight:600;}
+.bs-transfer-modal-explanation,.bs-transfer-modal-filter-explanation{margin:0;font-size:11px;color:#5f6368;}
+.bs-transfer-modal-body{padding:10px 14px;}
+.bs-transfer-controls,.bs-transfer-view-switch-wrap,.bs-transfer-col-row,.bs-transfer-search-wrap{display:none;}
+.bs-transfer-table-wrap{margin-bottom:10px;overflow:visible;}
+.bs-transfer-table-wrap table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed;}
+.bs-transfer-table th,.bs-transfer-table td{padding:5px 6px;border:1px solid #e8eaed;box-sizing:border-box;}
+.bs-transfer-table th{background:#f1f3f4;font-weight:600;}
+.bs-transfer-table th:first-child,.bs-transfer-table td:first-child{text-align:left;width:1%;white-space:nowrap;border-right:2px solid #dadce0;}
+.bs-transfer-table th:not(:first-child),.bs-transfer-table td:not(:first-child){text-align:center;min-width:0;border-left:2px solid #dadce0;}
+.bs-transfer-sort-arrow{display:none !important;}
+.bs-transfer-counts,.bs-transfer-legend{margin-top:8px;font-size:11px;color:#5f6368;}
+.bs-hotel-benefits-filter-bar,.bs-hotel-benefits-search,.bs-hotel-benefits-quick-filters,.bs-hotel-benefits-status-section{display:none !important;}
+.bs-hotel-benefits-table-container{margin-top:12px;}
+.bs-hotel-benefits-table th,.bs-hotel-benefits-table td{padding:6px;border:1px solid #e5e7eb;}
+.bs-hotel-benefits-table thead th{background:#f9fafb;}
+${hideColCss}
+</style></head><body>
+<div class="bs-transfer-modal-header">${headerClone.innerHTML}</div>
+<div class="bs-transfer-modal-body">${bodyClone.innerHTML}</div>
+</body></html>`;
+  const win = window.open('', '_blank');
+  if (!win) {
+    showNotification('Allow pop-ups to save as PDF', 'info');
+    return;
+  }
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(() => { win.print(); }, 250);
+}
+
 function createHotelTransferModal() {
   const backdrop = document.createElement('div');
   backdrop.className = 'bs-transfer-modal-backdrop';
@@ -3334,22 +3508,42 @@ function createHotelTransferModal() {
       <div class="bs-transfer-modal-header-text">
         <h3 class="bs-transfer-modal-title">Hotels – Transfer Ratios</h3>
         <p class="bs-transfer-modal-explanation">Card points → hotel points. <strong>1:1</strong> = same value; <strong>1:2</strong> = 1000 pts → 2000 points. Columns = card program.</p>
+        <div class="bs-transfer-modal-filter-explanation">
+          <div>Fixed Points Rates ⭐ — points rates do not follow cash prices; rates vary by season.</div>
+          <div>Fixed Points Value — e.g. Accor: 1000 Accor Points = 20€.</div>
+          <div>Dynamic Points Rates — points needed depend on the cash rate of the booking.</div>
+        </div>
       </div>
+      <button type="button" class="bs-action-btn bs-transfer-modal-pdf-btn" title="Save as PDF">📥 PDF</button>
       <button type="button" class="bs-action-btn bs-transfer-modal-close" title="Close">&times;</button>
     </div>
     <div class="bs-transfer-modal-body">
-      <div class="bs-transfer-view-switch-wrap">
-        <span class="bs-transfer-view-label">View:</span>
-        <div class="bs-transfer-view-switch">
-          <button type="button" class="bs-transfer-view-btn" data-view="ratio">Ratio</button>
-          <button type="button" class="bs-transfer-view-btn active" data-view="percentage">Percentage</button>
+      <div class="bs-transfer-controls">
+        <div class="bs-transfer-view-switch-wrap">
+          <span class="bs-transfer-view-label">View:</span>
+          <div class="bs-transfer-view-switch">
+            <button type="button" class="bs-transfer-view-btn" data-view="ratio">Ratio</button>
+            <button type="button" class="bs-transfer-view-btn active" data-view="percentage">Percentage</button>
+          </div>
+          <span class="bs-transfer-view-label bs-transfer-filter-label">Filter:</span>
+          <div class="bs-transfer-filter-wrap">
+            <button type="button" class="bs-transfer-filter-btn active" data-filter="">All</button>
+            <button type="button" class="bs-transfer-filter-btn" data-filter="Fixed Points Rates" title="Show only starred (Fixed Points Rates)">⭐ Fixed Points Rates</button>
+            <button type="button" class="bs-transfer-filter-btn" data-filter="Fixed Points Value">Fixed Points Value</button>
+            <button type="button" class="bs-transfer-filter-btn" data-filter="Dynamic Points Rates">Dynamic Points Rates</button>
+          </div>
         </div>
-        <span class="bs-transfer-view-label bs-transfer-filter-label">Filter:</span>
-        <div class="bs-transfer-filter-wrap">
-          <button type="button" class="bs-transfer-filter-btn active" data-filter="">All</button>
-          <button type="button" class="bs-transfer-filter-btn" data-filter="Fixed Points Value">Fixed Points Value</button>
-          <button type="button" class="bs-transfer-filter-btn" data-filter="Fixed Points Rates">Fixed Points Rates</button>
-          <button type="button" class="bs-transfer-filter-btn" data-filter="Dynamic Points Rates">Dynamic Points Rates</button>
+        <div class="bs-transfer-col-row">
+          <span class="bs-transfer-view-label">Columns:</span>
+          <div class="bs-transfer-col-toggles">
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="amex" checked> Amex</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="chase" checked> Chase</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="citi" checked> Citi</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="capOne" checked> Capital One</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="bilt" checked> Bilt</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="wellsFargo" checked> Wells Fargo</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="rove" checked> Rove</label>
+          </div>
         </div>
       </div>
       <div class="bs-transfer-search-wrap">
@@ -3360,13 +3554,13 @@ function createHotelTransferModal() {
           <thead>
             <tr>
               <th class="bs-transfer-th bs-transfer-th-partner bs-transfer-th-sortable" data-column="partner" title="Sort">Hotel / Program <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="amex" title="Sort">Amex <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="chase" title="Sort">Chase <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="citi" title="Sort">Citi <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="capOne" title="Sort">Capital One <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="bilt" title="Sort">Bilt <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="wellsFargo" title="Sort">Wells Fargo <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="rove" title="Sort">Rove <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="amex" title="Sort">Amex <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="chase" title="Sort">Chase <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="citi" title="Sort">Citi <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="capOne" title="Sort">Capital One <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="bilt" title="Sort">Bilt <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="wellsFargo" title="Sort">Wells Fargo <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="rove" title="Sort">Rove <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
             </tr>
           </thead>
           <tbody>
@@ -3374,6 +3568,7 @@ function createHotelTransferModal() {
           </tbody>
         </table>
       </div>
+      <div class="bs-transfer-counts" aria-live="polite"></div>
       <div class="bs-transfer-legend">
         <span class="bs-transfer-legend-item"><span class="bs-ratio-good">●</span> Good (1:1 or better)</span>
         <span class="bs-transfer-legend-item"><span class="bs-ratio-ok">●</span> OK</span>
@@ -3388,6 +3583,8 @@ function createHotelTransferModal() {
   };
   backdrop.addEventListener('click', (e) => { if (e.target === backdrop) close(); });
   box.querySelector('.bs-transfer-modal-close').addEventListener('click', close);
+  const pdfBtn = box.querySelector('.bs-transfer-modal-pdf-btn');
+  if (pdfBtn) pdfBtn.addEventListener('click', () => openModalAsPdf(box, 'Hotels – Transfer Ratios'));
   const searchInput = box.querySelector('.bs-transfer-search');
   const tbody = box.querySelector('.bs-transfer-table tbody');
   const filterWrap = box.querySelector('.bs-transfer-filter-wrap');
@@ -3409,6 +3606,8 @@ function createHotelTransferModal() {
       const matchSearch = !q || tr.textContent.toLowerCase().includes(q);
       tr.style.display = matchFilter && matchSearch ? '' : 'none';
     });
+    const countsEl = modal && modal.querySelector('.bs-transfer-counts');
+    updateTransferModalCounts(tbody, countsEl);
   }
   if (searchInput && tbody) {
     searchInput.addEventListener('input', applyHotelVisibility);
@@ -3429,6 +3628,7 @@ function createHotelTransferModal() {
     });
   });
   const table = box.querySelector('.bs-transfer-table');
+  bindTransferColumnToggles(table);
   const thead = table && table.querySelector('thead tr');
   const HOTEL_COL_INDEX = { partner: 0, amex: 1, chase: 2, citi: 3, capOne: 4, bilt: 5, wellsFargo: 6, rove: 7 };
   let sortColumn = null;
@@ -3512,6 +3712,134 @@ async function showHotelTransferModal() {
   }
 }
 
+// Tiers modal – same UI/UX as Info (transfer) modal, content = Hotel Benefits
+function createHotelTiersModal() {
+  const backdrop = document.createElement('div');
+  backdrop.className = 'bs-transfer-modal-backdrop';
+  backdrop.setAttribute('aria-hidden', 'true');
+  const box = document.createElement('div');
+  box.className = 'bs-transfer-modal-box bs-hotel-tiers-modal-box';
+  box.innerHTML = `
+    <div class="bs-transfer-modal-header">
+      <div class="bs-transfer-modal-header-text">
+        <h3 class="bs-transfer-modal-title">Tiers</h3>
+        <p class="bs-transfer-modal-explanation">Compare hotel loyalty program benefits and status levels.</p>
+      </div>
+      <button type="button" class="bs-action-btn bs-transfer-modal-pdf-btn" title="Save as PDF">📥 PDF</button>
+      <button type="button" class="bs-action-btn bs-transfer-modal-close" title="Close">&times;</button>
+    </div>
+    <div class="bs-transfer-modal-body">
+      <div class="bs-hotel-benefits-container">
+        <div class="bs-hotel-benefits-filter-bar">
+          <div class="bs-hotel-benefits-filter-header">
+            <h4>Hotel Benefits Management</h4>
+            <div class="bs-hotel-benefits-filter-actions">
+              <button type="button" class="bs-hotel-benefits-btn" id="bs-hotel-benefits-favorites-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <span>Show Favorites</span>
+              </button>
+              <button type="button" class="bs-hotel-benefits-btn" id="bs-hotel-benefits-status-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+                <span>Show Status</span>
+              </button>
+            </div>
+          </div>
+          <div class="bs-hotel-benefits-search">
+            <div class="bs-input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+              <input type="text" id="bs-hotel-benefits-search" placeholder="Search benefits (e.g., 'suite', 'breakfast', 'lounge')...">
+              <button type="button" class="bs-hotel-benefits-clear-search" id="bs-hotel-benefits-clear-search" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="bs-hotel-benefits-quick-filters" id="bs-hotel-benefits-quick-filters"></div>
+          <div class="bs-hotel-benefits-status-section" id="bs-hotel-benefits-status-section" style="display: none;">
+            <h5>Set Current Status Levels</h5>
+            <div class="bs-hotel-benefits-status-grid" id="bs-hotel-benefits-status-grid"></div>
+          </div>
+        </div>
+        <div class="bs-hotel-benefits-table-container" id="bs-hotel-benefits-table-container"></div>
+      </div>
+    </div>
+  `;
+  backdrop.appendChild(box);
+  const close = () => backdrop.classList.remove('bs-transfer-modal-visible');
+  backdrop.addEventListener('click', (e) => { if (e.target === backdrop) close(); });
+  box.querySelector('.bs-transfer-modal-close').addEventListener('click', close);
+  const tiersPdfBtn = box.querySelector('.bs-transfer-modal-pdf-btn');
+  if (tiersPdfBtn) tiersPdfBtn.addEventListener('click', () => openModalAsPdf(box, 'Tiers'));
+  return backdrop;
+}
+
+function attachHotelBenefitsListeners() {
+  const searchInput = document.getElementById('bs-hotel-benefits-search');
+  const clearSearchBtn = document.getElementById('bs-hotel-benefits-clear-search');
+  const favoritesBtn = document.getElementById('bs-hotel-benefits-favorites-btn');
+  const statusBtn = document.getElementById('bs-hotel-benefits-status-btn');
+  const statusSection = document.getElementById('bs-hotel-benefits-status-section');
+  if (!searchInput) return;
+  searchInput.addEventListener('input', (e) => {
+    searchTerm = e.target.value;
+    if (clearSearchBtn) {
+      clearSearchBtn.style.display = searchTerm ? 'block' : 'none';
+    }
+    renderBenefitsTable().catch(err => console.error('Error rendering benefits table:', err));
+  });
+  if (clearSearchBtn) {
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchTerm = '';
+      clearSearchBtn.style.display = 'none';
+      renderBenefitsTable().catch(err => console.error('Error rendering benefits table:', err));
+    });
+  }
+  if (favoritesBtn) {
+    favoritesBtn.addEventListener('click', () => {
+      showOnlyFavorites = !showOnlyFavorites;
+      const span = favoritesBtn.querySelector('span');
+      if (span) span.textContent = showOnlyFavorites ? 'Show All' : 'Show Favorites';
+      renderBenefitsTable().catch(err => console.error('Error rendering benefits table:', err));
+    });
+  }
+  if (statusBtn && statusSection) {
+    statusBtn.addEventListener('click', () => {
+      isStatusSectionExpanded = !isStatusSectionExpanded;
+      statusSection.style.display = isStatusSectionExpanded ? 'block' : 'none';
+      const span = statusBtn.querySelector('span');
+      if (span) span.textContent = isStatusSectionExpanded ? 'Hide Status' : 'Show Status';
+      if (isStatusSectionExpanded) {
+        renderStatusSelectors().catch(err => console.error('Error rendering status selectors:', err));
+      }
+    });
+  }
+}
+
+function showHotelTiersModal() {
+  let modal = document.getElementById('bs-hotel-tiers-modal');
+  if (!modal) {
+    modal = createHotelTiersModal();
+    modal.id = 'bs-hotel-tiers-modal';
+    document.body.appendChild(modal);
+    modal._tiersInitialized = true;
+    attachHotelBenefitsListeners();
+  }
+  modal.classList.add('bs-transfer-modal-visible');
+  if (typeof loadHotelStatuses === 'function') {
+    loadHotelStatuses();
+  }
+}
+
 // Airline transfer ratios modal – fallback when Supabase unavailable
 const AIRLINE_TRANSFER_ROWS_FALLBACK = [
   { partner: 'Aer Lingus', program: 'Avios', alliance: 'OneWorld', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: '1:1', rove: null },
@@ -3549,7 +3877,7 @@ const AIRLINE_TRANSFER_ROWS_FALLBACK = [
 
 function renderAirlineTransferRows(rows) {
   return (rows || []).map(r => `
-    <tr data-alliance="${(r.alliance || 'Other').replace(/"/g, '&quot;')}">
+    <tr data-alliance="${(r.alliance || 'No').replace(/"/g, '&quot;')}">
       <td class="bs-transfer-td-partner">
         <div class="bs-transfer-partner-name">${r.partner}</div>
         <div class="bs-transfer-partner-program">${r.program}</div>
@@ -3585,22 +3913,37 @@ function createFlightTransferModal() {
         <h3 class="bs-transfer-modal-title">Airlines – Transfer Ratios</h3>
         <p class="bs-transfer-modal-explanation">Card points → airline miles. <strong>1:1</strong> = 1000 pts → 1000 miles. Columns = card program. Use search to filter.</p>
       </div>
+      <button type="button" class="bs-action-btn bs-transfer-modal-pdf-btn" title="Save as PDF">📥 PDF</button>
       <button type="button" class="bs-action-btn bs-transfer-modal-close" title="Close">&times;</button>
     </div>
     <div class="bs-transfer-modal-body">
-      <div class="bs-transfer-view-switch-wrap">
-        <span class="bs-transfer-view-label">View:</span>
-        <div class="bs-transfer-view-switch">
-          <button type="button" class="bs-transfer-view-btn" data-view="ratio">Ratio</button>
-          <button type="button" class="bs-transfer-view-btn active" data-view="percentage">Percentage</button>
+      <div class="bs-transfer-controls">
+        <div class="bs-transfer-view-switch-wrap">
+          <span class="bs-transfer-view-label">View:</span>
+          <div class="bs-transfer-view-switch">
+            <button type="button" class="bs-transfer-view-btn" data-view="ratio">Ratio</button>
+            <button type="button" class="bs-transfer-view-btn active" data-view="percentage">Percentage</button>
+          </div>
+          <span class="bs-transfer-view-label bs-transfer-filter-label">Alliance:</span>
+          <div class="bs-transfer-filter-wrap">
+            <button type="button" class="bs-transfer-filter-btn active" data-filter="">All</button>
+            <button type="button" class="bs-transfer-filter-btn" data-filter="OneWorld">OneWorld</button>
+            <button type="button" class="bs-transfer-filter-btn" data-filter="SkyTeam">SkyTeam</button>
+            <button type="button" class="bs-transfer-filter-btn" data-filter="Star Alliance">Star Alliance</button>
+            <button type="button" class="bs-transfer-filter-btn" data-filter="No">No</button>
+          </div>
         </div>
-        <span class="bs-transfer-view-label bs-transfer-filter-label">Filter:</span>
-        <div class="bs-transfer-filter-wrap">
-          <button type="button" class="bs-transfer-filter-btn active" data-filter="">All</button>
-          <button type="button" class="bs-transfer-filter-btn" data-filter="OneWorld">OneWorld</button>
-          <button type="button" class="bs-transfer-filter-btn" data-filter="SkyTeam">SkyTeam</button>
-          <button type="button" class="bs-transfer-filter-btn" data-filter="Star Alliance">Star Alliance</button>
-          <button type="button" class="bs-transfer-filter-btn" data-filter="Other">Other</button>
+        <div class="bs-transfer-col-row">
+          <span class="bs-transfer-view-label">Columns:</span>
+          <div class="bs-transfer-col-toggles">
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="amex" checked> Amex</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="chase" checked> Chase</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="citi" checked> Citi</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="capOne" checked> Capital One</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="bilt" checked> Bilt</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="wellsFargo" checked> Wells Fargo</label>
+            <label><input type="checkbox" class="bs-transfer-col-toggle" data-column="rove" checked> Rove</label>
+          </div>
         </div>
       </div>
       <div class="bs-transfer-search-wrap">
@@ -3611,13 +3954,13 @@ function createFlightTransferModal() {
           <thead>
             <tr>
               <th class="bs-transfer-th bs-transfer-th-partner bs-transfer-th-sortable" data-column="partner" title="Sort">Airline / Program <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="amex" title="Sort">Amex <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="chase" title="Sort">Chase <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="citi" title="Sort">Citi <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="capOne" title="Sort">Capital One <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="bilt" title="Sort">Bilt <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="wellsFargo" title="Sort">Wells Fargo <span class="bs-transfer-sort-arrow"></span></th>
-              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="rove" title="Sort">Rove <span class="bs-transfer-sort-arrow"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="amex" title="Sort">Amex <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="chase" title="Sort">Chase <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="citi" title="Sort">Citi <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="capOne" title="Sort">Capital One <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="bilt" title="Sort">Bilt <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="wellsFargo" title="Sort">Wells Fargo <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
+              <th class="bs-transfer-th bs-transfer-th-sortable" data-column="rove" title="Sort">Rove <span class="bs-transfer-sort-arrow"></span><span class="bs-transfer-col-count"></span></th>
             </tr>
           </thead>
           <tbody>
@@ -3625,6 +3968,7 @@ function createFlightTransferModal() {
           </tbody>
         </table>
       </div>
+      <div class="bs-transfer-counts" aria-live="polite"></div>
       <div class="bs-transfer-legend">
         <span class="bs-transfer-legend-item"><span class="bs-ratio-good">●</span> Good (1:1+)</span>
         <span class="bs-transfer-legend-item"><span class="bs-ratio-warn">●</span> Fair</span>
@@ -3639,20 +3983,31 @@ function createFlightTransferModal() {
   };
   backdrop.addEventListener('click', (e) => { if (e.target === backdrop) close(); });
   box.querySelector('.bs-transfer-modal-close').addEventListener('click', close);
+  const flightPdfBtn = box.querySelector('.bs-transfer-modal-pdf-btn');
+  if (flightPdfBtn) flightPdfBtn.addEventListener('click', () => openModalAsPdf(box, 'Airlines – Transfer Ratios'));
   const searchInput = box.querySelector('.bs-transfer-search');
   const tbody = box.querySelector('.bs-transfer-table tbody');
   const filterWrap = box.querySelector('.bs-transfer-filter-wrap');
   function applyAirlineVisibility() {
     if (!tbody) return;
-    const q = (searchInput && searchInput.value.trim()) ? searchInput.value.trim().toLowerCase() : '';
-    const activeFilterBtn = filterWrap && filterWrap.querySelector('.bs-transfer-filter-btn.active');
+    const modal = tbody.closest('.bs-transfer-modal-backdrop');
+    const wrap = modal && modal.querySelector('.bs-transfer-filter-wrap');
+    const search = modal && modal.querySelector('.bs-transfer-search');
+    const q = (search && search.value.trim()) ? search.value.trim().toLowerCase() : '';
+    const activeFilterBtn = wrap && wrap.querySelector('.bs-transfer-filter-btn.active');
     const filterValue = (activeFilterBtn && activeFilterBtn.getAttribute('data-filter')) || '';
     tbody.querySelectorAll('tr').forEach(tr => {
+      if (tr.classList.contains('bs-transfer-loading-row')) {
+        tr.style.display = filterValue ? 'none' : '';
+        return;
+      }
       const alliance = (tr.getAttribute('data-alliance') || '').trim();
       const matchFilter = !filterValue || alliance === filterValue;
       const matchSearch = !q || tr.textContent.toLowerCase().includes(q);
       tr.style.display = matchFilter && matchSearch ? '' : 'none';
     });
+    const countsEl = modal && modal.querySelector('.bs-transfer-counts');
+    updateTransferModalCounts(tbody, countsEl);
   }
   if (searchInput && tbody) {
     searchInput.addEventListener('input', applyAirlineVisibility);
@@ -3673,6 +4028,7 @@ function createFlightTransferModal() {
     });
   });
   const table = box.querySelector('.bs-transfer-table');
+  bindTransferColumnToggles(table);
   const thead = table && table.querySelector('thead tr');
   const AIRLINE_COL_INDEX = { partner: 0, amex: 1, chase: 2, citi: 3, capOne: 4, bilt: 5, wellsFargo: 6, rove: 7 };
   let sortColumn = null;
@@ -5285,32 +5641,75 @@ const HotelStatusLevelsService = {
   }
 };
 
+// User's current level and valid_until: stored in extension only (survives cookie/cache clear)
+const HOTEL_STATUS_LOCAL_KEY = 'bs-hotel-status-levels';
+const HotelStatusLocalStorage = {
+  async get() {
+    try {
+      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+        return new Promise((resolve) => {
+          chrome.storage.local.get([HOTEL_STATUS_LOCAL_KEY], (result) => {
+            const raw = result[HOTEL_STATUS_LOCAL_KEY];
+            resolve(typeof raw === 'object' && raw !== null ? raw : {});
+          });
+        });
+      }
+    } catch (e) {
+      console.warn('chrome.storage.local not available, using localStorage', e);
+    }
+    try {
+      const raw = localStorage.getItem(HOTEL_STATUS_LOCAL_KEY);
+      return Promise.resolve(raw ? JSON.parse(raw) : {});
+    } catch (e) {
+      return {};
+    }
+  },
+  async set(data) {
+    try {
+      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+        return new Promise((resolve) => {
+          chrome.storage.local.set({ [HOTEL_STATUS_LOCAL_KEY]: data }, resolve);
+        });
+      }
+    } catch (e) {
+      console.warn('chrome.storage.local not available, using localStorage', e);
+    }
+    try {
+      localStorage.setItem(HOTEL_STATUS_LOCAL_KEY, JSON.stringify(data));
+    } catch (e) {
+      console.warn('Failed to save hotel status to localStorage', e);
+    }
+  },
+  async getForProgram(programId) {
+    const all = await this.get();
+    const entry = all[programId];
+    return {
+      currentLevel: entry && typeof entry.currentLevel === 'number' ? entry.currentLevel : 1,
+      validUntil: entry && (entry.validUntil === null || typeof entry.validUntil === 'string') ? entry.validUntil : null
+    };
+  },
+  async setForProgram(programId, { currentLevel, validUntil }) {
+    const all = await this.get();
+    all[programId] = { currentLevel, validUntil: validUntil || null };
+    await this.set(all);
+  }
+};
+
 // Initialize Hotel Benefits - REMOVED
 
 // Wait for page to be fully loaded before initializing
   async function updateStatus(hotelId, newLevel) {
     try {
-      const program = HOTEL_PROGRAMS.find(p => p.id === hotelId);
-      if (!program) {
+      const hotel = hotelStatuses.find(h => h.id === hotelId);
+      if (!hotel) {
         console.error('Program not found:', hotelId);
         return;
       }
-
-      const levelData = program.levels.find(l => l.level === newLevel);
-      const levelName = levelData?.name || `Level ${newLevel}`;
-
-      await HotelStatusLevelsService.upsert(
-        hotelId,
-        program.name,
-        newLevel,
-        levelName,
-        null
-      );
-
-      // Update local state
-      const hotel = hotelStatuses.find(h => h.id === hotelId);
-      if (hotel) hotel.currentLevel = newLevel;
-
+      await HotelStatusLocalStorage.setForProgram(hotelId, {
+        currentLevel: newLevel,
+        validUntil: hotel.validUntil ?? null
+      });
+      hotel.currentLevel = newLevel;
       await renderBenefitsTable();
       await renderStatusSelectors();
     } catch (error) {
@@ -5318,29 +5717,22 @@ const HotelStatusLevelsService = {
     }
   }
 
-  // Update validity date in Supabase
   async function updateValidityDate(hotelId, newDate) {
     try {
-      const program = HOTEL_PROGRAMS.find(p => p.id === hotelId);
-      if (!program) {
+      const hotel = hotelStatuses.find(h => h.id === hotelId);
+      if (!hotel) {
         console.error('Program not found:', hotelId);
         return;
       }
-
-      const existing = await HotelStatusLevelsService.getByProgramId(hotelId);
-      const currentLevel = existing?.current_level || 1;
-      const levelData = program.levels.find(l => l.level === currentLevel);
-      const levelName = levelData?.name || `Level ${currentLevel}`;
-
-      await HotelStatusLevelsService.upsert(
-        hotelId,
-        program.name,
-        currentLevel,
-        levelName,
-        newDate || null
-      );
-
+      await HotelStatusLocalStorage.setForProgram(hotelId, {
+        currentLevel: hotel.currentLevel,
+        validUntil: newDate || null
+      });
+      hotel.validUntil = newDate || null;
       await renderBenefitsTable();
+      if (isStatusSectionExpanded) {
+        await renderStatusSelectors();
+      }
     } catch (error) {
       console.error('Error updating validity date:', error);
     }
@@ -5350,25 +5742,62 @@ const HotelStatusLevelsService = {
   let hotelStatuses = [];
   let isLoading = false;
 
-  // Load hotel statuses from Supabase
+  // Load all data from Supabase hotel_status_levels; user's current_level and valid_until from extension storage only
   async function loadHotelStatuses() {
     if (isLoading) return;
     isLoading = true;
 
     try {
-      // Fetch all hotel status levels from Supabase
-      await HotelStatusLevelsService.fetchAll();
+      let supabaseRows = [];
+      try {
+        supabaseRows = await HotelStatusLevelsService.fetchAll();
+      } catch (e) {
+        console.warn('Supabase fetch failed, using HOTEL_PROGRAMS fallback', e);
+      }
 
-      // Initialize hotel programs with Supabase data
-      hotelStatuses = await Promise.all(HOTEL_PROGRAMS.map(async (program) => {
-        const supabaseData = await HotelStatusLevelsService.getByProgramId(program.id);
-        return {
-          ...program,
-          currentLevel: supabaseData?.current_level || 1
-        };
-      }));
+      const localData = await HotelStatusLocalStorage.get();
+      const fallbackByProgram = new Map(HOTEL_PROGRAMS.map(p => [p.id, p]));
 
-      // Re-render everything with fresh data
+      if (Array.isArray(supabaseRows) && supabaseRows.length > 0) {
+        hotelStatuses = supabaseRows.map((row) => {
+          const programId = row.program_id || '';
+          const programName = row.program_name || programId;
+          let levels = [];
+          if (row.level_definitions && Array.isArray(row.level_definitions) && row.level_definitions.length > 0) {
+            levels = row.level_definitions.map((def) => ({
+              level: def.level,
+              name: def.name || `Level ${def.level}`,
+              color: def.color || 'bg-gray-100 text-gray-800',
+              benefits: Array.isArray(def.benefits) ? def.benefits : []
+            }));
+          } else {
+            const fallback = fallbackByProgram.get(programId);
+            if (fallback && fallback.levels) levels = fallback.levels;
+          }
+          const local = localData[programId];
+          const currentLevel = local && typeof local.currentLevel === 'number' ? local.currentLevel : 1;
+          const validUntil = local && (local.validUntil === null || typeof local.validUntil === 'string') ? local.validUntil : null;
+          return {
+            id: programId,
+            name: programName,
+            levels,
+            totalLevels: levels.length,
+            currentLevel,
+            validUntil
+          };
+        });
+      } else {
+        hotelStatuses = HOTEL_PROGRAMS.map((program) => {
+          const local = localData[program.id];
+          return {
+            ...program,
+            currentLevel: local && typeof local.currentLevel === 'number' ? local.currentLevel : 1,
+            validUntil: local && (local.validUntil === null || typeof local.validUntil === 'string') ? local.validUntil : null
+          };
+        });
+      }
+      hotelStatuses.sort((a, b) => (b.currentLevel - a.currentLevel));
+
       renderQuickFilters();
       await renderBenefitsTable();
       if (isStatusSectionExpanded) {
@@ -5376,11 +5805,16 @@ const HotelStatusLevelsService = {
       }
     } catch (error) {
       console.error('Error loading hotel statuses:', error);
-      // Fallback to default levels if Supabase fails
-      hotelStatuses = HOTEL_PROGRAMS.map(program => ({
-        ...program,
-        currentLevel: 1
-      }));
+      const localData = await HotelStatusLocalStorage.get().catch(() => ({}));
+      hotelStatuses = HOTEL_PROGRAMS.map((program) => {
+        const local = localData[program.id];
+        return {
+          ...program,
+          currentLevel: local && typeof local.currentLevel === 'number' ? local.currentLevel : 1,
+          validUntil: local && (local.validUntil === null || typeof local.validUntil === 'string') ? local.validUntil : null
+        };
+      });
+      hotelStatuses.sort((a, b) => (b.currentLevel - a.currentLevel));
       renderQuickFilters();
       renderBenefitsTable().catch(err => console.error('Error rendering benefits table:', err));
     } finally {
@@ -5587,19 +6021,9 @@ const HotelStatusLevelsService = {
     // Show loading state
     container.innerHTML = '<div class="bs-hotel-benefits-loading">Loading status levels...</div>';
 
-    // Load all validity dates from Supabase
-    const validityData = await Promise.all(
-      hotelStatuses.map(async (hotel) => {
-        const validityDate = await getValidityDate(hotel.id);
-        return { hotelId: hotel.id, validityDate };
-      })
-    );
-
-    const validityMap = new Map(validityData.map(item => [item.hotelId, item.validityDate]));
-
     container.innerHTML = hotelStatuses.map(hotel => {
       const isFavorite = favoritePrograms.includes(hotel.id);
-      const validityDate = validityMap.get(hotel.id) || null;
+      const validityDate = hotel.validUntil ?? null;
       const validity = validityDate ? formatDateDDMMYY(validityDate) : '';
       const daysRemaining = validityDate ? getDaysRemaining(validityDate) : null;
       const isExpired = daysRemaining !== null && daysRemaining < 0;
@@ -5676,13 +6100,20 @@ const HotelStatusLevelsService = {
     });
   }
 
-  // Render benefits table (async to load validity dates from Supabase)
+  // Render benefits table (validity from extension local storage)
   async function renderBenefitsTable() {
     const container = document.getElementById('bs-hotel-benefits-table-container');
     if (!container) return;
 
-    const filteredPrograms = filterPrograms();
-    
+    const filtered = filterPrograms();
+    // Sort: highest tier (max level) first, then A–Z by program name
+    const filteredPrograms = [...filtered].sort((a, b) => {
+      const maxA = a.levels && a.levels.length ? Math.max(...a.levels.map(l => l.level)) : 0;
+      const maxB = b.levels && b.levels.length ? Math.max(...b.levels.map(l => l.level)) : 0;
+      if (maxB !== maxA) return maxB - maxA;
+      return (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' });
+    });
+
     // Get all unique levels
     const allLevels = Array.from(new Set(hotelStatuses.flatMap(h => h.levels.map(l => l.level)))).sort((a, b) => a - b);
 
@@ -5694,15 +6125,7 @@ const HotelStatusLevelsService = {
     // Show loading state
     container.innerHTML = '<div class="bs-hotel-benefits-loading">Loading benefits data...</div>';
 
-    // Load all validity dates from Supabase
-    const validityData = await Promise.all(
-      filteredPrograms.map(async (hotel) => {
-        const validityDate = await getValidityDate(hotel.id);
-        return { hotelId: hotel.id, validityDate };
-      })
-    );
-
-    const validityMap = new Map(validityData.map(item => [item.hotelId, item.validityDate]));
+    const validityMap = new Map(filteredPrograms.map(h => [h.id, h.validUntil ?? null]));
 
     container.innerHTML = `
       <div class="bs-hotel-benefits-legend">
