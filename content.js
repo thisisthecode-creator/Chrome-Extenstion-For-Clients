@@ -3270,7 +3270,7 @@ const HOTEL_TRANSFER_ROWS_FALLBACK = [
   { partner: 'Choice', program: 'Privileges', rateLabel: 'Fixed Points Rates', amex: '1:1', chase: null, citi: '1:2', capOne: '1:1', bilt: null, wellsFargo: '1:2', rove: null },
   { partner: 'Hyatt', program: 'World of Hyatt', rateLabel: 'Fixed Points Rates', amex: null, chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
   { partner: 'iPrefer', program: 'iPrefer', rateLabel: 'Fixed Points Rates', amex: null, chase: null, citi: '1:4', capOne: null, bilt: null, wellsFargo: null, rove: null },
-  { partner: 'Preferred Hotels & Resorts', program: 'iPrefer', rateLabel: 'Fixed Points Rates', viaLabel: 'Choice → Preferred Hotels', amex: null, chase: null, citi: '1:2', capOne: null, bilt: null, wellsFargo: null, rove: null },
+  { partner: 'Preferred Hotels & Resorts', program: 'iPrefer', rateLabel: 'Fixed Points Rates', viaLabel: 'Choice', amex: null, chase: null, citi: '1:2', capOne: null, bilt: null, wellsFargo: null, rove: null },
   { partner: 'Wyndham', program: 'Rewards', rateLabel: 'Fixed Points Rates', amex: null, chase: null, citi: '1:1', capOne: '1:1', bilt: null, wellsFargo: null, rove: null },
   { partner: 'Hilton', program: 'Honors', rateLabel: 'Dynamic Points Rates', amex: '1:2', chase: null, citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
   { partner: 'IHG', program: 'One Rewards', rateLabel: 'Dynamic Points Rates', amex: '1:1', chase: '1:1', citi: null, capOne: null, bilt: '1:1', wellsFargo: null, rove: null },
@@ -3423,8 +3423,9 @@ function bindTransferColumnToggles(table) {
   });
 }
 
-function openModalAsPdf(modalBox, title) {
+function openModalAsPdf(modalBox, title, options) {
   if (!modalBox) return;
+  const wantLandscape = (options && options.landscape) || false;
   const header = modalBox.querySelector('.bs-transfer-modal-header');
   const body = modalBox.querySelector('.bs-transfer-modal-body');
   if (!header || !body) return;
@@ -3436,10 +3437,18 @@ function openModalAsPdf(modalBox, title) {
   // Remove sort UI so PDF doesn't show "Sort" or arrows
   bodyClone.querySelectorAll('.bs-transfer-sort-arrow').forEach(el => el.remove());
   bodyClone.querySelectorAll('th[title="Sort"]').forEach(el => el.removeAttribute('title'));
-  // Update "Total unique programs" to visible row count (clone has same display:none as current view)
+  // Strip star/emoji from transfer table partner column (Fixed Points Rates ⭐) so PDF is data-only
+  bodyClone.querySelectorAll('.bs-transfer-table .bs-transfer-partner-name').forEach(el => {
+    const t = (el.textContent || '').replace(/\s*⭐\s*/g, '').trim();
+    el.textContent = t;
+  });
+  // Use the same "Total unique programs" count as shown in the modal before PDF was pressed
+  const liveCountsEl = body.querySelector('.bs-transfer-counts');
   const table = bodyClone.querySelector('.bs-transfer-table');
   const countsEl = bodyClone.querySelector('.bs-transfer-counts');
-  if (table && countsEl) {
+  if (countsEl && liveCountsEl && liveCountsEl.textContent.trim()) {
+    countsEl.textContent = liveCountsEl.textContent.trim();
+  } else if (table && countsEl) {
     const isRowHidden = (tr) => {
       const s = (tr.getAttribute('style') || '').toLowerCase();
       return s.includes('display') && s.includes('none');
@@ -3448,6 +3457,20 @@ function openModalAsPdf(modalBox, title) {
       tr => !tr.classList.contains('bs-transfer-loading-row') && !isRowHidden(tr)
     );
     countsEl.textContent = 'Total unique programs: ' + dataRows.length;
+  }
+  // Hotel Benefits (Tiers) PDF: data only, no icons or emojis
+  const hotelBenefitsTable = bodyClone.querySelector('.bs-hotel-benefits-table');
+  if (hotelBenefitsTable) {
+    bodyClone.querySelectorAll('.bs-hotel-benefits-legend').forEach(el => el.remove());
+    bodyClone.querySelectorAll('.bs-hotel-benefits-table svg').forEach(svg => svg.remove());
+    bodyClone.querySelectorAll('.bs-hotel-benefits-hotel-title').forEach(el => {
+      const t = (el.textContent || '').replace(/\s*⭐\s*/g, '').trim();
+      el.textContent = t;
+    });
+    bodyClone.querySelectorAll('.bs-hotel-benefits-benefit-item').forEach(item => {
+      const span = item.querySelector('span');
+      if (span) item.textContent = span.textContent || '';
+    });
   }
   const hideColCss = `
 .bs-transfer-table.bs-hide-col-amex th[data-column="amex"],.bs-transfer-table.bs-hide-col-amex td:nth-child(2){display:none !important;}
@@ -3458,29 +3481,52 @@ function openModalAsPdf(modalBox, title) {
 .bs-transfer-table.bs-hide-col-wellsFargo th[data-column="wellsFargo"],.bs-transfer-table.bs-hide-col-wellsFargo td:nth-child(7){display:none !important;}
 .bs-transfer-table.bs-hide-col-rove th[data-column="rove"],.bs-transfer-table.bs-hide-col-rove td:nth-child(8){display:none !important;}
 `;
+  const useLandscape = hotelBenefitsTable || wantLandscape;
+  const pageSizeCss = useLandscape ? '@page{size:landscape;margin:15mm;}' : '@page{size:A4;margin:15mm;}';
   const html = `
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>${(title || 'Export').replace(/</g, '&lt;')}</title>
 <style>
-@page{size:auto;margin:12mm;}
-body{font-family:system-ui,-apple-system,sans-serif;margin:12px;color:#202124;font-size:12px;}
-.bs-transfer-modal-header{background:#f8f9fa;padding:10px 14px;border-bottom:1px solid #e8eaed;margin-bottom:0;}
-.bs-transfer-modal-title{margin:0 0 4px 0;font-size:16px;font-weight:600;}
-.bs-transfer-modal-explanation,.bs-transfer-modal-filter-explanation{margin:0;font-size:11px;color:#5f6368;}
-.bs-transfer-modal-body{padding:10px 14px;}
+${pageSizeCss}
+body{font-family:system-ui,-apple-system,sans-serif;margin:14px;color:#202124;font-size:12px;line-height:1.4;}
+.bs-transfer-modal-header{background:#f8f9fa;padding:12px 16px;border-bottom:1px solid #e8eaed;margin-bottom:0;}
+.bs-transfer-modal-title{margin:0 0 6px 0;font-size:18px;font-weight:600;}
+.bs-transfer-modal-explanation,.bs-transfer-modal-filter-explanation{margin:0;font-size:12px;color:#5f6368;}
+.bs-transfer-modal-body{padding:12px 16px;}
 .bs-transfer-controls,.bs-transfer-view-switch-wrap,.bs-transfer-col-row,.bs-transfer-search-wrap{display:none;}
-.bs-transfer-table-wrap{margin-bottom:10px;overflow:visible;}
-.bs-transfer-table-wrap table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed;}
-.bs-transfer-table th,.bs-transfer-table td{padding:5px 6px;border:1px solid #e8eaed;box-sizing:border-box;}
+.bs-transfer-table-wrap{margin-bottom:10px;overflow:visible;width:100%;}
+.bs-transfer-table-wrap table{width:100%;border-collapse:collapse;font-size:12px;table-layout:auto;}
+.bs-transfer-table th,.bs-transfer-table td{padding:8px 10px;border:1px solid #d0d3d6;box-sizing:border-box;}
 .bs-transfer-table th{background:#f1f3f4;font-weight:600;}
-.bs-transfer-table th:first-child,.bs-transfer-table td:first-child{text-align:left;width:1%;white-space:nowrap;border-right:2px solid #dadce0;}
-.bs-transfer-table th:not(:first-child),.bs-transfer-table td:not(:first-child){text-align:center;min-width:0;border-left:2px solid #dadce0;}
+.bs-transfer-table th:first-child,.bs-transfer-table td:first-child{text-align:left;width:auto;white-space:nowrap;border-right:3px solid #5f6368;}
+.bs-transfer-table th:nth-child(2),.bs-transfer-table td:nth-child(2){width:7em;min-width:7em;border-left:3px solid #5f6368;}
+.bs-transfer-table th:nth-child(3),.bs-transfer-table td:nth-child(3){width:7em;min-width:7em;border-left:3px solid #5f6368;}
+.bs-transfer-table th:nth-child(4),.bs-transfer-table td:nth-child(4){width:7em;min-width:7em;border-left:3px solid #5f6368;}
+.bs-transfer-table th:nth-child(5),.bs-transfer-table td:nth-child(5){width:7em;min-width:7em;border-left:3px solid #5f6368;}
+.bs-transfer-table th:nth-child(6),.bs-transfer-table td:nth-child(6){width:7em;min-width:7em;border-left:3px solid #5f6368;}
+.bs-transfer-table th:nth-child(7),.bs-transfer-table td:nth-child(7){width:7em;min-width:7em;border-left:3px solid #5f6368;}
+.bs-transfer-table th:nth-child(8),.bs-transfer-table td:nth-child(8){width:7em;min-width:7em;border-left:3px solid #5f6368;}
+.bs-transfer-table th:not(:first-child),.bs-transfer-table td:not(:first-child){text-align:center;}
 .bs-transfer-sort-arrow{display:none !important;}
-.bs-transfer-counts,.bs-transfer-legend{margin-top:8px;font-size:11px;color:#5f6368;}
+.bs-transfer-counts{margin-top:10px;font-size:12px;color:#5f6368;}
+.bs-transfer-legend{display:none !important;}
 .bs-hotel-benefits-filter-bar,.bs-hotel-benefits-search,.bs-hotel-benefits-quick-filters,.bs-hotel-benefits-status-section{display:none !important;}
 .bs-hotel-benefits-table-container{margin-top:12px;}
+.bs-hotel-benefits-legend{display:none !important;}
 .bs-hotel-benefits-table th,.bs-hotel-benefits-table td{padding:6px;border:1px solid #e5e7eb;}
 .bs-hotel-benefits-table thead th{background:#f9fafb;}
+.bs-hotel-benefits-table svg{display:none !important;}
+.bs-hotel-benefits-level-header .bs-hotel-benefits-level-badge{background:transparent !important;color:#202124;}
+${hotelBenefitsTable ? `
+.bs-hotel-benefits-table{table-layout:fixed;width:100%;font-size:10px;}
+.bs-hotel-benefits-table th,.bs-hotel-benefits-table td{padding:4px 6px;font-size:10px;}
+.bs-hotel-benefits-table th:first-child,.bs-hotel-benefits-table td:first-child{width:16%;min-width:0;}
+.bs-hotel-benefits-table th:not(:first-child),.bs-hotel-benefits-table td:not(:first-child){width:14%;min-width:0;box-sizing:border-box;}
+.bs-hotel-benefits-table .bs-hotel-benefits-hotel-title,.bs-hotel-benefits-table .bs-hotel-benefits-level-badge{font-size:10px;}
+.bs-hotel-benefits-table .bs-hotel-benefits-level-header{margin-bottom:4px;}
+.bs-hotel-benefits-table .bs-hotel-benefits-benefit-item{font-size:9px;line-height:1.3;}
+.bs-hotel-benefits-table .bs-hotel-benefits-benefits-list{flex-wrap:wrap;gap:2px;}
+` : ''}
 ${hideColCss}
 </style></head><body>
 <div class="bs-transfer-modal-header">${headerClone.innerHTML}</div>
@@ -3491,10 +3537,23 @@ ${hideColCss}
     showNotification('Allow pop-ups to save as PDF', 'info');
     return;
   }
-  win.document.write(html);
-  win.document.close();
-  win.focus();
-  setTimeout(() => { win.print(); }, 250);
+  try {
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+    win.focus();
+    setTimeout(() => {
+      try {
+        if (win && !win.closed) win.print();
+      } catch (e) {
+        console.warn('PDF print failed', e);
+      }
+    }, 250);
+  } catch (e) {
+    console.error('PDF window write failed', e);
+    try { win.close(); } catch (_) {}
+    showNotification('Could not open PDF preview', 'info');
+  }
 }
 
 function createHotelTransferModal() {
@@ -3509,6 +3568,7 @@ function createHotelTransferModal() {
         <h3 class="bs-transfer-modal-title">Hotels – Transfer Ratios</h3>
         <p class="bs-transfer-modal-explanation">Card points → hotel points. <strong>1:1</strong> = same value; <strong>1:2</strong> = 1000 pts → 2000 points. Columns = card program.</p>
         <div class="bs-transfer-modal-filter-explanation">
+          <div>Filter by rate type or search by partner or program.</div>
           <div>Fixed Points Rates ⭐ — points rates do not follow cash prices; rates vary by season.</div>
           <div>Fixed Points Value — e.g. Accor: 1000 Accor Points = 20€.</div>
           <div>Dynamic Points Rates — points needed depend on the cash rate of the booking.</div>
@@ -3712,6 +3772,163 @@ async function showHotelTransferModal() {
   }
 }
 
+// Hotel Benefits PDF via jsPDF (landscape A4, table layout like React export)
+function exportHotelBenefitsPdf(modalBox) {
+  const JsPDF = (typeof window !== 'undefined' && window.jspdf && (window.jspdf.jsPDF || window.jspdf.default)) ? (window.jspdf.jsPDF || window.jspdf.default) : (typeof window !== 'undefined' && window.jsPDF) ? window.jsPDF : null;
+  const data = typeof window !== 'undefined' ? window.__bsHotelBenefitsPdfData : null;
+  if (!JsPDF || !data || !Array.isArray(data.programs)) {
+    openModalAsPdf(modalBox, 'Tiers');
+    return;
+  }
+  const programs = data.programs;
+  if (programs.length === 0) {
+    openModalAsPdf(modalBox, 'Tiers');
+    return;
+  }
+  try {
+  const sortedLevels = Array.isArray(data.allLevels) && data.allLevels.length > 0 ? data.allLevels : Array.from(new Set(programs.flatMap(h => (h.levels || []).map(l => l.level)))).sort((a, b) => a - b);
+  const margin = 10;
+  const hotelNameWidth = 40;
+  const pageWidth = 297;
+  const pageHeight = 210;
+  const availableWidth = pageWidth - margin * 2 - hotelNameWidth;
+  const levelColumnWidth = sortedLevels.length > 0 ? availableWidth / sortedLevels.length : 40;
+  const headerHeight = 8;
+  const rowHeight = 15;
+
+  const pdf = new JsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4', compress: true });
+  let yPosition = margin;
+
+  function checkNewPage(requiredHeight) {
+    if (yPosition + requiredHeight > pageHeight - margin) {
+      pdf.addPage([pageWidth, pageHeight], 'l');
+      yPosition = margin;
+      return true;
+    }
+    return false;
+  }
+
+  function formatDateDDMMYY(isoDate) {
+    if (!isoDate) return '';
+    const s = String(isoDate);
+    const parts = s.split('T')[0].split('-');
+    if (parts.length !== 3) return s;
+    return parts[2] + '/' + parts[1] + '/' + parts[0].slice(2);
+  }
+
+  pdf.setFontSize(18);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text('Hotel Benefits Overview', margin, yPosition);
+  yPosition += 5;
+  pdf.setFontSize(9);
+  pdf.setFont('helvetica', 'normal');
+  const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  pdf.text('Generated on: ' + today, margin, yPosition);
+  yPosition += 8;
+
+  checkNewPage(headerHeight + 5);
+  pdf.setFillColor(75, 85, 99);
+  pdf.rect(margin, yPosition, hotelNameWidth, headerHeight, 'F');
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(10);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text('Hotel Program', margin + 2, yPosition + 5);
+  sortedLevels.forEach((level, index) => {
+    const xPos = margin + hotelNameWidth + index * levelColumnWidth;
+    pdf.rect(xPos, yPosition, levelColumnWidth, headerHeight, 'F');
+    pdf.text('Level ' + level, xPos + 2, yPosition + 5);
+  });
+  pdf.setTextColor(0, 0, 0);
+  yPosition += headerHeight;
+
+  const sortedHotels = [...programs].sort((a, b) => {
+    const pctA = (a.currentLevel / (a.totalLevels || 1)) * 100;
+    const pctB = (b.currentLevel / (b.totalLevels || 1)) * 100;
+    return pctB - pctA;
+  });
+
+  sortedHotels.forEach((hotel) => {
+    let maxBenefits = 0;
+    sortedLevels.forEach(level => {
+      const levelData = (hotel.levels || []).find(l => l.level === level);
+      if (levelData && levelData.benefits && levelData.benefits.length > maxBenefits) maxBenefits = levelData.benefits.length;
+    });
+    const calculatedRowHeight = Math.max(rowHeight, 5 + maxBenefits * 4);
+
+    checkNewPage(calculatedRowHeight + 5);
+
+    pdf.setFillColor(255, 255, 255);
+    pdf.setDrawColor(200, 200, 200);
+    pdf.rect(margin, yPosition, hotelNameWidth, calculatedRowHeight, 'F');
+    pdf.rect(margin, yPosition, hotelNameWidth, calculatedRowHeight, 'D');
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(0, 0, 0);
+    const hotelNameLines = pdf.splitTextToSize(hotel.name || '', hotelNameWidth - 4);
+    pdf.text(hotelNameLines, margin + 2, yPosition + 5);
+    const currentLevelData = (hotel.levels || []).find(l => l.level === hotel.currentLevel);
+    if (currentLevelData) {
+      const pct = Math.round((hotel.currentLevel / (hotel.totalLevels || 1)) * 100);
+      pdf.setFontSize(7);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setTextColor(100, 100, 100);
+      pdf.text('Lvl ' + hotel.currentLevel + '/' + (hotel.totalLevels || 1) + ' (' + pct + '%)', margin + 2, yPosition + 10);
+    }
+
+    sortedLevels.forEach((level, index) => {
+      const xPos = margin + hotelNameWidth + index * levelColumnWidth;
+      const levelData = (hotel.levels || []).find(l => l.level === level);
+      const isCurrentLevel = hotel.currentLevel === level;
+      if (isCurrentLevel) pdf.setFillColor(243, 232, 255);
+      else pdf.setFillColor(255, 255, 255);
+      pdf.rect(xPos, yPosition, levelColumnWidth, calculatedRowHeight, 'F');
+      pdf.setDrawColor(200, 200, 200);
+      pdf.rect(xPos, yPosition, levelColumnWidth, calculatedRowHeight, 'D');
+
+      if (levelData) {
+        pdf.setFontSize(8);
+        pdf.setFont('helvetica', 'bold');
+        pdf.setTextColor(0, 0, 0);
+        const levelName = (levelData.name || '').replace(/\n/g, ' ');
+        const levelNameLines = pdf.splitTextToSize(levelName, levelColumnWidth - 4);
+        pdf.text(levelNameLines, xPos + 2, yPosition + 4);
+        pdf.setFontSize(7);
+        pdf.setFont('helvetica', 'normal');
+        pdf.setTextColor(50, 50, 50);
+        let benefitY = yPosition + 8;
+        (levelData.benefits || []).forEach((benefit) => {
+          if (benefitY > yPosition + calculatedRowHeight - 3) return;
+          const benefitText = '• ' + benefit;
+          const benefitLines = pdf.splitTextToSize(benefitText, levelColumnWidth - 4);
+          benefitLines.forEach((line) => {
+            if (benefitY <= yPosition + calculatedRowHeight - 3) {
+              pdf.text(line, xPos + 2, benefitY);
+              benefitY += 3.5;
+            }
+          });
+        });
+      }
+    });
+
+    yPosition += calculatedRowHeight;
+  });
+
+  const pageCount = pdf.internal.pages.length - 1;
+  pdf.setFontSize(8);
+  pdf.setFont('helvetica', 'italic');
+  pdf.setTextColor(100, 100, 100);
+  for (let i = 1; i <= pageCount; i++) {
+    pdf.setPage(i);
+    pdf.text('Page ' + i + ' of ' + pageCount, pageWidth / 2, pageHeight - 5, { align: 'center' });
+  }
+
+  pdf.save('Hotel_Benefits_' + new Date().toISOString().split('T')[0] + '.pdf');
+  } catch (e) {
+    console.warn('jsPDF Hotel Benefits export failed, falling back to print', e);
+    openModalAsPdf(modalBox, 'Tiers');
+  }
+}
+
 // Tiers modal – same UI/UX as Info (transfer) modal, content = Hotel Benefits
 function createHotelTiersModal() {
   const backdrop = document.createElement('div');
@@ -3778,7 +3995,7 @@ function createHotelTiersModal() {
   backdrop.addEventListener('click', (e) => { if (e.target === backdrop) close(); });
   box.querySelector('.bs-transfer-modal-close').addEventListener('click', close);
   const tiersPdfBtn = box.querySelector('.bs-transfer-modal-pdf-btn');
-  if (tiersPdfBtn) tiersPdfBtn.addEventListener('click', () => openModalAsPdf(box, 'Tiers'));
+  if (tiersPdfBtn) tiersPdfBtn.addEventListener('click', () => exportHotelBenefitsPdf(box));
   return backdrop;
 }
 
@@ -3911,7 +4128,10 @@ function createFlightTransferModal() {
     <div class="bs-transfer-modal-header">
       <div class="bs-transfer-modal-header-text">
         <h3 class="bs-transfer-modal-title">Airlines – Transfer Ratios</h3>
-        <p class="bs-transfer-modal-explanation">Card points → airline miles. <strong>1:1</strong> = 1000 pts → 1000 miles. Columns = card program. Use search to filter.</p>
+        <p class="bs-transfer-modal-explanation">Card points → airline miles. <strong>1:1</strong> = 1000 pts → 1000 miles. Columns = card program.</p>
+        <div class="bs-transfer-modal-filter-explanation">
+          <div>Filter by alliance or search by airline, program, or alliance.</div>
+        </div>
       </div>
       <button type="button" class="bs-action-btn bs-transfer-modal-pdf-btn" title="Save as PDF">📥 PDF</button>
       <button type="button" class="bs-action-btn bs-transfer-modal-close" title="Close">&times;</button>
@@ -3924,7 +4144,7 @@ function createFlightTransferModal() {
             <button type="button" class="bs-transfer-view-btn" data-view="ratio">Ratio</button>
             <button type="button" class="bs-transfer-view-btn active" data-view="percentage">Percentage</button>
           </div>
-          <span class="bs-transfer-view-label bs-transfer-filter-label">Alliance:</span>
+          <span class="bs-transfer-view-label bs-transfer-filter-label">Filter:</span>
           <div class="bs-transfer-filter-wrap">
             <button type="button" class="bs-transfer-filter-btn active" data-filter="">All</button>
             <button type="button" class="bs-transfer-filter-btn" data-filter="OneWorld">OneWorld</button>
@@ -3970,7 +4190,7 @@ function createFlightTransferModal() {
       </div>
       <div class="bs-transfer-counts" aria-live="polite"></div>
       <div class="bs-transfer-legend">
-        <span class="bs-transfer-legend-item"><span class="bs-ratio-good">●</span> Good (1:1+)</span>
+        <span class="bs-transfer-legend-item"><span class="bs-ratio-good">●</span> Good (1:1 or better)</span>
         <span class="bs-transfer-legend-item"><span class="bs-ratio-warn">●</span> Fair</span>
         <span class="bs-transfer-legend-item"><span class="bs-ratio-ok">●</span> OK</span>
         <span class="bs-transfer-legend-item" style="color:#5f6368">– No transfer</span>
@@ -5359,12 +5579,13 @@ const HOTEL_PROGRAMS = [
     id: 'hilton',
     name: 'Hilton',
     currentLevel: 1,
-    totalLevels: 4,
+    totalLevels: 5,
     levels: [
       { level: 1, name: 'Member', color: 'bg-gray-100 text-gray-800', benefits: ['Guaranteed Hilton Honors Discount rate', 'Points toward free N', 'No resort fees on reward stays', 'Digital Check-in', 'Digital Key', 'Free WiFi', 'Fifth N free on reward stays', 'Member rates', 'Points earning'] },
       { level: 2, name: 'Silver\n(10 N)', color: 'bg-gray-300 text-gray-800', benefits: ['20% Bonus Points', 'Free bottled water', 'Elite Rollover Nights', 'All-Inclusive Spa Discount', 'Exclusive Hilton Honors Experiences'] },
       { level: 3, name: 'Gold\n(40 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['80% Bonus Points', 'Space-available room upgrade', 'Daily Food and Beverage Credit or Continental Breakfast', 'Milestone Bonuses'] },
-      { level: 4, name: 'Diamond\n(60 N)', color: 'bg-blue-500 text-white', benefits: ['100% Bonus Points', 'Suite upgrade', 'Executive lounge access', 'Diamond status extension', 'Premium WiFi', '48-hour room guarantee', 'Elite status gifting'] }
+      { level: 4, name: 'Diamond\n(60 N)', color: 'bg-blue-500 text-white', benefits: ['100% Bonus Points', 'Suite upgrade', 'Executive lounge access', 'Diamond status extension', 'Premium WiFi', '48-hour room guarantee', 'Elite status gifting'] },
+      { level: 5, name: 'Diamond Reserve', color: 'bg-purple-600 text-white', benefits: ['120% Points earning Bonus on stays', '4pm guaranteed late check-out', 'Confirmable Upgrade Reward', 'Exclusive Customer Service', 'Premium Club Access'] }
     ]
   },
   {
@@ -5416,6 +5637,17 @@ const HOTEL_PROGRAMS = [
       { level: 2, name: 'Gold\n(5 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['10% Bonus Points', 'Late Check-Out 2pm', 'Preferred rooms', 'Bonus points promotions'] },
       { level: 3, name: 'Platinum\n(15 N)', color: 'bg-gray-400 text-white', benefits: ['15% Bonus Points', 'Room upgrade', 'Late Check-Out 4pm', 'Welcome amenity', 'Guaranteed availability', 'Early Check-In', 'Caesars Rewards status match', 'Avis/Budget car rental upgrade'] },
       { level: 4, name: 'Diamond\n(40 N)', color: 'bg-blue-500 text-white', benefits: ['30% Bonus Points', 'Late Check-Out 6pm', 'VIP treatment', 'Exclusive offers', 'Free Gold Status', 'Points bonus', 'Suite upgrade'] }
+    ]
+  },
+  {
+    id: 'radisson',
+    name: 'Radisson',
+    currentLevel: 1,
+    totalLevels: 3,
+    levels: [
+      { level: 1, name: 'Club', color: 'bg-gray-100 text-gray-800', benefits: ['Points earning', 'Member rates', 'Free WiFi', 'Points toward free N', 'No blackout dates', 'Member promotions', 'Mobile check-in'] },
+      { level: 2, name: 'Premium\n(15 N)', color: 'bg-gray-300 text-gray-800', benefits: ['15% bonus points', 'Late Check-Out 2pm', 'Preferred rooms', 'Welcome gift'] },
+      { level: 3, name: 'VIP\n(30 N)', color: 'bg-yellow-200 text-yellow-800', benefits: ['25% bonus points', 'Suite upgrade', 'Late Check-Out 4pm', 'Welcome amenity', 'Guaranteed availability', 'Early Check-In', 'Club lounge access', 'Free breakfast'] }
     ]
   }
 ];
@@ -5705,11 +5937,13 @@ const HotelStatusLocalStorage = {
         console.error('Program not found:', hotelId);
         return;
       }
+      const levelName = hotel.levels && hotel.levels.length ? (hotel.levels.find(l => l.level === newLevel)?.name || null) : null;
       await HotelStatusLocalStorage.setForProgram(hotelId, {
         currentLevel: newLevel,
         validUntil: hotel.validUntil ?? null
       });
       hotel.currentLevel = newLevel;
+      // Level/validity stored in extension only; no Supabase write
       await renderBenefitsTable();
       await renderStatusSelectors();
     } catch (error) {
@@ -5729,6 +5963,7 @@ const HotelStatusLocalStorage = {
         validUntil: newDate || null
       });
       hotel.validUntil = newDate || null;
+      // Level/validity stored in extension only; no Supabase write
       await renderBenefitsTable();
       if (isStatusSectionExpanded) {
         await renderStatusSelectors();
@@ -5742,7 +5977,7 @@ const HotelStatusLocalStorage = {
   let hotelStatuses = [];
   let isLoading = false;
 
-  // Load all data from Supabase hotel_status_levels; user's current_level and valid_until from extension storage only
+  // Program list/level_definitions from Supabase (or HOTEL_PROGRAMS); current_level and valid_until from extension local storage only
   async function loadHotelStatuses() {
     if (isLoading) return;
     isLoading = true;
@@ -5775,6 +6010,7 @@ const HotelStatusLocalStorage = {
             if (fallback && fallback.levels) levels = fallback.levels;
           }
           const local = localData[programId];
+          // Level and valid_until: extension local storage only (ignore Supabase for this UI)
           const currentLevel = local && typeof local.currentLevel === 'number' ? local.currentLevel : 1;
           const validUntil = local && (local.validUntil === null || typeof local.validUntil === 'string') ? local.validUntil : null;
           return {
@@ -6117,6 +6353,8 @@ const HotelStatusLocalStorage = {
     // Get all unique levels
     const allLevels = Array.from(new Set(hotelStatuses.flatMap(h => h.levels.map(l => l.level)))).sort((a, b) => a - b);
 
+    if (typeof window !== 'undefined') window.__bsHotelBenefitsPdfData = { programs: filteredPrograms, allLevels };
+
     if (filteredPrograms.length === 0) {
       container.innerHTML = '<div class="bs-hotel-benefits-no-results">No programs match your filters.</div>';
       return;
@@ -6194,7 +6432,7 @@ const HotelStatusLocalStorage = {
                     const isMinimumLevel = highestRequiredLevel !== null && highestRequiredLevel === level;
 
                     if (!levelData) {
-                      return '<td class="bs-hotel-benefits-empty">N/A</td>';
+                      return '<td class="bs-hotel-benefits-empty"></td>';
                     }
 
                     return `

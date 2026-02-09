@@ -31,6 +31,7 @@
         "lib/baggageCosts.js",
         "lib/seatsAeroClient.js",
         "lib/lufthansaClient.js",
+        "lib/jspdf.umd.min.js",
         "content.js",
         "flight-details-injector.js"
       ],

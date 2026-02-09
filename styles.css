@@ -1697,22 +1697,26 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  table-layout: auto;
 }
 .bs-transfer-table th,
 .bs-transfer-table td {
   padding: 10px 8px;
   border-bottom: 1px solid #e8eaed;
 }
-/* Only Amex, Chase, Citi, Capital One, Bilt, Wells Fargo, Rove: same width and centered */
-.bs-transfer-table th:not(.bs-transfer-th-partner),
-.bs-transfer-table td:not(.bs-transfer-td-partner) {
-  text-align: center;
-  width: 5em;
-  min-width: 5em;
-}
+/* Hotel/Program or Airline/Program: as wide as needed for content */
 .bs-transfer-table th.bs-transfer-th-partner,
 .bs-transfer-table td.bs-transfer-td-partner {
   text-align: left;
+  width: auto;
+  white-space: nowrap;
+}
+/* Amex, Chase, Citi, Capital One, Bilt, Wells Fargo, Rove: all same width, centered */
+.bs-transfer-table th:not(.bs-transfer-th-partner),
+.bs-transfer-table td:not(.bs-transfer-td-partner) {
+  text-align: center;
+  width: 7em;
+  min-width: 7em;
 }
 .bs-transfer-table tbody tr:nth-child(even) {
   background: #f8f9fa;
@@ -1722,7 +1726,7 @@
 }
 .bs-transfer-th-partner,
 .bs-transfer-td-partner {
-  min-width: 170px;
+  min-width: 0;
   position: sticky;
   left: 0;
   z-index: 1;
