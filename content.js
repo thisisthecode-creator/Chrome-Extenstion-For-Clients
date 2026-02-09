@@ -3585,7 +3585,8 @@ function exportTransferRatiosPdf(modalBox, title) {
       return;
     }
     if (table.classList.contains('bs-hide-col-' + key)) return;
-    let label = (th.textContent || '').replace(/\s*\d+\s*$/, '').trim();
+    // Strip sort arrows (↑/↓) and column count so PDF shows clean labels e.g. "Capital One" not "Capital One !'"
+    let label = (th.textContent || '').replace(/\s*[↑↓]\s*/g, '').replace(/\s*\d+\s*$/, '').trim();
     if (!label) label = key === 'capOne' ? 'Capital One' : key === 'wellsFargo' ? 'Wells Fargo' : key.charAt(0).toUpperCase() + key.slice(1);
     visibleCols.push({ key, label, index: i });
   });
@@ -3660,11 +3661,32 @@ function exportTransferRatiosPdf(modalBox, title) {
   }
 
   const programKeys = visibleCols.filter(c => c.key !== 'partner');
+  // Respect modal's current sort (same column + direction as shown in UI)
+  const sortedTh = thead.querySelector('.bs-transfer-th-sortable.bs-transfer-th-sorted');
+  const pdfSortColumn = sortedTh ? sortedTh.getAttribute('data-column') : null;
+  const arrowEl = sortedTh && sortedTh.querySelector('.bs-transfer-sort-arrow');
+  const pdfSortDir = (arrowEl && String(arrowEl.textContent || '').indexOf('↓') >= 0) ? -1 : 1;
+
   const sortedRows = [...rowData].sort((a, b) => {
+    if (pdfSortColumn === 'partner') {
+      const va = (a.partnerName || '').toLowerCase();
+      const vb = (b.partnerName || '').toLowerCase();
+      return pdfSortDir * (va < vb ? -1 : va > vb ? 1 : 0);
+    }
+    if (pdfSortColumn) {
+      const sortColIdx = programKeys.findIndex(c => c.key === pdfSortColumn);
+      if (sortColIdx >= 0) {
+        const rA = a.ratios[sortColIdx];
+        const rB = b.ratios[sortColIdx];
+        const vA = viewMode === 'percentage' ? (ratioToPct(rA) ?? -1) : ratioToSortValue(rA);
+        const vB = viewMode === 'percentage' ? (ratioToPct(rB) ?? -1) : ratioToSortValue(rB);
+        return pdfSortDir * (vA - vB);
+      }
+    }
+    // No column sorted or column hidden: sort by best value across visible columns
     let maxA = 0, maxB = 0;
     programKeys.forEach((col, idx) => {
-      const rA = a.ratios[idx];
-      const rB = b.ratios[idx];
+      const rA = a.ratios[idx], rB = b.ratios[idx];
       if (viewMode === 'percentage') {
         const pA = ratioToPct(rA) || 0, pB = ratioToPct(rB) || 0;
         if (pA > maxA) maxA = pA;
