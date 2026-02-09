@@ -3661,43 +3661,11 @@ function exportTransferRatiosPdf(modalBox, title) {
   }
 
   const programKeys = visibleCols.filter(c => c.key !== 'partner');
-  // Respect modal's current sort (same column + direction as shown in UI)
-  const sortedTh = thead.querySelector('.bs-transfer-th-sortable.bs-transfer-th-sorted');
-  const pdfSortColumn = sortedTh ? sortedTh.getAttribute('data-column') : null;
-  const arrowEl = sortedTh && sortedTh.querySelector('.bs-transfer-sort-arrow');
-  const pdfSortDir = (arrowEl && String(arrowEl.textContent || '').indexOf('↓') >= 0) ? -1 : 1;
-
+  // PDF always sorts A–Z by partner/program name
   const sortedRows = [...rowData].sort((a, b) => {
-    if (pdfSortColumn === 'partner') {
-      const va = (a.partnerName || '').toLowerCase();
-      const vb = (b.partnerName || '').toLowerCase();
-      return pdfSortDir * (va < vb ? -1 : va > vb ? 1 : 0);
-    }
-    if (pdfSortColumn) {
-      const sortColIdx = programKeys.findIndex(c => c.key === pdfSortColumn);
-      if (sortColIdx >= 0) {
-        const rA = a.ratios[sortColIdx];
-        const rB = b.ratios[sortColIdx];
-        const vA = viewMode === 'percentage' ? (ratioToPct(rA) ?? -1) : ratioToSortValue(rA);
-        const vB = viewMode === 'percentage' ? (ratioToPct(rB) ?? -1) : ratioToSortValue(rB);
-        return pdfSortDir * (vA - vB);
-      }
-    }
-    // No column sorted or column hidden: sort by best value across visible columns
-    let maxA = 0, maxB = 0;
-    programKeys.forEach((col, idx) => {
-      const rA = a.ratios[idx], rB = b.ratios[idx];
-      if (viewMode === 'percentage') {
-        const pA = ratioToPct(rA) || 0, pB = ratioToPct(rB) || 0;
-        if (pA > maxA) maxA = pA;
-        if (pB > maxB) maxB = pB;
-      } else {
-        const vA = ratioToValue(rA), vB = ratioToValue(rB);
-        if (vA != null && vA > maxA) maxA = vA;
-        if (vB != null && vB > maxB) maxB = vB;
-      }
-    });
-    return maxB - maxA;
+    const va = (a.partnerName || '').toLowerCase();
+    const vb = (b.partnerName || '').toLowerCase();
+    return va.localeCompare(vb, undefined, { sensitivity: 'base' });
   });
 
   try {
@@ -4189,10 +4157,13 @@ function exportHotelBenefitsPdf(modalBox) {
   pdf.setTextColor(0, 0, 0);
   yPosition += headerHeight;
 
+  // Sort: highest status level first, then A–Z by program name
   const sortedHotels = [...programs].sort((a, b) => {
-    const pctA = (a.currentLevel / (a.totalLevels || 1)) * 100;
-    const pctB = (b.currentLevel / (b.totalLevels || 1)) * 100;
-    return pctB - pctA;
+    const levelDiff = (b.currentLevel ?? 0) - (a.currentLevel ?? 0);
+    if (levelDiff !== 0) return levelDiff;
+    const na = (a.name || '').toLowerCase();
+    const nb = (b.name || '').toLowerCase();
+    return na.localeCompare(nb, undefined, { sensitivity: 'base' });
   });
 
   sortedHotels.forEach((hotel) => {
