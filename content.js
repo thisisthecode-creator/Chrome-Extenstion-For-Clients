@@ -3556,6 +3556,332 @@ ${hideColCss}
   }
 }
 
+// Transfer Ratios PDF via jsPDF (landscape A4, React-style: partner+program, ratio/%, colored cells, summary)
+function exportTransferRatiosPdf(modalBox, title) {
+  const JsPDF = (typeof window !== 'undefined' && window.jspdf && (window.jspdf.jsPDF || window.jspdf.default)) ? (window.jspdf.jsPDF || window.jspdf.default) : (typeof window !== 'undefined' && window.jsPDF) ? window.jsPDF : null;
+  if (!JsPDF) {
+    openModalAsPdf(modalBox, title);
+    return;
+  }
+  const table = modalBox && modalBox.querySelector('.bs-transfer-table');
+  const thead = table && table.querySelector('thead tr');
+  const tbody = table && table.querySelector('tbody');
+  const countsEl = modalBox && modalBox.querySelector('.bs-transfer-counts');
+  const viewBtnActive = modalBox && modalBox.querySelector('.bs-transfer-view-btn.active');
+  const viewMode = (viewBtnActive && viewBtnActive.getAttribute('data-view') === 'percentage') ? 'percentage' : 'ratio';
+  if (!table || !thead || !tbody) {
+    openModalAsPdf(modalBox, title);
+    return;
+  }
+  try {
+  const colKeys = ['partner', 'amex', 'chase', 'citi', 'capOne', 'bilt', 'wellsFargo', 'rove'];
+  const visibleCols = [];
+  const headerCells = thead.querySelectorAll ? Array.from(thead.querySelectorAll('th')) : (thead.cells ? Array.from(thead.cells) : []);
+  headerCells.forEach((th, i) => {
+    const key = colKeys[i];
+    if (!key) return;
+    if (key === 'partner') {
+      visibleCols.push({ key, label: 'Partner', index: i });
+      return;
+    }
+    if (table.classList.contains('bs-hide-col-' + key)) return;
+    let label = (th.textContent || '').replace(/\s*\d+\s*$/, '').trim();
+    if (!label) label = key === 'capOne' ? 'Capital One' : key === 'wellsFargo' ? 'Wells Fargo' : key.charAt(0).toUpperCase() + key.slice(1);
+    visibleCols.push({ key, label, index: i });
+  });
+
+  function ratioToPct(ratio) {
+    if (!ratio || ratio === '–' || ratio === '-') return null;
+    const m = String(ratio).match(/(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)/);
+    if (!m) return null;
+    const from = parseFloat(m[1]);
+    const to = parseFloat(m[2]);
+    return from === 0 ? null : (to / from) * 100;
+  }
+  function ratioToValue(ratio) {
+    if (!ratio || ratio === '–' || ratio === '-') return null;
+    const m = String(ratio).match(/(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)/);
+    if (!m) return null;
+    return parseFloat(m[2]) / parseFloat(m[1]);
+  }
+  function formatDisplay(ratio) {
+    if (!ratio || ratio === '–' || ratio === '-') return { main: '–', via: null };
+    const isVia = String(ratio).toLowerCase().includes('via');
+    let main = ratio;
+    let via = null;
+    if (isVia) {
+      const parts = ratio.split(/\s+via\s+/i);
+      main = (parts[0] || '').trim();
+      via = parts[1] ? parts[1].trim() : null;
+    }
+    if (viewMode === 'percentage') {
+      const pct = ratioToPct(main);
+      if (pct === null) return { main: '–', via: via };
+      return { main: Math.round(pct) + '%', via: via };
+    }
+    return { main: main, via: via };
+  }
+
+  const rowData = [];
+  const dataRows = tbody.querySelectorAll('tr');
+  dataRows.forEach((tr) => {
+    if (tr.classList.contains('bs-transfer-loading-row')) return;
+    if ((tr.getAttribute('style') || '').toLowerCase().includes('display') && (tr.getAttribute('style') || '').toLowerCase().includes('none')) return;
+    const rowCells = tr.cells ? Array.from(tr.cells) : Array.from(tr.querySelectorAll('td'));
+    const partnerCell = rowCells[0];
+    let partnerName = '';
+    let programLine = '';
+    let subtitleLine = '';
+    if (partnerCell) {
+      const nameEl = partnerCell.querySelector('.bs-transfer-partner-name');
+      partnerName = String(nameEl ? (nameEl.textContent || '') : '').replace(/\s*⭐\s*/g, '').trim();
+      const programEls = partnerCell.querySelectorAll ? partnerCell.querySelectorAll('.bs-transfer-partner-program') : [];
+      if (programEls.length) programLine = String(programEls[0].textContent || '').trim();
+      if (programEls.length > 1) subtitleLine = String(programEls[1].textContent || '').trim();
+      if (!subtitleLine) {
+        const rateEl = partnerCell.querySelector('.bs-transfer-rate-label, .bs-transfer-via-label');
+        if (rateEl) subtitleLine = String(rateEl.textContent || '').trim();
+      }
+    }
+    const ratios = [];
+    visibleCols.forEach((col, idx) => {
+      if (col.key === 'partner') return;
+      const cell = rowCells[col.index];
+      const span = cell && cell.querySelector('span[data-ratio]');
+      const r = span ? (span.getAttribute('data-ratio') || '').trim() : (cell ? (cell.textContent || '').trim() : '');
+      ratios.push(r || '–');
+    });
+    rowData.push({ partnerName, programLine, subtitleLine, ratios });
+  });
+
+  if (visibleCols.length <= 1 || rowData.length === 0) {
+    openModalAsPdf(modalBox, title);
+    return;
+  }
+
+  const programKeys = visibleCols.filter(c => c.key !== 'partner');
+  const sortedRows = [...rowData].sort((a, b) => {
+    let maxA = 0, maxB = 0;
+    programKeys.forEach((col, idx) => {
+      const rA = a.ratios[idx];
+      const rB = b.ratios[idx];
+      if (viewMode === 'percentage') {
+        const pA = ratioToPct(rA) || 0, pB = ratioToPct(rB) || 0;
+        if (pA > maxA) maxA = pA;
+        if (pB > maxB) maxB = pB;
+      } else {
+        const vA = ratioToValue(rA), vB = ratioToValue(rB);
+        if (vA != null && vA > maxA) maxA = vA;
+        if (vB != null && vB > maxB) maxB = vB;
+      }
+    });
+    return maxB - maxA;
+  });
+
+  try {
+    const pdf = new JsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4', compress: true });
+    const pageWidth = 297;
+    const pageHeight = 210;
+    const margin = 10;
+    const headerHeight = 8;
+    const rowHeight = 12;
+    const partnerNameWidth = 50;
+    const cardColCount = programKeys.length;
+    const cardColWidth = (pageWidth - margin * 2 - partnerNameWidth) / cardColCount;
+    let yPosition = margin;
+
+    function drawPageHeader() {
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFontSize(18);
+      pdf.setFont('helvetica', 'bold');
+      const titleText = viewMode === 'percentage' ? 'Transfer Partner Ratio – Percentage View' : 'Transfer Partner Ratio – Ratio View';
+      pdf.text(titleText, margin, yPosition);
+      yPosition += 5;
+      pdf.setFontSize(9);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text('Generated on: ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), margin, yPosition);
+      yPosition += 6;
+    }
+
+    function drawTableColumnHeaders() {
+      pdf.setFillColor(75, 85, 99);
+      pdf.rect(margin, yPosition, partnerNameWidth, headerHeight, 'F');
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(9);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Partner', margin + partnerNameWidth / 2, yPosition + 5, { align: 'center' });
+      programKeys.forEach((col, index) => {
+        const xPos = margin + partnerNameWidth + index * cardColWidth;
+        pdf.setFillColor(75, 85, 99);
+        pdf.rect(xPos, yPosition, cardColWidth, headerHeight, 'F');
+        pdf.text(col.label, xPos + cardColWidth / 2, yPosition + 5, { align: 'center' });
+      });
+      pdf.setTextColor(0, 0, 0);
+      yPosition += headerHeight;
+    }
+
+    function checkNewPage(requiredHeight) {
+      if (yPosition + requiredHeight > pageHeight - margin) {
+        pdf.addPage('a4', 'l');
+        yPosition = margin;
+        drawPageHeader();
+        drawTableColumnHeaders();
+        return true;
+      }
+      return false;
+    }
+
+    drawPageHeader();
+    if (title) {
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(title, margin, yPosition);
+      yPosition += 6;
+    }
+    checkNewPage(headerHeight + 5);
+    drawTableColumnHeaders();
+
+    sortedRows.forEach((row) => {
+      checkNewPage(rowHeight + 2);
+
+      pdf.setFillColor(249, 250, 251);
+      pdf.rect(margin, yPosition, partnerNameWidth, rowHeight, 'F');
+      pdf.setDrawColor(200, 200, 200);
+      pdf.rect(margin, yPosition, partnerNameWidth, rowHeight, 'D');
+      let ty = yPosition + 3;
+      pdf.setFontSize(8);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setTextColor(0, 0, 0);
+      const nameLines = pdf.splitTextToSize(String(row.partnerName || ''), partnerNameWidth - 4);
+      pdf.text(nameLines, margin + 2, ty);
+      ty += nameLines.length * 3 + 1;
+      if (row.programLine) {
+        pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(7);
+        pdf.text(pdf.splitTextToSize(String(row.programLine), partnerNameWidth - 4), margin + 2, ty);
+        ty += 4;
+      }
+      if (row.subtitleLine) {
+        pdf.setFontSize(7);
+        pdf.text(pdf.splitTextToSize(String(row.subtitleLine), partnerNameWidth - 4), margin + 2, ty);
+      }
+
+      row.ratios.forEach((ratio, index) => {
+        const xPos = margin + partnerNameWidth + index * cardColWidth;
+        const formatted = formatDisplay(ratio);
+        const isVia = ratio && String(ratio).toLowerCase().includes('via');
+        let value = viewMode === 'percentage' ? ratioToPct(ratio) : ratioToValue(ratio);
+
+        if (value != null) {
+          if (viewMode === 'percentage') {
+            if (value >= 100) pdf.setFillColor(220, 252, 231);
+            else if (value >= 80) pdf.setFillColor(254, 249, 195);
+            else if (value >= 50) pdf.setFillColor(255, 237, 213);
+            else pdf.setFillColor(254, 226, 226);
+          } else {
+            if (value >= 1) pdf.setFillColor(220, 252, 231);
+            else if (value >= 0.8) pdf.setFillColor(254, 249, 195);
+            else if (value >= 0.5) pdf.setFillColor(255, 237, 213);
+            else pdf.setFillColor(254, 226, 226);
+          }
+        } else if (isVia) {
+          pdf.setFillColor(255, 237, 213);
+        } else {
+          pdf.setFillColor(249, 250, 251);
+        }
+        pdf.rect(xPos, yPosition, cardColWidth, rowHeight, 'F');
+        pdf.setDrawColor(200, 200, 200);
+        pdf.rect(xPos, yPosition, cardColWidth, rowHeight, 'D');
+
+        const cellCenterY = yPosition + rowHeight / 2;
+        const textY = cellCenterY + 1.5;
+        if (value != null) {
+          if (viewMode === 'percentage') {
+            if (value >= 100) pdf.setTextColor(22, 101, 52);
+            else if (value >= 80) pdf.setTextColor(161, 98, 7);
+            else if (value >= 50) pdf.setTextColor(194, 65, 12);
+            else pdf.setTextColor(185, 28, 28);
+          } else {
+            if (value >= 1) pdf.setTextColor(22, 101, 52);
+            else if (value >= 0.8) pdf.setTextColor(161, 98, 7);
+            else if (value >= 0.5) pdf.setTextColor(194, 65, 12);
+            else pdf.setTextColor(185, 28, 28);
+          }
+        } else if (isVia) {
+          pdf.setTextColor(194, 65, 12);
+        } else {
+          pdf.setTextColor(150, 150, 150);
+        }
+        pdf.setFontSize(9);
+        pdf.setFont('helvetica', 'bold');
+        if (formatted.via) {
+          pdf.text(formatted.main, xPos + cardColWidth / 2, textY - 2, { align: 'center' });
+          pdf.setFontSize(6);
+          pdf.setFont('helvetica', 'normal');
+          pdf.setTextColor(194, 65, 12);
+          pdf.text('via ' + formatted.via, xPos + cardColWidth / 2, textY + 3, { align: 'center' });
+        } else {
+          pdf.text(formatted.main, xPos + cardColWidth / 2, textY, { align: 'center' });
+        }
+      });
+      pdf.setTextColor(0, 0, 0);
+      yPosition += rowHeight;
+    });
+
+    checkNewPage(rowHeight + 4);
+    yPosition += 2;
+    pdf.setFillColor(209, 213, 219);
+    pdf.rect(margin, yPosition, partnerNameWidth, rowHeight, 'F');
+    pdf.setDrawColor(200, 200, 200);
+    pdf.rect(margin, yPosition, partnerNameWidth, rowHeight, 'D');
+    pdf.setFontSize(8);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(0, 0, 0);
+    pdf.text(String(sortedRows.length), margin + partnerNameWidth / 2, yPosition + 5, { align: 'center' });
+    const counts = programKeys.map((_, idx) => sortedRows.filter(r => r.ratios[idx] && r.ratios[idx] !== '–').length);
+    counts.forEach((count, index) => {
+      const xPos = margin + partnerNameWidth + index * cardColWidth;
+      pdf.setFillColor(209, 213, 219);
+      pdf.rect(xPos, yPosition, cardColWidth, rowHeight, 'F');
+      pdf.setDrawColor(200, 200, 200);
+      pdf.rect(xPos, yPosition, cardColWidth, rowHeight, 'D');
+      pdf.text(String(count), xPos + cardColWidth / 2, yPosition + 5, { align: 'center' });
+    });
+    yPosition += rowHeight + 2;
+
+    const pageCount = pdf.internal.pages.length - 1;
+    pdf.setFontSize(8);
+    pdf.setFont('helvetica', 'italic');
+    pdf.setTextColor(100, 100, 100);
+    for (let i = 1; i <= pageCount; i++) {
+      pdf.setPage(i);
+      pdf.text('Page ' + i + ' of ' + pageCount, pageWidth / 2, pageHeight - 5, { align: 'center' });
+    }
+
+    const safeTitle = (title || 'Transfer_Ratios').replace(/[^\w\s–-]/g, '').replace(/\s+/g, '_');
+    const filename = safeTitle + '_' + new Date().toISOString().split('T')[0] + '.pdf';
+    const blob = pdf.output('blob');
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 200);
+  } catch (e) {
+    console.warn('jsPDF transfer ratios export failed, falling back to print', e);
+    openModalAsPdf(modalBox, title);
+  }
+  } catch (e) {
+    console.warn('Transfer ratios PDF failed', e);
+    openModalAsPdf(modalBox, title);
+  }
+}
+
 function createHotelTransferModal() {
   const backdrop = document.createElement('div');
   backdrop.className = 'bs-transfer-modal-backdrop';
@@ -3644,7 +3970,7 @@ function createHotelTransferModal() {
   backdrop.addEventListener('click', (e) => { if (e.target === backdrop) close(); });
   box.querySelector('.bs-transfer-modal-close').addEventListener('click', close);
   const pdfBtn = box.querySelector('.bs-transfer-modal-pdf-btn');
-  if (pdfBtn) pdfBtn.addEventListener('click', () => openModalAsPdf(box, 'Hotels – Transfer Ratios'));
+  if (pdfBtn) pdfBtn.addEventListener('click', () => exportTransferRatiosPdf(box, 'Hotels – Transfer Ratios'));
   const searchInput = box.querySelector('.bs-transfer-search');
   const tbody = box.querySelector('.bs-transfer-table tbody');
   const filterWrap = box.querySelector('.bs-transfer-filter-wrap');
@@ -3922,7 +4248,19 @@ function exportHotelBenefitsPdf(modalBox) {
     pdf.text('Page ' + i + ' of ' + pageCount, pageWidth / 2, pageHeight - 5, { align: 'center' });
   }
 
-  pdf.save('Hotel_Benefits_' + new Date().toISOString().split('T')[0] + '.pdf');
+  const filename = 'Hotel_Benefits_' + new Date().toISOString().split('T')[0] + '.pdf';
+  const blob = pdf.output('blob');
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function () {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 200);
   } catch (e) {
     console.warn('jsPDF Hotel Benefits export failed, falling back to print', e);
     openModalAsPdf(modalBox, 'Tiers');
@@ -4204,7 +4542,7 @@ function createFlightTransferModal() {
   backdrop.addEventListener('click', (e) => { if (e.target === backdrop) close(); });
   box.querySelector('.bs-transfer-modal-close').addEventListener('click', close);
   const flightPdfBtn = box.querySelector('.bs-transfer-modal-pdf-btn');
-  if (flightPdfBtn) flightPdfBtn.addEventListener('click', () => openModalAsPdf(box, 'Airlines – Transfer Ratios'));
+  if (flightPdfBtn) flightPdfBtn.addEventListener('click', () => exportTransferRatiosPdf(box, 'Airlines – Transfer Ratios'));
   const searchInput = box.querySelector('.bs-transfer-search');
   const tbody = box.querySelector('.bs-transfer-table tbody');
   const filterWrap = box.querySelector('.bs-transfer-filter-wrap');
@@ -6342,11 +6680,11 @@ const HotelStatusLocalStorage = {
     if (!container) return;
 
     const filtered = filterPrograms();
-    // Sort: highest tier (max level) first, then A–Z by program name
+    // Sort: highest (user's) level first, then A–Z by program name when same level
     const filteredPrograms = [...filtered].sort((a, b) => {
-      const maxA = a.levels && a.levels.length ? Math.max(...a.levels.map(l => l.level)) : 0;
-      const maxB = b.levels && b.levels.length ? Math.max(...b.levels.map(l => l.level)) : 0;
-      if (maxB !== maxA) return maxB - maxA;
+      const levelA = a.currentLevel != null ? a.currentLevel : 0;
+      const levelB = b.currentLevel != null ? b.currentLevel : 0;
+      if (levelB !== levelA) return levelB - levelA;
       return (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' });
     });
 
