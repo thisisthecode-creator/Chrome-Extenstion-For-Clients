@@ -468,7 +468,7 @@ function injectExtensionPanel() {
   // Dark mode logo: use extension icon (icon128.png)
   const darkLogo = document.getElementById('bs-logo-dark');
   if (darkLogo && typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL) {
-    darkLogo.src = chrome.runtime.getURL('icon128.png');
+    darkLogo.src = chrome.runtime.getURL('icons/icon128.png');
   }
   
   // Initialize event listeners

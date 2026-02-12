@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # Script to create a new Chrome extension zip with auto-incremented version number
-# The zip name will be: chrome-extension-updated-v{version}.zip
+# Run from repo root or from scripts/ - will cd to repo root.
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT"
 
 # Find the highest existing version number (check both zip naming patterns)
 HIGHEST_VERSION=$(ls -1 gf-clients-v*.zip chrome-extension-updated-v*.zip 2>/dev/null | \
@@ -46,10 +48,9 @@ zip -r "$ZIP_NAME" \
   flight-details-injector*.js \
   flight-details-styles.css \
   styles.css \
-  AIRPORT_AUTOCOMPLETE_COMPLETE.js \
-  icon*.png \
   icons/ \
   lib/ \
+  data/ \
   -x "*.DS_Store" \
   2>&1 | grep -E "(adding|updating|error)" || true
 

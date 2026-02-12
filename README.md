@@ -38,13 +38,12 @@ A powerful Chrome extension that enhances Google Flights with additional search 
 ├── flight-details-injector.js # Flight details injection
 ├── flight-details-styles.css  # Flight details styles
 ├── styles.css                 # Main extension styles
-├── AIRPORT_AUTOCOMPLETE_COMPLETE.js  # Airport autocomplete functionality
 ├── icons/                     # Extension icons
-└── lib/                       # Library files
-    ├── airport-data.js
-    ├── loyaltyPrograms.js
-    ├── points-tracker.js
-    └── ...
+├── lib/                       # Library files (incl. AIRPORT_AUTOCOMPLETE_COMPLETE.js)
+├── data/                      # Static data (e.g. points_history_cpm_rows.json)
+├── docs/                      # Documentation
+├── scripts/                   # Build/utility scripts (e.g. create-extension-zip.sh)
+└── sql/                       # SQL schemas and seeds
 ```
 
 ## Usage
