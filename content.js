@@ -236,10 +236,6 @@ function injectExtensionPanel() {
           Miles & More
           <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
-        <button class="bs-btn bs-btn-emirates" data-service="emirates">
-          Emirates
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
-        </button>
         <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles">
           Rovemiles
           <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
@@ -376,8 +372,22 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-maxmypoint" data-service="maxmypoint">
           MaxMyPoint
         </button>
-        <button class="bs-btn bs-btn-hyatt" data-service="hyatt">
-          Hyatt
+        <button class="bs-btn bs-btn-hyatt bs-btn-star" data-service="hyatt">
+          Hyatt ⭐
+        </button>
+        <button class="bs-btn bs-btn-wyndham bs-btn-star" data-service="wyndham">
+          Wyndham ⭐
+        </button>
+        <button class="bs-btn bs-btn-iprefer bs-btn-star" data-service="iprefer" title="Citi 1:4">
+          iPrefer ⭐
+          <span class="bs-btn-badge bs-btn-badge-citi" title="Citi 1:4">Citi 1:4</span>
+        </button>
+        <button class="bs-btn bs-btn-choice bs-btn-star" data-service="choice">
+          Choice ⭐
+        </button>
+        <button class="bs-btn bs-btn-preferred-hotels bs-btn-star" data-service="preferred-hotels" title="Choice 1:2">
+          Preferred Hotels ⭐
+          <span class="bs-btn-badge bs-btn-badge-citi" title="Choice 1:2">Choice 1:2</span>
         </button>
         <button class="bs-btn bs-btn-hilton" data-service="hilton">
           Hilton
@@ -393,20 +403,6 @@ function injectExtensionPanel() {
         </button>
         <button class="bs-btn bs-btn-accor" data-service="accor">
           Accor
-        </button>
-        <button class="bs-btn bs-btn-wyndham" data-service="wyndham">
-          Wyndham
-        </button>
-        <button class="bs-btn bs-btn-choice" data-service="choice">
-          Choice
-        </button>
-        <button class="bs-btn bs-btn-preferred-hotels" data-service="preferred-hotels" title="Choice 1:2">
-          Preferred Hotels
-          <span class="bs-btn-badge bs-btn-badge-citi" title="Choice 1:2">Choice 1:2</span>
-        </button>
-        <button class="bs-btn bs-btn-iprefer" data-service="iprefer" title="Citi 1:4">
-          iPrefer
-          <span class="bs-btn-badge bs-btn-badge-citi" title="Citi 1:4">Citi 1:4</span>
         </button>
         <button class="bs-btn bs-btn-gha" data-service="gha">
           GHA
@@ -2813,8 +2809,6 @@ function generateFlightUrl(service, data) {
     })(),
     
     'miles-and-more': 'https://www.miles-and-more.com/at/de/spend/flights.html',
-    
-    'emirates': 'https://www.emirates.com/english/book/',
     
     'rovemiles': `https://www.rovemiles.com/search/flights?origin=${from}&destination=${to}&cabin=${cabin}&adults=${adults}&children=0&infants=0&payment=miles&start_date=${depart}`,
     
