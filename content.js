@@ -224,6 +224,22 @@ function injectExtensionPanel() {
           Air Canada
           <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
+        <button class="bs-btn bs-btn-united" data-service="united">
+          United
+          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
+        </button>
+        <button class="bs-btn bs-btn-virgin-atlantic" data-service="virgin-atlantic">
+          Virgin Atlantic
+          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
+        </button>
+        <button class="bs-btn bs-btn-miles-and-more" data-service="miles-and-more">
+          Miles & More
+          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
+        </button>
+        <button class="bs-btn bs-btn-emirates" data-service="emirates">
+          Emirates
+          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
+        </button>
         <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles">
           Rovemiles
           <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
@@ -2776,6 +2792,29 @@ function generateFlightUrl(service, data) {
     'air-canada': ret
       ? `https://www.aircanada.com/aeroplan/redeem/availability/outbound?org0=${from}&dest0=${to}&org1=${to}&dest1=${from}&departureDate0=${depart}&departureDate1=${ret}&ADT=${adults}&YTH=0&CHD=0&INF=0&INS=0&lang=en-CA&tripType=R&marketCode=INT`
       : `https://www.aircanada.com/aeroplan/redeem/availability/outbound?org0=${from}&dest0=${to}&departureDate0=${depart}&ADT=${adults}&YTH=0&CHD=0&INF=0&INS=0&lang=en-CA&tripType=O&marketCode=INT`,
+    
+    'united': (() => {
+      // United FSR: f=from, t=to, d=depart, px=adults,0,0,0,0,0,0,0, idx=1 and mm=0 so date field populates
+      const cabinMap = { 'economy': '7', 'business': '2', 'first': '1' };
+      const sc = cabinMap[cabin] || '7';
+      const px = `${adults},0,0,0,0,0,0,0`;
+      if (ret) {
+        return `https://www.united.com/en/us/fsr/choose-flights?f=${from}&t=${to}&d=${depart}&r=${ret}&tt=0&at=1&sc=${sc}&px=${encodeURIComponent(px)}&taxng=1&newHP=True&clm=7&st=bestmatches&tqp=R&idx=1&mm=0`;
+      }
+      return `https://www.united.com/en/us/fsr/choose-flights?f=${from}&t=${to}&d=${depart}&tt=1&at=1&sc=${sc}&px=${encodeURIComponent(px)}&taxng=1&newHP=True&clm=7&st=bestmatches&tqp=A&idx=1&mm=0`;
+    })(),
+    
+    'virgin-atlantic': (() => {
+      // Virgin Atlantic slice: passengers=a1t0c0i0 (adults,teens,children,infants), origin, destination, departing, awardSearch=true
+      const passengers = `a${adults}t0c0i0`;
+      let url = `https://www.virginatlantic.com/en-EU/flights/search/slice?passengers=${passengers}&origin=${from}&awardSearch=true&destination=${to}&departing=${depart}&CTA=AbTest_SP_Flights`;
+      if (ret) url += `&returning=${ret}`;
+      return url;
+    })(),
+    
+    'miles-and-more': 'https://www.miles-and-more.com/at/de/spend/flights.html',
+    
+    'emirates': 'https://www.emirates.com/english/book/',
     
     'rovemiles': `https://www.rovemiles.com/search/flights?origin=${from}&destination=${to}&cabin=${cabin}&adults=${adults}&children=0&infants=0&payment=miles&start_date=${depart}`,
     
