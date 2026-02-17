@@ -10453,27 +10453,27 @@
 }
 
 .bs-extension-panel.bs-dark-mode .bs-btn {
-  background: linear-gradient(135deg, #292a2d 0%, #3c4043 100%) !important;
-  border-color: #5f6368 !important;
-  color: #e8eaed !important;
+  background: #ffffff !important;
+  border-color: #dadce0 !important;
+  color: #1a1a1a !important;
 }
 
 .bs-extension-panel.bs-dark-mode .bs-btn:hover {
-  background: linear-gradient(135deg, #3c4043 0%, #5f6368 100%) !important;
+  background: #f1f3f4 !important;
   border-color: #8ab4f8 !important;
-  color: #8ab4f8 !important;
+  color: #1a1a1a !important;
 }
 
 .bs-extension-panel.bs-dark-mode .bs-btn-badge-login {
-  color: #e8eaed !important;
+  color: #5f6368 !important;
 }
 
 .bs-extension-panel.bs-dark-mode .bs-btn-badge-citi {
-  color: #e8eaed !important;
+  color: #5f6368 !important;
 }
 
 .bs-extension-panel.bs-dark-mode .bs-btn-badge-dollar {
-  color: #81c995 !important;
+  color: #0d8050 !important;
 }
 
 .bs-extension-panel.bs-dark-mode .bs-settings-footer {

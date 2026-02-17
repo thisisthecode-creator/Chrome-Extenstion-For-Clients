@@ -1670,7 +1670,7 @@ function setupHotelCitySync() {
 }
 
 // Function to sync hotel city from flight "To" destination
-function syncHotelCityFromFlight() {
+async function syncHotelCityFromFlight() {
   const toInput = document.getElementById('bs-flight-to');
   const hotelCityInput = document.getElementById('bs-hotel-city');
   
@@ -1708,6 +1708,20 @@ function syncHotelCityFromFlight() {
       hotelCityInput.dispatchEvent(new Event('change', { bubbles: true }));
       console.log('Hotel city synced from flight destination (parsed from input):', cityName);
       return;
+    }
+  }
+
+  // If "To" is just an IATA code (e.g. VIE), resolve to city name so hotel search geocode works
+  if (/^[A-Z]{3}$/.test(inputValue) && window.airportDataService) {
+    try {
+      const airport = await window.airportDataService.getAirportByIATA(inputValue);
+      if (airport?.city) {
+        hotelCityInput.value = airport.city.trim();
+        hotelCityInput.dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('Hotel city synced from flight destination (IATA resolved):', airport.city);
+      }
+    } catch (e) {
+      console.warn('Resolve IATA to city for hotel sync failed:', e);
     }
   }
 }
@@ -2040,6 +2054,81 @@ async function getPlaceIdFromCoordinates(latitude, longitude) {
 }
 
 // Geocode city name to get coordinates and location details
+/**
+ * If hotel city is empty, fill it from flight "To" (sync on demand) so the button works
+ * without the user having to click into the city field first.
+ * @returns {Promise<void>}
+ */
+async function ensureHotelCityFromFlightIfEmpty() {
+  const hotelCityInput = document.getElementById('bs-hotel-city');
+  const toInput = document.getElementById('bs-flight-to');
+  if (!hotelCityInput || !toInput) return;
+  const current = (hotelCityInput.value || '').trim();
+  if (current) return;
+
+  await syncHotelCityFromFlight();
+  const afterSync = (hotelCityInput.value || '').trim();
+  if (afterSync) return;
+
+  const toValue = (toInput.value || '').trim();
+  if (!toValue) return;
+  try {
+    if (toInput.dataset.airportData) {
+      const airport = JSON.parse(toInput.dataset.airportData);
+      if (airport?.city) {
+        hotelCityInput.value = airport.city.trim();
+        hotelCityInput.dispatchEvent(new Event('change', { bubbles: true }));
+        return;
+      }
+    }
+    if (/^[A-Z]{3}$/.test(toValue) && window.airportDataService) {
+      const airport = await window.airportDataService.getAirportByIATA(toValue);
+      if (airport?.city) {
+        hotelCityInput.value = airport.city.trim();
+        hotelCityInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } else {
+      hotelCityInput.value = toValue;
+      hotelCityInput.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  } catch (e) {
+    console.warn('ensureHotelCityFromFlightIfEmpty failed:', e);
+  }
+}
+
+/**
+ * Resolve hotel city value to a city name suitable for geocoding.
+ * When the field is auto-filled from flight "To", it may contain an IATA code (e.g. VIE).
+ * Nominatim needs a city name (e.g. Vienna) for reliable results.
+ * @param {string} cityOrIata - Value from hotel city input (city name or IATA code)
+ * @returns {Promise<string|null>} City name to use for geocode, or null
+ */
+async function resolveHotelCityForGeocode(cityOrIata) {
+  const raw = (cityOrIata || '').trim();
+  if (!raw) return null;
+  // If it looks like an IATA code (exactly 3 uppercase letters), resolve to city name
+  const looksLikeIata = /^[A-Z]{3}$/.test(raw);
+  if (looksLikeIata) {
+    try {
+      const toInput = document.getElementById('bs-flight-to');
+      if (toInput?.dataset?.airportData) {
+        const airport = JSON.parse(toInput.dataset.airportData);
+        if (airport?.city) return airport.city.trim();
+      }
+      if (window.airportDataService) {
+        const airport = await window.airportDataService.getAirportByIATA(raw);
+        if (airport?.city) return airport.city.trim();
+      }
+    } catch (e) {
+      console.warn('Resolve IATA to city failed:', e);
+    }
+  }
+  return raw;
+}
+
+const GEOCODE_FETCH_TIMEOUT_MS = 15000; // Nominatim can be slow; allow 15s
+const GEOCODE_RETRY_DELAY_MS = 2000;    // Wait 2s before retry
+
 async function geocodeCity(cityName) {
   if (!cityName || !cityName.trim()) {
     return null;
@@ -2055,47 +2144,58 @@ async function geocodeCity(cityName) {
     }
   }
   
-  try {
-    // Use OpenStreetMap Nominatim API (free, no API key required)
+  const doFetch = () => {
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cityName)}&format=json&limit=1&addressdetails=1`;
-    
-    const response = await fetch(url, {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), GEOCODE_FETCH_TIMEOUT_MS);
+    return fetch(url, {
+      signal: controller.signal,
       headers: {
-        'User-Agent': 'BenefitSystems-Chrome-Extension' // Required by Nominatim
+        'User-Agent': 'BenefitSystems-Chrome-Extension',
+        'Accept-Language': 'en'
       }
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Geocoding failed: ${response.status}`);
+    }).finally(() => clearTimeout(timeoutId));
+  };
+
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const response = await doFetch();
+      if (!response.ok) {
+        throw new Error(`Geocoding failed: ${response.status}`);
+      }
+      const data = await response.json();
+      if (!data || data.length === 0) {
+        if (attempt === 1) {
+          await new Promise(r => setTimeout(r, GEOCODE_RETRY_DELAY_MS));
+          continue;
+        }
+        return null;
+      }
+      const result = data[0];
+      const geocodeData = {
+        city: result.address?.city || result.address?.town || result.address?.village || cityName,
+        country: result.address?.country || '',
+        countryCode: result.address?.country_code?.toUpperCase() || '',
+        latitude: parseFloat(result.lat),
+        longitude: parseFloat(result.lon),
+        displayName: result.display_name || cityName,
+        fullLocation: result.display_name || cityName
+      };
+      if (window.cacheService) {
+        window.cacheService.set(cacheKey, geocodeData, 24 * 60 * 60 * 1000);
+      }
+      return geocodeData;
+    } catch (error) {
+      console.warn('Geocoding attempt', attempt, error?.message || error);
+      if (attempt === 1) {
+        await new Promise(r => setTimeout(r, GEOCODE_RETRY_DELAY_MS));
+      } else {
+        console.error('Geocoding error:', error);
+        return null;
+      }
     }
-    
-    const data = await response.json();
-    
-    if (!data || data.length === 0) {
-      return null;
-    }
-    
-    const result = data[0];
-    const geocodeData = {
-      city: result.address?.city || result.address?.town || result.address?.village || cityName,
-      country: result.address?.country || '',
-      countryCode: result.address?.country_code?.toUpperCase() || '',
-      latitude: parseFloat(result.lat),
-      longitude: parseFloat(result.lon),
-      displayName: result.display_name || cityName,
-      fullLocation: result.display_name || cityName
-    };
-    
-    // Cache for 24 hours (cities don't change location often)
-    if (window.cacheService) {
-      window.cacheService.set(cacheKey, geocodeData, 24 * 60 * 60 * 1000);
-    }
-    
-    return geocodeData;
-  } catch (error) {
-    console.error('Geocoding error:', error);
-    return null;
   }
+  return null;
 }
 
 // Handle hotel button clicks
@@ -2123,6 +2223,7 @@ async function handleHotelButtonClick(e) {
   });
   
   const service = e.currentTarget.dataset.service;
+  await ensureHotelCityFromFlightIfEmpty();
   const hotelData = getHotelInputData();
   
   if (!validateHotelData(hotelData)) {
@@ -2131,15 +2232,16 @@ async function handleHotelButtonClick(e) {
     return;
   }
   
-  // For PointsYeah, RoveMiles, and Melia, get geocoding data using the city from hotel input field
+  // For PointsYeah, RoveMiles, and Melia, get geocoding data using the city from hotel input field.
+  // Resolve IATA (e.g. from auto-fill) to city name so geocode works.
   let geocodeData = null;
-  if (service === 'pointsyeah-hotels' || service === 'rovemiles-hotels' || service === 'rovemiles-hotels-loyal' || service === 'melia') {
-    // Get city name directly from the hotel city input field
+  if (service === 'pointsyeah-hotels' || service === 'rovemiles-hotels' || service === 'rovemiles-hotels-loyal' || service === 'melia' || service === 'hilton') {
     const cityInput = document.getElementById('bs-hotel-city');
-    const cityName = cityInput?.value?.trim() || hotelData.city;
-    
+    const rawCity = cityInput?.value?.trim() || hotelData.city;
+    const cityName = rawCity ? await resolveHotelCityForGeocode(rawCity) : null;
+
     if (cityName) {
-      showNotification('Geocoding location...', 'info');
+      showNotification('Geocoding location… (may take a few seconds)', 'info');
       geocodeData = await geocodeCity(cityName);
       if (!geocodeData) {
         showNotification('Could not geocode city. Using city name only.', 'warning');
@@ -2226,6 +2328,7 @@ async function handleOpenAllHotels(e) {
     }
   });
   
+  await ensureHotelCityFromFlightIfEmpty();
   const hotelData = getHotelInputData();
   
   if (!validateHotelData(hotelData)) {
@@ -2246,16 +2349,18 @@ async function handleOpenAllHotels(e) {
   
   showNotification(`Opening ${services.length} hotel search tabs...`, 'info');
   
-  // Get geocoding data once for services that need it
-  const needsGeocoding = ['pointsyeah-hotels', 'rovemiles-hotels', 'rovemiles-hotels-loyal', 'melia'];
-  const needsGeocode = services.some(service => needsGeocoding.includes(service));
+  // Get geocoding data once for services that need it (resolve IATA to city when auto-filled)
+  const needsGeocoding = ['pointsyeah-hotels', 'rovemiles-hotels', 'rovemiles-hotels-loyal', 'melia', 'hilton'];
+  const needsGeocode = services.some(s => needsGeocoding.includes(s));
   
   let geocodeData = null;
   if (needsGeocode) {
     const cityInput = document.getElementById('bs-hotel-city');
-    const cityName = cityInput?.value?.trim() || hotelData.city;
-    
+    const rawCity = cityInput?.value?.trim() || hotelData.city;
+    const cityName = rawCity ? await resolveHotelCityForGeocode(rawCity) : null;
+
     if (cityName) {
+      showNotification('Geocoding location… (may take a few seconds)', 'info');
       geocodeData = await geocodeCity(cityName);
       if (!geocodeData) {
         showNotification('Could not geocode city. Some services may not work correctly.', 'warning');
@@ -2763,10 +2868,11 @@ function generateFlightUrl(service, data) {
   const departTimestamp = Math.floor(new Date(depart).getTime() / 1000);
   const returnTimestamp = ret ? Math.floor(new Date(ret).getTime() / 1000) : departTimestamp;
   
-  // Build Google Flights URL – same base as Google Hotels (google.com/travel/search) with explicit params
-  const qBase = `flights from ${from} to ${to} ${ret ? depart + ' to ' + ret : 'oneway on ' + depart} ${cabin} class`;
-  const qWithNonstop = nonstop ? qBase + ' nonstop' : qBase;
-  const googleFlightsUrl = `https://www.google.com/travel/search?q=${encodeURIComponent(qWithNonstop)}&depart=${depart}&return=${ret || ''}&adults=${adults}&hl=${language}&curr=${currency}&gl=${location}`;
+  // Build Google Flights URL – /travel/flights/search with q (e.g. flights+from+WAW+to+VIE+oneway+on+2025-04-29+in+economy+class)
+  const qParts = ['flights', 'from', from, 'to', to, ret ? `${depart} to ${ret}` : `oneway on ${depart}`, 'in', cabin.replace(/_/g, ' '), 'class'];
+  if (nonstop) qParts.push('nonstop');
+  const qString = qParts.join(' ');
+  const googleFlightsUrl = `https://www.google.com/travel/flights/search?q=${encodeURIComponent(qString).replace(/%20/g, '+')}&hl=${language}&curr=${currency}&gl=${location}`;
   
   const urls = {
     'google-flights': googleFlightsUrl,
@@ -3078,7 +3184,10 @@ async function generateHotelUrl(service, data, geocodeData = null) {
       return `https://www.google.com/travel/search?q=${encodeURIComponent(city)}&checkin=${checkinFormatted}&checkout=${checkoutFormatted}&adults=${adults}&rooms=${rooms}`;
     })(),
     
-    'hilton': `https://www.hilton.com/en/search/?query=${encodeURIComponent(city)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0`,
+    'hilton': (() => {
+      const query = geocodeData?.fullLocation ? geocodeData.fullLocation : city;
+      return `https://www.hilton.com/en/search/?query=${encodeURIComponent(query)}&arrivalDate=${checkin}&departureDate=${checkout}&flexibleDates=false&numRooms=${rooms}&numAdults=${adults}&numChildren=0`;
+    })(),
     
     'hyatt': `https://www.hyatt.com/search/hotels/de-DE/${encodeURIComponent(city)}?checkinDate=${checkin}&checkoutDate=${checkout}&rooms=${rooms}&adults=${adults}&kids=0&rate=Standard&rateFilter=woh`,
     
@@ -3098,13 +3207,12 @@ async function generateHotelUrl(service, data, geocodeData = null) {
     'choice': `https://www.choicehotels.com/de-de/${encodeURIComponent(city.toLowerCase())}/hotels?adults=${adults}&checkInDate=${checkin}&checkOutDate=${checkout}&ratePlanCode=SRD&sort=price`,
     
     'melia': (() => {
-      // Melia booking URL format: https://www.melia.com/en/booking?search=<encoded-json>
-      // Structure from Melia: destination (city, country, hotelList, id, type, name), occupation, calendar (dates as timestamps), hotels, dynamicServicesFilters
+      // Melia URL – match site format (Malaga working example): destination with id, type, name; hotelList/hotels empty for city search
       const checkInTimestamp = new Date(checkin).getTime();
       const checkoutTimestamp = new Date(checkout).getTime();
       const cityName = (geocodeData?.city || city || '').trim();
       const countryName = (geocodeData?.country || '').trim();
-      const nameSlug = cityName.toLowerCase();
+      const nameSlug = (cityName || '').toLowerCase();
       const destinationId = typeof crypto !== 'undefined' && crypto.randomUUID
         ? crypto.randomUUID()
         : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -3115,7 +3223,7 @@ async function generateHotelUrl(service, data, geocodeData = null) {
       const searchData = {
         destination: {
           city: cityName,
-          country: countryName || undefined,
+          country: countryName,
           hotelList: [],
           id: destinationId,
           type: 'DESTINATION',
@@ -3134,7 +3242,7 @@ async function generateHotelUrl(service, data, geocodeData = null) {
     
     'radisson': null, // Will be handled separately below due to async requirements
     
-    'gha': `https://de.ghadiscovery.com/search/hotels?keyword=${encodeURIComponent(city)}&clearBookingParams=1&clearHotelSearchParams=1&room1Adults=${adults}&room1Children=0&startDate=${checkin}&endDate=${checkout}`,
+    'gha': `https://de.ghadiscovery.com/search/hotels?keyword=${encodeURIComponent(city)}&clearBookingParams=1&clearHotelSearchParams=1&room1Adults=${adults}&room1Children=0&startDate=${checkin}&endDate=${checkout}&types=all&prices=&sortBy=price&sortDirection=asc`,
 
     'lhw': (() => {
       const indate = (checkin || '').replace(/-/g, '');
