@@ -615,16 +615,16 @@ function renderGlobalProgramsPanel() {
   else panel.appendChild(container)
 }
 
-async function fetchSeatsData({ isNonstop }) {
+async function fetchSeatsData({ isNonstop = false } = {}) {
   try {
     if (!window.seatsAeroClient) {
       console.warn('Seats.aero client not available')
       return null
     }
-    
+
     const { from, to, depart } = readFlightInputs()
     console.log('Flight inputs:', { from, to, depart, isNonstop })
-    
+
     if (!from || !to || !depart) {
       console.warn('Missing required inputs:', { from, to, depart })
       return null

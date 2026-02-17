@@ -200,19 +200,15 @@ function injectExtensionPanel() {
         </button>
         <button class="bs-btn bs-btn-points-yeah" data-service="points-yeah">
           PointsYeah
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
         <button class="bs-btn bs-btn-award-tool" data-service="award-tool">
           AwardTool
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
         <button class="bs-btn bs-btn-seats-aero" data-service="seats-aero">
           Seats.aero
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
         <button class="bs-btn bs-btn-point-me" data-service="point-me">
           Point.me
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
         <button class="bs-btn bs-btn-kayak" data-service="kayak">
           Kayak
@@ -222,27 +218,21 @@ function injectExtensionPanel() {
         </button>
         <button class="bs-btn bs-btn-air-canada" data-service="air-canada">
           Air Canada
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
         <button class="bs-btn bs-btn-united" data-service="united">
           United
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
         <button class="bs-btn bs-btn-virgin-atlantic" data-service="virgin-atlantic">
           Virgin Atlantic
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
         <button class="bs-btn bs-btn-miles-and-more" data-service="miles-and-more">
           Miles & More
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
         <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles">
           Rovemiles
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
         <button class="bs-btn bs-btn-fare-class" data-service="fare-class">
           Fare Class
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
         </button>
         <button class="bs-btn bs-btn-flight-connections" data-service="flight-connections">
           Connections
@@ -353,62 +343,64 @@ function injectExtensionPanel() {
       </div>
       
       <div class="bs-buttons-grid" id="bs-hotel-external-links" style="display:none;">
-        <button class="bs-btn bs-btn-google-hotels" data-service="google-hotels">
-          Google Hotels
+        <button class="bs-btn bs-btn-google-hotels" data-service="google-hotels" title="Google Hotels">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/500px-Google_%22G%22_logo.svg.png" alt="Google Hotels" class="bs-btn-icon" width="20" height="20" />
         </button>
-        <button class="bs-btn bs-btn-rooms-aero" data-service="rooms-aero">
-          Rooms.aero
+        <button class="bs-btn bs-btn-rooms-aero" data-service="rooms-aero" title="rooms.aero">
+          🛏️ rooms.aero
         </button>
-        <button class="bs-btn bs-btn-points-yeah" data-service="pointsyeah-hotels">
-          PointsYeah
-          <span class="bs-btn-badge bs-btn-badge-login" title="Login required">Login</span>
+        <button class="bs-btn bs-btn-points-yeah" data-service="pointsyeah-hotels" title="PointsYeah">
+          <img src="https://www.pointsyeah.com/images/V2/logo.svg" alt="PointsYeah" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles-hotels">
-          RoveMiles
+        <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles-hotels-loyal" title="Loyalty">
+          <img src="https://s3-eu-west-1.amazonaws.com/tpd/logos/6855b891ca40503a0585652a/0x0.png" alt="Loyalty" class="bs-btn-icon bs-btn-logo bs-rovemiles-logo" />
+          Loyalty
         </button>
-        <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles-hotels-loyal">
-          RoveMiles Loyalty
+        <button class="bs-btn bs-btn-maxmypoint" data-service="maxmypoint" title="MaxMyPoint">
+          <img src="https://maxmypoint.com/favicon.png" alt="MaxMyPoint" class="bs-btn-icon" />
+          <span class="bs-maxmypoint-label">MaxMyPoint</span>
         </button>
-        <button class="bs-btn bs-btn-maxmypoint" data-service="maxmypoint">
-          MaxMyPoint
+        <button class="bs-btn bs-btn-awayz" data-service="awayz-hotels" title="Awayz">
+          <img src="https://www.awayz.com/img/logo/awayz.svg" alt="Awayz" class="bs-btn-icon bs-btn-logo bs-awayz-logo" />
         </button>
-        <button class="bs-btn bs-btn-hyatt bs-btn-star" data-service="hyatt">
-          Hyatt ⭐
+        <button class="bs-btn bs-btn-gondola" data-service="gondola-hotels" title="Gondola">
+          <img src="https://www.gondola.ai/assets/logos/gondola-logo-text.svg" alt="Gondola" class="bs-btn-icon bs-btn-logo bs-gondola-logo" />
         </button>
-        <button class="bs-btn bs-btn-wyndham bs-btn-star" data-service="wyndham">
-          Wyndham ⭐
+        <button class="bs-btn bs-btn-hyatt" data-service="hyatt" title="Hyatt">
+          <img src="https://newsroom.hyatt.com/images/hyatt_logo.png" alt="Hyatt" class="bs-btn-icon bs-btn-logo bs-hyatt-logo" />
         </button>
-        <button class="bs-btn bs-btn-iprefer bs-btn-star" data-service="iprefer" title="Citi 1:4">
-          iPrefer ⭐
-          <span class="bs-btn-badge bs-btn-badge-citi" title="Citi 1:4">Citi 1:4</span>
+        <button class="bs-btn bs-btn-wyndham" data-service="wyndham" title="Wyndham">
+          <img src="https://corporate.wyndhamhotels.com/wp-content/uploads/2019/11/WR-Logo_Navy_RGB.png" alt="Wyndham Rewards" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-choice bs-btn-star" data-service="choice">
-          Choice ⭐
+        <button class="bs-btn bs-btn-iprefer" data-service="iprefer" title="iPrefer">
+          <img src="https://image-tc.galaxy.tf/wijpeg-ciszays1g0etfdq4gd5a9nbv6/i-prefer-logo-black-hnb-large.jpg" alt="iPrefer" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-preferred-hotels bs-btn-star" data-service="preferred-hotels" title="Choice 1:2">
-          Preferred Hotels ⭐
-          <span class="bs-btn-badge bs-btn-badge-citi" title="Choice 1:2">Choice 1:2</span>
+        <button class="bs-btn bs-btn-choice" data-service="choice" title="Choice">
+          <img src="https://media.choicehotels.com/download/choice-logo-privileges.png" alt="Choice" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-hilton" data-service="hilton">
-          Lounge
+        <button class="bs-btn bs-btn-preferred-hotels" data-service="preferred-hotels" title="Preferred">
+          <img src="https://res.cloudinary.com/foratravelweb/image/upload/e_trim/c_fill,g_auto/f_webp/q_90/v1/contentful-migration/entryPartner/logo/ier21mgb9pum5aghclmd?_a=DATAiZiuZAA0" alt="Preferred" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-marriott" data-service="marriott">
-          Marriott
+        <button class="bs-btn bs-btn-hilton" data-service="hilton" title="Hilton">
+          <img src="https://www.hilton.com/modules/assets/svgs/logos/WW.svg" alt="Hilton" class="bs-btn-icon bs-btn-logo bs-btn-logo-lg" />
         </button>
         <button class="bs-btn bs-btn-marriott" data-service="marriott-lounges" title="Marriott with member lounge filter">
-          Marriott (Lounges)
+          <img src="https://1000logos.net/wp-content/uploads/2024/08/Marriott-Bonvoy-Logo.jpg" alt="Marriott" class="bs-btn-icon bs-btn-logo bs-btn-logo-lg bs-marriott-logo" />
         </button>
-        <button class="bs-btn bs-btn-melia" data-service="melia">
-          Melia
+        <button class="bs-btn bs-btn-melia" data-service="melia" title="Melia">
+          <img src="https://iconape.com/wp-content/files/sx/265995/svg/265995.svg" alt="Melia" class="bs-btn-icon bs-melia-logo" />
         </button>
-        <button class="bs-btn bs-btn-ihg" data-service="ihg">
-          IHG
+        <button class="bs-btn bs-btn-ihg" data-service="ihg" title="IHG">
+          <img src="https://www.e-hotelarz.pl/wp-content/uploads/2021/02/ihg-hr-1024x485.jpg" alt="IHG" class="bs-btn-icon bs-btn-logo bs-ihg-logo" />
         </button>
-        <button class="bs-btn bs-btn-accor" data-service="accor">
-          Accor
+        <button class="bs-btn bs-btn-accor" data-service="accor" title="Accor">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXih6Mm1NyvUdGRnyw1EORszGOuPMzqXMyIg&s" alt="Accor" class="bs-btn-icon bs-btn-logo-lg" />
         </button>
-        <button class="bs-btn bs-btn-gha" data-service="gha">
-          GHA
+        <button class="bs-btn bs-btn-gha" data-service="gha" title="GHA">
+          <img src="https://storage.googleapis.com/content-assistant-images-persistent/44a72409-ddf9-475d-82ec-b40545bf2b9f.webp" alt="GHA" class="bs-btn-icon bs-btn-logo-lg bs-gha-logo" />
+        </button>
+        <button class="bs-btn bs-btn-lhw" data-service="lhw" title="Leading Hotels of the World">
+          <img src="https://www.lido-palace.it/redakteure/website/Footer/Partnerlogos/LHW_Simplified_logoH_K.JPG" alt="LHW" class="bs-btn-icon bs-btn-logo-lg" />
         </button>
       </div>
     </div>
@@ -3086,22 +3078,28 @@ async function generateHotelUrl(service, data, geocodeData = null) {
     'hyatt': `https://www.hyatt.com/search/hotels/de-DE/${encodeURIComponent(city)}?checkinDate=${checkin}&checkoutDate=${checkout}&rooms=${rooms}&adults=${adults}&kids=0&rate=Standard&rateFilter=woh`,
     
     'marriott': `https://www.marriott.com/de/search/findHotels.mi?fromToDate_submit=${toDateMarriott}&fromDate=${fromDateDotted}&toDate=${toDateDotted}&toDateDefaultFormat=${toDateMarriott}&fromDateDefaultFormat=${fromDateMarriott}&lengthOfStay=${nights}&childrenCount=0&roomCount=${rooms}&numAdultsPerRoom=${adults}&destinationAddress.destination=${encodeURIComponent(city)}&useRewardsPoints=true&deviceType=desktop-web&view=list&isInternalSearch=true&vsInitialRequest=false&searchType=InCity&singleSearch=true&flexibleDateSearchRateDisplay=false&isSearch=true&isRateCalendar=true&t-start=${checkin}&t-end=${checkout}&flexibleDateSearch=false&isTransient=true&initialRequest=true&fromToDate=${fromDateMarriott}&numberOfRooms=${rooms}#/1/`,
-    'marriott-lounges': `https://www.marriott.com/de/search/findHotels.mi?fromToDate_submit=${toDateMarriott}&fromDate=${fromDateDotted}&toDate=${toDateDotted}&toDateDefaultFormat=${toDateMarriott}&fromDateDefaultFormat=${fromDateMarriott}&lengthOfStay=${nights}&childrenCount=0&roomCount=${rooms}&numAdultsPerRoom=${adults}&destinationAddress.destination=${encodeURIComponent(city)}&useRewardsPoints=true&deviceType=desktop-web&view=list&isInternalSearch=true&vsInitialRequest=false&searchType=InCity&singleSearch=true&flexibleDateSearchRateDisplay=false&isSearch=true&isRateCalendar=true&t-start=${checkin}&t-end=${checkout}&flexibleDateSearch=false&isTransient=true&initialRequest=true&fromToDate=${fromDateMarriott}&numberOfRooms=${rooms}&amenities=member-lounge#/1/`,
+    'marriott-lounges': `https://www.marriott.com/de/search/findHotels.mi?fromToDate_submit=${toDateMarriott}&fromDate=${fromDateDotted}&toDate=${toDateDotted}&toDateDefaultFormat=${toDateMarriott}&fromDateDefaultFormat=${fromDateMarriott}&lengthOfStay=${nights}&childrenCount=0&roomCount=${rooms}&numAdultsPerRoom=${adults}&destinationAddress.destination=${encodeURIComponent(city)}&deviceType=desktop-web&view=list&isInternalSearch=true&vsInitialRequest=false&searchType=InCity&singleSearch=true&flexibleDateSearchRateDisplay=false&isSearch=true&isRateCalendar=true&t-start=${checkin}&t-end=${checkout}&flexibleDateSearch=false&isTransient=true&initialRequest=true&fromToDate=${toDateMarriott}&numberOfRooms=${rooms}&amenities=member-lounge#/1/`,
     
     'ihg': `https://www.ihg.com/hotels/us/en/find-hotels/hotel-search?qDest=${encodeURIComponent(city)}&qPt=POINTS&qCiD=${checkInIHG.day}&qCoD=${checkOutIHG.day}&qCiMy=${checkInIHG.monthYear}&qCoMy=${checkOutIHG.monthYear}&qAdlt=${adults}&qChld=0&qRms=${rooms}&qRtP=IVANI&qAkamaiCC=PL&srb_u=1&qExpndSrch=false&qSrt=sRT&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.sp.re.vx.nd.sx.we.lx.rn.sn.sn.sn.sn.sn.nu.ge&qWch=0&qSmP=0&qRad=30&qRdU=mi&setPMCookies=false&qLoSe=false`,
     
-    'accor': `https://all.accor.com/booking/en/accor/hotels/${encodeURIComponent(city.toLowerCase())}?compositions=${adults}${rooms > 1 ? ',' + rooms : ''}&stayplus=true&sortBy=PRICE_LOW_TO_HIGH&dateIn=${checkin}&dateOut=${checkout}`,
+    'accor': (() => {
+      const citySlug = (city || '').toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+      const compositions = rooms > 1 ? `${adults},${rooms}` : String(adults);
+      return `https://all.accor.com/booking/en/accor/hotels/${encodeURIComponent(citySlug)}?compositions=${compositions}&sortBy=PRICE_LOW_TO_HIGH&dateIn=${checkin}&dateOut=${checkout}`;
+    })(),
     
     'wyndham': `https://www.wyndhamhotels.com/de-de/hotels/${encodeURIComponent(city.toLowerCase())}?brand_id=ALL&checkInDate=${checkin}&checkOutDate=${checkout}&useWRPoints=true&children=0&adults=${adults}&rooms=${rooms}`,
     
     'choice': `https://www.choicehotels.com/de-de/${encodeURIComponent(city.toLowerCase())}/hotels?adults=${adults}&checkInDate=${checkin}&checkOutDate=${checkout}&ratePlanCode=SRD&sort=price`,
     
     'melia': (() => {
-      // Melia booking URL: https://www.melia.com/en/booking?search=<encoded-json>
+      // Melia booking URL format: https://www.melia.com/en/booking?search=<encoded-json>
+      // Structure from Melia: destination (city, country, hotelList, id, type, name), occupation, calendar (dates as timestamps), hotels, dynamicServicesFilters
       const checkInTimestamp = new Date(checkin).getTime();
       const checkoutTimestamp = new Date(checkout).getTime();
       const cityName = (geocodeData?.city || city || '').trim();
       const countryName = (geocodeData?.country || '').trim();
+      const nameSlug = cityName.toLowerCase();
       const destinationId = typeof crypto !== 'undefined' && crypto.randomUUID
         ? crypto.randomUUID()
         : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -3109,16 +3107,15 @@ async function generateHotelUrl(service, data, geocodeData = null) {
             const v = c === 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
           });
-      const destination = {
-        city: cityName,
-        country: countryName || undefined,
-        hotelList: [],
-        id: destinationId,
-        type: 'DESTINATION',
-        name: cityName.toLowerCase()
-      };
       const searchData = {
-        destination,
+        destination: {
+          city: cityName,
+          country: countryName || undefined,
+          hotelList: [],
+          id: destinationId,
+          type: 'DESTINATION',
+          name: nameSlug
+        },
         occupation: [{ adults: Math.max(1, parseInt(adults, 10) || 2) }],
         calendar: { dates: [checkInTimestamp, checkoutTimestamp], locale: 'en' },
         hotels: [],
@@ -3133,8 +3130,20 @@ async function generateHotelUrl(service, data, geocodeData = null) {
     'radisson': null, // Will be handled separately below due to async requirements
     
     'gha': `https://de.ghadiscovery.com/search/hotels?keyword=${encodeURIComponent(city)}&clearBookingParams=1&clearHotelSearchParams=1&room1Adults=${adults}&room1Children=0&startDate=${checkin}&endDate=${checkout}`,
-    
+
+    'lhw': (() => {
+      const indate = (checkin || '').replace(/-/g, '');
+      const outdate = (checkout || '').replace(/-/g, '');
+      const citySlug = (city || '').trim().replace(/\s+/g, '-');
+      const timeseed = `${Date.now()}${Math.random().toString().slice(2, 8)}`;
+      return `https://www.lhw.com/property-search/${encodeURIComponent(citySlug) || 'Vienna'}?indate=${indate}&outdate=${outdate}&rooms=${rooms}&usepts=1&numadult1=${adults}&autocompletecategory=Cities#sortby=picks&musthave=&limit=10&timeseed=${timeseed}`;
+    })(),
+
     'rooms-aero': `https://rooms.aero/search?city=${encodeURIComponent(city)}&start=${checkin}&end=${checkout}&nights=${nights}`,
+
+    'gondola-hotels': `https://www.gondola.ai/hotel/search?destination=${encodeURIComponent(city)}&checkin=${checkin}&checkout=${checkout}&adults=${adults}&rooms=${rooms}`,
+
+    'awayz-hotels': `https://www.awayz.com/hotels?destination=${encodeURIComponent(city)}&checkin=${checkin}&checkout=${checkout}&adults=${adults}&rooms=${rooms}`,
     
     'pointsyeah-hotels': (() => {
       // Format dates for PointsYeah (YYYY-MM-DD)
