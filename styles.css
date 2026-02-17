@@ -839,6 +839,38 @@
   gap: 10px;
 }
 
+/* Flight Search: all buttons same size, drag-and-drop always possible */
+#bs-external-links.bs-buttons-grid {
+  grid-template-columns: repeat(auto-fill, minmax(153px, 1fr));
+}
+#bs-external-links .bs-btn[data-service] {
+  width: 153px;
+  min-width: 153px;
+  height: 61px;
+  min-height: 61px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* Hotel Search: all buttons same size, drag-and-drop always possible */
+#bs-hotel-external-links.bs-buttons-grid {
+  grid-template-columns: repeat(auto-fill, minmax(153px, 1fr));
+}
+#bs-hotel-external-links .bs-btn[data-service] {
+  width: 153px;
+  min-width: 153px;
+  height: 61px;
+  min-height: 61px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+#bs-hotel-external-links .bs-btn[data-service] .bs-btn-icon,
+#bs-hotel-external-links .bs-btn[data-service] img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
 /* Drag and Drop Styles */
 .bs-draggable-btn {
   cursor: grab;
@@ -969,7 +1001,158 @@
   width: auto;
 }
 
+/* Turbli, Roame, AwardLogic, Pointhound – larger icons in flight grid */
+#bs-external-links .bs-btn-turbli .bs-btn-icon,
+#bs-external-links .bs-btn-turbli img,
+#bs-external-links .bs-btn-roame .bs-btn-icon,
+#bs-external-links .bs-btn-roame img,
+#bs-external-links .bs-btn-awardlogic .bs-btn-icon,
+#bs-external-links .bs-btn-awardlogic img,
+#bs-external-links .bs-btn-pointhound .bs-btn-icon,
+#bs-external-links .bs-btn-pointhound img {
+  height: 32px;
+  width: auto;
+}
+
+/* Skyscanner – much larger icon in flight grid */
+#bs-external-links .bs-btn-skyscanner .bs-btn-icon,
+#bs-external-links .bs-btn-skyscanner img {
+  height: 48px;
+  width: auto;
+}
+
+/* Air Canada – much larger icon in flight grid */
+#bs-external-links .bs-btn-air-canada .bs-btn-icon,
+#bs-external-links .bs-btn-air-canada img {
+  height: 48px;
+  width: auto;
+}
+
+/* United – much larger icon in flight grid */
+#bs-external-links .bs-btn-united .bs-btn-icon,
+#bs-external-links .bs-btn-united img {
+  height: 48px;
+  width: auto;
+}
+
+/* Kayak – larger icon in flight grid */
+#bs-external-links .bs-btn-kayak .bs-btn-icon,
+#bs-external-links .bs-btn-kayak img {
+  height: 48px;
+  width: auto;
+}
+
+/* Point.me – much larger icon in flight grid */
+#bs-external-links .bs-btn-point-me .bs-btn-icon,
+#bs-external-links .bs-btn-point-me img {
+  height: 48px;
+  width: auto;
+}
+
+/* Award Tool, Skyscanner, Air Canada, United, Virgin Atlantic, Miles & More, AwardLogic – a little bit bigger */
+#bs-external-links .bs-btn-award-tool .bs-btn-icon,
+#bs-external-links .bs-btn-award-tool img,
+#bs-external-links .bs-btn-skyscanner .bs-btn-icon,
+#bs-external-links .bs-btn-skyscanner img,
+#bs-external-links .bs-btn-air-canada .bs-btn-icon,
+#bs-external-links .bs-btn-air-canada img,
+#bs-external-links .bs-btn-united .bs-btn-icon,
+#bs-external-links .bs-btn-united img,
+#bs-external-links .bs-btn-virgin-atlantic .bs-btn-icon,
+#bs-external-links .bs-btn-virgin-atlantic img,
+#bs-external-links .bs-btn-miles-and-more .bs-btn-icon,
+#bs-external-links .bs-btn-miles-and-more img,
+#bs-external-links .bs-btn-awardlogic .bs-btn-icon,
+#bs-external-links .bs-btn-awardlogic img {
+  height: 52px;
+  width: auto;
+}
+
+/* RoveMiles in Flights: same size and look as RoveMiles in Hotels */
+#bs-external-links .bs-btn-rovemiles .bs-btn-icon,
+#bs-external-links .bs-btn-rovemiles img,
+#bs-hotel-external-links .bs-btn-rovemiles .bs-btn-icon,
+#bs-hotel-external-links .bs-btn-rovemiles img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Air Canada, United – larger icons in flight grid */
+#bs-external-links .bs-btn-air-canada .bs-btn-icon,
+#bs-external-links .bs-btn-air-canada img,
+#bs-external-links .bs-btn-united .bs-btn-icon,
+#bs-external-links .bs-btn-united img {
+  height: 56px;
+  width: auto;
+}
+
+/* Point.me – larger icon in flight grid */
+#bs-external-links .bs-btn-point-me .bs-btn-icon,
+#bs-external-links .bs-btn-point-me img {
+  height: 56px;
+  width: auto;
+}
+
+/* Seats.aero – Fare Class logo + "Seats.Aero" text, same look as Fare Class */
+#bs-external-links .bs-btn-seats-aero .bs-btn-icon,
+#bs-external-links .bs-btn-seats-aero img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.bs-seats-aero-label {
+  color: #1a1a1a;
+  margin-left: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Virgin Atlantic, Miles & More – smaller icons in flight grid */
+#bs-external-links .bs-btn-virgin-atlantic .bs-btn-icon,
+#bs-external-links .bs-btn-virgin-atlantic img,
+#bs-external-links .bs-btn-miles-and-more .bs-btn-icon,
+#bs-external-links .bs-btn-miles-and-more img {
+  height: 24px;
+  width: auto;
+}
+
+/* AwardTool – smaller icon in flight grid */
+#bs-external-links .bs-btn-award-tool .bs-btn-icon,
+#bs-external-links .bs-btn-award-tool img {
+  height: 24px;
+  width: auto;
+}
+
+/* AwardLogic – smaller icon in flight grid */
+#bs-external-links .bs-btn-awardlogic .bs-btn-icon,
+#bs-external-links .bs-btn-awardlogic img {
+  height: 24px;
+  width: auto;
+}
+
+/* Turbli – smaller logo so it fits with the text */
+#bs-external-links .bs-btn-turbli .bs-btn-icon,
+#bs-external-links .bs-btn-turbli img {
+  height: 22px;
+  width: auto;
+}
+
+/* Roame – larger icon in flight grid */
+#bs-external-links .bs-btn-roame .bs-btn-icon,
+#bs-external-links .bs-btn-roame img {
+  height: 48px;
+  width: auto;
+}
+
 .bs-maxmypoint-label {
+  margin-left: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0066cc;
+}
+
+.bs-awardtool-label {
   margin-left: 4px;
   font-size: 12px;
   font-weight: 600;
@@ -2079,6 +2262,26 @@
   .bs-buttons-grid {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 8px;
+  }
+
+  #bs-external-links.bs-buttons-grid {
+    grid-template-columns: repeat(auto-fill, minmax(153px, 1fr));
+  }
+  #bs-external-links .bs-btn[data-service] {
+    width: 153px;
+    min-width: 153px;
+    height: 61px;
+    min-height: 61px;
+  }
+
+  #bs-hotel-external-links.bs-buttons-grid {
+    grid-template-columns: repeat(auto-fill, minmax(153px, 1fr));
+  }
+  #bs-hotel-external-links .bs-btn[data-service] {
+    width: 153px;
+    min-width: 153px;
+    height: 61px;
+    min-height: 61px;
   }
 
   .bs-btn {

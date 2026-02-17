@@ -195,59 +195,64 @@ function injectExtensionPanel() {
       </div>
       
       <div class="bs-buttons-grid" id="bs-external-links" style="display:none;">
-        <button class="bs-btn bs-btn-google-flights" data-service="google-flights">
-          Google Flights
+        <button class="bs-btn bs-btn-google-flights" data-service="google-flights" title="Google Flights">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/500px-Google_%22G%22_logo.svg.png" alt="Google Flights" class="bs-btn-icon" width="20" height="20" />
         </button>
-        <button class="bs-btn bs-btn-points-yeah" data-service="points-yeah">
-          PointsYeah
+        <button class="bs-btn bs-btn-points-yeah" data-service="points-yeah" title="PointsYeah">
+          <img src="https://www.pointsyeah.com/images/V2/logo.svg" alt="PointsYeah" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-award-tool" data-service="award-tool">
-          AwardTool
+        <button class="bs-btn bs-btn-award-tool" data-service="award-tool" title="AwardTool">
+          <img src="https://cdn.buymeacoffee.com/uploads/profile_pictures/2023/11/kgjrHX5m5SkorLF4.png@300w_0e.webp" alt="AwardTool" class="bs-btn-icon" />
+          <span class="bs-awardtool-label">AwardTool</span>
         </button>
-        <button class="bs-btn bs-btn-seats-aero" data-service="seats-aero">
-          Seats.aero
+        <button class="bs-btn bs-btn-seats-aero" data-service="seats-aero" title="Seats.Aero">
+          <img src="https://play-lh.googleusercontent.com/k9VwmFRFoPiuhCwS4b4dd2KuUO0YvIj1mRnzqZ1CP4lmCU_Kdyok-7NGEHCsYcbHjV8" alt="Seats.Aero" class="bs-btn-icon bs-btn-logo" />
+          <span class="bs-seats-aero-label">Seats.Aero</span>
         </button>
-        <button class="bs-btn bs-btn-point-me" data-service="point-me">
-          Point.me
+        <button class="bs-btn bs-btn-point-me" data-service="point-me" title="Point.me">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgj0EShqZDpJsIDOVBJGyB-QDdMWiY8lGPUg&s" alt="Point.me" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-kayak" data-service="kayak">
-          Kayak
+        <button class="bs-btn bs-btn-kayak" data-service="kayak" title="Kayak">
+          <img src="https://content.r9cdn.net/rimg/provider-logos/common/socialmedia/kayak-logo.png?width=1200&height=630&crop=false" alt="Kayak" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-skyscanner" data-service="skyscanner">
-          Skyscanner
+        <button class="bs-btn bs-btn-skyscanner" data-service="skyscanner" title="Skyscanner">
+          <img src="https://1000logos.net/wp-content/uploads/2020/08/Skyscanner-Logo.jpg" alt="Skyscanner" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-air-canada" data-service="air-canada">
-          Air Canada
+        <button class="bs-btn bs-btn-air-canada" data-service="air-canada" title="Air Canada">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeZydxjXduat22dqIyEmIqHT9ahreUYo17QQ&s" alt="Air Canada" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-united" data-service="united">
-          United
+        <button class="bs-btn bs-btn-united" data-service="united" title="United">
+          <img src="https://www.logo.wine/a/logo/United_Airlines/United_Airlines-Logo.wine.svg" alt="United" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-virgin-atlantic" data-service="virgin-atlantic">
-          Virgin Atlantic
+        <button class="bs-btn bs-btn-virgin-atlantic" data-service="virgin-atlantic" title="Virgin Atlantic">
+          <img src="https://avapeunstloyaltyb2c.blob.core.windows.net/root-digital/assets/images/logos/va-logo.svg" alt="Virgin Atlantic" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-miles-and-more" data-service="miles-and-more">
-          Miles & More
+        <button class="bs-btn bs-btn-miles-and-more" data-service="miles-and-more" title="Miles & More">
+          <img src="https://www.miles-and-more.com/content/mam/web/gc/general-configuration/de/jcr:content/par/globalcontentlogo_299129459/headerlogodesktop/image.img.1549875032205.svg" alt="Miles & More" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles">
-          Rovemiles
+        <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles" title="RoveMiles">
+          <img src="https://s3-eu-west-1.amazonaws.com/tpd/logos/6855b891ca40503a0585652a/0x0.png" alt="RoveMiles" class="bs-btn-icon bs-btn-logo bs-rovemiles-logo" />
+          RoveMiles
         </button>
-        <button class="bs-btn bs-btn-fare-class" data-service="fare-class">
+        <button class="bs-btn bs-btn-fare-class" data-service="fare-class" title="Fare Class">
+          <img src="https://play-lh.googleusercontent.com/k9VwmFRFoPiuhCwS4b4dd2KuUO0YvIj1mRnzqZ1CP4lmCU_Kdyok-7NGEHCsYcbHjV8" alt="Fare Class" class="bs-btn-icon bs-btn-logo" />
           Fare Class
         </button>
-        <button class="bs-btn bs-btn-flight-connections" data-service="flight-connections">
-          Connections
+        <button class="bs-btn bs-btn-flight-connections" data-service="flight-connections" title="Connections">
+          <img src="https://cdn.flightconnections.com/img/FLC_fullcolor_34px_BIG.svg" alt="Connections" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-turbli" data-service="turbli">
+        <button class="bs-btn bs-btn-turbli" data-service="turbli" title="Turbli">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpXFKnot1pFIDTxnoc0qrhvOlQ2_2iwS3ubQ&s" alt="Turbli" class="bs-btn-icon bs-btn-logo" />
           Turbli
         </button>
-        <button class="bs-btn bs-btn-roame" data-service="roame">
-          Roame
+        <button class="bs-btn bs-btn-roame" data-service="roame" title="Roame">
+          <img src="https://image.pitchbook.com/Rx3QpmFnJWXmomBfqpu4l69vGYP1692962814286_200x200" alt="Roame" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-awardlogic" data-service="awardlogic">
-          AwardLogic
+        <button class="bs-btn bs-btn-awardlogic" data-service="awardlogic" title="AwardLogic">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNxeFiYRiouZv9JrFZTKBz1-U-ouDeMl8nRg&s" alt="AwardLogic" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-pointhound" data-service="pointhound">
-          Pointhound
+        <button class="bs-btn bs-btn-pointhound" data-service="pointhound" title="Pointhound">
+          <img src="https://www.pointhound.com/assets/ConsultPointhoundLogo.png" alt="Pointhound" class="bs-btn-icon bs-btn-logo" />
         </button>
         <button class="bs-btn bs-btn-pointsyeah-seatmap" data-service="pointsyeah-seatmap" style="display: none;">
           PY Seats
@@ -352,9 +357,9 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-points-yeah" data-service="pointsyeah-hotels" title="PointsYeah">
           <img src="https://www.pointsyeah.com/images/V2/logo.svg" alt="PointsYeah" class="bs-btn-icon bs-btn-logo" />
         </button>
-        <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles-hotels-loyal" title="Loyalty">
-          <img src="https://s3-eu-west-1.amazonaws.com/tpd/logos/6855b891ca40503a0585652a/0x0.png" alt="Loyalty" class="bs-btn-icon bs-btn-logo bs-rovemiles-logo" />
-          Loyalty
+        <button class="bs-btn bs-btn-rovemiles" data-service="rovemiles-hotels-loyal" title="RoveMiles">
+          <img src="https://s3-eu-west-1.amazonaws.com/tpd/logos/6855b891ca40503a0585652a/0x0.png" alt="RoveMiles" class="bs-btn-icon bs-btn-logo bs-rovemiles-logo" />
+          RoveMiles
         </button>
         <button class="bs-btn bs-btn-maxmypoint" data-service="maxmypoint" title="MaxMyPoint">
           <img src="https://maxmypoint.com/favicon.png" alt="MaxMyPoint" class="bs-btn-icon" />
@@ -2758,10 +2763,10 @@ function generateFlightUrl(service, data) {
   const departTimestamp = Math.floor(new Date(depart).getTime() / 1000);
   const returnTimestamp = ret ? Math.floor(new Date(ret).getTime() / 1000) : departTimestamp;
   
-  // Build Google Flights URL (q= format); add +nonstop when Nonstop toggle is on
-  const qBase = `flights+from+${from}+to+${to}+${ret ? depart+'+to+'+ret : 'oneway+on+'+depart}+${cabin}+class`;
-  const qWithNonstop = nonstop ? qBase + '+nonstop' : qBase;
-  const googleFlightsUrl = `https://www.google.com/travel/flights/search?q=${qWithNonstop}&hl=${language}&curr=${currency}&gl=${location}&tfu=EgYIABAAGAA`;
+  // Build Google Flights URL – same base as Google Hotels (google.com/travel/search) with explicit params
+  const qBase = `flights from ${from} to ${to} ${ret ? depart + ' to ' + ret : 'oneway on ' + depart} ${cabin} class`;
+  const qWithNonstop = nonstop ? qBase + ' nonstop' : qBase;
+  const googleFlightsUrl = `https://www.google.com/travel/search?q=${encodeURIComponent(qWithNonstop)}&depart=${depart}&return=${ret || ''}&adults=${adults}&hl=${language}&curr=${currency}&gl=${location}`;
   
   const urls = {
     'google-flights': googleFlightsUrl,
