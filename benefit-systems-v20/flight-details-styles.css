@@ -748,8 +748,8 @@ body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal td:n
   #bs-standalone-award-results {
     overflow-x: visible !important;
     margin-top: 14px !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
     background: transparent !important;
   }
 
@@ -782,8 +782,10 @@ body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal td:n
     border-radius: 12px !important;
     align-items: start !important;
     background: #ffffff !important;
-    border: 1px solid #dadce0 !important;
-    border-left: 4px solid #dadce0 !important;
+    border-top: 1px solid #dadce0 !important;
+    border-bottom: 1px solid #dadce0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
     box-shadow: 0 1px 2px rgba(60, 64, 67, 0.14), 0 1px 3px 1px rgba(60, 64, 67, 0.08) !important;
     box-sizing: border-box !important;
   }
@@ -795,12 +797,10 @@ body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal td:n
   #bs-standalone-award-section .bs-award-table tbody tr.bs-good-deal {
     background: #ffffff !important;
     border-color: #dadce0 !important;
-    border-left-color: #34a853 !important;
   }
   #bs-standalone-award-section .bs-award-table tbody tr.bs-bad-deal {
     background: #ffffff !important;
     border-color: #dadce0 !important;
-    border-left-color: #ea4335 !important;
   }
 
   /* Each cell: stack label + value in one column for 2 rows of 4 */
@@ -874,21 +874,23 @@ body.bs-dark-mode #bs-standalone-award-section .bs-award-table .bs-bad-deal td:n
 
   body.bs-dark-mode #bs-standalone-award-section .bs-award-table tbody tr {
     background: #202124 !important;
-    border-color: #3c4043 !important;
-    border-left-color: #3c4043 !important;
+    border-top-color: #3c4043 !important;
+    border-bottom-color: #3c4043 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 3px 1px rgba(0, 0, 0, 0.22) !important;
   }
 
   body.bs-dark-mode #bs-standalone-award-section .bs-award-table tbody tr.bs-good-deal {
     background: #202124 !important;
-    border-color: #3c4043 !important;
-    border-left-color: #34a853 !important;
+    border-top-color: #3c4043 !important;
+    border-bottom-color: #3c4043 !important;
   }
 
   body.bs-dark-mode #bs-standalone-award-section .bs-award-table tbody tr.bs-bad-deal {
     background: #202124 !important;
-    border-color: #3c4043 !important;
-    border-left-color: #ea4335 !important;
+    border-top-color: #3c4043 !important;
+    border-bottom-color: #3c4043 !important;
   }
 
   /* Robust mobile selectors based on real injected structure */

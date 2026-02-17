@@ -1,61 +1,53 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Script to create a new Chrome extension zip with auto-incremented version number
-# Run from repo root or from scripts/ - will cd to repo root.
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-cd "$ROOT"
+set -euo pipefail
 
-# Find the highest existing version number (check both zip naming patterns)
-HIGHEST_VERSION=$(ls -1 gf-clients-v*.zip chrome-extension-updated-v*.zip 2>/dev/null | \
-  sed 's/.*v\([0-9]*\)\.zip/\1/' | \
-  sort -n | \
-  tail -1)
+# Resolve repo root (one level up from this script)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-# If no existing zip found, start at 1; otherwise always increment
-if [ -z "$HIGHEST_VERSION" ]; then
-  NEXT_VERSION=1
+cd "${ROOT_DIR}"
+
+MANIFEST_JSON="${ROOT_DIR}/manifest.json"
+CURRENT_VERSION=$(grep -E '"version"' "${MANIFEST_JSON}" | sed -E 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/')
+# Increment version: support "N" or "N.M" or "N.M.P"
+if [[ "${CURRENT_VERSION}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+  MAJOR="${BASH_REMATCH[1]}"
+  MINOR="${BASH_REMATCH[2]}"
+  PATCH="${BASH_REMATCH[3]}"
+  NEW_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
+elif [[ "${CURRENT_VERSION}" =~ ^([0-9]+)\.([0-9]+)$ ]]; then
+  MAJOR="${BASH_REMATCH[1]}"
+  MINOR="${BASH_REMATCH[2]}"
+  NEW_VERSION="${MAJOR}.$((MINOR + 1))"
 else
-  NEXT_VERSION=$((HIGHEST_VERSION + 1))
+  # Single number (e.g. "11")
+  NEW_VERSION="$((CURRENT_VERSION + 1))"
 fi
 
-ZIP_NAME="gf-clients-v${NEXT_VERSION}.zip"
-
-echo "Creating zip: ${ZIP_NAME}"
-echo "Updating manifest.json with version ${NEXT_VERSION}..."
-
-# Backup original manifest
-cp manifest.json manifest.json.bak
-
-# Update manifest.json with new version and name
-# Use a temporary file for JSON manipulation
-if command -v jq &> /dev/null; then
-  # If jq is available, use it for cleaner JSON manipulation
-  jq --arg name "Benefit Systems" --arg version "${NEXT_VERSION}" \
-    '.name = $name | .version = $version' manifest.json > manifest.json.tmp && \
-    mv manifest.json.tmp manifest.json
+# Update manifest.json with new version
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  sed -i '' "s/\"version\": \"${CURRENT_VERSION}\"/\"version\": \"${NEW_VERSION}\"/" "${MANIFEST_JSON}"
 else
-  # Fallback to sed if jq is not available
-  sed "s/\"name\": \"Benefit Systems.*\"/\"name\": \"Benefit Systems\"/" manifest.json > manifest.json.tmp
-  sed "s/\"version\": \"[0-9.]*\"/\"version\": \"${NEXT_VERSION}\"/" manifest.json.tmp > manifest.json
-  rm -f manifest.json.tmp
+  sed -i "s/\"version\": \"${CURRENT_VERSION}\"/\"version\": \"${NEW_VERSION}\"/" "${MANIFEST_JSON}"
 fi
 
-# Create the zip file with all Chrome extension files
-zip -r "$ZIP_NAME" \
-  manifest.json \
-  background.js \
-  content.js \
-  flight-details-injector*.js \
-  flight-details-styles.css \
-  styles.css \
-  icons/ \
-  lib/ \
-  data/ \
+ZIP_NAME="benefit-systems-v${NEW_VERSION}.zip"
+
+echo "Version: ${CURRENT_VERSION} -> ${NEW_VERSION}"
+echo "Creating extension zip: ${ZIP_NAME}"
+
+rm -f "${ZIP_NAME}"
+
+# Same method as v11 that worked in Orion: zip from repo root with these exclusions
+export COPYFILE_DISABLE=1
+zip -r "${ZIP_NAME}" . \
+  -x ".git/*" \
+  -x "scripts/*" \
   -x "*.DS_Store" \
-  2>&1 | grep -E "(adding|updating|error)" || true
+  -x "__MACOSX/*" \
+  -x ".gitignore" \
+  -x "*.zip"
 
-# Restore original manifest
-mv manifest.json.bak manifest.json
-
-echo "✓ Created ${ZIP_NAME} with version ${NEXT_VERSION}"
+echo "Done. Created ${ROOT_DIR}/${ZIP_NAME}"
 

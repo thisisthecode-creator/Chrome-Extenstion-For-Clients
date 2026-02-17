@@ -433,6 +433,30 @@ function injectExtensionPanel() {
               </select>
             </div>
           </div>
+          <div class="bs-settings-group-label">Flight row colors</div>
+          <div class="bs-settings-row bs-settings-row-colors">
+            <div class="bs-settings-item bs-settings-item-color">
+              <label for="bs-color-nonstop">Nonstop</label>
+              <div class="bs-settings-color-row">
+                <input type="color" id="bs-color-nonstop" class="bs-settings-color-input" value="#e3ffdb" title="Nonstop flights row color">
+                <input type="text" id="bs-color-nonstop-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#e3ffdb" spellcheck="false">
+              </div>
+            </div>
+            <div class="bs-settings-item bs-settings-item-color">
+              <label for="bs-color-stops">1 stop</label>
+              <div class="bs-settings-color-row">
+                <input type="color" id="bs-color-stops" class="bs-settings-color-input" value="#ffecd1" title="1 stop flights row color">
+                <input type="text" id="bs-color-stops-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#ffecd1" spellcheck="false">
+              </div>
+            </div>
+            <div class="bs-settings-item bs-settings-item-color">
+              <label for="bs-color-multiple-stops">2+ stops</label>
+              <div class="bs-settings-color-row">
+                <input type="color" id="bs-color-multiple-stops" class="bs-settings-color-input" value="#fbd3d0" title="2+ stops flights row color">
+                <input type="text" id="bs-color-multiple-stops-hex" class="bs-settings-color-hex" maxlength="7" placeholder="#fbd3d0" spellcheck="false">
+              </div>
+            </div>
+          </div>
           <div class="bs-settings-row">
             <div class="bs-settings-item bs-settings-item-api-key">
               <label for="bs-seatsaero-api-key">Seats.aero API Key</label>
@@ -481,8 +505,9 @@ function injectExtensionPanel() {
   const toggleStates = loadToggleStates();
   applyToggleStates(toggleStates);
   
-  // Apply saved theme
+  // Apply saved theme and flight row colors
   applyDarkMode();
+  applyFlightStopColors();
   
   // Restore saved flight data after a short delay to ensure inputs are ready
   setTimeout(() => {
@@ -576,8 +601,6 @@ function loadToggleStates() {
   if (savedStates) {
     try {
       const toggleStates = JSON.parse(savedStates);
-      // Preset behavior: always start with Settings OFF on load.
-      toggleStates.settings = false;
       return toggleStates;
     } catch (e) {
       console.log('BS Extension: Error parsing saved toggle states');
@@ -653,6 +676,7 @@ function applyTheme() {
   if (themeSelect) {
     themeSelect.value = theme;
   }
+  applyFlightStopColors();
 }
 
 // Backward compatibility: applyDarkMode still used by old toggle if present
@@ -668,6 +692,69 @@ function applyDarkMode() {
   applyTheme();
 }
 
+// Lighten/darken hex for gradients (0–1 factor)
+function hexLighten(hex, factor) {
+  const n = parseInt(hex.slice(1), 16);
+  let r = (n >> 16) & 0xff, g = (n >> 8) & 0xff, b = n & 0xff;
+  r = Math.round(r + (255 - r) * factor);
+  g = Math.round(g + (255 - g) * factor);
+  b = Math.round(b + (255 - b) * factor);
+  return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+function hexDarken(hex, factor) {
+  const n = parseInt(hex.slice(1), 16);
+  let r = (n >> 16) & 0xff, g = (n >> 8) & 0xff, b = n & 0xff;
+  r = Math.round(r * (1 - factor));
+  g = Math.round(g * (1 - factor));
+  b = Math.round(b * (1 - factor));
+  return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
+// Relative luminance (0–1). Use dark text if luminance > threshold, else light text for contrast.
+function hexLuminance(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = ((n >> 16) & 0xff) / 255;
+  const g = ((n >> 8) & 0xff) / 255;
+  const b = (n & 0xff) / 255;
+  const [rs, gs, bs] = [r, g, b].map(c => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+}
+function textColorForBackground(hex) {
+  return hexLuminance(hex) > 0.5 ? '#1a1a1a' : '#ffffff';
+}
+
+// Inject or update dynamic style for flight stop row colors (exact color from settings) + contrast text
+function applyFlightStopColors() {
+  const nonstop = (localStorage.getItem('bs-flight-color-nonstop') || '#e3ffdb').replace(/^#?/, '#');
+  const stops = (localStorage.getItem('bs-flight-color-stops') || '#ffecd1').replace(/^#?/, '#');
+  const multi = (localStorage.getItem('bs-flight-color-multiple-stops') || '#fbd3d0').replace(/^#?/, '#');
+
+  const nonstopText = textColorForBackground(nonstop);
+  const stopsText = textColorForBackground(stops);
+  const multiText = textColorForBackground(multi);
+
+  let css = '/* Benefit Systems – flight row colors (plain) + contrast text */\n';
+  css += '.yR1fYc.bs-nonstop-flight { background: ' + nonstop + ' !important; border-color: ' + nonstop + ' !important; box-shadow: none !important; color: ' + nonstopText + ' !important; }\n';
+  css += '.yR1fYc.bs-nonstop-flight * { color: ' + nonstopText + ' !important; }\n';
+  css += '.yR1fYc.bs-stops-flight { background: ' + stops + ' !important; border-color: ' + stops + ' !important; box-shadow: none !important; color: ' + stopsText + ' !important; }\n';
+  css += '.yR1fYc.bs-stops-flight * { color: ' + stopsText + ' !important; }\n';
+  css += '.yR1fYc.bs-multiple-stops-flight { background: ' + multi + ' !important; border-color: ' + multi + ' !important; box-shadow: none !important; color: ' + multiText + ' !important; }\n';
+  css += '.yR1fYc.bs-multiple-stops-flight * { color: ' + multiText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-nonstop-flight { background: ' + nonstop + ' !important; border-color: ' + nonstop + ' !important; box-shadow: none !important; color: ' + nonstopText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-nonstop-flight * { color: ' + nonstopText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-stops-flight { background: ' + stops + ' !important; border-color: ' + stops + ' !important; box-shadow: none !important; color: ' + stopsText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-stops-flight * { color: ' + stopsText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight { background: ' + multi + ' !important; border-color: ' + multi + ' !important; box-shadow: none !important; color: ' + multiText + ' !important; }\n';
+  css += 'body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight * { color: ' + multiText + ' !important; }\n';
+
+  let el = document.getElementById('bs-flight-stop-colors');
+  if (!el) {
+    el = document.createElement('style');
+    el.id = 'bs-flight-stop-colors';
+    document.head.appendChild(el);
+  }
+  el.textContent = css;
+}
 
 // Initialize drag and drop for buttons
 function initializeButtonDragAndDrop() {
@@ -1264,6 +1351,39 @@ function initializeEventListeners() {
       applyTheme();
     });
   }
+
+  // Flight row colors: sync color picker <-> hex input, persist, apply
+  function initColorSetting(colorId, hexId, storageKey, defaultValue) {
+    const picker = document.getElementById(colorId);
+    const hexInput = document.getElementById(hexId);
+    if (!picker || !hexInput) return;
+    const saved = localStorage.getItem(storageKey);
+    const value = (saved || defaultValue).replace(/^#?/, '#');
+    picker.value = value.toLowerCase();
+    hexInput.value = value;
+    function saveAndApply() {
+      const hex = hexInput.value.replace(/^#?/, '#');
+      if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
+        localStorage.setItem(storageKey, hex);
+        picker.value = hex;
+        applyFlightStopColors();
+      }
+    }
+    picker.addEventListener('input', () => {
+      hexInput.value = picker.value;
+      saveAndApply();
+    });
+    hexInput.addEventListener('change', () => {
+      const hex = hexInput.value.replace(/^#?/, '#');
+      if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
+        picker.value = hex;
+        saveAndApply();
+      }
+    });
+  }
+  initColorSetting('bs-color-nonstop', 'bs-color-nonstop-hex', 'bs-flight-color-nonstop', '#e3ffdb');
+  initColorSetting('bs-color-stops', 'bs-color-stops-hex', 'bs-flight-color-stops', '#ffecd1');
+  initColorSetting('bs-color-multiple-stops', 'bs-color-multiple-stops-hex', 'bs-flight-color-multiple-stops', '#fbd3d0');
 
   // Seats.aero API URL and Key: save on change and sync to config + background
   const seatsAeroKeyInput = document.getElementById('bs-seatsaero-api-key');
@@ -4021,13 +4141,13 @@ function createHotelTransferModal() {
     <div class="bs-transfer-modal-header">
       <div class="bs-transfer-modal-header-text">
         <h3 class="bs-transfer-modal-title">Hotels – Transfer Ratios</h3>
-        <p class="bs-transfer-modal-explanation bs-transfer-modal-explanation-blocks">
-          <span>Card points → hotel points. <strong>1:2</strong> = 1000 pts → 2000 points.</span>
-          <span>Filter by rate type or search by partner or program.</span>
-          <span>Fixed Points Rates ⭐ — do not follow cash prices; rates vary by season.</span>
-          <span>Fixed Points Value — 1000 Accor Points = 20€.</span>
-          <span>Dynamic Points Rates — depend on the cash rate of the booking.</span>
-        </p>
+        <p class="bs-transfer-modal-explanation">Card points → hotel points. <strong>1:1</strong> = same value; <strong>1:2</strong> = 1000 pts → 2000 points. Columns = card program.</p>
+        <div class="bs-transfer-modal-filter-explanation">
+          <div>Filter by rate type or search by partner or program.</div>
+          <div>Fixed Points Rates ⭐ — points rates do not follow cash prices; rates vary by season.</div>
+          <div>Fixed Points Value — e.g. Accor: 1000 Accor Points = 20€.</div>
+          <div>Dynamic Points Rates — points needed depend on the cash rate of the booking.</div>
+        </div>
       </div>
       <button type="button" class="bs-action-btn bs-transfer-modal-pdf-btn" title="Save as PDF">📥 PDF</button>
       <button type="button" class="bs-action-btn bs-transfer-modal-close" title="Close">&times;</button>
@@ -4617,12 +4737,10 @@ function createFlightTransferModal() {
     <div class="bs-transfer-modal-header">
       <div class="bs-transfer-modal-header-text">
         <h3 class="bs-transfer-modal-title">Airlines – Transfer Ratios</h3>
-        <p class="bs-transfer-modal-explanation bs-transfer-modal-explanation-blocks">
-          <span>Card points → airline miles.</span>
-          <span><strong>1:1</strong> = 1000 pts → 1000 miles.</span>
-          <span>Columns = card program.</span>
-          <span>Filter by alliance or search by airline, program, or alliance.</span>
-        </p>
+        <p class="bs-transfer-modal-explanation">Card points → airline miles. <strong>1:1</strong> = 1000 pts → 1000 miles. Columns = card program.</p>
+        <div class="bs-transfer-modal-filter-explanation">
+          <div>Filter by alliance or search by airline, program, or alliance.</div>
+        </div>
       </div>
       <button type="button" class="bs-action-btn bs-transfer-modal-pdf-btn" title="Save as PDF">📥 PDF</button>
       <button type="button" class="bs-action-btn bs-transfer-modal-close" title="Close">&times;</button>

@@ -2463,6 +2463,9 @@ function createFlightDetailsElement(flightInfo, flightElement) {
     }
   }
   
+  // Check if flight is nonstop (for marking parent .yR1fYc element)
+  const isNonstop = flightInfo.stops === 'Nonstop'
+  
   detailsContainer.style.cssText = `
     display: flex;
     flex-direction: column;
@@ -2485,52 +2488,47 @@ function createFlightDetailsElement(flightInfo, flightElement) {
     text-align: left;
   `
   
-  // Flight row coloring is disabled. Keep this cleanup helper so old classes/styles are removed.
-  function clearFlightRowColoring() {
-    if (!flightElement) return
-    const rowSelectors = ['.yR1fYc', '.pIav2d', '.mxvQLc', '.gws-flights-results__itinerary-card']
-    const stopClasses = ['bs-nonstop-flight', 'bs-stops-flight', 'bs-multiple-stops-flight']
-
-    const isRow = (el) => {
-      if (!el || !el.classList) return false
-      if (rowSelectors.some(sel => {
-        try { return el.matches(sel) } catch (_) { return false }
-      })) return true
-      return el.getAttribute && (el.getAttribute('role') === 'listitem' || el.hasAttribute('data-gs'))
-    }
-
-    const clearRowStopStyles = (row) => {
-      if (!row || !row.classList) return
-      stopClasses.forEach((c) => row.classList.remove(c))
-      if (row.style) {
-        row.style.removeProperty('background')
-        row.style.removeProperty('border-color')
-        row.style.removeProperty('box-shadow')
-        row.style.removeProperty('color')
+  // Helper function to mark .yR1fYc element with a class
+  function markYr1fYcElement(className) {
+    if (flightElement) {
+      // Check if flightElement itself is .yR1fYc
+      if (flightElement.classList && flightElement.classList.contains('yR1fYc')) {
+        flightElement.classList.add(className)
+      } else {
+        // Find parent .yR1fYc element
+        let parent = flightElement.parentElement
+        let attempts = 0
+        while (parent && attempts < 10) {
+          if (parent.classList && parent.classList.contains('yR1fYc')) {
+            parent.classList.add(className)
+            break
+          }
+          parent = parent.parentElement
+          attempts++
+        }
       }
-    }
-
-    // Mark closest matching row first
-    let node = flightElement
-    let attempts = 0
-    while (node && attempts < 14) {
-      if (isRow(node)) {
-        clearRowStopStyles(node)
-        break
-      }
-      node = node.parentElement
-      attempts++
-    }
-
-    // Also mark legacy wrapper if present for backward compatibility.
-    const legacyRow = flightElement.closest ? flightElement.closest('.yR1fYc') : null
-    if (legacyRow) {
-      clearRowStopStyles(legacyRow)
     }
   }
   
-  // Ensure any previously applied row color classes/styles are removed.
-  clearFlightRowColoring()
+  // Add class for nonstop flights for additional styling
+  if (isNonstop) {
+    detailsContainer.classList.add('nonstop-flight')
+    // Mark .yR1fYc element for green background
+    markYr1fYcElement('bs-nonstop-flight')
+  } else if (flightInfo.stops && flightInfo.stops !== 'Nonstop') {
+    // Check number of stops
+    const stopsMatch = flightInfo.stops.match(/(\d+)\s*stop/i)
+    if (stopsMatch) {
+      const stopCount = parseInt(stopsMatch[1])
+      if (stopCount >= 2) {
+        // Mark .yR1fYc element for red background (2+ stops)
+        markYr1fYcElement('bs-multiple-stops-flight')
+      } else if (stopCount === 1) {
+        // Mark .yR1fYc element for yellow background (1 stop)
+        markYr1fYcElement('bs-stops-flight')
+      }
+    }
+  }
 
   // Create first row for flight details
   const flightDetailsRow = document.createElement("div")

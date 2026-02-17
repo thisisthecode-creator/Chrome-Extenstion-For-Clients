@@ -1316,13 +1316,6 @@
   color: #202124;
   font-weight: 600;
 }
-.bs-transfer-modal-explanation-blocks > span {
-  display: block;
-  margin-top: 2px;
-}
-.bs-transfer-modal-explanation-blocks > span:first-child {
-  margin-top: 0;
-}
 .bs-transfer-modal-filter-explanation {
   margin: 6px 0 0;
   font-size: 13px;
@@ -2001,12 +1994,6 @@
   border-bottom: 2px solid #dadce0;
   padding: 12px 10px;
   vertical-align: bottom;
-  position: sticky;
-  top: 0;
-  z-index: 3;
-}
-.bs-transfer-table thead th.bs-transfer-th-partner {
-  z-index: 4;
 }
 .bs-transfer-col-count {
   display: block;
@@ -2640,45 +2627,44 @@
 
   .bs-section:nth-child(1) .bs-inputs-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
     row-gap: 12px;
     flex-direction: unset;
-    align-items: end;
   }
-  /* Flight mobile flow: Row 1 = From | Switch | To, then dates, then Cabin/Adults */
+  /* Flight mobile flow: From -> Switch -> To -> Dates -> Cabin/Adults */
   .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:nth-child(1) {
     order: 1;
-    grid-column: 1 / 2;
+    grid-column: 1 / -1;
     min-width: 0;
   }
   .bs-section:nth-child(1) .bs-inputs-grid .bs-switch-container {
     order: 2;
-    grid-column: 2 / 3;
+    grid-column: 1 / -1;
     margin: 0;
-    align-self: end;
+    align-self: center;
     justify-content: center;
   }
   .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:nth-child(3) {
     order: 3;
-    grid-column: 3 / 4;
+    grid-column: 1 / -1;
     min-width: 0;
   }
   .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:nth-child(4) {
     order: 4;
-    grid-column: 1 / 3;
+    grid-column: 1 / 2;
   }
   .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:nth-child(5) {
     order: 5;
-    grid-column: 3 / 4;
+    grid-column: 2 / 3;
   }
   .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:nth-child(6) {
     order: 6;
-    grid-column: 1 / 3;
+    grid-column: 1 / 2;
   }
   .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:nth-child(7) {
     order: 7;
-    grid-column: 3 / 4;
+    grid-column: 2 / 3;
   }
   .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-depart),
   .bs-section:nth-child(1) .bs-inputs-grid .bs-input-group:has(#bs-flight-return) {
@@ -2830,88 +2816,47 @@
     max-width: none;
   }
 
-  /* Mobile: 4 buttons per row for Flight + Hotel search grids */
+  /* Mobile: show 4 buttons per row to see more options at once */
   .bs-buttons-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
   }
   #bs-external-links.bs-buttons-grid,
   #bs-hotel-external-links.bs-buttons-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, 1fr);
   }
   #bs-external-links .bs-btn[data-service],
   #bs-hotel-external-links .bs-btn[data-service] {
     width: 100%;
     min-width: 0;
-    height: 64px;
-    min-height: 64px;
-    border-radius: 12px;
-    padding: 10px;
+    height: 80px;
+    min-height: 80px;
+    border-radius: 14px;
+    padding: 12px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 6px;
+    gap: 8px;
   }
-  /* Give Flight buttons a bit more room for larger logos on mobile */
-  #bs-external-links .bs-btn[data-service] {
-    height: 72px;
-    min-height: 72px;
-  }
-  /* Mobile button logos: hotel baseline size */
-  #bs-hotel-external-links .bs-btn .bs-btn-icon,
-  #bs-hotel-external-links .bs-btn img {
+  /* Mobile button logos: make them fill as much of the button as possible while centered */
+  .bs-buttons-grid .bs-btn .bs-btn-icon,
+  .bs-buttons-grid .bs-btn img {
     display: block;
     margin-right: 0;
     margin-bottom: 4px;
     width: 100%;
-    max-width: 32px;
-    max-height: 32px;
+    max-width: 56px;
+    max-height: 56px;
     height: auto;
     object-fit: contain;
     flex-shrink: 0;
   }
-  /* Flight search logos: allow larger than hotel on mobile */
-  #bs-external-links .bs-btn .bs-btn-icon,
-  #bs-external-links .bs-btn img {
-    display: block;
-    margin-right: 0;
-    margin-bottom: 4px;
-    width: 100%;
-    max-width: 40px;
-    max-height: 40px;
-    height: auto;
-    object-fit: contain;
-    flex-shrink: 0;
-  }
-  /* Non-excluded flight services: use the maximum size that fits in the button */
-  #bs-external-links .bs-btn[data-service]:not([data-service="google-flights"]):not([data-service="award-tool"]):not([data-service="seats-aero"]):not([data-service="rovemiles"]):not([data-service="fare-class"]):not([data-service="turbli"]) .bs-btn-icon,
-  #bs-external-links .bs-btn[data-service]:not([data-service="google-flights"]):not([data-service="award-tool"]):not([data-service="seats-aero"]):not([data-service="rovemiles"]):not([data-service="fare-class"]):not([data-service="turbli"]) img {
-    width: 100% !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-  }
-  /* Keep Google Flights compact */
-  #bs-external-links .bs-btn-google-flights .bs-btn-icon,
-  #bs-external-links .bs-btn-google-flights img {
-    max-width: 32px !important;
-    max-height: 32px !important;
-  }
-  /* Keep these compact in the dense 4-column flight grid */
+  /* Make Seats.Aero and Fare Class logos smaller on mobile (similar to AwardTool size) */
   #bs-external-links .bs-btn-seats-aero .bs-btn-icon,
   #bs-external-links .bs-btn-seats-aero img,
   #bs-external-links .bs-btn-fare-class .bs-btn-icon,
   #bs-external-links .bs-btn-fare-class img {
-    max-width: 24px !important;
-    max-height: 24px !important;
-  }
-  /* Keep Turbli + AwardTool compact */
-  #bs-external-links .bs-btn-turbli .bs-btn-icon,
-  #bs-external-links .bs-btn-turbli img,
-  #bs-external-links .bs-btn-award-tool .bs-btn-icon,
-  #bs-external-links .bs-btn-award-tool img {
     max-width: 24px !important;
     max-height: 24px !important;
   }
@@ -2947,8 +2892,8 @@
   #bs-external-links .bs-btn-rovemiles img,
   #bs-hotel-external-links .bs-btn-rovemiles .bs-btn-icon,
   #bs-hotel-external-links .bs-btn-rovemiles img {
-    max-width: 32px !important;
-    max-height: 32px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
     margin: 0 auto;
     display: block;
   }
@@ -2969,8 +2914,8 @@
     border-radius: 14px;
   }
   .bs-switch-btn {
-    width: 46px;
-    height: 46px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     border: 2px solid #dadce0;
     background: #fff;
@@ -3913,312 +3858,6 @@
 .bs-link:hover {
   color: #1557b0;
   text-decoration: underline;
-}
-
-/* Mobile: transfer modal info text full-width + smaller */
-@media (max-width: 600px) {
-  .bs-transfer-modal-backdrop {
-    padding: 10px;
-  }
-  .bs-transfer-modal-box {
-    max-width: 100%;
-    max-height: 94vh;
-    border-radius: 14px;
-  }
-  .bs-transfer-modal-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-    padding: 12px 12px 10px;
-  }
-  /* Keep close X pinned top-right on all mobile info/modals */
-  .bs-transfer-modal-header,
-  .bs-modal-header,
-  .bs-currency-modal-header,
-  .points-modal-header {
-    position: relative;
-    padding-right: 48px;
-  }
-  .bs-hotel-tiers-modal-box .bs-transfer-modal-header {
-    position: relative;
-    padding-right: 48px;
-  }
-  .bs-transfer-modal-header-text {
-    width: 100%;
-    max-width: 100%;
-  }
-  .bs-transfer-modal-title {
-    font-size: 16px;
-    margin-bottom: 4px;
-  }
-  .bs-transfer-modal-explanation,
-  .bs-transfer-modal-filter-explanation {
-    width: 100%;
-    max-width: 100%;
-    font-size: 11px;
-    line-height: 1.3;
-  }
-  .bs-transfer-modal-filter-explanation {
-    margin-top: 4px;
-  }
-  .bs-transfer-modal-filter-explanation > div {
-    margin-top: 1px;
-  }
-  .bs-transfer-modal-close {
-    align-self: flex-end;
-    width: 28px;
-    height: 28px;
-    font-size: 22px;
-  }
-  .bs-transfer-modal-close,
-  .bs-modal-close,
-  .bs-currency-modal-close,
-  .points-modal-close {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    margin: 0;
-    align-self: auto;
-    z-index: 2;
-  }
-  .bs-hotel-tiers-modal-box .bs-transfer-modal-close {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    margin: 0;
-    z-index: 2;
-  }
-  .bs-transfer-modal-pdf-btn {
-    align-self: flex-end;
-    margin-right: 0;
-    min-height: 32px;
-    padding: 0 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  .bs-transfer-modal-body {
-    padding: 10px 10px 14px;
-  }
-  .bs-transfer-controls {
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  .bs-transfer-view-switch-wrap {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 6px;
-    align-items: stretch;
-    margin-bottom: 8px;
-  }
-  .bs-transfer-filter-label {
-    margin-left: 0;
-  }
-  .bs-transfer-view-switch,
-  .bs-transfer-filter-wrap {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-    background: transparent;
-    border-radius: 0;
-    padding: 0;
-  }
-  .bs-transfer-view-btn,
-  .bs-transfer-filter-btn {
-    min-height: 36px;
-    padding: 6px 8px;
-    border-radius: 8px;
-    border: 1px solid #dadce0;
-    background: #fff;
-    font-size: 12px;
-    line-height: 1.2;
-    text-align: center;
-  }
-  .bs-transfer-view-btn.active,
-  .bs-transfer-filter-btn.active {
-    border-color: #1a73e8;
-    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.12);
-  }
-  .bs-transfer-search-wrap {
-    margin-bottom: 10px;
-  }
-  .bs-transfer-search {
-    min-height: 40px;
-    padding: 8px 10px;
-    font-size: 14px;
-    border-radius: 10px;
-  }
-  .bs-transfer-table-wrap {
-    border-radius: 10px;
-    margin-bottom: 10px;
-  }
-  .bs-transfer-table {
-    font-size: 12px;
-  }
-  .bs-transfer-table th,
-  .bs-transfer-table td {
-    padding: 8px 6px;
-  }
-  .bs-transfer-table th.bs-transfer-th-partner,
-  .bs-transfer-table td.bs-transfer-td-partner {
-    max-width: 132px;
-    min-width: 132px;
-    white-space: normal;
-    line-height: 1.25;
-  }
-  .bs-transfer-table th:not(.bs-transfer-th-partner),
-  .bs-transfer-table td:not(.bs-transfer-td-partner) {
-    width: 5.4em;
-    min-width: 5.4em;
-  }
-  .bs-transfer-col-count {
-    font-size: 10px;
-  }
-  /* Mobile UX pass: Tiers / Hotel Benefits Management */
-  .bs-hotel-tiers-modal-box .bs-transfer-modal-body {
-    padding: 10px 10px 14px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-container {
-    gap: 12px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-filter-bar,
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-table-container {
-    padding: 12px;
-    border-radius: 10px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-filter-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-filter-header h4 {
-    font-size: 15px;
-    line-height: 1.25;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-filter-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-btn {
-    min-height: 40px;
-    padding: 8px 10px;
-    justify-content: center;
-    border-radius: 10px;
-    font-size: 12px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-search,
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-quick-filters {
-    margin-bottom: 12px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-search input {
-    min-height: 42px;
-    padding: 10px 38px 10px 36px;
-    border-radius: 10px;
-    font-size: 14px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-quick-filters {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-quick-filter {
-    min-height: 36px;
-    padding: 6px 8px;
-    justify-content: center;
-    border-radius: 10px;
-    font-size: 11px;
-    line-height: 1.2;
-    text-align: center;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-section {
-    margin-top: 12px;
-    padding-top: 12px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-section h5 {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-item {
-    padding: 10px;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    background: #fafbfc;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-select,
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-date-input {
-    min-height: 40px;
-    padding: 8px 10px;
-    border-radius: 10px;
-    font-size: 14px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-favorite-btn,
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-clear-date {
-    min-width: 34px;
-    min-height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-legend {
-    gap: 10px;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    flex-wrap: wrap;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-legend-item {
-    font-size: 11px;
-    gap: 6px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-table-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-table {
-    min-width: 760px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-table th,
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-cell,
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-hotel-name {
-    padding: 10px 8px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-table th {
-    font-size: 10px;
-    letter-spacing: 0.3px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-table th:first-child {
-    min-width: 155px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-cell {
-    min-width: 145px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-hotel-title {
-    font-size: 14px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-badge {
-    font-size: 10px;
-    padding: 5px 8px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-benefit-item {
-    font-size: 11px;
-    line-height: 1.35;
-    gap: 6px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-benefit-item svg {
-    width: 12px;
-    height: 12px;
-  }
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-no-results,
-  .bs-hotel-tiers-modal-box .bs-hotel-benefits-loading {
-    padding: 22px 12px;
-    font-size: 13px;
-  }
 }
 
 /* Legacy Information Section Styles */
