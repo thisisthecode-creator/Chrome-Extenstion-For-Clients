@@ -5031,7 +5031,7 @@
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: #202124;
+  background: rgb(32,33,36);
   color: white;
   padding: 8px 12px;
   border-radius: 6px;
@@ -10291,7 +10291,7 @@
    Dark mode (Google Flights theme)
    ================================ */
 .bs-extension-panel.bs-dark-mode {
-  background: linear-gradient(135deg, #202124 0%, #292a2d 100%) !important;
+  background: linear-gradient(135deg, rgb(32,33,36) 0%, #292a2d 100%) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
 }
 
@@ -10308,7 +10308,7 @@
 }
 
 .bs-extension-panel.bs-dark-mode .bs-logo-container {
-  background: linear-gradient(135deg, #202124 0%, #292a2d 100%) !important;
+  background: linear-gradient(135deg, rgb(32,33,36) 0%, #292a2d 100%) !important;
   border-bottom-color: rgba(255, 255, 255, 0.08) !important;
 }
 
@@ -10464,6 +10464,12 @@
   color: #1a1a1a !important;
 }
 
+.bs-extension-panel.bs-dark-mode .bs-btn-award-tool .bs-awardtool-label,
+.bs-extension-panel.bs-dark-mode .bs-btn-maxmypoint .bs-maxmypoint-label,
+.bs-extension-panel.bs-dark-mode .bs-btn-seats-aero .bs-seats-aero-label {
+  color: #1a1a1a !important;
+}
+
 .bs-extension-panel.bs-dark-mode .bs-btn-badge-login {
   color: #5f6368 !important;
 }
@@ -10477,7 +10483,7 @@
 }
 
 .bs-extension-panel.bs-dark-mode .bs-settings-footer {
-  background: #202124 !important;
+  background: rgb(32,33,36) !important;
   border-top-color: rgba(255, 255, 255, 0.08) !important;
 }
 
@@ -10550,8 +10556,237 @@
 }
 
 .bs-extension-panel.bs-dark-mode .tooltip-header {
-  background: #202124 !important;
+  background: rgb(32,33,36) !important;
   border-bottom-color: #3c4043 !important;
+}
+
+/* Info and Tiers modals (dark mode) – black background, white text */
+body.bs-dark-mode .bs-transfer-modal-box {
+  background: rgb(32,33,36) !important;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5) !important;
+}
+body.bs-dark-mode .bs-transfer-modal-header {
+  background: #292a2d !important;
+  border-bottom-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-transfer-modal-title {
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-modal-explanation,
+body.bs-dark-mode .bs-transfer-modal-filter-explanation {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-modal-explanation strong,
+body.bs-dark-mode .bs-transfer-modal-filter-explanation strong {
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-modal-close {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-modal-close:hover {
+  background: #3c4043 !important;
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-modal-pdf-btn {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-modal-pdf-btn:hover {
+  background: #3c4043 !important;
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-modal-body {
+  background: rgb(32,33,36) !important;
+}
+body.bs-dark-mode .bs-transfer-view-label,
+body.bs-dark-mode .bs-transfer-filter-label {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-view-switch {
+  background: #3c4043 !important;
+}
+body.bs-dark-mode .bs-transfer-view-btn {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-view-btn:hover {
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-view-btn.active {
+  background: #5f6368 !important;
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-filter-wrap {
+  background: #3c4043 !important;
+}
+body.bs-dark-mode .bs-transfer-col-toggles label {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-filter-btn {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-filter-btn:hover {
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-filter-btn.active {
+  background: #5f6368 !important;
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-search {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-search::placeholder {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-table-wrap {
+  border-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-transfer-table th,
+body.bs-dark-mode .bs-transfer-table td {
+  border-bottom-color: #3c4043 !important;
+}
+body.bs-dark-mode .bs-transfer-table tbody tr:nth-child(even) {
+  background: #292a2d !important;
+}
+body.bs-dark-mode .bs-transfer-table tbody tr:hover {
+  background: #3c4043 !important;
+}
+body.bs-dark-mode .bs-transfer-th-partner,
+body.bs-dark-mode .bs-transfer-td-partner {
+  background: #292a2d !important;
+  border-right-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-transfer-table tbody tr:nth-child(even) .bs-transfer-td-partner {
+  background: #292a2d !important;
+}
+body.bs-dark-mode .bs-transfer-table tbody tr:hover .bs-transfer-td-partner {
+  background: #3c4043 !important;
+}
+body.bs-dark-mode .bs-transfer-table thead th {
+  background: #292a2d !important;
+  color: #e8eaed !important;
+  border-bottom-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-transfer-th-partner {
+  background: #292a2d !important;
+  border-right-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-transfer-col-count {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-partner-name {
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-partner-program {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-rate-label,
+body.bs-dark-mode .bs-transfer-via-label {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-rate-label {
+  background: #3c4043 !important;
+}
+body.bs-dark-mode .bs-transfer-counts,
+body.bs-dark-mode .bs-transfer-legend {
+  color: #9aa0a6 !important;
+  border-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-transfer-loading-row td {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-transfer-table .bs-transfer-td {
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-transfer-sort-arrow,
+body.bs-dark-mode .bs-transfer-th-sorted .bs-transfer-sort-arrow {
+  color: #8ab4f8 !important;
+}
+/* Hotel Tiers modal (same backdrop, .bs-hotel-tiers-modal-box) */
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-filter-bar {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-filter-header h4 {
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-btn {
+  background: #3c4043 !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-btn:hover {
+  background: #5f6368 !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-search input {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-quick-filter {
+  background: #3c4043 !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-quick-filter:hover {
+  background: #5f6368 !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-quick-filter.active {
+  background: rgba(52, 168, 83, 0.25) !important;
+  border-color: #34a853 !important;
+  color: #81c995 !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-section h5 {
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-header label {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-select {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-section {
+  border-top-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-filter-count {
+  background: rgba(138, 180, 248, 0.2) !important;
+  border-color: #8ab4f8 !important;
+  color: #8ab4f8 !important;
+}
+/* Generic .bs-modal in dark mode */
+body.bs-dark-mode .bs-modal {
+  background: rgb(32,33,36) !important;
+}
+body.bs-dark-mode .bs-modal-header {
+  background: #292a2d !important;
+  border-bottom-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-modal-header h3 {
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-modal-close {
+  color: #9aa0a6 !important;
+}
+body.bs-dark-mode .bs-modal-close:hover {
+  background: #3c4043 !important;
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-modal-content {
+  color: #e8eaed !important;
+}
+body.bs-dark-mode .bs-modal-footer {
+  background: #292a2d !important;
+  border-top-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-booking-class {
+  background: #292a2d !important;
+  border-color: #5f6368 !important;
+}
+body.bs-dark-mode .bs-booking-class h4,
+body.bs-dark-mode .bs-booking-class p {
+  color: #e8eaed !important;
 }
 
 /* Card selection / comparison panels inside dark mode */
