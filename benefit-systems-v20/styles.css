@@ -1285,6 +1285,15 @@
   display: flex;
   flex-direction: column;
 }
+
+/* Desktop: make Tiers modal wider/taller to avoid table scrolling */
+@media (min-width: 769px) {
+  .bs-hotel-tiers-modal-box {
+    width: 96vw !important;
+    max-width: 1700px !important;
+    max-height: 96vh !important;
+  }
+}
 .bs-transfer-modal-header {
   display: flex;
   align-items: flex-start;
@@ -2319,31 +2328,55 @@
   }
   .bs-logo-container { padding: 0; }
   .bs-logo-header {
-    flex-wrap: wrap;
-    padding: 14px 16px;
-    gap: 14px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 10px 12px;
+    gap: 8px;
   }
-  .bs-logo { max-height: 32px; }
+  .bs-logo-link {
+    align-self: center;
+    display: inline-flex;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+  .bs-logo {
+    max-height: 28px;
+    max-width: 88px;
+  }
   /* Mobile: ensure Flight / Hotel / Settings toggles all fit on one row */
   .bs-section-toggles {
-    flex-wrap: nowrap;
-    gap: 10px;
-    width: 100%;
-    justify-content: flex-end;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    width: auto;
+    min-width: 0;
+    flex: 1 1 auto;
+    justify-content: stretch;
+    align-items: stretch;
   }
   .bs-toggle-item {
-    min-height: 40px;
+    min-height: 36px;
+    padding: 4px 6px;
     align-items: center;
+    justify-content: space-between;
     gap: 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   }
   .bs-toggle-label {
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 600;
+    line-height: 1.2;
     white-space: nowrap;
+    letter-spacing: 0.01em;
   }
-  .bs-toggle-switch { width: 50px; height: 28px; }
-  .bs-toggle-slider:before { height: 22px; width: 22px; }
-  .bs-toggle-switch input:checked + .bs-toggle-slider:before { transform: translateX(22px); }
+  .bs-toggle-switch { width: 34px; height: 20px; }
+  .bs-toggle-slider:before { height: 14px; width: 14px; left: 2px; bottom: 2px; }
+  .bs-toggle-switch input:checked + .bs-toggle-slider:before { transform: translateX(14px); }
   .bs-section {
     padding: 20px 16px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -11036,6 +11069,36 @@
   background: rgba(26, 115, 232, 0.4) !important;
 }
 
+/* Desktop dark mode: match Info/Tiers with Refresh (white text, same dark background family) */
+@media (min-width: 769px) {
+  .bs-extension-panel.bs-dark-mode .bs-action-info,
+  .bs-extension-panel.bs-dark-mode #bs-hotel-tiers {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+  }
+
+  .bs-extension-panel.bs-dark-mode .bs-action-info .bs-action-info-label,
+  .bs-extension-panel.bs-dark-mode #bs-hotel-tiers .bs-action-info-label {
+    color: #ffffff !important;
+  }
+
+  .bs-extension-panel.bs-dark-mode .bs-action-info svg,
+  .bs-extension-panel.bs-dark-mode #bs-hotel-tiers svg {
+    stroke: #ffffff !important;
+  }
+
+  .bs-extension-panel.bs-dark-mode .bs-action-info:hover,
+  .bs-extension-panel.bs-dark-mode #bs-hotel-tiers:hover {
+    background: rgba(52, 168, 83, 0.2) !important;
+  }
+
+  /* Desktop dark mode: make date picker icon white */
+  .bs-extension-panel.bs-dark-mode .bs-input-group input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.1);
+    opacity: 1;
+  }
+}
+
 .bs-extension-panel.bs-dark-mode .bs-action-open-all:hover {
   background: rgba(102, 126, 234, 0.2) !important;
 }
@@ -11099,6 +11162,11 @@
 .bs-extension-panel.bs-dark-mode .bs-btn-award-tool .bs-awardtool-label,
 .bs-extension-panel.bs-dark-mode .bs-btn-maxmypoint .bs-maxmypoint-label,
 .bs-extension-panel.bs-dark-mode .bs-btn-seats-aero .bs-seats-aero-label {
+  color: #1a1a1a !important;
+}
+
+.bs-extension-panel.bs-dark-mode .bs-btn-rooms-aero,
+.bs-extension-panel.bs-dark-mode .bs-btn-rooms-aero .bs-rooms-aero-label {
   color: #1a1a1a !important;
 }
 
@@ -11343,12 +11411,15 @@ body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-filter-header h4 
   color: #e8eaed !important;
 }
 body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-btn {
-  background: #3c4043 !important;
-  border-color: #5f6368 !important;
-  color: #e8eaed !important;
+  background: rgba(26, 115, 232, 0.25) !important;
+  border-color: #8ab4f8 !important;
+  color: #8ab4f8 !important;
 }
 body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-btn:hover {
-  background: #5f6368 !important;
+  background: rgba(26, 115, 232, 0.4) !important;
+}
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-btn svg {
+  stroke: #8ab4f8 !important;
 }
 body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-search input {
   background: #292a2d !important;
@@ -11386,6 +11457,87 @@ body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-filter-count {
   background: rgba(138, 180, 248, 0.2) !important;
   border-color: #8ab4f8 !important;
   color: #8ab4f8 !important;
+}
+
+/* Hotel Benefits Management in dark mode: strict black/white for My Level, Minimum Level, Hotelchain/Level table */
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-section,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-item,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-table-container,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-table-wrapper,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-table,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-table thead,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-table tbody tr,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-cell,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-cell.current,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-cell.minimum {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-section h5,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-header label,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-table th,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-table td,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-hotel-name,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-hotel-title,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-header,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-cell,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-cell *,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-benefit-item,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-benefit-item svg {
+  color: #ffffff !important;
+}
+
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-status-select,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-date-input {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.1);
+  opacity: 1;
+}
+
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-validity-info,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-validity-date {
+  color: #ffffff !important;
+}
+
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-table th,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-table td {
+  border-bottom-color: #ffffff !important;
+}
+
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-table tbody tr:hover {
+  background: #111111 !important;
+}
+
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-badge,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-badge span,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-badge span:last-child,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-validity-days-small,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-validity-days-small.ok,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-validity-days-small.warning,
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-validity-days-small.expired {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+}
+
+/* Restore My Level color accents in dark mode */
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-cell.current {
+  background: #2b2238 !important;
+  border-left: 4px solid #a78bfa !important;
+  color: #e9d5ff !important;
+}
+
+body.bs-dark-mode .bs-hotel-tiers-modal-box .bs-hotel-benefits-level-badge span:last-child {
+  background: #1e3a8a !important;
+  color: #bfdbfe !important;
+  border: 1px solid #60a5fa !important;
 }
 /* Generic .bs-modal in dark mode */
 body.bs-dark-mode .bs-modal {

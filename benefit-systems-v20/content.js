@@ -746,6 +746,10 @@ function applyFlightStopColors() {
   css += 'body.bs-dark-mode .yR1fYc.bs-stops-flight * { color: ' + stopsText + ' !important; }\n';
   css += 'body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight { background: ' + multi + ' !important; border-color: ' + multi + ' !important; box-shadow: none !important; color: ' + multiText + ' !important; }\n';
   css += 'body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight * { color: ' + multiText + ' !important; }\n';
+  css += '@media (min-width: 769px) {\n';
+  css += '  body.bs-dark-mode .yR1fYc.bs-nonstop-flight, body.bs-dark-mode .yR1fYc.bs-stops-flight, body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight { background: #000000 !important; border-color: #000000 !important; box-shadow: none !important; color: #ffffff !important; }\n';
+  css += '  body.bs-dark-mode .yR1fYc.bs-nonstop-flight *, body.bs-dark-mode .yR1fYc.bs-stops-flight *, body.bs-dark-mode .yR1fYc.bs-multiple-stops-flight * { color: #ffffff !important; }\n';
+  css += '}\n';
 
   let el = document.getElementById('bs-flight-stop-colors');
   if (!el) {

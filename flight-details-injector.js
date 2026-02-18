@@ -23,6 +23,48 @@ function clearAutoScrollToAwardFlag() {
   } catch (_) {}
 }
 
+function scrollToAwardSectionWhenReady(awardSection) {
+  if (!awardSection) return
+
+  let didScroll = false
+
+  const performScroll = () => {
+    if (didScroll || !awardSection || !awardSection.isConnected) return
+    didScroll = true
+    awardSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    clearAutoScrollToAwardFlag()
+  }
+
+  const waitForDesktopReadyAndScroll = (attempt = 0) => {
+    if (didScroll || !awardSection || !awardSection.isConnected) return
+
+    const isDesktop = !window.matchMedia('(max-width: 768px)').matches
+    const rect = awardSection.getBoundingClientRect()
+    const sectionHasLayout = rect.height > 0
+
+    // Desktop: wait until page is fully loaded and section has layout.
+    if (!isDesktop || (document.readyState === 'complete' && sectionHasLayout)) {
+      requestAnimationFrame(() => {
+        setTimeout(performScroll, 120)
+      })
+      return
+    }
+
+    if (attempt >= 40) {
+      performScroll()
+      return
+    }
+
+    setTimeout(() => waitForDesktopReadyAndScroll(attempt + 1), 150)
+  }
+
+  if (document.readyState !== 'complete') {
+    window.addEventListener('load', () => waitForDesktopReadyAndScroll(), { once: true })
+  }
+
+  waitForDesktopReadyAndScroll()
+}
+
 // ---------------- Seats.aero helpers ----------------
 // All calculations use USD only; no currency selector.
 function getUserCurrency() {
@@ -81,6 +123,7 @@ function readFlightInputs() {
         const searchParams = url.searchParams
         let fromCode = searchParams.get('origins') || searchParams.get('from') || searchParams.get('departure')
         let toCode = searchParams.get('destinations') || searchParams.get('to') || searchParams.get('arrival')
+        const tfs = searchParams.get('tfs') || ''
 
         // Also check query string format: flights+from+WAW+to+VIE
         const q2 = searchParams.get('q') || ''
@@ -97,8 +140,27 @@ function readFlightInputs() {
           toCode = pathMatch[2].toUpperCase()
         }
 
+        // Parse Google Flights tfs payload (mobile/filters often only keep this).
+        // Common pattern in tfs: "...EgN<ORIGIN>...EgN<DEST>..."
+        if ((!fromCode || !toCode) && tfs) {
+          const tfsCodes = Array.from(tfs.matchAll(/EgN([A-Z]{3})/g)).map(m => m[1])
+          if (tfsCodes.length >= 2) {
+            fromCode = fromCode || tfsCodes[0]
+            toCode = toCode || tfsCodes[1]
+          }
+        }
+
         if (!from && fromCode) from = fromCode.toUpperCase()
         if (!to && toCode) to = toCode.toUpperCase()
+      }
+
+      // Date fallback from tfs payload (e.g. 2026-03-01).
+      if (!depart) {
+        const tfs = url.searchParams.get('tfs') || ''
+        const tfsDateMatch = tfs.match(/(20\d{2}-\d{2}-\d{2})/)
+        if (tfsDateMatch) {
+          depart = tfsDateMatch[1]
+        }
       }
     } catch (e) {}
   }
@@ -109,6 +171,27 @@ function readFlightInputs() {
 const pageSeatsCache = {}
 let lastSeatsSearch = null
 let globalPanelInitialized = false
+const awardPanelState = {
+  cashPrice: '',
+  milesValue: '12',
+  cabinFilter: 'all'
+}
+
+function rememberAwardInputStateFromDom() {
+  const cashInput = document.getElementById('bs-standalone-cash-price')
+  const milesInput = document.getElementById('bs-standalone-miles-value')
+  const cabinFilter = document.getElementById('bs-standalone-cabin-filter')
+
+  if (cashInput && cashInput.value && cashInput.value.trim() !== '') {
+    awardPanelState.cashPrice = cashInput.value.trim()
+  }
+  if (milesInput && milesInput.value && milesInput.value.trim() !== '') {
+    awardPanelState.milesValue = milesInput.value.trim()
+  }
+  if (cabinFilter && cabinFilter.value) {
+    awardPanelState.cabinFilter = cabinFilter.value
+  }
+}
 
 // Extract cash price from Google Flights DOM
 function extractCashPrice(flightElement) {
@@ -672,7 +755,7 @@ async function fetchSeatsData({ isNonstop = false } = {}) {
     console.log('Flight inputs:', { from, to, depart, isNonstop })
 
     if (!from || !to || !depart) {
-      console.warn('Missing required inputs:', { from, to, depart })
+      console.warn(`[BS Extension] Missing required inputs: from="${from || ''}", to="${to || ''}", depart="${depart || ''}"`)
       return null
     }
     
@@ -871,6 +954,14 @@ async function triggerGlobalPanelUpdate() {
 
 // Create standalone award analysis section on Google Flights page
 function createStandaloneAwardSection() {
+  rememberAwardInputStateFromDom()
+
+  const hasAwardData = !!(lastSeatsSearch && lastSeatsSearch.data && lastSeatsSearch.data.length > 0)
+  if (!hasAwardData) {
+    // Keep existing section/data visible if a temporary refresh returns no rows.
+    return
+  }
+
   // Remove existing section if it exists
   const existingSection = document.getElementById('bs-standalone-award-section')
   if (existingSection) {
@@ -880,10 +971,6 @@ function createStandaloneAwardSection() {
   const legacyGlobalPanel = document.getElementById('bs-global-seats-panel')
   if (legacyGlobalPanel) {
     legacyGlobalPanel.remove()
-  }
-  
-  if (!lastSeatsSearch || !lastSeatsSearch.data || lastSeatsSearch.data.length === 0) {
-    return
   }
   
   // Find the element with jsname="YdtKid" to insert before it (after class="MqKGaf FlfUOc")
@@ -1102,6 +1189,20 @@ function createStandaloneAwardSection() {
   const cashPriceInput = document.getElementById('bs-standalone-cash-price')
   const milesValueInput = document.getElementById('bs-standalone-miles-value')
   const cabinFilter = document.getElementById('bs-standalone-cabin-filter')
+
+  // Restore previous values after section re-render.
+  if (cashPriceInput && awardPanelState.cashPrice) {
+    cashPriceInput.value = awardPanelState.cashPrice
+  }
+  if (milesValueInput && awardPanelState.milesValue) {
+    milesValueInput.value = awardPanelState.milesValue
+  }
+  if (cabinFilter && awardPanelState.cabinFilter) {
+    const hasOption = Array.from(cabinFilter.options || []).some(opt => opt.value === awardPanelState.cabinFilter)
+    if (hasOption) {
+      cabinFilter.value = awardPanelState.cabinFilter
+    }
+  }
   
   // Set default Miles Value to 12 if empty
   if (milesValueInput) {
@@ -1112,6 +1213,7 @@ function createStandaloneAwardSection() {
   }
   
   function updateStandaloneResults() {
+    rememberAwardInputStateFromDom()
     updateStandaloneAwardResults()
   }
   
@@ -1150,10 +1252,7 @@ function createStandaloneAwardSection() {
 
   // Auto-scroll to award section when opened from Google Flights button
   if (shouldAutoScrollToAwardSection()) {
-    setTimeout(() => {
-      awardSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      clearAutoScrollToAwardFlag()
-    }, 450)
+    scrollToAwardSectionWhenReady(awardSection)
   }
 }
 
@@ -1240,7 +1339,17 @@ function updateStandaloneAwardResults() {
     return
   }
   
-  const cashPriceUSD = parseFloat(document.getElementById('bs-standalone-cash-price')?.value) || null
+  const cashPriceInput = document.getElementById('bs-standalone-cash-price')
+  let cashPriceUSD = parseFloat(cashPriceInput?.value) || null
+  if (!cashPriceUSD && awardPanelState.cashPrice) {
+    const rememberedCashPrice = parseFloat(awardPanelState.cashPrice)
+    if (!isNaN(rememberedCashPrice) && rememberedCashPrice > 0) {
+      cashPriceUSD = rememberedCashPrice
+      if (cashPriceInput) {
+        cashPriceInput.value = awardPanelState.cashPrice
+      }
+    }
+  }
   const milesValueInput = document.getElementById('bs-standalone-miles-value')
   const milesPerThousandRaw = parseFloat(milesValueInput?.value)
   const hasMilesValueInput = milesValueInput?.value !== '' && milesValueInput?.value !== null && milesValueInput?.value !== undefined
@@ -1627,11 +1736,18 @@ function updateStandaloneAwardResults() {
     }
     
     let tableHtml = ''
+    const isDarkMode = document.body.classList.contains('bs-dark-mode')
+    const sectionHeaderColor = isDarkMode ? '#e8eaed' : '#000000'
     
+    const isAllBookingClassesView = filterValue === 'all'
+    const sectionTopMargin = isAllBookingClassesView ? '10px' : '24px'
+    const sectionBottomMargin = isAllBookingClassesView ? '8px' : '16px'
+    const sectionHeaderBottomMargin = isAllBookingClassesView ? '10px' : '16px'
+
     // Add section header if cabin class label is provided
     if (cabinClassLabel) {
-      tableHtml += `<div style="margin-bottom:16px;margin-top:24px;">`
-      tableHtml += `<h3 style="font-size:18px;font-weight:700;color:#000000;margin:0 0 16px 0;padding-bottom:8px;border-bottom:2px solid #e9ecef;">${cabinClassLabel}</h3>`
+      tableHtml += `<div style="margin-bottom:${sectionBottomMargin};margin-top:${sectionTopMargin};">`
+      tableHtml += `<h3 style="font-size:18px;font-weight:700;color:${sectionHeaderColor};margin:0 0 ${sectionHeaderBottomMargin} 0;padding:0;border:none;background:transparent;box-shadow:none;outline:none;">${cabinClassLabel}</h3>`
       tableHtml += `</div>`
     }
     
@@ -2387,14 +2503,39 @@ function extractFlightInfo(flightElement) {
     }
   }
 
+  // Extract aircraft type from visible text (e.g. Airbus A320, Boeing 787-9)
+  if (!flightInfo.aircraft) {
+    const aircraftPatterns = [
+      /\b(Airbus\s+A\d{3}(?:neo)?(?:-\d{3})?)\b/i,
+      /\b(Boeing\s+7\d{2}(?:-?\d{2,3}(?:ER|LR)?)?)\b/i,
+      /\b(Boeing\s+737\s*MAX\s*\d{1,2})\b/i,
+      /\b(Embraer\s+E\d{3}(?:-\d{2})?)\b/i,
+      /\b(ATR\s*[- ]?\d{2})\b/i,
+      /\b(Bombardier\s+(?:CRJ|Q)\s*\d{2,3})\b/i,
+      /\b(Dash\s*8(?:-\d{2,3})?)\b/i,
+      /\b(De\s+Havilland\s+Dash\s*8(?:-\d{2,3})?)\b/i,
+      /\b(A\d{3}(?:neo)?(?:-\d{3})?)\b/i,
+      /\b(B7\d{2}(?:-\d{2,3})?)\b/i
+    ]
+
+    for (const pattern of aircraftPatterns) {
+      const match = cleanedText.match(pattern)
+      if (match && match[1]) {
+        flightInfo.aircraft = match[1].replace(/\s+/g, ' ').trim()
+        console.log("Extracted aircraft type from text:", flightInfo.aircraft)
+        break
+      }
+    }
+  }
+
   // Set default aircraft based on airline
   if (!flightInfo.aircraft) {
-    if (flightInfo.airlineCode === 'LO' || flightInfo.airlineCode === 'LH') {
+    if (flightInfo.airlineCode === 'LO' || flightInfo.airlineCode === 'LH' || /Lufthansa|LOT/i.test(flightInfo.airline)) {
       flightInfo.aircraft = 'Airbus A320'
-    } else if (flightInfo.airlineCode === 'AA' || flightInfo.airlineCode === 'DL' || flightInfo.airlineCode === 'UA') {
+    } else if (flightInfo.airlineCode === 'AA' || flightInfo.airlineCode === 'DL' || flightInfo.airlineCode === 'UA' || /American|Delta|United/i.test(flightInfo.airline)) {
       flightInfo.aircraft = 'Boeing 737'
     } else {
-      flightInfo.aircraft = 'Aircraft'
+      flightInfo.aircraft = ''
     }
     console.log("Using default aircraft:", flightInfo.aircraft)
   }
@@ -2543,28 +2684,6 @@ function createFlightDetailsElement(flightInfo, flightElement) {
     overflow-x: auto;
   `
 
-  // Aircraft info
-  if (flightInfo.aircraft) {
-    const aircraftElement = document.createElement("span")
-    aircraftElement.style.cssText = `
-      display: inline-flex;
-      align-items: center;
-      gap: 2px;
-      padding: 2px 6px;
-      background: rgb(255, 255, 255);
-      border-radius: 4px;
-      font-weight: 600;
-      color: rgb(0, 0, 0);
-      font-size: 11px;
-      white-space: nowrap;
-      border: 1px solid rgba(255, 193, 7, 0.25);
-      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px;
-      transition: 0.2s;
-    `
-    aircraftElement.innerHTML = `✈️ ${flightInfo.aircraft}`
-    flightDetailsRow.appendChild(aircraftElement)
-  }
-
   // Airline and Flight Number
   if (flightInfo.airlineCode && flightInfo.flightNumber) {
     const airlineElement = document.createElement("span")
@@ -2660,7 +2779,7 @@ function createFlightDetailsElement(flightInfo, flightElement) {
   // Add the flight details row to the container
   detailsContainer.appendChild(flightDetailsRow)
   
-  // Create second row for links under "Aircraft"
+  // Create second row for links under the flight details row
   if (flightInfo.airlineCode && flightInfo.flightNumber) {
     const linksRow = document.createElement("div")
     linksRow.style.cssText = `
@@ -2895,13 +3014,23 @@ function createFlightDetailsElement(flightInfo, flightElement) {
       }}
     ]
     
+      const isDarkMode = document.body.classList.contains('bs-dark-mode')
+      const baseLinkColor = isDarkMode ? '#ffffff' : '#1a73e8'
+      const hoverLinkColor = isDarkMode ? '#ffffff' : '#1557b0'
+
+      const isDesktop = !window.matchMedia('(max-width: 768px)').matches
+      const hiddenDesktopLinks = new Set(['Seats.Aero', 'AwardTool', 'PointsYeah'])
+      const visibleLinks = isDesktop
+        ? links.filter(link => !hiddenDesktopLinks.has(link.text))
+        : links
+
       // Create individual link buttons and add to the same row
-    links.forEach(link => {
+    visibleLinks.forEach(link => {
       const linkButton = document.createElement("button")
       linkButton.textContent = link.text
       linkButton.style.cssText = `
         background: transparent;
-        color: #1a73e8;
+        color: ${baseLinkColor};
         padding: 1px 3px;
         border-radius: 3px;
         border: none;
@@ -2920,12 +3049,12 @@ function createFlightDetailsElement(flightInfo, flightElement) {
       })
       
       linkButton.addEventListener('mouseenter', () => {
-        linkButton.style.color = '#1557b0'
+        linkButton.style.color = hoverLinkColor
         linkButton.style.textDecoration = 'none'
       })
       
       linkButton.addEventListener('mouseleave', () => {
-        linkButton.style.color = '#1a73e8'
+        linkButton.style.color = baseLinkColor
         linkButton.style.textDecoration = 'underline'
       })
       
@@ -3128,6 +3257,9 @@ function debouncedInjection(delay = 300) {
   injectionTimeout = setTimeout(() => {
     if (!isInjecting) {
       injectFlightDetails()
+      // Mobile filter changes can rerender cards and drop the panel.
+      // Force-refresh award panel + latest first price shortly after reinjection.
+      scheduleAwardPanelRefresh(900)
     }
   }, delay)
 }
@@ -3388,7 +3520,9 @@ function fillCashPriceFields(price, currency) {
   const usdPrice = toUsdForCashPrice(price, currency || 'USD')
   const standaloneCashInput = document.getElementById('bs-standalone-cash-price')
   if (standaloneCashInput) {
-    standaloneCashInput.value = usdPrice.toFixed(2)
+    const nextValue = usdPrice.toFixed(2)
+    standaloneCashInput.value = nextValue
+    awardPanelState.cashPrice = nextValue
     standaloneCashInput.dispatchEvent(new Event('input', { bubbles: true }))
     standaloneCashInput.dispatchEvent(new Event('change', { bubbles: true }))
     if (currency && currency !== 'USD') {
@@ -3648,6 +3782,44 @@ setTimeout(() => {
 // Debounced observer for detecting new flight content
 let observerTimeout = null
 let lastMutationTime = 0
+let priceRefreshTimeout = null
+let awardPanelRefreshTimeout = null
+let isAwardPanelRefreshRunning = false
+
+function schedulePriceRefresh(delay = 1200) {
+  if (priceRefreshTimeout) {
+    clearTimeout(priceRefreshTimeout)
+  }
+  priceRefreshTimeout = setTimeout(() => {
+    extractAndFillPriceFromGoogleFlights()
+  }, delay)
+}
+
+function scheduleAwardPanelRefresh(delay = 1200) {
+  if (awardPanelRefreshTimeout) {
+    clearTimeout(awardPanelRefreshTimeout)
+  }
+
+  awardPanelRefreshTimeout = setTimeout(async () => {
+    if (isAwardPanelRefreshRunning) return
+    isAwardPanelRefreshRunning = true
+
+    try {
+      rememberAwardInputStateFromDom()
+
+      if (typeof triggerGlobalPanelUpdate === 'function') {
+        await triggerGlobalPanelUpdate()
+      }
+
+      // Re-read current "first price" from filtered results after panel refresh.
+      schedulePriceRefresh(250)
+    } catch (error) {
+      console.warn('[BS Extension] Award panel refresh failed:', error)
+    } finally {
+      isAwardPanelRefreshRunning = false
+    }
+  }, delay)
+}
 
 // Run when new content is added to the page
 const observer = new MutationObserver((mutations) => {
@@ -3703,6 +3875,9 @@ const observer = new MutationObserver((mutations) => {
   })
   
   if (hasFlightElements || shouldRun) {
+    // Keep Award Flight Analysis on screen and synced with filtered first price (mobile-heavy path).
+    scheduleAwardPanelRefresh(1200)
+
     const now = Date.now()
     // Debounce: only trigger if last mutation was more than 500ms ago
     if (now - lastMutationTime > 500) {
