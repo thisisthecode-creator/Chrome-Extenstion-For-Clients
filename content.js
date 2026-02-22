@@ -2195,7 +2195,8 @@ async function handleHotelButtonClick(e) {
     'rovemiles-hotels',
     'rovemiles-hotels-loyal',
     'melia',
-    'hilton'
+    'hilton',
+    'radisson'
   ];
   const needsGeocode = servicesNeedingGeocode.includes(service);
   const isMobileViewport =
@@ -2331,7 +2332,7 @@ async function handleOpenAllHotels(e) {
   showNotification(`Opening ${services.length} hotel search tabs...`, 'info');
   
   // Get geocoding data once for services that need it (resolve IATA to city when auto-filled)
-  const needsGeocoding = ['pointsyeah-hotels', 'rovemiles-hotels', 'rovemiles-hotels-loyal', 'melia', 'hilton'];
+  const needsGeocoding = ['pointsyeah-hotels', 'rovemiles-hotels', 'rovemiles-hotels-loyal', 'melia', 'hilton', 'radisson'];
   const needsGeocode = services.some(s => needsGeocoding.includes(s));
   
   let geocodeData = null;
@@ -3223,7 +3224,7 @@ async function generateHotelUrl(service, data, geocodeData = null) {
     
     'maxmypoint': `https://maxmypoint.com/?search=${encodeURIComponent(city)}`,
     
-    'radisson': `https://www.radissonhotels.com/en-us/booking/search-results?destination=${encodeURIComponent(city)}&checkInDate=${checkin}&checkOutDate=${checkout}&adults%5B%5D=${adults}&children%5B%5D=0&aoc%5B%5D=&searchType=lowest&promotionCode=&voucher=&brands=`,
+    'radisson': null, // built below with placeId when geocoded, else destination=city
     
     'gha': `https://de.ghadiscovery.com/search/hotels?keyword=${encodeURIComponent(city)}&clearBookingParams=1&clearHotelSearchParams=1&room1Adults=${adults}&room1Children=0&startDate=${checkin}&endDate=${checkout}&types=all&prices=&sortBy=price&sortDirection=asc`,
 
@@ -3368,7 +3369,19 @@ async function generateHotelUrl(service, data, geocodeData = null) {
       return baseUrl;
     })()
   };
-  
+
+  // Radisson: prefer placeId from geocode (like your URL) for precise search; fallback to destination=city
+  if (service === 'radisson') {
+    const base = `https://www.radissonhotels.com/en-us/booking/search-results?checkInDate=${checkin}&checkOutDate=${checkout}&adults%5B%5D=${adults}&children%5B%5D=0&aoc%5B%5D=&searchType=lowest&promotionCode=&voucher=&brands=&brandFirst=`;
+    if (geocodeData && geocodeData.latitude != null && geocodeData.longitude != null) {
+      const placeId = await getPlaceIdFromCoordinates(geocodeData.latitude, geocodeData.longitude);
+      if (placeId) {
+        return `${base}&placeId=${encodeURIComponent(placeId)}`;
+      }
+    }
+    return `${base}&destination=${encodeURIComponent(city)}`;
+  }
+
   // iPrefer and Preferred Hotels: resolve city/airport to country slug, then build URL
   if (service === 'iprefer' || service === 'preferred-hotels') {
     const countrySlug = await getCountrySlugFromCityOrAirport(city);
