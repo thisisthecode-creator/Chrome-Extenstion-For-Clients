@@ -399,6 +399,9 @@ function injectExtensionPanel() {
         <button class="bs-btn bs-btn-ihg" data-service="ihg" title="IHG">
           <img src="" data-btn-image="IHG" alt="IHG" class="bs-btn-icon bs-btn-logo bs-ihg-logo" />
         </button>
+        <button class="bs-btn bs-btn-radisson" data-service="radisson" title="Radisson">
+          <img src="" data-btn-image="Radisson" alt="Radisson" class="bs-btn-icon bs-btn-logo" />
+        </button>
         <button class="bs-btn bs-btn-accor" data-service="accor" title="Accor">
           <img src="" data-btn-image="Accor" alt="Accor" class="bs-btn-icon bs-btn-logo-lg" />
         </button>
@@ -3220,7 +3223,7 @@ async function generateHotelUrl(service, data, geocodeData = null) {
     
     'maxmypoint': `https://maxmypoint.com/?search=${encodeURIComponent(city)}`,
     
-    'radisson': null, // Will be handled separately below due to async requirements
+    'radisson': `https://www.radissonhotels.com/en-us/booking/search-results?destination=${encodeURIComponent(city)}&checkInDate=${checkin}&checkOutDate=${checkout}&adults%5B%5D=${adults}&children%5B%5D=0&aoc%5B%5D=&searchType=lowest&promotionCode=&voucher=&brands=`,
     
     'gha': `https://de.ghadiscovery.com/search/hotels?keyword=${encodeURIComponent(city)}&clearBookingParams=1&clearHotelSearchParams=1&room1Adults=${adults}&room1Children=0&startDate=${checkin}&endDate=${checkout}&types=all&prices=&sortBy=price&sortDirection=asc`,
 
@@ -3366,25 +3369,6 @@ async function generateHotelUrl(service, data, geocodeData = null) {
     })()
   };
   
-  // Handle Radisson separately since it requires async placeId lookup
-  if (service === 'radisson') {
-    // Radisson format: use placeId (Google Place ID) instead of destination
-    // Format: placeId=...&checkInDate=...&checkOutDate=...&adults[]=...&children[]=0&aoc[]=&searchType=lowest&promotionCode=&voucher=&brands=&brandFirst=
-    let baseUrl = `https://www.radissonhotels.com/en-us/booking/search-results?checkInDate=${checkin}&checkOutDate=${checkout}&adults%5B%5D=${adults}&children%5B%5D=0&aoc%5B%5D=&searchType=lowest&promotionCode=&voucher=&brands=&brandFirst=`;
-    
-    // Try to get placeId from geocoding data
-    if (geocodeData && geocodeData.latitude && geocodeData.longitude) {
-      const placeId = await getPlaceIdFromCoordinates(geocodeData.latitude, geocodeData.longitude);
-      if (placeId) {
-        return baseUrl + `&placeId=${placeId}`;
-      }
-    }
-    
-    // If no placeId available, return URL without it (may not work correctly)
-    // Note: Radisson requires placeId for proper search
-    return baseUrl;
-  }
-
   // iPrefer and Preferred Hotels: resolve city/airport to country slug, then build URL
   if (service === 'iprefer' || service === 'preferred-hotels') {
     const countrySlug = await getCountrySlugFromCityOrAirport(city);

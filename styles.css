@@ -871,6 +871,18 @@
   object-fit: contain;
 }
 
+/* Radisson: white button, larger logo */
+#bs-hotel-external-links .bs-btn-radisson,
+#bs-hotel-external-links .bs-btn-radisson:hover {
+  background: #ffffff !important;
+}
+#bs-hotel-external-links .bs-btn-radisson .bs-btn-icon,
+#bs-hotel-external-links .bs-btn-radisson img {
+  height: 32px !important;
+  max-height: 32px !important;
+  width: auto !important;
+  object-fit: contain;
+}
 /* Drag and Drop Styles */
 .bs-draggable-btn {
   cursor: grab;
@@ -1214,6 +1226,7 @@
 .bs-btn-marriott,
 .bs-btn-ihg,
 .bs-btn-accor,
+.bs-btn-radisson,
 .bs-btn-wyndham,
 .bs-btn-choice,
 .bs-btn-iprefer,
@@ -1247,6 +1260,7 @@
 .bs-btn-marriott:hover,
 .bs-btn-ihg:hover,
 .bs-btn-accor:hover,
+.bs-btn-radisson:hover,
 .bs-btn-wyndham:hover,
 .bs-btn-choice:hover,
 .bs-btn-iprefer:hover,

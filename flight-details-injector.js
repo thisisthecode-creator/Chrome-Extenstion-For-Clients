@@ -109,8 +109,9 @@ function readFlightInputs() {
     try {
       const url = new URL(window.location.href)
       const q = url.searchParams.get('q') || ''
-      // Example: flights+from+WAW+to+VIE+oneway+on+2025-12-01
-      const m = q.match(/from\+([A-Z]{3}).*?to\+([A-Z]{3}).*?(?:on\+|to\+)(\d{4}-\d{2}-\d{2})/i)
+      // q is URL-decoded: "flights from WAW to VIE oneway on 2026-03-19" (spaces, not +)
+      // Match either space or + between keywords and codes/dates
+      const m = q.match(/from[\s\+]+([A-Z]{3}).*?to[\s\+]+([A-Z]{3}).*?(?:on[\s\+]+|to[\s\+]+)(\d{4}-\d{2}-\d{2})/i)
       if (m) {
         if (!from) from = m[1].toUpperCase()
         if (!to) to = m[2].toUpperCase()
@@ -125,9 +126,9 @@ function readFlightInputs() {
         let toCode = searchParams.get('destinations') || searchParams.get('to') || searchParams.get('arrival')
         const tfs = searchParams.get('tfs') || ''
 
-        // Also check query string format: flights+from+WAW+to+VIE
+        // Also check query string format: flights from WAW to VIE (decoded: spaces)
         const q2 = searchParams.get('q') || ''
-        const match = q2.match(/from\+([A-Z]{3}).*?to\+([A-Z]{3})/i)
+        const match = q2.match(/from[\s\+]+([A-Z]{3}).*?to[\s\+]+([A-Z]{3})/i)
         if (match && !fromCode) {
           fromCode = match[1].toUpperCase()
           toCode = match[2].toUpperCase()
@@ -154,12 +155,15 @@ function readFlightInputs() {
         if (!to && toCode) to = toCode.toUpperCase()
       }
 
-      // Date fallback from tfs payload (e.g. 2026-03-01).
+      // Date fallback: tfs payload or any YYYY-MM-DD in q (e.g. oneway on 2026-03-19)
       if (!depart) {
         const tfs = url.searchParams.get('tfs') || ''
         const tfsDateMatch = tfs.match(/(20\d{2}-\d{2}-\d{2})/)
         if (tfsDateMatch) {
           depart = tfsDateMatch[1]
+        } else {
+          const dateInQ = (url.searchParams.get('q') || '').match(/(20\d{2}-\d{2}-\d{2})/)
+          if (dateInQ) depart = dateInQ[1]
         }
       }
     } catch (e) {}
